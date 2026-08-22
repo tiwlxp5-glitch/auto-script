@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import CreateScript from './pages/CreateScript';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Pricing from './pages/Pricing';
 
 function App() {
   return (
@@ -14,6 +15,9 @@ function App() {
         
         {/* หน้าสร้างสคริปต์ */}
         <Route path="create" element={<CreateScript />} />
+        
+        {/* หน้าแสดงแพ็กเกจราคา */}
+        <Route path="pricing" element={<Pricing />} />
         
         {/* หน้าเข้าสู่ระบบและสมัครสมาชิก */}
         <Route path="login" element={<Login />} />

@@ -6,12 +6,21 @@ import { useNavigate } from 'react-router-dom';
 function CreateScript() {
   const [productName, setProductName] = useState('');
   const [productDetails, setProductDetails] = useState('');
+  const [pricePromo, setPricePromo] = useState('');
+  const [videoLength, setVideoLength] = useState('สั้น');
   const [mode, setMode] = useState('ป้ายยาตรงๆ');
+  
+  // Premium fields
+  const [competitor, setCompetitor] = useState('');
+  const [targetAudience, setTargetAudience] = useState('');
+  const [productUrl, setProductUrl] = useState('');
   
   const [generatedScript, setGeneratedScript] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState(null);
+  
   const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
   
   const navigate = useNavigate();
 
@@ -21,38 +30,88 @@ function CreateScript() {
     { id: 'เปรียบเทียบชัดๆ', name: 'เปรียบเทียบชัดๆ', description: 'โจมตีข้อเสียของทั่วไป ชูจุดเด่นเรา' }
   ];
 
-  // เช็คว่าผู้ใช้ล็อกอินหรือยัง
+  const lengths = [
+    { id: 'สั้น', label: '10-15 วินาที (สั้น/กระชับ)' },
+    { id: 'กลาง', label: '30-45 วินาที (ปานกลาง)' },
+    { id: 'ยาว', label: '60 วินาทีขึ้นไป (รายละเอียดเยอะ)' }
+  ];
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
         setUser(session.user);
+        fetchProfile(session.user.id);
       } else {
-        // ถ้ายังไม่ล็อกอิน บังคับไปหน้าล็อกอิน
         navigate('/login');
       }
     });
   }, [navigate]);
 
+  const fetchProfile = async (userId) => {
+    const { data } = await supabase
+      .from('profiles')
+      .select('credits, tier')
+      .eq('id', userId)
+      .single();
+    if (data) setProfile(data);
+  };
+
   const handleGenerate = async (e) => {
     e.preventDefault();
-    if (!user) return;
+    if (!user || !profile) return;
+    
+    // 1. เช็คโควต้าเครดิต
+    if (profile.credits <= 0) {
+      alert("โควต้าเครดิตของคุณหมดแล้วครับ กรุณาอัปเกรดแพ็กเกจ");
+      navigate('/pricing');
+      return;
+    }
     
     setIsGenerating(true);
     setError(null);
     setGeneratedScript(null);
 
     try {
-      // 1. ส่งข้อมูลไปให้ Gemini AI คิดสคริปต์
-      const resultJson = await generateScriptWithAI(productName, productDetails, mode);
+      let finalDetails = productDetails;
+
+      // 2. ถ้าเป็น Pro และมีการใส่ URL ให้ดึงข้อมูลเว็บผ่าน Jina Reader
+      if (profile.tier === 'pro' && productUrl) {
+        try {
+          const response = await fetch(`https://r.jina.ai/${productUrl}`);
+          if (response.ok) {
+            const scrapedText = await response.text();
+            finalDetails += `\n\n[ข้อมูลเสริมจากการสแกน URL]:\n${scrapedText.substring(0, 3000)}`; // ตัดความยาวกัน Token ทะลุ
+          }
+        } catch (err) {
+          console.log("Failed to scrape URL", err);
+        }
+      }
+
+      // 3. ส่งข้อมูลไปให้ Gemini AI
+      const resultJson = await generateScriptWithAI({
+        productName,
+        productDetails: finalDetails,
+        pricePromo,
+        videoLength,
+        mode,
+        competitor: mode === 'เปรียบเทียบชัดๆ' ? competitor : '',
+        targetAudience: profile.tier !== 'free' ? targetAudience : ''
+      });
+      
       setGeneratedScript(resultJson);
 
-      // 2. บันทึกลงตู้เอกสาร Scripts (Supabase) เพื่อเก็บประวัติ
+      // 4. หักเครดิต 1 แต้ม
+      const newCredits = profile.credits - 1;
+      await supabase.from('profiles').update({ credits: newCredits }).eq('id', user.id);
+      setProfile({ ...profile, credits: newCredits }); // อัปเดต UI ทันที
+
+      // 5. บันทึกประวัติ
       await supabase.from('scripts').insert({
         user_id: user.id,
         product_name: productName,
-        product_details: productDetails,
+        product_details: finalDetails,
         mode: mode,
-        content: JSON.stringify(resultJson) // เก็บ JSON ทั้งก้อนไว้ในรูปข้อความ
+        content: JSON.stringify(resultJson)
       });
 
     } catch (err) {
@@ -65,7 +124,6 @@ function CreateScript() {
 
   const copyToClipboard = () => {
     if (!generatedScript) return;
-    // ดึงเฉพาะคำพูดออกมาต่อกันเพื่อให้ก๊อปปี้ง่าย
     const textToCopy = generatedScript.script_blocks
       .map(block => block.audio_spoken)
       .join('\n\n');
@@ -77,11 +135,13 @@ function CreateScript() {
     <div className="max-w-6xl mx-auto">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-slate-900 mb-2">สร้างสคริปต์รีวิวด้วย AI</h1>
-        <p className="text-slate-600">กรอกข้อมูลให้ครบถ้วน AI จะสร้างสคริปต์ที่โดนใจที่สุดพร้อมคำแนะนำภาพ</p>
+        <p className="text-slate-600">
+          เหลือโควต้าการสร้าง <strong>{profile ? profile.credits : '...'}</strong> สคริปต์
+        </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* ฝั่งซ้าย: ฟอร์มกรอกข้อมูล */}
+        {/* ฝั่งซ้าย: ฟอร์ม */}
         <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 h-fit">
           <form onSubmit={handleGenerate} className="space-y-6">
             {error && (
@@ -90,6 +150,23 @@ function CreateScript() {
               </div>
             )}
             
+            {/* ฟีเจอร์ Pro: ดูดข้อมูลจากลิงก์ */}
+            {profile?.tier === 'pro' && (
+              <div className="p-4 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg">
+                <label className="block text-sm font-bold text-amber-800 mb-2 flex items-center">
+                  <span className="mr-2">👑</span> แปะลิงก์สินค้า (Pro Feature)
+                </label>
+                <input
+                  type="url"
+                  value={productUrl}
+                  onChange={(e) => setProductUrl(e.target.value)}
+                  className="w-full px-4 py-2 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none"
+                  placeholder="https://shopee.co.th/..."
+                />
+                <p className="text-xs text-amber-700 mt-1">AI จะวิ่งไปอ่านรายละเอียดจากลิงก์นี้ให้โดยอัตโนมัติ!</p>
+              </div>
+            )}
+
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">ชื่อสินค้า</label>
               <input
@@ -103,16 +180,57 @@ function CreateScript() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">จุดเด่น / รายละเอียดสินค้า</label>
+              <label className="block text-sm font-medium text-slate-700 mb-2">จุดเด่นสินค้า (ถ้ามีลิงก์ข้างบนไม่ต้องพิมพ์ยาวก็ได้)</label>
               <textarea
-                required
-                rows="4"
+                required={!productUrl} // ถ้าไม่มี URL ต้องพิมพ์จุดเด่น
+                rows="3"
                 value={productDetails}
                 onChange={(e) => setProductDetails(e.target.value)}
                 className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                placeholder="เช่น คุมมัน 12 ชั่วโมง, เนื้อซึมไวใน 3 วิ, คนเป็นสิวใช้ได้"
+                placeholder="เช่น คุมมัน 12 ชั่วโมง, ซึมไวใน 3 วิ"
               ></textarea>
             </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">ราคา/โปรโมชั่น</label>
+                <input
+                  type="text"
+                  value={pricePromo}
+                  onChange={(e) => setPricePromo(e.target.value)}
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  placeholder="เช่น ลดเหลือ 99.- 1แถม1"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">ความยาวคลิป</label>
+                <select 
+                  value={videoLength}
+                  onChange={(e) => setVideoLength(e.target.value)}
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                >
+                  {lengths.map(l => (
+                    <option key={l.id} value={l.id}>{l.label}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* ฟีเจอร์ Plus/Pro: กลุ่มเป้าหมาย */}
+            {profile?.tier !== 'free' && (
+              <div className="p-4 bg-blue-50 border border-blue-100 rounded-lg">
+                <label className="block text-sm font-bold text-blue-800 mb-2 flex items-center">
+                  <span className="mr-2">🎯</span> กลุ่มเป้าหมาย (Plus/Pro Feature)
+                </label>
+                <input
+                  type="text"
+                  value={targetAudience}
+                  onChange={(e) => setTargetAudience(e.target.value)}
+                  className="w-full px-4 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  placeholder="เช่น พนักงานออฟฟิศปวดหลัง, แม่ลูกอ่อน"
+                />
+              </div>
+            )}
 
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-3">สไตล์การนำเสนอ (Mode)</label>
@@ -141,19 +259,34 @@ function CreateScript() {
               </div>
             </div>
 
+            {/* ช่องกรอกคู่แข่ง จะโผล่มาเมื่อเลือกโหมดเปรียบเทียบ */}
+            {mode === 'เปรียบเทียบชัดๆ' && (
+              <div className="animate-fade-in-up">
+                <label className="block text-sm font-medium text-slate-700 mb-2">คู่แข่ง / สินค้าที่นำมาเปรียบเทียบ</label>
+                <input
+                  type="text"
+                  required
+                  value={competitor}
+                  onChange={(e) => setCompetitor(e.target.value)}
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  placeholder="เช่น เซรั่มทั่วไปตามท้องตลาด"
+                />
+              </div>
+            )}
+
             <button
               type="submit"
-              disabled={isGenerating || !user}
+              disabled={isGenerating || !user || !profile}
               className={`w-full py-3 rounded-lg text-white font-medium transition-all ${
                 isGenerating ? 'bg-blue-400 cursor-wait' : 'bg-blue-600 hover:bg-blue-700'
               }`}
             >
-              {isGenerating ? '🚀 AI กำลังร่ายมนตร์สร้างสคริปต์...' : '✨ สร้างสคริปต์เลย'}
+              {isGenerating ? '🚀 AI กำลังสแกนข้อมูลและร่างสคริปต์...' : '✨ สร้างสคริปต์เลย (หัก 1 เครดิต)'}
             </button>
           </form>
         </div>
 
-        {/* ฝั่งขวา: พื้นที่แสดงผลลัพธ์ */}
+        {/* ฝั่งขวา: ผลลัพธ์ */}
         <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col">
           <h2 className="text-lg font-semibold text-slate-900 mb-4 flex items-center justify-between">
             <span className="flex items-center">
@@ -162,14 +295,14 @@ function CreateScript() {
             {generatedScript && (
               <button 
                 onClick={copyToClipboard}
-                className="text-sm bg-slate-100 hover:bg-slate-200 px-3 py-1 rounded-md transition-colors"
+                className="text-sm bg-slate-100 hover:bg-slate-200 px-3 py-1 rounded-md transition-colors font-medium"
               >
-                📋 ก๊อปปี้บทพูด
+                📋 ก๊อปปี้บทพูดไปใช้ได้เลย
               </button>
             )}
           </h2>
           
-          <div className="flex-1 bg-slate-50 rounded-lg border border-slate-200 p-4 overflow-y-auto max-h-[600px] relative">
+          <div className="flex-1 bg-slate-50 rounded-lg border border-slate-200 p-4 overflow-y-auto max-h-[700px] relative">
             {!generatedScript && !isGenerating && (
               <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-400">
                 <span className="text-4xl mb-2">🤖</span>
@@ -180,31 +313,32 @@ function CreateScript() {
             {isGenerating && (
               <div className="absolute inset-0 flex flex-col items-center justify-center text-blue-500">
                 <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500 mb-3"></div>
-                <p className="animate-pulse">กำลังวิเคราะห์จิตวิทยาการขาย...</p>
+                <p className="animate-pulse">กำลังประมวลผลจิตวิทยาการขาย...</p>
               </div>
             )}
 
             {generatedScript && (
               <div className="space-y-4">
                 <div className="bg-blue-100 text-blue-800 p-3 rounded-lg text-sm mb-4">
-                  <strong>กลุ่มเป้าหมาย:</strong> {generatedScript.metadata.target_audience_persona}
+                  <strong>หมวดหมู่:</strong> {generatedScript.metadata?.primary_psychological_trigger || 'General'}
                 </div>
                 
                 {generatedScript.script_blocks.map((block, index) => (
                   <div key={index} className="bg-white p-4 rounded-lg shadow-sm border border-slate-100">
                     <div className="flex justify-between items-center mb-2">
-                      <span className="text-xs font-bold bg-blue-100 text-blue-600 px-2 py-1 rounded">
-                        {block.timestamp} | {block.phase}
+                      <span className="text-xs font-bold bg-slate-200 text-slate-700 px-2 py-1 rounded uppercase">
+                        {block.phase || 'SCRIPT'}
                       </span>
-                      <span className="text-xs text-slate-400">อารมณ์: {block.subtext_emotion}</span>
+                      <span className="text-xs text-slate-400">{block.timestamp}</span>
                     </div>
                     
                     <p className="text-lg font-medium text-slate-900 mb-3 leading-relaxed">
                       "{block.audio_spoken}"
                     </p>
                     
-                    <div className="text-sm text-slate-500 bg-slate-50 p-2 rounded border-l-4 border-slate-300">
-                      <strong>🎥 ภาพประกอบ:</strong> {block.visual_direction}
+                    <div className="text-sm text-slate-600 bg-slate-50 p-3 rounded border-l-4 border-blue-400 flex flex-col">
+                      <strong className="mb-1">🎥 อิริยาบถ / ภาพประกอบ:</strong>
+                      <span>{block.visual_direction}</span>
                     </div>
                   </div>
                 ))}
