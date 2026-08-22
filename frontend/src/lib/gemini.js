@@ -54,18 +54,18 @@ export async function generateScriptWithAI(data) {
   const { productName, productDetails, pricePromo, videoLength, mode, competitor, targetAudience } = data;
 
   // จัดเรียงคำสั่งส่งให้ Gemini
-  const userPrompt = \`
+  const userPrompt = `
   ข้อมูลสำหรับการเขียนสคริปต์:
-  - ชื่อสินค้า: \${productName}
-  - รายละเอียด/จุดเด่น: \${productDetails}
-  \${pricePromo ? \`- ราคา/โปรโมชั่น: \${pricePromo}\` : ''}
-  \${targetAudience ? \`- กลุ่มเป้าหมาย: \${targetAudience}\` : ''}
-  \${competitor ? \`- คู่แข่ง/สิ่งที่เอามาเทียบ: \${competitor}\` : ''}
+  - ชื่อสินค้า: ${productName}
+  - รายละเอียด/จุดเด่น: ${productDetails}
+  ${pricePromo ? `- ราคา/โปรโมชั่น: ${pricePromo}` : ''}
+  ${targetAudience ? `- กลุ่มเป้าหมาย: ${targetAudience}` : ''}
+  ${competitor ? `- คู่แข่ง/สิ่งที่เอามาเทียบ: ${competitor}` : ''}
   
   คำสั่งรูปแบบ:
-  - Mode การขาย: \${mode}
-  - ความยาวคลิป: \${videoLength}
-  \`;
+  - Mode การขาย: ${mode}
+  - ความยาวคลิป: ${videoLength}
+  `;
 
   try {
     // กฎข้อ 2: ต้องใช้ gemini-3.6-flash เท่านั้น
