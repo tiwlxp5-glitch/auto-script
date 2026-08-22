@@ -191,28 +191,37 @@ function CreateScript() {
               ></textarea>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">ราคา/โปรโมชั่น</label>
-                <input
-                  type="text"
-                  value={pricePromo}
-                  onChange={(e) => setPricePromo(e.target.value)}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                  placeholder="เช่น ลดเหลือ 99.- 1แถม1"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">ความยาวคลิป</label>
-                <select 
-                  value={videoLength}
-                  onChange={(e) => setVideoLength(e.target.value)}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                >
-                  {lengths.map(l => (
-                    <option key={l.id} value={l.id}>{l.label}</option>
-                  ))}
-                </select>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">ราคา/โปรโมชั่น</label>
+              <input
+                type="text"
+                value={pricePromo}
+                onChange={(e) => setPricePromo(e.target.value)}
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                placeholder="เช่น ลดเหลือ 99.- 1แถม1"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-3">ความยาวคลิป (Video Length)</label>
+              <div className="grid grid-cols-3 gap-2 bg-slate-100 p-1.5 rounded-xl">
+                {lengths.map((l) => (
+                  <button
+                    key={l.id}
+                    type="button"
+                    onClick={() => setVideoLength(l.id)}
+                    className={`flex flex-col items-center justify-center py-2 px-1 rounded-lg text-sm font-medium transition-all ${
+                      videoLength === l.id 
+                        ? 'bg-white text-blue-600 shadow-sm ring-1 ring-slate-200 scale-[1.02]' 
+                        : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
+                    }`}
+                  >
+                    <span className="block">{l.label.split(' ')[0]} {l.label.split(' ')[1]}</span>
+                    <span className={`text-xs mt-0.5 ${videoLength === l.id ? 'text-blue-400' : 'text-slate-400'}`}>
+                      {l.label.split(' ').slice(2).join(' ')}
+                    </span>
+                  </button>
+                ))}
               </div>
             </div>
 
