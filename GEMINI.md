@@ -8,3 +8,6 @@ When providing code blocks or technical commands to the user, the agent MUST ALW
 
 ## 2. Gemini Model Version Rule
 When writing code that integrates with the Google Gemini API (e.g., using `@google/genai`), ALWAYS use the `gemini-3.6-flash` model (or the explicitly required latest version). Do NOT use `gemini-2.5-flash` or older models, as they are deprecated for new users and will result in a 404 "NOT_FOUND" / "UNAUTHENTICATED" API error.
+
+## 3. Proactive Compliance & Security Warning Rule
+The agent MUST proactively warn the user about any critical platform rules, Terms of Service (ToS) violations (e.g., using Vercel free tier for commercial SaaS), licensing issues, or data privacy concerns (e.g., PDPA, GDPR, safeguarding personal data). If a requested action or architectural choice poses a compliance or security risk, the agent must alert the user immediately and suggest a safer, compliant alternative, rather than just executing the request blindly.
