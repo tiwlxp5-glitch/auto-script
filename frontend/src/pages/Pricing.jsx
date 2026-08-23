@@ -65,8 +65,8 @@ function Pricing() {
     if (currentTier === tierName) {
       if (isFree || credits > 0) {
         return (
-          <button disabled className="mt-8 block w-full bg-slate-100 text-slate-500 py-3 px-4 rounded-xl font-bold text-center cursor-not-allowed border border-slate-300">
-            กำลังใช้งาน (เหลือ {credits} เครดิต)
+          <button disabled className="mt-8 block w-full bg-slate-100 text-slate-500 py-3 px-2 sm:px-4 rounded-xl font-bold text-center cursor-not-allowed border border-slate-300 whitespace-nowrap text-sm sm:text-base">
+            กำลังใช้งาน ({credits} เครดิต)
           </button>
         );
       } else {
@@ -218,8 +218,8 @@ function Pricing() {
               <span className="text-slate-300">ระบุกลุ่มเป้าหมาย (เพศ/อายุ)</span>
             </li>
             <li className="flex items-start">
-              <span className="text-amber-400 mr-3">🔥</span>
-              <span className="text-white font-bold bg-slate-800 px-2 py-0.5 rounded">แปะลิงก์สินค้า (AI ดูดข้อมูล)</span>
+              <span className="text-amber-400 mr-3 shrink-0">🔥</span>
+              <span className="text-white font-bold bg-slate-800 px-2 py-0.5 rounded whitespace-nowrap text-sm sm:text-base">แปะลิงก์ (AI ดูดข้อมูล)</span>
             </li>
             <li className="flex items-start">
               <span className="text-amber-400 mr-3">🧠</span>
