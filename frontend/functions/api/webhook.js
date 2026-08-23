@@ -55,7 +55,7 @@ export async function onRequestPost({ request, env }) {
         const newCredits = currentCredits + addCredits;
 
         // อัปเดตหรือสร้างตู้เอกสาร (Supabase) ด้วย upsert
-        await supabase
+        const { error: upsertError } = await supabase
           .from('profiles')
           .upsert({ 
             id: userId,
@@ -63,6 +63,11 @@ export async function onRequestPost({ request, env }) {
             credits: newCredits,
             stripe_customer_id: session.customer 
           });
+
+        if (upsertError) {
+          console.error("Supabase upsert error:", upsertError);
+          return new Response(`Database Error: ${upsertError.message}`, { status: 500 });
+        }
       }
     } 
     else if (event.type === 'invoice.payment_succeeded') {
