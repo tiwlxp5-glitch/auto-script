@@ -170,13 +170,30 @@ function CreateScript() {
           <div className="flex items-center space-x-3 mb-2">
             <h1 className="text-3xl font-bold text-slate-900">สร้างสคริปต์รีวิวด้วย AI</h1>
             {profile && (
-              <span className={`px-3 py-1 text-sm font-bold uppercase rounded-full ${
-                profile.tier === 'pro' ? 'bg-gradient-to-r from-amber-400 to-orange-500 text-white' :
-                profile.tier === 'plus' ? 'bg-blue-500 text-white' :
-                'bg-slate-200 text-slate-700'
+              <div className={`flex items-center space-x-1.5 px-3 py-1 text-xs font-bold uppercase tracking-wide rounded-full border shadow-sm ${
+                profile.tier === 'pro' 
+                  ? 'bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200 text-amber-700' :
+                profile.tier === 'plus' 
+                  ? 'bg-blue-50 border-blue-200 text-blue-700' :
+                'bg-slate-50 border-slate-200 text-slate-600'
               }`}>
-                {profile.tier === 'pro' ? '💎 Pro Plan' : profile.tier === 'plus' ? '✨ Plus Plan' : '🆓 Free Plan'}
-              </span>
+                {profile.tier === 'pro' ? (
+                  <>
+                    <svg className="w-3.5 h-3.5 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                    <span>Pro Plan</span>
+                  </>
+                ) : profile.tier === 'plus' ? (
+                  <>
+                    <svg className="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    <span>Plus Plan</span>
+                  </>
+                ) : (
+                  <>
+                    <div className="w-2 h-2 rounded-full bg-slate-400"></div>
+                    <span>Free Plan</span>
+                  </>
+                )}
+              </div>
             )}
           </div>
           <p className="text-slate-600">
@@ -344,90 +361,113 @@ function CreateScript() {
           </form>
         </div>
 
-        {/* ฝั่งขวา: ผลลัพธ์ */}
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col">
-          <h2 className="text-lg font-semibold text-slate-900 mb-4 flex items-center justify-between">
-            <span className="flex items-center">
-              <span className="text-blue-500 mr-2">🎯</span> ผลลัพธ์สคริปต์ของคุณ
-            </span>
-            {generatedScript && (
-              <button 
-                onClick={copyToClipboard}
-                className="text-sm bg-slate-100 hover:bg-slate-200 px-3 py-1 rounded-md transition-colors font-medium"
-              >
-                📋 ก๊อปปี้บทพูดไปใช้ได้เลย
-              </button>
-            )}
-          </h2>
-          
-          <div className="flex-1 bg-slate-50 rounded-lg border border-slate-200 p-4 overflow-y-auto max-h-[700px] relative">
-            {!generatedScript && !isGenerating && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-400">
-                <span className="text-4xl mb-2">🤖</span>
-                <p>สคริปต์ขั้นเทพของคุณจะแสดงที่นี่</p>
+        {/* ฝั่งขวา: ผลลัพธ์ (Premium Teleprompter Cards) */}
+        <div className="flex flex-col h-full">
+          {!generatedScript && !isGenerating ? (
+            <div className="flex-1 bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 border-dashed rounded-2xl flex flex-col items-center justify-center p-12 text-center h-full min-h-[400px]">
+              <div className="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-4">
+                <span className="text-3xl">✨</span>
               </div>
-            )}
-            
-            {isGenerating && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-blue-500">
-                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500 mb-3"></div>
-                <p className="animate-pulse">กำลังประมวลผลจิตวิทยาการขาย...</p>
-              </div>
-            )}
-
-            {generatedScript && (
-              <div className="space-y-4">
-                <div className="bg-blue-100 text-blue-800 p-3 rounded-lg text-sm mb-4">
-                  <strong>หมวดหมู่:</strong> {generatedScript.metadata?.primary_psychological_trigger || 'General'}
+              <h3 className="text-lg font-bold text-slate-800 mb-2">พร้อมสร้างสคริปต์ไวรัล</h3>
+              <p className="text-slate-500 max-w-sm">กรอกข้อมูลด้านซ้ายแล้วกดสร้างสคริปต์ AI จะเขียนสคริปต์ป้ายยาให้คุณภายใน 5 วินาที</p>
+            </div>
+          ) : isGenerating ? (
+            <div className="flex-1 bg-white border border-slate-200 rounded-2xl flex flex-col items-center justify-center p-12 min-h-[400px] shadow-sm">
+              <div className="animate-spin text-4xl mb-4 text-blue-600">🌀</div>
+              <p className="text-lg font-medium text-slate-700 animate-pulse">กำลังสวมวิญญาณแม่ค้าตัวท็อป...</p>
+            </div>
+          ) : (
+            <div className="bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden flex flex-col shadow-sm h-full">
+              {/* Header */}
+              <div className="bg-white p-4 border-b border-slate-200 flex justify-between items-center sticky top-0 z-10">
+                <div>
+                  <h2 className="font-bold text-slate-800 flex items-center gap-2">
+                    <span className="text-blue-600">📝</span> สคริปต์พร้อมถ่าย
+                  </h2>
+                  <p className="text-xs text-slate-500 mt-1">
+                    ความยาวประมาณ: {generatedScript.metadata?.estimated_duration_seconds} วินาที
+                  </p>
                 </div>
-                
-                {bannedWarnings.length > 0 && (
-                  <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-md mb-4 shadow-sm animate-fade-in-up">
-                    <div className="flex items-start">
-                      <div className="flex-shrink-0">
-                        <span className="text-red-500 text-xl">⚠️</span>
+                <button
+                  onClick={copyToClipboard}
+                  className="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-xl text-sm font-medium transition-all shadow-sm active:scale-95 flex items-center gap-2"
+                >
+                  <span>📋</span> คัดลอกทั้งหมด
+                </button>
+              </div>
+
+              {/* Banned Words Warning */}
+              {bannedWarnings && bannedWarnings.length > 0 && (
+                <div className="m-4 p-4 bg-red-50 border border-red-200 rounded-xl">
+                  <h4 className="font-bold text-red-700 flex items-center gap-2 mb-2">
+                    <span>⚠️</span> ระวังคำสุ่มเสี่ยงโดนแบน (ปรับแก้ก่อนถ่าย)
+                  </h4>
+                  <ul className="list-disc list-inside text-sm text-red-600 space-y-1">
+                    {bannedWarnings.map((w, idx) => (
+                      <li key={idx}><strong>{w.word}</strong>: {w.reason}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Script Cards (Teleprompter) */}
+              <div className="p-4 space-y-4 overflow-y-auto flex-1 max-h-[700px]">
+                {generatedScript.script_blocks.map((block, index) => {
+                  let phaseIcon = "💬";
+                  let phaseColor = "bg-slate-100 text-slate-600";
+                  if (block.phase === "Hook") { phaseIcon = "🪝"; phaseColor = "bg-rose-100 text-rose-700"; }
+                  if (block.phase === "Agitation") { phaseIcon = "🔥"; phaseColor = "bg-orange-100 text-orange-700"; }
+                  if (block.phase === "Reveal") { phaseIcon = "✨"; phaseColor = "bg-blue-100 text-blue-700"; }
+                  if (block.phase === "FOMO") { phaseIcon = "⏰"; phaseColor = "bg-amber-100 text-amber-700"; }
+                  if (block.phase === "CTA") { phaseIcon = "🛒"; phaseColor = "bg-emerald-100 text-emerald-700"; }
+
+                  return (
+                    <div key={index} className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 relative group transition-all hover:shadow-md">
+                      <div className="absolute -left-3 top-5 w-6 h-6 bg-slate-800 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-sm">
+                        {index + 1}
                       </div>
-                      <div className="ml-3">
-                        <h3 className="text-sm font-bold text-red-800">
-                          แจ้งเตือน: พบคำเสี่ยงโดนแบนในสคริปต์นี้
-                        </h3>
-                        <div className="mt-2 text-sm text-red-700">
-                          <ul className="list-disc pl-5 space-y-1">
-                            {bannedWarnings.map((w, idx) => (
-                              <li key={idx}>
-                                <strong>"{w.word}"</strong>: {w.reason}
-                              </li>
-                            ))}
-                          </ul>
+                      
+                      <div className="flex justify-between items-start mb-3 ml-2">
+                        <div className="flex items-center gap-2">
+                          <span className={`px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider ${phaseColor}`}>
+                            {phaseIcon} {block.phase}
+                          </span>
+                          <span className="text-xs font-medium text-slate-400 bg-slate-50 px-2 py-1 rounded-md border border-slate-100">
+                            ⏱️ {block.timestamp}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="ml-2">
+                        <p 
+                          className="text-xl font-medium text-slate-800 leading-relaxed mb-4"
+                          dangerouslySetInnerHTML={{ __html: `"${highlightBannedWords(block.audio_spoken, bannedWarnings)}"` }}
+                        />
+                        
+                        <div className="flex flex-col sm:flex-row gap-3 pt-3 border-t border-slate-50">
+                          <div className="flex-1 bg-blue-50/50 rounded-xl p-3 flex items-start gap-2 border border-blue-100/50">
+                            <span className="text-sm shrink-0">🎬</span>
+                            <div className="text-xs text-slate-600">
+                              <strong className="block text-slate-700 mb-0.5">ภาพ/การกระทำ:</strong>
+                              {block.visual_direction}
+                            </div>
+                          </div>
+                          
+                          <div className="flex-1 bg-purple-50/50 rounded-xl p-3 flex items-start gap-2 border border-purple-100/50">
+                            <span className="text-sm shrink-0">🎭</span>
+                            <div className="text-xs text-slate-600">
+                              <strong className="block text-slate-700 mb-0.5">อารมณ์:</strong>
+                              {block.subtext_emotion}
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                )}
-                
-                {generatedScript.script_blocks.map((block, index) => (
-                  <div key={index} className="bg-white p-4 rounded-lg shadow-sm border border-slate-100">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-xs font-bold bg-slate-200 text-slate-700 px-2 py-1 rounded uppercase">
-                        {block.phase || 'SCRIPT'}
-                      </span>
-                      <span className="text-xs text-slate-400">{block.timestamp}</span>
-                    </div>
-                    
-                    <p 
-                      className="text-lg font-medium text-slate-900 mb-3 leading-relaxed"
-                      dangerouslySetInnerHTML={{ __html: `"${highlightBannedWords(block.audio_spoken, bannedWarnings)}"` }}
-                    />
-                    
-                    <div className="text-sm text-slate-600 bg-slate-50 p-3 rounded border-l-4 border-blue-400 flex flex-col">
-                      <strong className="mb-1">🎥 อิริยาบถ / ภาพประกอบ:</strong>
-                      <span>{block.visual_direction}</span>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

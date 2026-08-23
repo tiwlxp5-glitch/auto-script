@@ -87,16 +87,24 @@ function History() {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
           />
-          <select 
-            value={filterMode} 
-            onChange={(e) => setFilterMode(e.target.value)}
-            className="px-4 py-2 border border-slate-300 rounded-lg outline-none bg-white"
-          >
-            <option value="all">ทุกโหมด</option>
-            <option value="ป้ายยาตรงๆ">ป้ายยาตรงๆ</option>
-            <option value="ขยี้ปัญหา">ขยี้ปัญหา</option>
-            <option value="เปรียบเทียบชัดๆ">เปรียบเทียบชัดๆ</option>
-          </select>
+          <div className="flex bg-slate-100 p-1 rounded-lg overflow-x-auto hide-scrollbar shrink-0">
+            {[
+              { id: 'all', label: 'ทุกโหมด' },
+              { id: 'ป้ายยาตรงๆ', label: 'ป้ายยาตรงๆ' },
+              { id: 'ขยี้ปัญหา', label: 'ขยี้ปัญหา' },
+              { id: 'เปรียบเทียบชัดๆ', label: 'เปรียบเทียบชัดๆ' }
+            ].map(m => (
+              <button
+                key={m.id}
+                onClick={() => setFilterMode(m.id)}
+                className={`whitespace-nowrap px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
+                  filterMode === m.id ? 'bg-white text-blue-700 shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/50'
+                }`}
+              >
+                {m.label}
+              </button>
+            ))}
+          </div>
           <button 
             onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
             className={`px-4 py-2 rounded-lg font-medium transition-colors border ${
