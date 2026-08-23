@@ -25,7 +25,17 @@ function Navbar() {
       }
     });
 
-    return () => subscription.unsubscribe();
+    const handleProfileUpdate = () => {
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session?.user) fetchProfile(session.user.id);
+      });
+    };
+    window.addEventListener('profileUpdated', handleProfileUpdate);
+
+    return () => {
+      subscription.unsubscribe();
+      window.removeEventListener('profileUpdated', handleProfileUpdate);
+    };
   }, []);
 
   const fetchProfile = async (userId) => {

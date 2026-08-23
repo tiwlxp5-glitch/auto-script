@@ -144,6 +144,7 @@ function CreateScript() {
       
       // อัปเดตเครดิตในหน้าเว็บให้ตรงกับที่ Backend หักไป
       setProfile({ ...profile, credits: newCredits });
+      window.dispatchEvent(new Event('profileUpdated'));
 
     } catch (err) {
       console.error(err);

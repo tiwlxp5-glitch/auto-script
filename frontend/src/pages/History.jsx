@@ -139,19 +139,32 @@ function History() {
               
               <div className="p-5 flex-1 bg-slate-50">
                 <p className="text-sm text-slate-600 line-clamp-4 italic">
-                  "{script.generated_script?.script_blocks?.[0]?.audio_spoken || 'ไม่มีข้อมูล'}"
+                  "{(() => {
+                    try {
+                      const parsed = typeof script.content === 'string' ? JSON.parse(script.content) : script.content;
+                      return parsed?.script_blocks?.[0]?.audio_spoken || 'ไม่มีข้อมูล';
+                    } catch (e) {
+                      return 'ไม่มีข้อมูล';
+                    }
+                  })()}"
                 </p>
               </div>
               
               <div className="p-4 bg-white border-t border-slate-100 flex justify-end space-x-2">
                 <button 
-                  onClick={() => exportToText(script.generated_script, script.product_name)}
+                  onClick={() => {
+                    const parsed = typeof script.content === 'string' ? JSON.parse(script.content) : script.content;
+                    exportToText(parsed, script.product_name)
+                  }}
                   className="text-sm px-3 py-2 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-lg font-medium transition-colors"
                 >
                   📄 โหลด TXT
                 </button>
                 <button 
-                  onClick={() => copyToClipboard(script.generated_script)}
+                  onClick={() => {
+                    const parsed = typeof script.content === 'string' ? JSON.parse(script.content) : script.content;
+                    copyToClipboard(parsed)
+                  }}
                   className="text-sm px-3 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg font-medium transition-colors"
                 >
                   📋 คัดลอก
