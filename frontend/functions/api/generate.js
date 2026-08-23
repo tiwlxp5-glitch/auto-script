@@ -101,8 +101,7 @@ export async function onRequestPost(context) {
     // 5. เรียกใช้ Google Gemini (Fallback fallback safe for both env names)
     const apiKey = env.GEMINI_API_KEY || env.VITE_GEMINI_API_KEY;
     if (!apiKey) {
-      const availableKeys = Object.keys(env).join(', ');
-      return new Response(JSON.stringify({ error: `API Key not configured. Available env keys: ${availableKeys}` }), { status: 500 });
+      return new Response(JSON.stringify({ error: "API Key not configured" }), { status: 500 });
     }
 
     const ai = new GoogleGenAI({ apiKey: apiKey });
