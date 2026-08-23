@@ -35,11 +35,11 @@ function Home() {
           <div className="flex-1 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-1.5 bg-slate-300"></div>
             <div className="flex items-center gap-2 mb-6">
-              <span className="text-slate-400">
-                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 17v1a3 3 0 106 0v-1M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              <span className="text-slate-500 shrink-0">
+                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8V4H8"></path><rect width="16" height="12" x="4" y="8" rx="2"></rect><path d="M2 14h2"></path><path d="M20 14h2"></path><path d="M15 13v2"></path><path d="M9 13v2"></path></svg>
               </span>
-              <h3 className="font-bold text-slate-700 text-lg">AI ธรรมดาทั่วไป</h3>
-              <span className="ml-auto text-xs font-bold bg-slate-100 text-slate-500 px-2 py-1 rounded">ธรรมดา / น่าเบื่อ</span>
+              <h3 className="font-bold text-slate-700 text-base sm:text-lg leading-tight">AI ธรรมดาทั่วไป</h3>
+              <span className="ml-auto text-[10px] sm:text-xs font-bold bg-slate-100 text-slate-500 px-2 py-1 rounded whitespace-nowrap shrink-0">ธรรมดา / น่าเบื่อ</span>
             </div>
             <div className="bg-slate-50 p-4 rounded-xl text-slate-600 italic leading-relaxed text-sm">
               "สวัสดีค่ะทุกคน วันนี้จะมาแนะนำเซรั่มลดสิวหน้าใสตัวใหม่ล่าสุด ที่จะช่วยให้สิวของคุณยุบภายใน 3 วัน แถมหน้ายังไม่แห้งลอกอีกด้วยนะคะ เนื้อเซรั่มซึมไวมาก ทาแล้วสบายผิวสุดๆ สนใจสามารถกดสั่งซื้อที่ตะกร้าด้านล่างได้เลยค่ะ รีบหน่อยนะคะเดี๋ยวของหมด ขอบคุณค่ะ"
@@ -62,11 +62,11 @@ function Home() {
           <div className="flex-1 bg-white p-6 rounded-2xl border border-blue-200 shadow-md relative overflow-hidden ring-4 ring-blue-50">
             <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-500 to-purple-500"></div>
             <div className="flex items-center gap-2 mb-6">
-              <span className="text-blue-500">
+              <span className="text-blue-500 shrink-0">
                 <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
               </span>
-              <h3 className="font-bold text-blue-700 text-lg">Auto Script V2</h3>
-              <span className="ml-auto text-xs font-bold bg-blue-100 text-blue-700 px-2 py-1 rounded uppercase tracking-wide">พร้อมถ่ายทำ 100%</span>
+              <h3 className="font-bold text-blue-700 text-base sm:text-lg leading-tight whitespace-nowrap">Auto Script V2</h3>
+              <span className="ml-auto text-[10px] sm:text-xs font-bold bg-blue-100 text-blue-700 px-2 py-1 rounded uppercase tracking-wide whitespace-nowrap shrink-0">พร้อมถ่ายทำ 100%</span>
             </div>
 
             <div className="space-y-4">
