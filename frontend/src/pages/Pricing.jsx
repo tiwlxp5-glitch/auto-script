@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 function Pricing() {
   const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
   const navigate = useNavigate();
 
   // ลิงก์จาก Stripe ที่ลูกค้าให้มา (แบบ One-Time Payment)
@@ -11,8 +12,18 @@ function Pricing() {
   const PRO_LINK = "https://buy.stripe.com/test_5kQdRb2VF63X5TnbUg0ZW02";
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      const currentUser = session?.user ?? null;
+      setUser(currentUser);
+      
+      if (currentUser) {
+        const { data } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', currentUser.id)
+          .single();
+        if (data) setProfile(data);
+      }
     });
   }, []);
 
@@ -25,6 +36,64 @@ function Pricing() {
     // แนบ user.id ไปกับลิงก์ Stripe เพื่อให้ Webhook รู้ว่าใครเป็นคนจ่ายเงิน
     const checkoutUrl = `${baseLink}?client_reference_id=${user.id}`;
     window.location.href = checkoutUrl;
+  };
+
+  const renderButton = (tierName, link, defaultClasses, normalText) => {
+    const isFree = tierName === 'free';
+    
+    // 1. ยังไม่ล็อกอิน
+    if (!user) {
+      if (isFree) {
+        return (
+          <button onClick={() => navigate('/register')} className="mt-8 block w-full bg-slate-100 text-slate-900 hover:bg-slate-200 py-3 px-4 rounded-xl font-bold text-center transition-colors">
+            สมัครสมาชิกฟรี
+          </button>
+        );
+      }
+      return (
+        <button onClick={() => handleCheckout(link)} className={defaultClasses}>
+          {normalText}
+        </button>
+      );
+    }
+
+    // 2. ล็อกอินแล้ว ดึงข้อมูลแพ็กเกจ
+    const currentTier = profile?.tier || 'free';
+    const credits = profile?.credits || 0;
+
+    // ถ้าเป็นแพ็กเกจที่ใช้อยู่ปัจจุบัน
+    if (currentTier === tierName) {
+      if (isFree || credits > 0) {
+        return (
+          <button disabled className="mt-8 block w-full bg-slate-100 text-slate-500 py-3 px-4 rounded-xl font-bold text-center cursor-not-allowed border border-slate-300">
+            กำลังใช้งาน (เหลือ {credits} เครดิต)
+          </button>
+        );
+      } else {
+        // เครดิตหมด ให้เติมเงินได้
+        return (
+          <button onClick={() => handleCheckout(link)} className={defaultClasses}>
+            เติมโควต้าแพ็กเกจนี้
+          </button>
+        );
+      }
+    }
+
+    // ถ้าเป็นแพ็กเกจฟรี แต่ใช้ Plus/Pro อยู่
+    if (isFree) {
+      return (
+        <button disabled className="mt-8 block w-full bg-slate-100 text-slate-400 py-3 px-4 rounded-xl font-bold text-center cursor-not-allowed">
+          แพ็กเกจเริ่มต้น
+        </button>
+      );
+    }
+
+    // กรณีปกติ (กดอัปเกรด/ดาวน์เกรด ไปแพ็กอื่น)
+    return (
+      <button onClick={() => handleCheckout(link)} className={defaultClasses}>
+        {normalText}
+      </button>
+    );
   };
 
   return (
@@ -64,15 +133,7 @@ function Pricing() {
               <span className="text-slate-400 line-through">แปะลิงก์สินค้า (AI ดูดข้อมูล)</span>
             </li>
           </ul>
-          {!user ? (
-            <button onClick={() => navigate('/register')} className="mt-8 block w-full bg-slate-100 text-slate-900 hover:bg-slate-200 py-3 px-4 rounded-xl font-bold text-center transition-colors">
-              สมัครสมาชิกฟรี
-            </button>
-          ) : (
-            <button disabled className="mt-8 block w-full bg-slate-100 text-slate-400 py-3 px-4 rounded-xl font-bold text-center cursor-not-allowed">
-              แพ็กเกจปัจจุบันของคุณ
-            </button>
-          )}
+          {renderButton('free', null, '', '')}
         </div>
 
         {/* Tier 2: Plus */}
@@ -106,12 +167,12 @@ function Pricing() {
               <span className="text-slate-400 line-through">แปะลิงก์สินค้า (AI ดูดข้อมูล)</span>
             </li>
           </ul>
-          <button 
-            onClick={() => handleCheckout(PLUS_LINK)} 
-            className="mt-8 block w-full bg-blue-600 text-white hover:bg-blue-700 py-3 px-4 rounded-xl font-bold text-center transition-all shadow-lg hover:shadow-blue-500/30"
-          >
-            อัปเกรดเป็น Plus
-          </button>
+          {renderButton(
+            'plus', 
+            PLUS_LINK, 
+            "mt-8 block w-full bg-blue-600 text-white hover:bg-blue-700 py-3 px-4 rounded-xl font-bold text-center transition-all shadow-lg hover:shadow-blue-500/30",
+            "อัปเกรดเป็น Plus"
+          )}
         </div>
 
         {/* Tier 3: Pro */}
@@ -149,12 +210,12 @@ function Pricing() {
               <span className="text-slate-300">ใช้สมองกล AI จิตวิทยาขั้นสูงสุด</span>
             </li>
           </ul>
-          <button 
-            onClick={() => handleCheckout(PRO_LINK)} 
-            className="mt-8 block w-full bg-gradient-to-r from-amber-400 to-orange-500 text-slate-900 hover:from-amber-500 hover:to-orange-600 py-3 px-4 rounded-xl font-extrabold text-center transition-all shadow-lg hover:shadow-orange-500/20"
-          >
-            อัปเกรดเป็น Pro
-          </button>
+          {renderButton(
+            'pro', 
+            PRO_LINK, 
+            "mt-8 block w-full bg-gradient-to-r from-amber-400 to-orange-500 text-slate-900 hover:from-amber-500 hover:to-orange-600 py-3 px-4 rounded-xl font-extrabold text-center transition-all shadow-lg hover:shadow-orange-500/20",
+            "อัปเกรดเป็น Pro"
+          )}
         </div>
       </div>
     </div>
