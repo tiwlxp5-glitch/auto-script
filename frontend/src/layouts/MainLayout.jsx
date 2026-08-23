@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 
 function MainLayout() {
@@ -9,6 +9,15 @@ function MainLayout() {
         {/* ตรงนี้จะถูกแทนที่ด้วยหน้า (Pages) ต่างๆ อัตโนมัติ */}
         <Outlet />
       </main>
+
+      {/* Footer */}
+      <footer className="w-full text-center py-6 text-slate-400 text-sm border-t border-slate-200 mt-auto bg-white">
+        <p className="mb-2">© 2026 Auto Script. All rights reserved.</p>
+        <div className="flex justify-center gap-4">
+          <Link to="/legal" className="hover:text-blue-500 transition-colors">เงื่อนไขการให้บริการ (Terms)</Link>
+          <Link to="/legal" className="hover:text-blue-500 transition-colors">นโยบายความเป็นส่วนตัว (PDPA)</Link>
+        </div>
+      </footer>
     </div>
   );
 }

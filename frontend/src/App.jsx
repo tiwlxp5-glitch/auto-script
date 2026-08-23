@@ -7,6 +7,7 @@ import Register from './pages/Register';
 import Pricing from './pages/Pricing';
 import Settings from './pages/Settings';
 import History from './pages/History';
+import Legal from './pages/Legal';
 
 function App() {
   return (
@@ -30,6 +31,9 @@ function App() {
         {/* หน้าเข้าสู่ระบบและสมัครสมาชิก */}
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
+        
+        {/* หน้านโยบายเงื่อนไข (Legal) */}
+        <Route path="legal" element={<Legal />} />
       </Route>
     </Routes>
   );
