@@ -6,9 +6,9 @@ function Pricing() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  // ลิงก์จาก Stripe ที่ลูกค้าให้มา
-  const PLUS_LINK = "https://buy.stripe.com/test_8x2aEZ3ZJ3VPftXf6s0ZW00";
-  const PRO_LINK = "https://buy.stripe.com/test_8x2bJ33ZJfExa9D6zW0ZW01";
+  // ลิงก์จาก Stripe ที่ลูกค้าให้มา (แบบ One-Time Payment)
+  const PLUS_LINK = "https://buy.stripe.com/test_5kQdRb2VF63X5TnbUg";
+  const PRO_LINK = "https://buy.stripe.com/test_5kQ3cxbsb0JD6Xr0by";
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -34,7 +34,7 @@ function Pricing() {
           เลือกแพ็กเกจที่เหมาะกับยอดขายของคุณ
         </h2>
         <p className="mt-4 text-xl text-slate-500">
-          อัปเกรดเพื่อปลดล็อกฟีเจอร์ AI ระดับจิตวิทยาการตลาด และโควต้าที่มากขึ้น
+          จ่ายครั้งเดียวรับโควต้าเต็มๆ ไม่มีตัดบัตรรายเดือน (รองรับสแกน QR Code)
         </p>
       </div>
 
@@ -45,12 +45,11 @@ function Pricing() {
           <p className="mt-4 text-slate-500 flex-1">สายฟรีทดลองใช้งาน เหมาะสำหรับเริ่มต้น</p>
           <p className="mt-8">
             <span className="text-4xl font-extrabold text-slate-900">฿0</span>
-            <span className="text-base font-medium text-slate-500">/สัปดาห์</span>
           </p>
           <ul className="mt-6 space-y-4 flex-1">
             <li className="flex items-start">
               <span className="text-green-500 mr-3">✓</span>
-              <span className="text-slate-700">3 สคริปต์ / สัปดาห์</span>
+              <span className="text-slate-700">3 สคริปต์ (ฟรีเริ่มต้น)</span>
             </li>
             <li className="flex items-start">
               <span className="text-green-500 mr-3">✓</span>
@@ -87,12 +86,12 @@ function Pricing() {
           <p className="mt-4 text-slate-500 flex-1">สำหรับพ่อค้าแม่ค้าพาร์ทไทม์ ปลดล็อกฟีเจอร์คุ้มค่า</p>
           <p className="mt-8">
             <span className="text-4xl font-extrabold text-slate-900">฿99</span>
-            <span className="text-base font-medium text-slate-500">/เดือน</span>
+            <span className="text-base font-medium text-slate-500"> /ครั้ง</span>
           </p>
           <ul className="mt-6 space-y-4 flex-1">
             <li className="flex items-start">
               <span className="text-blue-500 mr-3">✓</span>
-              <span className="text-slate-900 font-medium">60 สคริปต์ / เดือน</span>
+              <span className="text-slate-900 font-medium">ได้โควต้า 60 สคริปต์</span>
             </li>
             <li className="flex items-start">
               <span className="text-blue-500 mr-3">✓</span>
@@ -126,12 +125,12 @@ function Pricing() {
           <p className="mt-4 text-slate-400 flex-1">สายเอเจนซี่ อินฟลูเอนเซอร์มืออาชีพ จัดเต็มทุกฟีเจอร์</p>
           <p className="mt-8">
             <span className="text-4xl font-extrabold text-white">฿199</span>
-            <span className="text-base font-medium text-slate-400">/เดือน</span>
+            <span className="text-base font-medium text-slate-400"> /ครั้ง</span>
           </p>
           <ul className="mt-6 space-y-4 flex-1">
             <li className="flex items-start">
               <span className="text-amber-400 mr-3">✓</span>
-              <span className="text-white font-medium">150 สคริปต์ / เดือน</span>
+              <span className="text-white font-medium">ได้โควต้า 150 สคริปต์</span>
             </li>
             <li className="flex items-start">
               <span className="text-amber-400 mr-3">✓</span>
