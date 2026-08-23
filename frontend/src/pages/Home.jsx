@@ -22,9 +22,9 @@ function Home() {
       {/* Comparison Section */}
       <div className="mt-24 mb-16 w-full max-w-6xl mx-auto px-4 text-left">
         <div className="text-center mb-12">
-          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-4 px-2">
-            ทำไมสคริปต์ของเราถึง <br className="sm:hidden" />
-            <span className="text-blue-600">"ปิดการขายได้ดีกว่า"?</span>
+          <h2 className="text-[1.2rem] xs:text-xl sm:text-3xl font-bold text-slate-900 mb-4 px-1 leading-snug">
+            <span className="whitespace-nowrap">ทำไมสคริปต์ของเราถึง</span> <br className="sm:hidden" />
+            <span className="text-blue-600 whitespace-nowrap">"ปิดการขายได้ดีกว่า"?</span>
           </h2>
           <p className="text-sm sm:text-lg text-slate-600">โจทย์: เซรั่มลดสิวยุบไวใน 3 วัน หน้าไม่แห้งลอก</p>
         </div>
