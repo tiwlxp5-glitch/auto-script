@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { generateScriptWithAI } from '../lib/gemini';
+import { scanForBannedWords, highlightBannedWords } from '../lib/bannedWords';
 import { useNavigate } from 'react-router-dom';
 
 function CreateScript() {
@@ -17,6 +18,7 @@ function CreateScript() {
   
   const [generatedScript, setGeneratedScript] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [bannedWarnings, setBannedWarnings] = useState([]);
   const [error, setError] = useState(null);
   
   const [user, setUser] = useState(null);
@@ -105,14 +107,13 @@ function CreateScript() {
           const response = await fetch(`https://r.jina.ai/${productUrl}`);
           if (response.ok) {
             const scrapedText = await response.text();
-            finalDetails += `\n\n[ข้อมูลเสริมจากการสแกน URL]:\n${scrapedText.substring(0, 3000)}`; // ตัดความยาวกัน Token ทะลุ
+            finalDetails += `\n\n[ข้อมูลเสริมจากการสแกน URL]:\n${scrapedText.substring(0, 3000)}`;
           }
         } catch (err) {
           console.log("Failed to scrape URL", err);
         }
       }
 
-      // 3. ส่งข้อมูลไปให้ Gemini AI
       const resultJson = await generateScriptWithAI({
         productName,
         productDetails: finalDetails,
@@ -123,14 +124,21 @@ function CreateScript() {
         targetAudience: profile.tier !== 'free' ? targetAudience : ''
       });
       
+      // สแกนหาคำต้องห้ามในบทพูดทั้งหมด
+      const allText = resultJson.script_blocks.map(b => b.audio_spoken).join(' ');
+      const warnings = scanForBannedWords(allText);
+      
+      // ลบ warnings ที่ซ้ำซาก
+      const uniqueWarnings = Array.from(new Set(warnings.map(a => a.word)))
+        .map(word => warnings.find(a => a.word === word));
+        
+      setBannedWarnings(uniqueWarnings);
       setGeneratedScript(resultJson);
 
-      // 4. หักเครดิต 1 แต้ม
       const newCredits = profile.credits - 1;
       await supabase.from('profiles').update({ credits: newCredits }).eq('id', user.id);
-      setProfile({ ...profile, credits: newCredits }); // อัปเดต UI ทันที
+      setProfile({ ...profile, credits: newCredits });
 
-      // 5. บันทึกประวัติ
       await supabase.from('scripts').insert({
         user_id: user.id,
         product_name: productName,
@@ -158,11 +166,24 @@ function CreateScript() {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-slate-900 mb-2">สร้างสคริปต์รีวิวด้วย AI</h1>
-        <p className="text-slate-600">
-          เหลือโควต้าการสร้าง <strong>{profile ? profile.credits : '...'}</strong> สคริปต์
-        </p>
+      <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <div className="flex items-center space-x-3 mb-2">
+            <h1 className="text-3xl font-bold text-slate-900">สร้างสคริปต์รีวิวด้วย AI</h1>
+            {profile && (
+              <span className={`px-3 py-1 text-sm font-bold uppercase rounded-full ${
+                profile.tier === 'pro' ? 'bg-gradient-to-r from-amber-400 to-orange-500 text-white' :
+                profile.tier === 'plus' ? 'bg-blue-500 text-white' :
+                'bg-slate-200 text-slate-700'
+              }`}>
+                {profile.tier === 'pro' ? '💎 Pro Plan' : profile.tier === 'plus' ? '✨ Plus Plan' : '🆓 Free Plan'}
+              </span>
+            )}
+          </div>
+          <p className="text-slate-600">
+            เหลือโควต้าการสร้าง <strong>{profile ? profile.credits : '...'}</strong> สคริปต์
+          </p>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -361,6 +382,30 @@ function CreateScript() {
                   <strong>หมวดหมู่:</strong> {generatedScript.metadata?.primary_psychological_trigger || 'General'}
                 </div>
                 
+                {bannedWarnings.length > 0 && (
+                  <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-md mb-4 shadow-sm animate-fade-in-up">
+                    <div className="flex items-start">
+                      <div className="flex-shrink-0">
+                        <span className="text-red-500 text-xl">⚠️</span>
+                      </div>
+                      <div className="ml-3">
+                        <h3 className="text-sm font-bold text-red-800">
+                          แจ้งเตือน: พบคำเสี่ยงโดนแบนในสคริปต์นี้
+                        </h3>
+                        <div className="mt-2 text-sm text-red-700">
+                          <ul className="list-disc pl-5 space-y-1">
+                            {bannedWarnings.map((w, idx) => (
+                              <li key={idx}>
+                                <strong>"{w.word}"</strong>: {w.reason}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
                 {generatedScript.script_blocks.map((block, index) => (
                   <div key={index} className="bg-white p-4 rounded-lg shadow-sm border border-slate-100">
                     <div className="flex justify-between items-center mb-2">
@@ -370,9 +415,10 @@ function CreateScript() {
                       <span className="text-xs text-slate-400">{block.timestamp}</span>
                     </div>
                     
-                    <p className="text-lg font-medium text-slate-900 mb-3 leading-relaxed">
-                      "{block.audio_spoken}"
-                    </p>
+                    <p 
+                      className="text-lg font-medium text-slate-900 mb-3 leading-relaxed"
+                      dangerouslySetInnerHTML={{ __html: `"${highlightBannedWords(block.audio_spoken, bannedWarnings)}"` }}
+                    />
                     
                     <div className="text-sm text-slate-600 bg-slate-50 p-3 rounded border-l-4 border-blue-400 flex flex-col">
                       <strong className="mb-1">🎥 อิริยาบถ / ภาพประกอบ:</strong>

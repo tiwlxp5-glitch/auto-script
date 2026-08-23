@@ -5,6 +5,8 @@ import CreateScript from './pages/CreateScript';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Pricing from './pages/Pricing';
+import Settings from './pages/Settings';
+import History from './pages/History';
 
 function App() {
   return (
@@ -18,6 +20,12 @@ function App() {
         
         {/* หน้าแสดงแพ็กเกจราคา */}
         <Route path="pricing" element={<Pricing />} />
+        
+        {/* หน้าตั้งค่าบัญชี */}
+        <Route path="settings" element={<Settings />} />
+        
+        {/* หน้าประวัติ */}
+        <Route path="history" element={<History />} />
         
         {/* หน้าเข้าสู่ระบบและสมัครสมาชิก */}
         <Route path="login" element={<Login />} />

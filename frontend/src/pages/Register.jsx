@@ -75,6 +75,19 @@ function Register() {
             />
           </div>
 
+          <div className="flex items-start mt-4">
+            <input
+              id="privacy"
+              name="privacy"
+              type="checkbox"
+              required
+              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-slate-300 rounded mt-1 cursor-pointer"
+            />
+            <label htmlFor="privacy" className="ml-2 block text-sm text-slate-600 cursor-pointer">
+              ฉันยอมรับ <a href="#" className="text-blue-600 hover:underline">เงื่อนไขการให้บริการ (Terms of Service)</a> และ <a href="#" className="text-blue-600 hover:underline">นโยบายความเป็นส่วนตัว (Privacy Policy)</a>
+            </label>
+          </div>
+
           <button
             type="submit"
             disabled={loading}

@@ -5,6 +5,7 @@ import { supabase } from '../lib/supabase';
 function Navbar() {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -58,15 +59,47 @@ function Navbar() {
                   <span>{profile ? profile.credits : '...'} เครดิต</span>
                 </Link>
                 
+                <Link to="/history" className="text-slate-600 hover:text-blue-600 px-3 py-2 font-medium hidden sm:block">
+                  ประวัติ
+                </Link>
                 <Link to="/create" className="text-slate-600 hover:text-blue-600 px-3 py-2 font-medium hidden sm:block">
                   สร้างสคริปต์
                 </Link>
-                <button 
-                  onClick={handleLogout}
-                  className="bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-2 rounded-lg font-medium transition-colors text-sm"
-                >
-                  ออก
-                </button>
+
+                {/* Hamburger / Profile Menu */}
+                <div className="relative">
+                  <button 
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    className="flex items-center space-x-2 bg-slate-100 hover:bg-slate-200 p-2 rounded-lg transition-colors focus:outline-none"
+                  >
+                    {/* SVG Hamburger Icon */}
+                    <svg className="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                  </button>
+
+                  {/* Dropdown Box */}
+                  {isMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-slate-100 py-1 z-50">
+                      <Link 
+                        to="/settings" 
+                        onClick={() => setIsMenuOpen(false)}
+                        className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600"
+                      >
+                        ⚙️ ตั้งค่าบัญชี
+                      </Link>
+                      <button 
+                        onClick={() => {
+                          setIsMenuOpen(false);
+                          handleLogout();
+                        }}
+                        className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                      >
+                        🚪 ออกจากระบบ
+                      </button>
+                    </div>
+                  )}
+                </div>
               </>
             ) : (
               <>
