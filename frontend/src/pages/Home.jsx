@@ -32,16 +32,16 @@ function Home() {
 
         <div className="flex flex-col lg:flex-row gap-8">
           {/* AI ทั่วไป */}
-          <div className="flex-1 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-1.5 bg-slate-300"></div>
+          <div className="flex-1 bg-white p-6 rounded-2xl border-2 border-dashed border-slate-200 opacity-80 hover:opacity-100 transition-opacity relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-slate-200"></div>
             <div className="flex items-center gap-2 mb-6">
-              <span className="text-slate-500 shrink-0">
+              <span className="text-slate-400 shrink-0">
                 <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8V4H8"></path><rect width="16" height="12" x="4" y="8" rx="2"></rect><path d="M2 14h2"></path><path d="M20 14h2"></path><path d="M15 13v2"></path><path d="M9 13v2"></path></svg>
               </span>
-              <h3 className="font-bold text-slate-700 text-base sm:text-lg leading-tight">AI ธรรมดาทั่วไป</h3>
-              <span className="ml-auto text-[10px] sm:text-xs font-bold bg-slate-100 text-slate-500 px-2 py-1 rounded whitespace-nowrap shrink-0">ธรรมดา / น่าเบื่อ</span>
+              <h3 className="font-bold text-slate-500 text-base sm:text-lg leading-tight">AI ธรรมดาทั่วไป</h3>
+              <span className="ml-auto text-[10px] sm:text-xs font-bold bg-slate-100 text-slate-400 px-2 py-1 rounded whitespace-nowrap shrink-0">น่าเบื่อ / ท่องจำ</span>
             </div>
-            <div className="bg-slate-50 p-4 rounded-xl text-slate-600 italic leading-relaxed text-sm">
+            <div className="bg-slate-50 p-4 rounded-xl text-slate-500 italic leading-relaxed text-sm border border-slate-100">
               "สวัสดีค่ะทุกคน วันนี้จะมาแนะนำเซรั่มลดสิวหน้าใสตัวใหม่ล่าสุด ที่จะช่วยให้สิวของคุณยุบภายใน 3 วัน แถมหน้ายังไม่แห้งลอกอีกด้วยนะคะ เนื้อเซรั่มซึมไวมาก ทาแล้วสบายผิวสุดๆ สนใจสามารถกดสั่งซื้อที่ตะกร้าด้านล่างได้เลยค่ะ รีบหน่อยนะคะเดี๋ยวของหมด ขอบคุณค่ะ"
             </div>
             <ul className="mt-6 space-y-2 text-sm text-slate-500">
@@ -106,6 +106,71 @@ function Home() {
               <li className="flex gap-2 items-start"><span className="text-blue-500 mt-0.5"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg></span> <span>มี Action บอกท่าทางให้ทุกท่อน เล่นตามได้เลย</span></li>
               <li className="flex gap-2 items-start"><span className="text-blue-500 mt-0.5"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg></span> <span>ใช้คำกระตุ้นจิตวิทยา FOMO กระชากยอดขาย</span></li>
             </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* Secret Sauce / Psychology Section */}
+      <div className="mt-8 mb-20 w-full max-w-6xl mx-auto px-4 text-left">
+        <div className="text-center mb-10">
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">
+            เบื้องหลังสมองกล <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Auto Script</span>
+          </h2>
+          <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
+            เราไม่ได้ใช้แค่พรอมต์ธรรมดา แต่เราฝัง **"5 สูตรจิตวิทยาการขายระดับโลก"** ที่เหล่า Top Creator บน TikTok และ Shopee ใช้จริง เพื่อให้คลิปของคุณกระชากยอดขายได้สูงสุด
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* PAS */}
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+            <div className="w-12 h-12 bg-rose-100 rounded-xl flex items-center justify-center text-rose-600 mb-4">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            </div>
+            <h3 className="text-lg font-bold text-slate-900 mb-2">PAS Formula</h3>
+            <p className="text-sm text-slate-600">ขยี้ปัญหา (Problem) ให้รู้สึกอิน กระตุ้นความกลัว (Agitate) แล้วค่อยเสนอสินค้าคุณเป็นทางออก (Solution)</p>
+          </div>
+
+          {/* HSO */}
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-4">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"></path></svg>
+            </div>
+            <h3 className="text-lg font-bold text-slate-900 mb-2">Hook-Story-Offer</h3>
+            <p className="text-sm text-slate-600">หยุดนิ้วด้วยฮุกแรงๆ (Hook) เล่าเรื่องราวที่เกี่ยวโยง (Story) และยื่นข้อเสนอที่ปฏิเสธไม่ได้ (Offer)</p>
+          </div>
+
+          {/* BAB */}
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+            <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600 mb-4">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+            </div>
+            <h3 className="text-lg font-bold text-slate-900 mb-2">Before-After-Bridge</h3>
+            <p className="text-sm text-slate-600">ฉายภาพความเจ็บปวดในอดีต (Before) ภาพฝันที่สวยงาม (After) และสินค้าคุณคือสะพานเชื่อม (Bridge)</p>
+          </div>
+          
+          {/* FAB */}
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+            <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center text-purple-600 mb-4">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+            </div>
+            <h3 className="text-lg font-bold text-slate-900 mb-2">FAB Model</h3>
+            <p className="text-sm text-slate-600">ดึงฟีเจอร์เด่น (Features) เทียบข้อได้เปรียบเหนือคู่แข่ง (Advantages) และประโยชน์แท้จริงที่ลูกค้าได้ (Benefits)</p>
+          </div>
+
+          {/* Reference Banner */}
+          <div className="md:col-span-2 bg-slate-900 p-6 rounded-2xl flex flex-col justify-center relative overflow-hidden">
+            <div className="absolute -right-10 -bottom-10 opacity-10">
+              <svg className="w-48 h-48 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 3.8l7.2 14.4H4.8L12 5.8z"/></svg>
+            </div>
+            <div className="relative z-10">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="bg-amber-400 text-slate-900 text-xs font-bold px-2 py-1 rounded">อ้างอิงข้อมูล (References)</span>
+              </div>
+              <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
+                โมเดลจิตวิทยาทั้งหมดถูกเทรนจากข้อมูลอ้างอิงชั้นนำ อาทิ งานวิจัย E-commerce Psychology จาก <span className="text-white font-medium">Nielsen Norman Group</span>, โครงสร้างคลิปไวรัลของ <span className="text-white font-medium">TikTok For Business</span>, และบทวิเคราะห์พฤติกรรมนักช้อปไทยบน <span className="text-white font-medium">Shopee/Lazada</span> 
+              </p>
+            </div>
           </div>
         </div>
       </div>
