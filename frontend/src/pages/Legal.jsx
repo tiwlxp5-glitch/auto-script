@@ -60,8 +60,19 @@ function Legal() {
         </section>
 
         {/* Contact */}
-        <section className="mt-8 pt-8 border-t border-slate-100 text-sm text-slate-500">
-          <p>หากมีข้อสงสัยเพิ่มเติม สามารถติดต่อทีมงานได้ตลอดเวลา</p>
+        <section className="mt-8 pt-8 border-t border-slate-100 text-sm text-slate-500 flex flex-col items-start gap-4">
+          <p>หากมีข้อสงสัยเพิ่มเติม หรือพบปัญหาการใช้งาน สามารถติดต่อทีมงานฝ่ายสนับสนุนได้ตลอดเวลาผ่านทาง LINE Official Account</p>
+          <a 
+            href="https://lin.ee/x0yVB1kk" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-[#00B900] text-white px-5 py-2.5 rounded-lg font-bold hover:bg-[#009900] transition-colors shadow-sm"
+          >
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 3.53 8.877 8.358 9.613.332.072.782.22.894.509.1.258.064.654.03 1.001-.002.012-.039.245-.049.299-.057.348-.27.876 1.002.341 1.274-.536 6.877-4.043 9.426-6.953 2.658-3.033 4.339-6.075 4.339-9.81z"/>
+            </svg>
+            ติดต่อฝ่ายสนับสนุน (LINE)
+          </a>
         </section>
 
       </div>

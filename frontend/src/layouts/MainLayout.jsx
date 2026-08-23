@@ -11,11 +11,12 @@ function MainLayout() {
       </main>
 
       {/* Footer */}
-      <footer className="w-full text-center py-6 text-slate-400 text-sm border-t border-slate-200 mt-auto bg-white">
-        <p className="mb-2">© 2026 Auto Script. All rights reserved.</p>
-        <div className="flex justify-center gap-4">
+      <footer className="w-full text-center py-6 text-slate-400 text-sm border-t border-slate-200 mt-auto bg-white flex flex-col gap-2">
+        <p>© 2026 Auto Script. All rights reserved.</p>
+        <div className="flex justify-center flex-wrap gap-x-4 gap-y-2">
           <Link to="/legal" className="hover:text-blue-500 transition-colors">เงื่อนไขการให้บริการ (Terms)</Link>
           <Link to="/legal" className="hover:text-blue-500 transition-colors">นโยบายความเป็นส่วนตัว (PDPA)</Link>
+          <a href="https://lin.ee/x0yVB1kk" target="_blank" rel="noopener noreferrer" className="hover:text-[#00B900] transition-colors font-medium">ติดต่อฝ่ายสนับสนุน (LINE)</a>
         </div>
       </footer>
     </div>
