@@ -48,8 +48,9 @@ export async function onRequestPost({ request, env }) {
       const userId = session.client_reference_id; // ดึง ID ของผู้ใช้ที่เราส่งไปตอนกดปุ่มจ่ายเงิน
 
       if (userId) {
-        // เช็คว่ายอดเงินเท่าไหร่ เพื่อดูว่าซื้อ Plus (99) หรือ Pro (199)
-        const amountPaid = session.amount_total; // สกุลเงินจะเป็นหน่วยย่อยสุด (สตางค์) เช่น 9900 = 99 บาท
+        // เช็คว่ายอดเงินก่อนหักส่วนลดเท่าไหร่ เพื่อดูว่าซื้อ Plus (249) หรือ Pro (590)
+        // ใช้ amount_subtotal แทน amount_total เพื่อแก้ปัญหาเวลาลูกค้าใช้คูปอง 100%
+        const amountPaid = session.amount_subtotal; // สกุลเงินจะเป็นหน่วยย่อยสุด (สตางค์) เช่น 59000 = 590 บาท
         
         let tier = 'plus';
         let addCredits = 60;
