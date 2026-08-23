@@ -7,8 +7,8 @@ function Pricing() {
   const navigate = useNavigate();
 
   // ลิงก์จาก Stripe ที่ลูกค้าให้มา (แบบ One-Time Payment)
-  const PLUS_LINK = "https://buy.stripe.com/test_5kQdRb2VF63X5TnbUg";
-  const PRO_LINK = "https://buy.stripe.com/test_5kQ3cxbsb0JD6Xr0by";
+  const PLUS_LINK = "https://buy.stripe.com/test_5kQdRb2VF63X5TnbUg0ZW02";
+  const PRO_LINK = "https://buy.stripe.com/test_5kQ3cxbsb0JD6Xr0by0ZW03";
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
