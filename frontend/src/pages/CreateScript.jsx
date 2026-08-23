@@ -48,12 +48,28 @@ function CreateScript() {
   }, [navigate]);
 
   const fetchProfile = async (userId) => {
-    const { data } = await supabase
-      .from('profiles')
-      .select('credits, tier')
-      .eq('id', userId)
-      .single();
-    if (data) setProfile(data);
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('credits, tier')
+        .eq('id', userId)
+        .single();
+        
+      if (error) {
+        console.error("Error fetching profile:", error.message);
+        // Fallback or retry logic can be added here
+      }
+      
+      if (data) {
+        setProfile(data);
+      } else {
+        // ถ้าไม่มีข้อมูลในตาราง profile เลย ให้จำลองไปก่อนเพื่อให้กดสร้างได้
+        setProfile({ credits: 0, tier: 'free' });
+      }
+    } catch (err) {
+      console.error("Fetch profile exception:", err);
+      setProfile({ credits: 0, tier: 'free' });
+    }
   };
 
   const handleGenerate = async (e) => {
@@ -287,10 +303,14 @@ function CreateScript() {
               type="submit"
               disabled={isGenerating || !user || !profile}
               className={`w-full py-3 rounded-lg text-white font-medium transition-all ${
-                isGenerating ? 'bg-blue-400 cursor-wait' : 'bg-blue-600 hover:bg-blue-700'
+                isGenerating 
+                  ? 'bg-blue-400 cursor-wait' 
+                  : (!user || !profile)
+                    ? 'bg-slate-400 cursor-not-allowed'
+                    : 'bg-blue-600 hover:bg-blue-700'
               }`}
             >
-              {isGenerating ? '🚀 AI กำลังสแกนข้อมูลและร่างสคริปต์...' : '✨ สร้างสคริปต์เลย (หัก 1 เครดิต)'}
+              {isGenerating ? '🚀 AI กำลังสแกนข้อมูลและร่างสคริปต์...' : (!profile ? '⏳ กำลังโหลดข้อมูลบัญชี...' : '✨ สร้างสคริปต์เลย (หัก 1 เครดิต)')}
             </button>
           </form>
         </div>
