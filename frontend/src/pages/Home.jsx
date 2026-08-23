@@ -113,11 +113,15 @@ function Home() {
       {/* Secret Sauce / Psychology Section */}
       <div className="mt-8 mb-20 w-full max-w-6xl mx-auto px-4 text-left">
         <div className="text-center mb-10">
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">
-            เบื้องหลังสมองกล <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Auto Script</span>
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 mb-4 tracking-tight leading-snug">
+            เบื้องหลังสมองกล <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Auto Script</span>
           </h2>
-          <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
-            เราไม่ได้ใช้แค่พรอมต์ธรรมดา แต่เราฝัง **"5 สูตรจิตวิทยาการขายระดับโลก"** ที่เหล่า Top Creator บน TikTok และ Shopee ใช้จริง เพื่อให้คลิปของคุณกระชากยอดขายได้สูงสุด
+          <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed px-2">
+            เราไม่ได้ใช้แค่พรอมต์ธรรมดา แต่เราฝัง <br className="hidden sm:block" />
+            <strong className="text-slate-800">"5 สูตรจิตวิทยาการขายระดับโลก"</strong> <br />
+            ที่ Top Creator บน TikTok และ Shopee ใช้จริง <br className="hidden sm:block" />
+            เพื่อให้คลิปของคุณปิดการขายได้ง่ายที่สุด
           </p>
         </div>
 
