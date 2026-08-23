@@ -88,7 +88,16 @@ function Pricing() {
       );
     }
 
-    // กรณีปกติ (กดอัปเกรด/ดาวน์เกรด ไปแพ็กอื่น)
+    // ถ้ายูสเซอร์อยู่ระดับ Pro แต่ปุ่มนี้คือ Plus (ป้องกันการดาวน์เกรด)
+    if (currentTier === 'pro' && tierName === 'plus') {
+      return (
+        <button disabled className="mt-8 block w-full bg-slate-100 text-slate-400 py-3 px-4 rounded-xl font-bold text-center cursor-not-allowed border border-slate-200">
+          คุณอยู่ในระดับ Pro แล้ว
+        </button>
+      );
+    }
+
+    // กรณีปกติ (กดอัปเกรด ไปแพ็กอื่น)
     return (
       <button onClick={() => handleCheckout(link)} className={defaultClasses}>
         {normalText}
