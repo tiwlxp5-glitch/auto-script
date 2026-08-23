@@ -70,7 +70,10 @@ export async function onRequestPost(context) {
     // 1. ตรวจสอบการล็อกอิน (JWT Authorization)
     const authHeader = request.headers.get('Authorization');
     if (!authHeader) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+      return new Response(JSON.stringify({ error: "Unauthorized" }), { 
+        status: 401,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
 
     const token = authHeader.replace('Bearer ', '');
@@ -78,7 +81,10 @@ export async function onRequestPost(context) {
     const { data: { user }, error: userError } = await supabaseClient.auth.getUser(token);
 
     if (userError || !user) {
-      return new Response(JSON.stringify({ error: "Invalid token" }), { status: 401 });
+      return new Response(JSON.stringify({ error: "Invalid token" }), { 
+        status: 401,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
 
     // 2. ดึงข้อมูลจาก Request
@@ -94,14 +100,20 @@ export async function onRequestPost(context) {
       .single();
 
     if (profileError || !profile) {
-      return new Response(JSON.stringify({ error: "Profile not found" }), { status: 404 });
+      return new Response(JSON.stringify({ error: "Profile not found" }), { 
+        status: 404,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
 
     if (profile.credits <= 0) {
-      return new Response(JSON.stringify({ error: "Insufficient credits" }), { status: 403 });
+      return new Response(JSON.stringify({ error: "Insufficient credits" }), { 
+        status: 403,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
 
-    // 4. Jina AI Scraping (ทำที่ Backend ปลอดภัยจาก CORS)
+    // 4. Jina AI Scraping (ทำที่ Backend ปลอดภัยจาก CORS - เฉพาะ Tier Pro)
     let finalDetails = productDetails;
     if (profile.tier === 'pro' && productUrl) {
       try {
@@ -115,10 +127,16 @@ export async function onRequestPost(context) {
       }
     }
 
-    // 5. เรียกใช้ Google Gemini (Fallback fallback safe for both env names)
+    // 4.1 ตรวจสอบสิทธิ์การใช้งาน targetAudience (เฉพาะ Tier Plus และ Pro เท่านั้น)
+    const finalTargetAudience = (profile.tier === 'plus' || profile.tier === 'pro') ? targetAudience : null;
+
+    // 5. เรียกใช้ Google Gemini (Fallback safe for both env names)
     const apiKey = env.GEMINI_API_KEY || env.VITE_GEMINI_API_KEY;
     if (!apiKey) {
-      return new Response(JSON.stringify({ error: "API Key not configured" }), { status: 500 });
+      return new Response(JSON.stringify({ error: "API Key not configured" }), { 
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
 
     const ai = new GoogleGenAI({ apiKey: apiKey });
@@ -127,7 +145,7 @@ export async function onRequestPost(context) {
     - ชื่อสินค้า: ${productName}
     - รายละเอียด/จุดเด่น: ${finalDetails}
     ${pricePromo ? `- ราคา/โปรโมชั่น: ${pricePromo}` : ''}
-    ${targetAudience ? `- กลุ่มเป้าหมาย: ${targetAudience}` : ''}
+    ${finalTargetAudience ? `- กลุ่มเป้าหมาย: ${finalTargetAudience}` : ''}
     ${competitor ? `- คู่แข่ง/สิ่งที่เอามาเทียบ: ${competitor}` : ''}
     
     คำสั่งรูปแบบ:
@@ -147,12 +165,8 @@ export async function onRequestPost(context) {
 
     const resultJson = JSON.parse(response.text);
 
-    // 6. หักเครดิตอย่างปลอดภัยด้วย Service Role
-    const newCredits = profile.credits - 1;
-    await supabaseAdmin.from('profiles').update({ credits: newCredits }).eq('id', user.id);
-
-    // 7. บันทึก History ลงฐานข้อมูลให้เลย
-    await supabaseAdmin.from('scripts').insert({
+    // 6. บันทึก History ลงฐานข้อมูล scripts เป็นลำดับแรก (Save first)
+    const { error: insertError } = await supabaseAdmin.from('scripts').insert({
       user_id: user.id,
       product_name: productName,
       product_details: finalDetails,
@@ -160,14 +174,41 @@ export async function onRequestPost(context) {
       content: JSON.stringify(resultJson)
     });
 
+    if (insertError) {
+      console.error("Failed to save script history:", insertError);
+      return new Response(JSON.stringify({ error: "Failed to save script history" }), { 
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // 7. หักเครดิตแบบ Atomic ด้วย Supabase RPC increment_credits หลังจากบันทึกสำเร็จเท่านั้น
+    const { data: updatedCredits, error: rpcError } = await supabaseAdmin.rpc('increment_credits', {
+      user_id: user.id,
+      amount: -1
+    });
+
+    if (rpcError) {
+      console.error("RPC credit deduction failed:", rpcError);
+      return new Response(JSON.stringify({ error: "Failed to deduct credits" }), { 
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    const remainingCredits = typeof updatedCredits === 'number' ? updatedCredits : (profile.credits - 1);
+
     // 8. ส่งผลลัพธ์กลับไปให้หน้าเว็บ
-    return new Response(JSON.stringify({ script: resultJson, credits_remaining: newCredits }), { 
+    return new Response(JSON.stringify({ script: resultJson, credits_remaining: remainingCredits }), { 
       status: 200,
       headers: { 'Content-Type': 'application/json' }
     });
 
   } catch (err) {
     console.error("Generate API Error:", err);
-    return new Response(JSON.stringify({ error: err.message || "Internal Server Error" }), { status: 500 });
+    return new Response(JSON.stringify({ error: err.message || "Internal Server Error" }), { 
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 }

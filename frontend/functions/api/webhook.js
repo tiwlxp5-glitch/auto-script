@@ -60,31 +60,33 @@ export async function onRequestPost({ request, env }) {
           addCredits = 150;
         }
 
-        // ดึงเครดิตเก่ามาบวกเพิ่ม
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('credits')
-          .eq('id', userId)
-          .single();
-
-        const currentCredits = profile?.credits || 0;
-        const newCredits = currentCredits + addCredits;
-
-        // อัปเดตหรือสร้างตู้เอกสาร (Supabase) ด้วย upsert
+        // 1. อัปเดตข้อมูลระดับผู้ใช้ (Tier) และ Stripe Customer ID โดยไม่แก้ไขจำนวนเครดิตตรงนี้
         const { error: upsertError } = await supabase
           .from('profiles')
           .upsert({ 
             id: userId, 
             tier: tier, 
-            credits: newCredits,
             stripe_customer_id: session.customer 
-          });
+          }, { onConflict: 'id' });
 
         if (upsertError) {
           console.error("Database upsert failed:", upsertError);
           // ลบ event ID ออกเพื่อให้รันใหม่ได้ในภายหลังถ้า Database ล้มเหลว
           await supabase.from('webhook_events').delete().eq('id', event.id);
           return new Response(`Database Error: ${upsertError.message}`, { status: 500 });
+        }
+
+        // 2. เติมเครดิตแบบ Atomic ด้วย Supabase RPC increment_credits เพื่อป้องกันปัญหา Race Condition
+        const { error: rpcError } = await supabase.rpc('increment_credits', {
+          user_id: userId,
+          amount: addCredits
+        });
+
+        if (rpcError) {
+          console.error("RPC increment_credits failed:", rpcError);
+          // ลบ event ID ออกเพื่อให้รันใหม่ได้ในภายหลังถ้า RPC ล้มเหลว
+          await supabase.from('webhook_events').delete().eq('id', event.id);
+          return new Response(`Database Error: ${rpcError.message}`, { status: 500 });
         }
       }
     }

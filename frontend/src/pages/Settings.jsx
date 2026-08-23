@@ -87,11 +87,21 @@ function Settings() {
     
     setIsLoadingPortal(true);
     try {
-      // เรียก Cloudflare Function
+      // ดึง Token เซสชันปัจจุบันเพื่อส่งยืนยันตัวตนกับ Backend API
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        alert("กรุณาเข้าสู่ระบบใหม่อีกครั้ง");
+        navigate('/login');
+        return;
+      }
+
+      // เรียก Cloudflare Function พร้อม Authorization Header ป้องกันช่องโหว่ IDOR
       const res = await fetch('/api/create-portal', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ customerId: profile.stripe_customer_id })
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`
+        }
       });
       
       const data = await res.json();
