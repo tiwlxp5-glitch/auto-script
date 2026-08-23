@@ -84,7 +84,10 @@ function History() {
         ย้อนกลับ
       </button>
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
-        <h1 className="text-3xl font-bold text-slate-900 mb-4 md:mb-0">ประวัติการสร้างสคริปต์ 🗂️</h1>
+        <h1 className="text-3xl font-bold text-slate-900 mb-4 md:mb-0 flex items-center gap-2">
+          ประวัติการสร้างสคริปต์ 
+          <svg className="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z"></path></svg>
+        </h1>
         
         <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
           <input 
