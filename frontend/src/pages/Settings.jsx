@@ -172,13 +172,24 @@ function Settings() {
           หากคุณต้องการเปลี่ยนบัตรเครดิต, ดูประวัติการชำระเงิน, หรือยกเลิกบริการ สามารถเข้าไปจัดการได้ที่ระบบของ Stripe โดยตรงครับ
         </p>
         
-        <button 
-          onClick={handleManageSubscription}
-          disabled={isLoadingPortal}
-          className="bg-slate-900 text-white px-6 py-3 rounded-lg font-medium hover:bg-slate-800 disabled:opacity-50 w-full sm:w-auto"
-        >
-          {isLoadingPortal ? 'กำลังติดต่อ Stripe...' : '💳 จัดการแพ็กเกจ / ยกเลิกบริการ'}
-        </button>
+        <div className="flex flex-col sm:flex-row gap-3">
+          <button 
+            onClick={() => navigate('/pricing')}
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 w-full sm:w-auto"
+          >
+            🚀 ดูแพ็กเกจและอัปเกรด
+          </button>
+
+          {profile.tier !== 'free' && profile.stripe_customer_id && (
+            <button 
+              onClick={handleManageSubscription}
+              disabled={isLoadingPortal}
+              className="bg-slate-900 text-white px-6 py-3 rounded-lg font-medium hover:bg-slate-800 disabled:opacity-50 w-full sm:w-auto"
+            >
+              {isLoadingPortal ? 'กำลังติดต่อ Stripe...' : '💳 จัดการการตัดบัตร / ยกเลิก'}
+            </button>
+          )}
+        </div>
       </div>
 
       {/* 3. ลบบัญชี */}
