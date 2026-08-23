@@ -168,12 +168,26 @@ function Home() {
               <svg className="w-48 h-48 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 3.8l7.2 14.4H4.8L12 5.8z"/></svg>
             </div>
             <div className="relative z-10">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="bg-amber-400 text-slate-900 text-xs font-bold px-2 py-1 rounded">อ้างอิงข้อมูล (References)</span>
+              <div className="flex items-center gap-2 mb-4">
+                <span className="bg-amber-400 text-slate-900 text-xs font-bold px-3 py-1.5 rounded-md shadow-sm">อ้างอิงข้อมูล (References)</span>
               </div>
-              <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
-                โมเดลจิตวิทยาทั้งหมดถูกเทรนจากข้อมูลอ้างอิงชั้นนำ อาทิ งานวิจัย E-commerce Psychology จาก <span className="text-white font-medium">Nielsen Norman Group</span>, โครงสร้างคลิปไวรัลของ <span className="text-white font-medium">TikTok For Business</span>, และบทวิเคราะห์พฤติกรรมนักช้อปไทยบน <span className="text-white font-medium">Shopee/Lazada</span> 
-              </p>
+              <div className="text-sm sm:text-base text-slate-300 leading-relaxed space-y-2">
+                <p>โมเดลจิตวิทยาทั้งหมดถูกเทรนจากข้อมูลอ้างอิงชั้นนำ อาทิ:</p>
+                <ul className="pl-2 space-y-2">
+                  <li className="flex items-start gap-2">
+                    <span className="text-amber-500 mt-1">•</span>
+                    <span>งานวิจัย E-commerce Psychology จาก <strong className="text-white">Nielsen Norman Group</strong></span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-amber-500 mt-1">•</span>
+                    <span>โครงสร้างคลิปไวรัลของ <strong className="text-white">TikTok For Business</strong></span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-amber-500 mt-1">•</span>
+                    <span>บทวิเคราะห์พฤติกรรมนักช้อปไทยบน <strong className="text-white">Shopee / Lazada</strong></span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
