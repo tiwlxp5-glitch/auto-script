@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Auto Script Logo (PNG)</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f1f5f9;
+            font-family: 'Arial', sans-serif;
+        }
+        .preview {
+            width: 300px;
+            height: 300px;
+            margin-bottom: 30px;
+            border-radius: 50%;
+            box-shadow: 0 10px 25px rgba(29, 78, 216, 0.3);
+        }
+        .btn {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+            transition: all 0.2s;
+        }
+        .btn:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-2px);
+        }
+        .note {
+            margin-top: 15px;
+            color: #64748b;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="svgContainer" style="display: none;">
+        <svg id="rawSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="1024" height="1024">
+            <defs>
+              <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#1d4ed8"/>
+                <stop offset="70%" stop-color="#4338ca"/>
+                <stop offset="100%" stop-color="#7e22ce"/>
+              </linearGradient>
+              <filter id="shadow">
+                <feDropShadow dx="3" dy="3" stdDeviation="5" flood-opacity="0.25"/>
+              </filter>
+            </defs>
+            <rect width="500" height="500" rx="250" fill="url(#bgGradient)"/>
+            <text x="210" y="320" font-family="Arial, sans-serif" font-size="210" font-weight="900" fill="#ffffff" letter-spacing="-6" text-anchor="middle" filter="url(#shadow)">AS</text>
+            <g transform="translate(340, 110) scale(1) rotate(5)" fill="white" filter="url(#shadow)">
+              <path d="M50 10 C50 40, 60 50, 90 50 C60 50, 50 60, 50 90 C50 60, 40 50, 10 50 C40 50, 50 40, 50 10 Z" />
+              <path d="M80 15 C80 25, 85 30, 95 30 C85 30, 80 35, 80 45 C80 35, 75 30, 65 30 C75 30, 80 25, 80 15 Z" />
+              <path d="M25 65 C25 72, 28 75, 35 75 C28 75, 25 78, 25 85 C25 78, 22 75, 15 75 C22 75, 25 72, 25 65 Z" />
+            </g>
+          </svg>
+    </div>
+
+    <!-- Preview canvas -->
+    <canvas id="canvas" width="1024" height="1024" class="preview"></canvas>
+
+    <button class="btn" onclick="downloadPNG()">📥 ดาวน์โหลดโลโก้ (ไฟล์ PNG)</button>
+    <p class="note">เมื่อดาวน์โหลดเสร็จแล้ว นำไปตั้งเป็นรูปโปรไฟล์ LINE OA ได้เลยครับ</p>
+
+    <script>
+        // Render SVG to Canvas on load
+        window.onload = function() {
+            const svg = document.getElementById('rawSvg');
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            const xml = new XMLSerializer().serializeToString(svg);
+            const svg64 = btoa(unescape(encodeURIComponent(xml)));
+            const b64Start = 'data:image/svg+xml;base64,';
+            const image64 = b64Start + svg64;
+
+            const img = new Image();
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0, 1024, 1024);
+            };
+            img.src = image64;
+        }
+
+        // Trigger Download
+        function downloadPNG() {
+            const canvas = document.getElementById('canvas');
+            const link = document.createElement('a');
+            link.download = 'AutoScript_Logo_LineOA.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+    </script>
+</body>
+</html>
