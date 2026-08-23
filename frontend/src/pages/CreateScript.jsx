@@ -348,7 +348,7 @@ function CreateScript() {
             <button
               type="submit"
               disabled={isGenerating || !user || !profile}
-              className={`w-full py-3 rounded-lg text-white font-medium transition-all ${
+              className={`w-full py-3 rounded-lg text-white font-medium transition-all flex items-center justify-center gap-2 ${
                 isGenerating 
                   ? 'bg-blue-400 cursor-wait' 
                   : (!user || !profile)
@@ -356,7 +356,13 @@ function CreateScript() {
                     : 'bg-blue-600 hover:bg-blue-700'
               }`}
             >
-              {isGenerating ? '🚀 AI กำลังสแกนข้อมูลและร่างสคริปต์...' : (!profile ? '⏳ กำลังโหลดข้อมูลบัญชี...' : '✨ สร้างสคริปต์เลย (หัก 1 เครดิต)')}
+              {isGenerating ? (
+                <><svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg> AI กำลังสแกนข้อมูลและร่างสคริปต์...</>
+              ) : (!profile ? (
+                <><svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> กำลังโหลดข้อมูลบัญชี...</>
+              ) : (
+                <><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg> สร้างสคริปต์เลย (หัก 1 เครดิต)</>
+              ))}
             </button>
           </form>
         </div>
@@ -365,15 +371,17 @@ function CreateScript() {
         <div className="flex flex-col h-full">
           {!generatedScript && !isGenerating ? (
             <div className="flex-1 bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 border-dashed rounded-2xl flex flex-col items-center justify-center p-12 text-center h-full min-h-[400px]">
-              <div className="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-4">
-                <span className="text-3xl">✨</span>
+              <div className="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-4 text-blue-500">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
               </div>
               <h3 className="text-lg font-bold text-slate-800 mb-2">พร้อมสร้างสคริปต์ไวรัล</h3>
               <p className="text-slate-500 max-w-sm">กรอกข้อมูลด้านซ้ายแล้วกดสร้างสคริปต์ AI จะเขียนสคริปต์ป้ายยาให้คุณภายใน 5 วินาที</p>
             </div>
           ) : isGenerating ? (
             <div className="flex-1 bg-white border border-slate-200 rounded-2xl flex flex-col items-center justify-center p-12 min-h-[400px] shadow-sm">
-              <div className="animate-spin text-4xl mb-4 text-blue-600">🌀</div>
+              <div className="mb-4 text-blue-600 flex justify-center">
+                <svg className="w-12 h-12 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"></path></svg>
+              </div>
               <p className="text-lg font-medium text-slate-700 animate-pulse">กำลังสวมวิญญาณแม่ค้าตัวท็อป...</p>
             </div>
           ) : (
@@ -382,7 +390,7 @@ function CreateScript() {
               <div className="bg-white p-4 border-b border-slate-200 flex justify-between items-center sticky top-0 z-10">
                 <div>
                   <h2 className="font-bold text-slate-800 flex items-center gap-2">
-                    <span className="text-blue-600">📝</span> สคริปต์พร้อมถ่าย
+                    <span className="text-blue-600"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg></span> สคริปต์พร้อมถ่าย
                   </h2>
                   <p className="text-xs text-slate-500 mt-1">
                     ความยาวประมาณ: {generatedScript.metadata?.estimated_duration_seconds} วินาที
@@ -392,7 +400,7 @@ function CreateScript() {
                   onClick={copyToClipboard}
                   className="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-xl text-sm font-medium transition-all shadow-sm active:scale-95 flex items-center gap-2"
                 >
-                  <span>📋</span> คัดลอกทั้งหมด
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg> <span>คัดลอกทั้งหมด</span>
                 </button>
               </div>
 
@@ -400,7 +408,7 @@ function CreateScript() {
               {bannedWarnings && bannedWarnings.length > 0 && (
                 <div className="m-4 p-4 bg-red-50 border border-red-200 rounded-xl">
                   <h4 className="font-bold text-red-700 flex items-center gap-2 mb-2">
-                    <span>⚠️</span> ระวังคำสุ่มเสี่ยงโดนแบน (ปรับแก้ก่อนถ่าย)
+                    <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg> <span>ระวังคำสุ่มเสี่ยงโดนแบน (ปรับแก้ก่อนถ่าย)</span>
                   </h4>
                   <ul className="list-disc list-inside text-sm text-red-600 space-y-1">
                     {bannedWarnings.map((w, idx) => (
@@ -413,13 +421,13 @@ function CreateScript() {
               {/* Script Cards (Teleprompter) */}
               <div className="p-4 space-y-4 overflow-y-auto flex-1 max-h-[700px]">
                 {generatedScript.script_blocks.map((block, index) => {
-                  let phaseIcon = "💬";
+                  let phaseIcon = <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>;
                   let phaseColor = "bg-slate-100 text-slate-600";
-                  if (block.phase === "Hook") { phaseIcon = "🪝"; phaseColor = "bg-rose-100 text-rose-700"; }
-                  if (block.phase === "Agitation") { phaseIcon = "🔥"; phaseColor = "bg-orange-100 text-orange-700"; }
-                  if (block.phase === "Reveal") { phaseIcon = "✨"; phaseColor = "bg-blue-100 text-blue-700"; }
-                  if (block.phase === "FOMO") { phaseIcon = "⏰"; phaseColor = "bg-amber-100 text-amber-700"; }
-                  if (block.phase === "CTA") { phaseIcon = "🛒"; phaseColor = "bg-emerald-100 text-emerald-700"; }
+                  if (block.phase === "Hook") { phaseIcon = <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>; phaseColor = "bg-rose-100 text-rose-700"; }
+                  if (block.phase === "Agitation") { phaseIcon = <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"></path></svg>; phaseColor = "bg-orange-100 text-orange-700"; }
+                  if (block.phase === "Reveal") { phaseIcon = <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>; phaseColor = "bg-blue-100 text-blue-700"; }
+                  if (block.phase === "FOMO") { phaseIcon = <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>; phaseColor = "bg-amber-100 text-amber-700"; }
+                  if (block.phase === "CTA") { phaseIcon = <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>; phaseColor = "bg-emerald-100 text-emerald-700"; }
 
                   return (
                     <div key={index} className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 relative group transition-all hover:shadow-md">
@@ -429,11 +437,11 @@ function CreateScript() {
                       
                       <div className="flex justify-between items-start mb-3 ml-2">
                         <div className="flex items-center gap-2">
-                          <span className={`px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider ${phaseColor}`}>
+                          <span className={`px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1 ${phaseColor}`}>
                             {phaseIcon} {block.phase}
                           </span>
-                          <span className="text-xs font-medium text-slate-400 bg-slate-50 px-2 py-1 rounded-md border border-slate-100">
-                            ⏱️ {block.timestamp}
+                          <span className="text-xs font-medium text-slate-400 bg-slate-50 px-2 py-1 rounded-md border border-slate-100 flex items-center gap-1">
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> {block.timestamp}
                           </span>
                         </div>
                       </div>
@@ -446,7 +454,7 @@ function CreateScript() {
                         
                         <div className="flex flex-col sm:flex-row gap-3 pt-3 border-t border-slate-50">
                           <div className="flex-1 bg-blue-50/50 rounded-xl p-3 flex items-start gap-2 border border-blue-100/50">
-                            <span className="text-sm shrink-0">🎬</span>
+                            <span className="text-blue-500 shrink-0 mt-0.5"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></span>
                             <div className="text-xs text-slate-600">
                               <strong className="block text-slate-700 mb-0.5">ภาพ/การกระทำ:</strong>
                               {block.visual_direction}
