@@ -8,8 +8,8 @@ function Pricing() {
   const navigate = useNavigate();
 
   // ลิงก์จาก Stripe ที่ลูกค้าให้มา (แบบ One-Time Payment)
-  const PLUS_LINK = "https://buy.stripe.com/test_5kQ3cxbsb0JD6Xr0by0ZW03";
-  const PRO_LINK = "https://buy.stripe.com/test_5kQdRb2VF63X5TnbUg0ZW02";
+  const PLUS_LINK = "https://buy.stripe.com/9B6fZi0454Tg7ZSf5Nbwk00";
+  const PRO_LINK = "https://buy.stripe.com/3cIbJ2045adAgwoe1Jbwk01";
 
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
@@ -162,7 +162,7 @@ function Pricing() {
           <h3 className="text-2xl font-semibold text-slate-900">Plus</h3>
           <p className="mt-4 text-slate-500 flex-1">สำหรับพ่อค้าแม่ค้าพาร์ทไทม์ ปลดล็อกฟีเจอร์คุ้มค่า</p>
           <p className="mt-8">
-            <span className="text-4xl font-extrabold text-slate-900">฿99</span>
+            <span className="text-4xl font-extrabold text-slate-900">฿249</span>
             <span className="text-base font-medium text-slate-500"> /ครั้ง</span>
           </p>
           <ul className="mt-6 space-y-4 flex-1">
@@ -172,7 +172,7 @@ function Pricing() {
             </li>
             <li className="flex items-start">
               <span className="text-blue-500 mr-3">✓</span>
-              <span className="text-slate-700">ปลดล็อกครบ 3 โหมดการขาย</span>
+              <span className="text-slate-700">ปลดล็อกครบ 5 โหมดจิตวิทยา</span>
             </li>
             <li className="flex items-start">
               <span className="text-blue-500 mr-3">✓</span>
@@ -201,7 +201,7 @@ function Pricing() {
           <h3 className="text-2xl font-semibold text-white">Pro</h3>
           <p className="mt-4 text-slate-400 flex-1">สายเอเจนซี่ อินฟลูเอนเซอร์มืออาชีพ จัดเต็มทุกฟีเจอร์</p>
           <p className="mt-8">
-            <span className="text-4xl font-extrabold text-white">฿199</span>
+            <span className="text-4xl font-extrabold text-white">฿590</span>
             <span className="text-base font-medium text-slate-400"> /ครั้ง</span>
           </p>
           <ul className="mt-6 space-y-4 flex-1">
@@ -211,7 +211,7 @@ function Pricing() {
             </li>
             <li className="flex items-start">
               <span className="text-amber-400 mr-3">✓</span>
-              <span className="text-slate-300">ปลดล็อกครบ 3 โหมดการขาย</span>
+              <span className="text-slate-300">ปลดล็อกครบ 5 โหมดจิตวิทยา</span>
             </li>
             <li className="flex items-start">
               <span className="text-amber-400 mr-3">✓</span>

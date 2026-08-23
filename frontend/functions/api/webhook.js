@@ -54,7 +54,7 @@ export async function onRequestPost({ request, env }) {
         let tier = 'plus';
         let addCredits = 60;
 
-        if (amountPaid >= 19900) {
+        if (amountPaid >= 59000) {
           tier = 'pro';
           addCredits = 150;
         }
