@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { generateScriptWithAI } from '../lib/gemini';
 import { scanForBannedWords, highlightBannedWords } from '../lib/bannedWords';
 import { useNavigate } from 'react-router-dom';
 
@@ -99,30 +98,38 @@ function CreateScript() {
     setGeneratedScript(null);
 
     try {
-      let finalDetails = productDetails;
-
-      // 2. ถ้าเป็น Pro และมีการใส่ URL ให้ดึงข้อมูลเว็บผ่าน Jina Reader
-      if (profile.tier === 'pro' && productUrl) {
-        try {
-          const response = await fetch(`https://r.jina.ai/${productUrl}`);
-          if (response.ok) {
-            const scrapedText = await response.text();
-            finalDetails += `\n\n[ข้อมูลเสริมจากการสแกน URL]:\n${scrapedText.substring(0, 3000)}`;
-          }
-        } catch (err) {
-          console.log("Failed to scrape URL", err);
-        }
-      }
-
-      const resultJson = await generateScriptWithAI({
+      // ดึง JWT Token ปัจจุบันของผู้ใช้เพื่อส่งไปยืนยันตัวตนที่ Backend
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      const payload = {
         productName,
-        productDetails: finalDetails,
+        productDetails,
         pricePromo,
         videoLength,
         mode,
         competitor: mode === 'เปรียบเทียบชัดๆ' ? competitor : '',
-        targetAudience: profile.tier !== 'free' ? targetAudience : ''
+        targetAudience: profile.tier !== 'free' ? targetAudience : '',
+        productUrl: profile.tier === 'pro' ? productUrl : ''
+      };
+
+      // ยิงข้อมูลไปให้ Backend (Cloudflare Function) จัดการรวดเดียว
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`
+        },
+        body: JSON.stringify(payload)
       });
+
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        throw new Error(responseData.error || "Failed to generate script");
+      }
+
+      const resultJson = responseData.script;
+      const newCredits = responseData.credits_remaining;
       
       // สแกนหาคำต้องห้ามในบทพูดทั้งหมด
       const allText = resultJson.script_blocks.map(b => b.audio_spoken).join(' ');
@@ -134,18 +141,9 @@ function CreateScript() {
         
       setBannedWarnings(uniqueWarnings);
       setGeneratedScript(resultJson);
-
-      const newCredits = profile.credits - 1;
-      await supabase.from('profiles').update({ credits: newCredits }).eq('id', user.id);
+      
+      // อัปเดตเครดิตในหน้าเว็บให้ตรงกับที่ Backend หักไป
       setProfile({ ...profile, credits: newCredits });
-
-      await supabase.from('scripts').insert({
-        user_id: user.id,
-        product_name: productName,
-        product_details: finalDetails,
-        mode: mode,
-        content: JSON.stringify(resultJson)
-      });
 
     } catch (err) {
       console.error(err);

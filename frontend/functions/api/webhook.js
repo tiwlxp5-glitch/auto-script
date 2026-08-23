@@ -28,6 +28,21 @@ export async function onRequestPost({ request, env }) {
 
   // 3. จัดการเหตุการณ์ต่างๆ ที่ Stripe โทรมาบอก
   try {
+    // 3.1 Idempotency Check (ป้องกันการรันซ้ำ)
+    const { error: insertEventError } = await supabase
+      .from('webhook_events')
+      .insert([{ id: event.id }]);
+      
+    if (insertEventError) {
+      if (insertEventError.code === '23505') {
+        // Unique violation - event already processed
+        console.log(`Event ${event.id} already processed. Skipping.`);
+        return new Response('Already processed', { status: 200 });
+      } else {
+        throw insertEventError; // Unexpected error
+      }
+    }
+
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object;
       const userId = session.client_reference_id; // ดึง ID ของผู้ใช้ที่เราส่งไปตอนกดปุ่มจ่ายเงิน
@@ -58,54 +73,28 @@ export async function onRequestPost({ request, env }) {
         const { error: upsertError } = await supabase
           .from('profiles')
           .upsert({ 
-            id: userId,
+            id: userId, 
             tier: tier, 
             credits: newCredits,
             stripe_customer_id: session.customer 
           });
 
         if (upsertError) {
-          console.error("Supabase upsert error:", upsertError);
+          console.error("Database upsert failed:", upsertError);
+          // ลบ event ID ออกเพื่อให้รันใหม่ได้ในภายหลังถ้า Database ล้มเหลว
+          await supabase.from('webhook_events').delete().eq('id', event.id);
           return new Response(`Database Error: ${upsertError.message}`, { status: 500 });
         }
       }
-    } 
-    else if (event.type === 'invoice.payment_succeeded') {
-      // กรณีตัดบัตรรอบเดือนถัดไปสำเร็จ
-      const invoice = event.data.object;
-      const stripeCustomerId = invoice.customer;
-
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('id, tier')
-        .eq('stripe_customer_id', stripeCustomerId)
-        .single();
-
-      if (profile) {
-        // เติมเครดิตใหม่ของเดือนนั้นให้เต็ม
-        const monthlyCredits = profile.tier === 'pro' ? 150 : 60;
-        await supabase
-          .from('profiles')
-          .update({ credits: monthlyCredits })
-          .eq('id', profile.id);
-      }
-    }
-    else if (event.type === 'customer.subscription.deleted') {
-      // กรณียกเลิกแพ็กเกจ
-      const subscription = event.data.object;
-      const stripeCustomerId = subscription.customer;
-
-      await supabase
-        .from('profiles')
-        .update({ tier: 'free', credits: 3 }) // กลับไปเป็นสายฟรี
-        .eq('stripe_customer_id', stripeCustomerId);
     }
 
-    // ตอบกลับ Stripe ว่ารับทราบแล้ว
+    // ลบส่วนจัดการ subscription เก่าออกไปแล้ว (ตามคำแนะนำ PAY-01) เพื่อป้องกันโค้ดรันตีกัน
+    
     return new Response(JSON.stringify({ received: true }), { status: 200 });
-
   } catch (err) {
-    console.error(`Error processing webhook:`, err);
-    return new Response('Internal Server Error', { status: 500 });
+    console.error(`Webhook handler failed.`, err.message);
+    // ลบ event ID ออกเพื่อให้รันใหม่ได้ในภายหลัง
+    await supabase.from('webhook_events').delete().eq('id', event.id);
+    return new Response(`Webhook handler Error: ${err.message}`, { status: 500 });
   }
 }

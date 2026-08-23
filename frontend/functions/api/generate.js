@@ -1,9 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
+import { createClient } from '@supabase/supabase-js';
 
-const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-const ai = new GoogleGenAI({ apiKey: apiKey });
-
-// FUSION PROMPT: แกนหลักจากภาษาไทย + จิตวิทยาการตลาด + บังคับ JSON
 const SYSTEM_PROMPT = `
 คุณคือ "นักเขียนสคริปต์ขายของสั้น" และ "ผู้เชี่ยวชาญด้านจิตวิทยาการตลาด (Neuromarketing)" ระดับท็อปในวงการ TikTok/Reels ไทย
 คุณมีหน้าที่เขียนสคริปต์วิดีโอสั้น (15-60 วินาที) ที่สะกดจิตคนดูให้หยุดนิ้วโป้ง และตัดสินใจซื้อโดยไม่รู้ตัว
@@ -49,39 +46,111 @@ const SYSTEM_PROMPT = `
 }
 `;
 
-export async function generateScriptWithAI(data) {
-  // รับ data เป็น Object จากหน้า CreateScript
-  const { productName, productDetails, pricePromo, videoLength, mode, competitor, targetAudience } = data;
-
-  // จัดเรียงคำสั่งส่งให้ Gemini
-  const userPrompt = `
-  ข้อมูลสำหรับการเขียนสคริปต์:
-  - ชื่อสินค้า: ${productName}
-  - รายละเอียด/จุดเด่น: ${productDetails}
-  ${pricePromo ? `- ราคา/โปรโมชั่น: ${pricePromo}` : ''}
-  ${targetAudience ? `- กลุ่มเป้าหมาย: ${targetAudience}` : ''}
-  ${competitor ? `- คู่แข่ง/สิ่งที่เอามาเทียบ: ${competitor}` : ''}
-  
-  คำสั่งรูปแบบ:
-  - Mode การขาย: ${mode}
-  - ความยาวคลิป: ${videoLength}
-  `;
+export async function onRequestPost(context) {
+  const { request, env } = context;
 
   try {
-    // กฎข้อ 2: ต้องใช้ gemini-3.6-flash เท่านั้น
+    // 1. ตรวจสอบการล็อกอิน (JWT Authorization)
+    const authHeader = request.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+    }
+
+    const token = authHeader.replace('Bearer ', '');
+    const supabaseClient = createClient(env.VITE_SUPABASE_URL, env.VITE_SUPABASE_ANON_KEY);
+    const { data: { user }, error: userError } = await supabaseClient.auth.getUser(token);
+
+    if (userError || !user) {
+      return new Response(JSON.stringify({ error: "Invalid token" }), { status: 401 });
+    }
+
+    // 2. ดึงข้อมูลจาก Request
+    const body = await request.json();
+    const { productName, productDetails, pricePromo, videoLength, mode, competitor, targetAudience, productUrl } = body;
+
+    // 3. ใช้ Service Role ดึงข้อมูล Profile ปัจจุบันเพื่อความปลอดภัย (ห้ามเชื่อ Client)
+    const supabaseAdmin = createClient(env.VITE_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY);
+    const { data: profile, error: profileError } = await supabaseAdmin
+      .from('profiles')
+      .select('credits, tier')
+      .eq('id', user.id)
+      .single();
+
+    if (profileError || !profile) {
+      return new Response(JSON.stringify({ error: "Profile not found" }), { status: 404 });
+    }
+
+    if (profile.credits <= 0) {
+      return new Response(JSON.stringify({ error: "Insufficient credits" }), { status: 403 });
+    }
+
+    // 4. Jina AI Scraping (ทำที่ Backend ปลอดภัยจาก CORS)
+    let finalDetails = productDetails;
+    if (profile.tier === 'pro' && productUrl) {
+      try {
+        const jinaRes = await fetch(`https://r.jina.ai/${productUrl}`);
+        if (jinaRes.ok) {
+          const scrapedText = await jinaRes.text();
+          finalDetails += `\n\n[ข้อมูลเสริมจากการสแกน URL]:\n${scrapedText.substring(0, 3000)}`;
+        }
+      } catch (err) {
+        console.log("Jina scrape error ignored:", err);
+      }
+    }
+
+    // 5. เรียกใช้ Google Gemini (Fallback fallback safe for both env names)
+    const apiKey = env.GEMINI_API_KEY || env.VITE_GEMINI_API_KEY;
+    if (!apiKey) {
+      return new Response(JSON.stringify({ error: "API Key not configured" }), { status: 500 });
+    }
+
+    const ai = new GoogleGenAI({ apiKey: apiKey });
+    const userPrompt = `
+    ข้อมูลสำหรับการเขียนสคริปต์:
+    - ชื่อสินค้า: ${productName}
+    - รายละเอียด/จุดเด่น: ${finalDetails}
+    ${pricePromo ? `- ราคา/โปรโมชั่น: ${pricePromo}` : ''}
+    ${targetAudience ? `- กลุ่มเป้าหมาย: ${targetAudience}` : ''}
+    ${competitor ? `- คู่แข่ง/สิ่งที่เอามาเทียบ: ${competitor}` : ''}
+    
+    คำสั่งรูปแบบ:
+    - Mode การขาย: ${mode}
+    - ความยาวคลิป: ${videoLength}
+    `;
+
     const response = await ai.models.generateContent({
       model: 'gemini-3.6-flash',
       contents: userPrompt,
       config: {
         systemInstruction: SYSTEM_PROMPT,
-        temperature: 0.8, // ปรับให้สร้างสรรค์ขึ้นอีกนิดเพื่อให้ภาษาไม่ซ้ำซาก
+        temperature: 0.8,
         responseMimeType: "application/json",
       }
     });
 
-    return JSON.parse(response.text);
-  } catch (error) {
-    console.error("Gemini Generation Error:", error);
-    throw error;
+    const resultJson = JSON.parse(response.text);
+
+    // 6. หักเครดิตอย่างปลอดภัยด้วย Service Role
+    const newCredits = profile.credits - 1;
+    await supabaseAdmin.from('profiles').update({ credits: newCredits }).eq('id', user.id);
+
+    // 7. บันทึก History ลงฐานข้อมูลให้เลย
+    await supabaseAdmin.from('scripts').insert({
+      user_id: user.id,
+      product_name: productName,
+      product_details: finalDetails,
+      mode: mode,
+      content: JSON.stringify(resultJson)
+    });
+
+    // 8. ส่งผลลัพธ์กลับไปให้หน้าเว็บ
+    return new Response(JSON.stringify({ script: resultJson, credits_remaining: newCredits }), { 
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+  } catch (err) {
+    console.error("Generate API Error:", err);
+    return new Response(JSON.stringify({ error: err.message || "Internal Server Error" }), { status: 500 });
   }
 }
