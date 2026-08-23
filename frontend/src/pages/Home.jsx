@@ -2,15 +2,16 @@ import { Link } from 'react-router-dom';
 
 function Home() {
   return (
-    <div className="flex flex-col items-center justify-center text-center mt-12 px-2">
+    <div className="flex flex-col items-center justify-center text-center mt-6 sm:mt-12 px-2">
       <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight mb-4 leading-snug">
         เขียนสคริปต์รีวิวสินค้า <br className="hidden sm:block" />
-        <span className="text-blue-600">ให้การทำคลิปง่ายขึ้นด้วย AI</span>
+        <span className="text-blue-600">ให้การทำคลิปง่ายขึ้นด้วย</span>
+        <span className="inline-block bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-3 py-0.5 rounded-xl ml-2 shadow-lg transform -rotate-2">AI</span>
       </h1>
-      <p className="text-base sm:text-lg text-slate-600 max-w-xl mb-8 px-4 leading-relaxed">
+      <p className="text-base sm:text-lg text-slate-600 max-w-xl mb-8 px-4 leading-relaxed mt-2">
         ประหยัดเวลาคิดคอนเทนต์ เพียงกรอกจุดเด่นสินค้า ระบบจะจัดโครงสร้างสคริปต์พร้อมถ่ายให้ทันที
       </p>
-      <div className="flex flex-row gap-3 justify-center w-full px-4">
+      <div className="flex flex-row gap-3 justify-center w-full px-4 mb-4">
         <Link to="/create" className="bg-blue-600 text-white px-5 py-2.5 sm:px-8 sm:py-3 rounded-lg text-sm sm:text-lg font-semibold hover:bg-blue-700 transition-colors shadow-md whitespace-nowrap">
           เริ่มสร้างสคริปต์
         </Link>
@@ -20,9 +21,9 @@ function Home() {
       </div>
 
       {/* Comparison Section */}
-      <div className="mt-24 mb-16 w-full max-w-6xl mx-auto px-4 text-left">
-        <div className="text-center mb-12">
-          <h2 className="text-[1.2rem] xs:text-xl sm:text-3xl font-bold text-slate-900 mb-4 px-1 leading-snug">
+      <div className="mt-12 sm:mt-24 mb-10 w-full max-w-6xl mx-auto px-4 text-left">
+        <div className="text-center mb-8">
+          <h2 className="text-[1.2rem] xs:text-xl sm:text-3xl font-bold text-slate-900 mb-2 px-1 leading-snug">
             <span className="whitespace-nowrap">ทำไมสคริปต์ของเราถึง</span> <br className="sm:hidden" />
             <span className="text-blue-600 whitespace-nowrap">"ปิดการขายได้ดีกว่า"?</span>
           </h2>
