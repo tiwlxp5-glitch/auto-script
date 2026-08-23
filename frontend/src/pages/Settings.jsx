@@ -24,13 +24,26 @@ function Settings() {
       setUser(session.user);
       setDisplayName(session.user.user_metadata?.full_name || '');
       
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', session.user.id)
         .single();
         
-      if (data) setProfile(data);
+      if (error && error.code !== 'PGRST116') {
+        console.error("Settings load error:", error);
+      }
+        
+      if (data) {
+        setProfile(data);
+      } else {
+        // Fallback in case webhook or trigger hasn't created the profile yet
+        setProfile({
+          tier: 'free',
+          credits: 0,
+          stripe_customer_id: null
+        });
+      }
     };
     
     loadUser();
