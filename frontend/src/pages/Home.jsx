@@ -6,7 +6,7 @@ function Home() {
       <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight mb-4 leading-snug">
         เขียนสคริปต์รีวิวสินค้า <br className="hidden sm:block" />
         <span className="text-blue-600">ให้การทำคลิปง่ายขึ้นด้วย</span>
-        <span className="inline-block bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-3 py-0.5 rounded-xl ml-2 shadow-lg transform -rotate-2">AI</span>
+        <span className="inline-block bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-3 py-0.5 rounded-xl ml-2 shadow-lg">AI</span>
       </h1>
       <p className="text-base sm:text-lg text-slate-600 max-w-xl mb-8 px-4 leading-relaxed mt-2">
         ประหยัดเวลาคิดคอนเทนต์ เพียงกรอกจุดเด่นสินค้า ระบบจะจัดโครงสร้างสคริปต์พร้อมถ่ายให้ทันที

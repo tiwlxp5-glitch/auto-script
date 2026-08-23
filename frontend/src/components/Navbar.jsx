@@ -118,17 +118,17 @@ function Navbar() {
                 </div>
               </>
             ) : (
-              <>
-                <Link to="/pricing" className="text-slate-600 hover:text-blue-600 px-3 py-2 font-medium">
-                  ราคาแพ็กเกจ
+              <div className="flex items-center gap-1 sm:gap-4">
+                <Link to="/pricing" className="hidden sm:block text-slate-600 hover:text-blue-600 px-3 py-2 font-medium">
+                  แพ็กเกจ
                 </Link>
-                <Link to="/login" className="text-slate-600 hover:text-blue-600 px-3 py-2 rounded-md font-medium">
+                <Link to="/login" className="text-slate-600 hover:text-blue-600 px-2 py-2 text-sm sm:text-base font-medium whitespace-nowrap">
                   เข้าสู่ระบบ
                 </Link>
-                <Link to="/register" className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-lg font-medium transition-colors">
-                  เริ่มใช้งานฟรี
+                <Link to="/register" className="bg-blue-600 text-white hover:bg-blue-700 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm sm:text-base font-medium transition-colors whitespace-nowrap">
+                  เริ่มใช้ฟรี
                 </Link>
-              </>
+              </div>
             )}
           </div>
         </div>
