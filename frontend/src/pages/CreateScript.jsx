@@ -32,9 +32,9 @@ function CreateScript() {
   ];
 
   const lengths = [
-    { id: 'สั้น', label: '10-15 วินาที (สั้น/กระชับ)' },
-    { id: 'กลาง', label: '30-45 วินาที (ปานกลาง)' },
-    { id: 'ยาว', label: '60 วินาทีขึ้นไป (รายละเอียดเยอะ)' }
+    { id: 'สั้น', time: '10-15 วิ', desc: '(สั้น/กระชับ)' },
+    { id: 'กลาง', time: '30-45 วิ', desc: '(ปานกลาง)' },
+    { id: 'ยาว', time: '60 วิ+', desc: '(ละเอียด)' }
   ];
 
   useEffect(() => {
@@ -165,12 +165,12 @@ function CreateScript() {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+      <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <div className="flex items-center space-x-3 mb-2">
-            <h1 className="text-3xl font-bold text-slate-900">สร้างสคริปต์รีวิวด้วย AI</h1>
+          <div className="flex flex-wrap items-center gap-2 mb-3 sm:flex-nowrap">
+            <h1 className="text-[1.35rem] sm:text-3xl font-bold text-slate-900 whitespace-nowrap overflow-hidden text-ellipsis">สร้างสคริปต์รีวิวด้วย AI</h1>
             {profile && (
-              <div className={`flex items-center space-x-1.5 px-3 py-1 text-xs font-bold uppercase tracking-wide rounded-full border shadow-sm ${
+              <div className={`flex items-center space-x-1.5 px-3 py-1 text-[10px] sm:text-xs font-bold uppercase tracking-wide rounded-full border shadow-sm whitespace-nowrap shrink-0 ${
                 profile.tier === 'pro' 
                   ? 'bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200 text-amber-700' :
                 profile.tier === 'plus' 
@@ -196,9 +196,9 @@ function CreateScript() {
               </div>
             )}
           </div>
-          <p className="text-slate-600">
-            เหลือโควต้าการสร้าง <strong>{profile ? profile.credits : '...'}</strong> สคริปต์
-          </p>
+          <div className="inline-flex items-center bg-blue-50 border border-blue-200 text-blue-700 px-3 py-1.5 rounded-lg text-sm font-medium shadow-sm">
+            เหลือโควต้าการสร้าง <strong className="mx-1.5 text-blue-900 font-black">{profile ? profile.credits : '...'}</strong> สคริปต์
+          </div>
         </div>
       </div>
 
@@ -225,7 +225,7 @@ function CreateScript() {
                   className="w-full px-4 py-2 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none"
                   placeholder="https://shopee.co.th/..."
                 />
-                <p className="text-xs text-amber-700 mt-1">AI จะวิ่งไปอ่านรายละเอียดจากลิงก์นี้ให้โดยอัตโนมัติ!</p>
+                <p className="text-[11px] sm:text-xs text-amber-700 mt-1.5 font-medium whitespace-nowrap overflow-hidden text-ellipsis">AI จะดึงข้อมูลจุดเด่นจากลิงก์นี้ให้อัตโนมัติ!</p>
               </div>
             )}
 
@@ -278,9 +278,9 @@ function CreateScript() {
                         : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
                     }`}
                   >
-                    <span className="block">{l.label.split(' ')[0]} {l.label.split(' ')[1]}</span>
-                    <span className={`text-xs mt-0.5 ${videoLength === l.id ? 'text-blue-400' : 'text-slate-400'}`}>
-                      {l.label.split(' ').slice(2).join(' ')}
+                    <span className="block whitespace-nowrap">{l.time}</span>
+                    <span className={`text-[10px] sm:text-xs mt-0.5 whitespace-nowrap ${videoLength === l.id ? 'text-blue-400' : 'text-slate-400'}`}>
+                      {l.desc}
                     </span>
                   </button>
                 ))}

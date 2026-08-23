@@ -131,7 +131,14 @@ function Settings() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto py-10 px-4 sm:px-6">
+    <div className="max-w-3xl mx-auto py-6 sm:py-10 px-4 sm:px-6">
+      <button 
+        onClick={() => navigate('/create')}
+        className="flex items-center text-slate-500 hover:text-blue-600 font-medium mb-6 transition-colors"
+      >
+        <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+        กลับไปหน้าสร้างสคริปต์
+      </button>
       <h1 className="text-3xl font-bold text-slate-900 mb-8">ตั้งค่าบัญชี (Settings)</h1>
 
       {/* 1. เปลี่ยนชื่อ */}
@@ -170,14 +177,14 @@ function Settings() {
       {/* 2. แพ็กเกจปัจจุบัน */}
       <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 mb-8">
         <h2 className="text-xl font-semibold mb-4">แพ็กเกจของคุณ</h2>
-        <div className="flex items-center justify-between bg-slate-50 p-4 rounded-lg border border-slate-100 mb-4">
+        <div className="flex items-center justify-between bg-slate-50 p-4 rounded-lg border border-slate-100 mb-4 flex-wrap gap-2">
           <div>
-            <p className="text-sm text-slate-500 mb-1">แผนปัจจุบัน (Current Plan)</p>
+            <p className="text-sm text-slate-500 mb-1 whitespace-nowrap">แผนปัจจุบัน (Plan)</p>
             <p className="text-2xl font-bold uppercase text-blue-600">{profile.tier}</p>
           </div>
           <div className="text-right">
-            <p className="text-sm text-slate-500 mb-1">เครดิตคงเหลือ</p>
-            <p className="text-xl font-semibold">{profile.credits} 💎</p>
+            <p className="text-sm text-slate-500 mb-1 whitespace-nowrap">เครดิตคงเหลือ</p>
+            <p className="text-xl font-semibold">{profile.credits}</p>
           </div>
         </div>
         
@@ -188,18 +195,18 @@ function Settings() {
         <div className="flex flex-col sm:flex-row gap-3">
           <button 
             onClick={() => navigate('/pricing')}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 w-full sm:w-auto"
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 w-full sm:w-auto text-center"
           >
-            🚀 ดูแพ็กเกจและอัปเกรด
+            ดูแพ็กเกจและอัปเกรด
           </button>
 
           {profile.tier !== 'free' && profile.stripe_customer_id && (
             <button 
               onClick={handleManageSubscription}
               disabled={isLoadingPortal}
-              className="bg-slate-900 text-white px-6 py-3 rounded-lg font-medium hover:bg-slate-800 disabled:opacity-50 w-full sm:w-auto"
+              className="bg-slate-900 text-white px-6 py-3 rounded-lg font-medium hover:bg-slate-800 disabled:opacity-50 w-full sm:w-auto text-center"
             >
-              {isLoadingPortal ? 'กำลังติดต่อ Stripe...' : '💳 จัดการการตัดบัตร / ยกเลิก'}
+              {isLoadingPortal ? 'กำลังติดต่อ Stripe...' : 'จัดการการตัดบัตร / ยกเลิก'}
             </button>
           )}
         </div>
@@ -216,7 +223,7 @@ function Settings() {
           disabled={isDeleting}
           className="bg-red-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-red-700 disabled:opacity-50"
         >
-          {isDeleting ? 'กำลังลบข้อมูล...' : '🗑️ ลบบัญชีของฉันอย่างถาวร'}
+          {isDeleting ? 'กำลังลบข้อมูล...' : 'ลบบัญชีของฉันอย่างถาวร'}
         </button>
       </div>
     </div>

@@ -64,8 +64,7 @@ function Navbar() {
           <div className="flex items-center space-x-4">
             {user ? (
               <>
-                <Link to="/pricing" className="flex items-center space-x-1 bg-amber-100 text-amber-700 hover:bg-amber-200 px-3 py-1.5 rounded-full font-semibold text-sm transition-colors cursor-pointer">
-                  <span>💎</span>
+                <Link to="/pricing" className="flex items-center bg-amber-100 text-amber-800 hover:bg-amber-200 px-4 py-1.5 rounded-full font-bold text-sm transition-colors cursor-pointer shadow-sm border border-amber-200">
                   <span>{profile ? profile.credits : '...'} เครดิต</span>
                 </Link>
                 
@@ -91,6 +90,13 @@ function Navbar() {
                   {/* Dropdown Box */}
                   {isMenuOpen && (
                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-slate-100 py-1 z-50">
+                      <Link 
+                        to="/history" 
+                        onClick={() => setIsMenuOpen(false)}
+                        className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600 sm:hidden"
+                      >
+                        🗂️ ประวัติสคริปต์
+                      </Link>
                       <Link 
                         to="/settings" 
                         onClick={() => setIsMenuOpen(false)}

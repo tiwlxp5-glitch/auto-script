@@ -75,8 +75,15 @@ function History() {
   });
 
   return (
-    <div className="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-      <div className="flex flex-col md:flex-row justify-between items-center mb-8">
+    <div className="max-w-6xl mx-auto py-6 sm:py-8 px-4 sm:px-6">
+      <button 
+        onClick={() => window.history.back()}
+        className="flex items-center text-slate-500 hover:text-blue-600 font-medium mb-6 transition-colors"
+      >
+        <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+        ย้อนกลับ
+      </button>
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
         <h1 className="text-3xl font-bold text-slate-900 mb-4 md:mb-0">ประวัติการสร้างสคริปต์ 🗂️</h1>
         
         <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
