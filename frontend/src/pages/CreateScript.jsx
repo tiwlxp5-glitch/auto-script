@@ -74,11 +74,20 @@ function CreateScript() {
 
   const handleGenerate = async (e) => {
     e.preventDefault();
-    if (!user || !profile) return;
+    
+    if (!user) {
+      alert("Error: ไม่พบข้อมูล User (ยังไม่ได้ล็อกอิน)");
+      return;
+    }
+    
+    if (!profile) {
+      alert("Error: ยังโหลดข้อมูลโควต้าไม่เสร็จ หรือโหลดไม่พบ");
+      return;
+    }
     
     // 1. เช็คโควต้าเครดิต
     if (profile.credits <= 0) {
-      alert("โควต้าเครดิตของคุณหมดแล้วครับ กรุณาอัปเกรดแพ็กเกจ");
+      alert(`โควต้าเครดิตของคุณหมดแล้วครับ (เหลือ ${profile.credits} เครดิต) กรุณาอัปเกรดแพ็กเกจ`);
       navigate('/pricing');
       return;
     }
