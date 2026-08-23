@@ -10,8 +10,22 @@ function Settings() {
   const [isSaving, setIsSaving] = useState(false);
   const [isLoadingPortal, setIsLoadingPortal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showToast, setShowToast] = useState(false);
   
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // เช็คว่ากลับมาจากการจ่ายเงินสำเร็จหรือไม่
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('upgraded') === 'true') {
+      setShowToast(true);
+      // ลบ query param ออกจาก URL เพื่อไม่ให้โชว์ซ้ำตอนกดรีเฟรช
+      window.history.replaceState({}, document.title, window.location.pathname);
+      
+      // ปิดแจ้งเตือนอัตโนมัติหลังจาก 5 วินาที
+      setTimeout(() => setShowToast(false), 5000);
+    }
+  }, []);
 
   useEffect(() => {
     const loadUser = async () => {
@@ -131,7 +145,18 @@ function Settings() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto py-6 sm:py-10 px-4 sm:px-6">
+    <div className="max-w-4xl mx-auto px-4 py-8 relative">
+      {/* Toast Notification */}
+      {showToast && (
+        <div className="fixed top-20 right-4 md:right-8 bg-green-500 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 z-50 animate-[bounce_1s_ease-in-out]">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <div>
+            <h4 className="font-bold">ชำระเงินสำเร็จ! 🎉</h4>
+            <p className="text-sm text-green-100">อัปเกรดแพ็กเกจและเติมเครดิตเรียบร้อยแล้ว</p>
+          </div>
+        </div>
+      )}
+
       <button 
         onClick={() => navigate('/create')}
         className="flex items-center text-slate-500 hover:text-blue-600 font-medium mb-6 transition-colors"
@@ -139,7 +164,7 @@ function Settings() {
         <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
         กลับไปหน้าสร้างสคริปต์
       </button>
-      <h1 className="text-3xl font-bold text-slate-900 mb-8">ตั้งค่าบัญชี (Settings)</h1>
+      <h1 className="text-3xl font-extrabold text-slate-900 mb-8">บัญชีผู้ใช้และการตั้งค่า</h1>
 
       {/* 1. เปลี่ยนชื่อ */}
       <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 mb-8">
