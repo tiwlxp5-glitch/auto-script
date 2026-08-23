@@ -161,10 +161,13 @@ function Pricing() {
           </div>
           <h3 className="text-2xl font-semibold text-slate-900">Plus</h3>
           <p className="mt-4 text-slate-500 flex-1">สำหรับพ่อค้าแม่ค้าพาร์ทไทม์ ปลดล็อกฟีเจอร์คุ้มค่า</p>
-          <p className="mt-8">
-            <span className="text-4xl font-extrabold text-slate-900">฿249</span>
-            <span className="text-base font-medium text-slate-500"> /ครั้ง</span>
-          </p>
+          <div className="mt-8 flex flex-col">
+            <div className="flex items-end gap-2">
+              <span className="text-xl font-bold text-slate-400 line-through decoration-red-500/50">฿490</span>
+              <span className="text-4xl font-extrabold text-slate-900">฿249</span>
+            </div>
+            <span className="text-sm font-medium text-blue-600 mt-2 bg-blue-50 w-fit px-2 py-1 rounded">เฉลี่ยเพียง 4.1 บาท/สคริปต์</span>
+          </div>
           <ul className="mt-6 space-y-4 flex-1">
             <li className="flex items-start">
               <span className="text-blue-500 mr-3">✓</span>
@@ -200,10 +203,13 @@ function Pricing() {
           </div>
           <h3 className="text-2xl font-semibold text-white">Pro</h3>
           <p className="mt-4 text-slate-400 flex-1">สายเอเจนซี่ อินฟลูเอนเซอร์มืออาชีพ จัดเต็มทุกฟีเจอร์</p>
-          <p className="mt-8">
-            <span className="text-4xl font-extrabold text-white">฿590</span>
-            <span className="text-base font-medium text-slate-400"> /ครั้ง</span>
-          </p>
+          <div className="mt-8 flex flex-col">
+            <div className="flex items-end gap-2">
+              <span className="text-xl font-bold text-slate-500 line-through decoration-red-500/80">฿990</span>
+              <span className="text-4xl font-extrabold text-white">฿590</span>
+            </div>
+            <span className="text-sm font-medium text-amber-400 mt-2 bg-amber-400/10 w-fit px-2 py-1 rounded border border-amber-400/20">เฉลี่ยเพียง 3.9 บาท/สคริปต์ (คุ้มสุด)</span>
+          </div>
           <ul className="mt-6 space-y-4 flex-1">
             <li className="flex items-start">
               <span className="text-amber-400 mr-3">✓</span>
