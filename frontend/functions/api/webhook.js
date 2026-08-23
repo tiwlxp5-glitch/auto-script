@@ -54,15 +54,15 @@ export async function onRequestPost({ request, env }) {
         const currentCredits = profile?.credits || 0;
         const newCredits = currentCredits + addCredits;
 
-        // อัปเดตตู้เอกสาร (Supabase)
+        // อัปเดตหรือสร้างตู้เอกสาร (Supabase) ด้วย upsert
         await supabase
           .from('profiles')
-          .update({ 
+          .upsert({ 
+            id: userId,
             tier: tier, 
             credits: newCredits,
-            stripe_customer_id: session.customer // เก็บ ID ลูกค้าของ Stripe ไว้สำหรับตัดบัตรเดือนหน้า
-          })
-          .eq('id', userId);
+            stripe_customer_id: session.customer 
+          });
       }
     } 
     else if (event.type === 'invoice.payment_succeeded') {
