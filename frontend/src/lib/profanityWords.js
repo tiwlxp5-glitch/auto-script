@@ -1,66 +1,74 @@
-// Dictionary of banned profanity and explicit words
 export const profanityWords = [
-  "ควย",
-  "เหี้ย",
-  "สัส",
-  "สัตว์",
-  "เย็ด",
-  "หี",
-  "แตด",
-  "เงี่ยน",
-  "เสือก",
-  "กะหรี่",
-  "ระยำ",
-  "จัญไร",
-  "ส้นตีน",
-  "แม่ง",
-  "ชิบหาย",
-  "ฉิบหาย",
-  "โคตร", // Sometimes used as slang, but often in profanity context. Will leave it out if too broad? Actually 'โคตร' is very common (e.g., โคตรดี). Let's NOT ban 'โคตร'.
-  "พ่อง",
-  "แม่มึง",
-  "พ่อมึง",
-  "ดอกทอง",
-  "ตอแหล",
-  "แรด",
-  "หน้าตัวเมีย",
-  "ไอ้สัส",
-  "อีสัส",
-  "ไอ้เหี้ย",
-  "อีเหี้ย",
-  "เย็ดแม่",
-  "ควาย", // Could be animal, but usually an insult.
-  "อีดอก",
-  "ไอ้สัตว์",
-  "อีสัตว์",
-  "fuck",
-  "shit",
-  "bitch",
-  "bastard",
-  "asshole",
-  "dick",
-  "pussy",
-  "cunt",
-  "whore",
-  "slut"
+  // Sexual Organs (Explicit)
+  "ควย", "ค.ย", "ค_ย", "หี", "ฮี", "แตด", "หำ", "จิ๋ม", "จู๋", "เจี๊ยว", "ไข่ดัน",
+  
+  // Sexual Acts (Explicit)
+  "เย็ด", "เด้า", "เอาแม่", "เงี่ยน", "อมควย", "เลียหี",
+  
+  // Insults & Slurs (Animals/Creatures)
+  "เหี้ย", "เชี่ย", "สัส", "ไอ้สัส", "อีสัส", "สัตว์", "ควาย", "ไอ้ควาย", "อีควาย", "หมา", "หน้าหมา", "ลูกหมา",
+  
+  // Insults & Slurs (Degrading)
+  "กะหรี่", "กะรี่", "ดอกทอง", "แรด", "หน้าตัวเมีย", "หน้าหี", "หน้าส้นตีน", "ส้นตีน",
+  
+  // Swear words & Curses
+  "แม่ง", "ชิบหาย", "ฉิบหาย", "ระยำ", "จัญไร", "เปรต", "เสือก",
+  
+  // Family Insults
+  "พ่อง", "พ่อมึง", "แม่มึง", "พ่อตาย", "แม่ตาย", "เย็ดแม่",
+  
+  // English Profanity
+  "fuck", "shit", "bitch", "bastard", "asshole", "dick", "pussy", "cunt", "whore", "slut", "motherfucker"
 ];
 
-// Refined list removing false positives (like โคตร, ควาย could be borderline but okay to ban in this context)
-const refinedProfanity = [
-  "ควย", "เหี้ย", "สัส", "เย็ด", "หี", "แตด", "เงี่ยน", "กะหรี่", "ระยำ", "จัญไร", 
-  "ส้นตีน", "แม่ง", "ชิบหาย", "ฉิบหาย", "พ่อง", "แม่มึง", "พ่อมึง", "ดอกทอง", "ตอแหล", 
-  "หน้าตัวเมีย", "ไอ้สัส", "อีสัส", "ไอ้เหี้ย", "อีเหี้ย", "เย็ดแม่", "อีดอก", "ไอ้สัตว์", 
-  "อีสัตว์", "fuck", "shit", "bitch", "bastard", "asshole", "dick", "pussy", "cunt", "whore", "slut"
-];
+// Helper to escape regex special characters
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
 
 export function containsProfanity(text) {
   if (!text) return false;
   
   const lowerText = text.toLowerCase();
   
-  for (let word of refinedProfanity) {
-    if (lowerText.includes(word.toLowerCase())) {
-      return true;
+  for (let word of profanityWords) {
+    // Exact word boundary matching for Thai is tricky because there are no spaces.
+    // However, if we just do a simple substring check, "หำ" blocks "มหำมาตย์" (if it existed), 
+    // but the user chose "exact word". For Thai, since there are no spaces, 
+    // basic substring is actually required unless we use a tokenizer.
+    // To prevent "ข้าวต้มมัด" from blocking (if we had banned 'ต้มมัด'), we have to be careful about the dictionary.
+    // Since our dictionary is very specific (หำ, ควย, หี), substring matching is the only way in JS without NLP.
+    
+    // For English words, we CAN use word boundaries
+    if (/^[a-zA-Z]+$/.test(word)) {
+      const regex = new RegExp(`\\b${escapeRegExp(word)}\\b`, 'i');
+      if (regex.test(lowerText)) {
+        return true;
+      }
+    } else {
+      // For Thai words, we must use includes(). We just need to make sure our dictionary 
+      // doesn't contain overly short/common syllables that appear in normal words.
+      if (lowerText.includes(word)) {
+        // Special case check for "หำ" to prevent False Positives with "ระห่ำ" (ระ-ห่ำ) or similar if needed.
+        // Actually, "หำ" is quite unique.
+        // Wait, "หมา" -> "หมวก" (no), "มหาวิทยาลัย" (no). "หมา" is fine.
+        // "หี" -> "หีบ" (Heeb). "หีบ" will match "หี"! This is a false positive!
+        // To fix this, we can check if it's part of a safe word.
+        
+        const safeWords = ["หีบ", "มหาวิทยาลัย", "หมาด", "สมาน", "อหังการ"];
+        let isSafe = false;
+        
+        // If the text contains the profanity, let's see if the text ONLY contains it as part of a safe word.
+        // A simple way is to remove safe words from the text before checking.
+        let cleanedText = lowerText;
+        for (let safe of safeWords) {
+          cleanedText = cleanedText.split(safe).join('');
+        }
+        
+        if (cleanedText.includes(word)) {
+          return true;
+        }
+      }
     }
   }
   
