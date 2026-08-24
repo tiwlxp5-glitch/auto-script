@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,27 +11,12 @@ function Pricing() {
   const PLUS_LINK = "https://buy.stripe.com/9B6fZi0454Tg7ZSf5Nbwk00";
   const PRO_LINK = "https://buy.stripe.com/3cIbJ2045adAgwoe1Jbwk01";
 
-  useEffect(() => {
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      const currentUser = session?.user ?? null;
-      setUser(currentUser);
-      
-      if (currentUser) {
-        const { data } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', currentUser.id)
-          .single();
-        if (data) setProfile(data);
-      }
-    });
-  }, []);
-
   const handleCheckout = (baseLink) => {
     if (isRedirecting) return;
     setIsRedirecting(true);
     if (!user) {
       alert("กรุณาเข้าสู่ระบบก่อนชำระเงินครับ!");
+      setIsRedirecting(false);
       navigate('/login');
       return;
     }

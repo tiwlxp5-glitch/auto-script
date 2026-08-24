@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 function History() {
-  const { user, profile, loading: authLoading, refreshProfile } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [scripts, setScripts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -12,22 +12,12 @@ function History() {
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    loadHistory();
-  }, []);
-
-  const loadHistory = async () => {
+  const loadHistory = async (userId) => {
     setLoading(true);
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session?.user) {
-      navigate('/login');
-      return;
-    }
-
     const { data, error } = await supabase
       .from('scripts')
       .select('*')
-      .eq('user_id', session.user.id)
+      .eq('user_id', userId)
       .order('created_at', { ascending: false });
 
     if (!error && data) {
@@ -35,6 +25,16 @@ function History() {
     }
     setLoading(false);
   };
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      navigate('/login');
+      return;
+    }
+    if (user) {
+      loadHistory(user.id);
+    }
+  }, [user, authLoading, navigate]);
 
   const toggleFavorite = async (scriptId, currentStatus) => {
     // Optimistic UI update
@@ -48,10 +48,14 @@ function History() {
 
   const copyToClipboard = (scriptData) => {
     try {
+      if (!scriptData?.script_blocks) {
+        alert('ไม่พบข้อมูลบทพูดสำหรับคัดลอก');
+        return;
+      }
       const fullText = scriptData.script_blocks.map(b => b.audio_spoken).join(' ');
       navigator.clipboard.writeText(fullText);
       alert('คัดลอกสคริปต์เรียบร้อยแล้ว!');
-    } catch (err) {
+    } catch {
       alert('ไม่สามารถคัดลอกได้');
     }
   };
@@ -171,7 +175,7 @@ function History() {
                     try {
                       const parsed = typeof script.content === 'string' ? JSON.parse(script.content) : script.content;
                       return parsed?.script_blocks?.[0]?.audio_spoken || 'ไม่มีข้อมูล';
-                    } catch (e) {
+                    } catch {
                       return 'ไม่มีข้อมูล';
                     }
                   })()}"
@@ -181,8 +185,12 @@ function History() {
               <div className="p-4 bg-white border-t border-slate-100 flex justify-end space-x-2">
                 <button 
                   onClick={() => {
-                    const parsed = typeof script.content === 'string' ? JSON.parse(script.content) : script.content;
-                    exportToText(parsed, script.product_name)
+                    try {
+                      const parsed = typeof script.content === 'string' ? JSON.parse(script.content) : script.content;
+                      exportToText(parsed, script.product_name);
+                    } catch {
+                      alert('ไม่สามารถอ่านข้อมูลสคริปต์ได้');
+                    }
                   }}
                   className="text-sm px-3 py-2 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-lg font-medium transition-colors flex items-center gap-1.5"
                 >
@@ -190,8 +198,12 @@ function History() {
                 </button>
                 <button 
                   onClick={() => {
-                    const parsed = typeof script.content === 'string' ? JSON.parse(script.content) : script.content;
-                    copyToClipboard(parsed)
+                    try {
+                      const parsed = typeof script.content === 'string' ? JSON.parse(script.content) : script.content;
+                      copyToClipboard(parsed);
+                    } catch {
+                      alert('ไม่สามารถอ่านข้อมูลสคริปต์ได้');
+                    }
                   }}
                   className="text-sm px-3 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg font-medium transition-colors flex items-center gap-1.5"
                 >

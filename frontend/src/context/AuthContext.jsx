@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase';
 const AuthContext = createContext({
   user: null,
   profile: null,
+  setProfile: () => {},
   loading: true,
   refreshProfile: async () => {},
   signOut: async () => {}
@@ -33,7 +34,7 @@ export function AuthProvider({ children }) {
     if (user?.id) {
       await fetchProfile(user.id);
     }
-  }, [user?.id, fetchProfile]);
+  }, [user, fetchProfile]);
 
   useEffect(() => {
     let isMounted = true;

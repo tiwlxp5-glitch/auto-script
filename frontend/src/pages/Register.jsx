@@ -16,7 +16,7 @@ function Register() {
     setError(null);
 
     // ส่งคำสั่งไปบอก Supabase ให้สร้างผู้ใช้ใหม่
-    const { data, error } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
       email,
       password,
     });

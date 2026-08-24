@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 function Settings() {
-  const { user, profile } = useAuth();
+  const { user, profile, loading, refreshProfile } = useAuth();
   const [displayName, setDisplayName] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const [isLoadingPortal, setIsLoadingPortal] = useState(false);
@@ -14,58 +14,32 @@ function Settings() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (profile) {
-      setDisplayName(profile.display_name || '');
+    if (!loading && !user) {
+      navigate('/login');
     }
-  }, [profile]);
-      
+  }, [user, loading, navigate]);
+
+  useEffect(() => {
+    if (user?.user_metadata?.full_name) {
+      setDisplayName(user.user_metadata.full_name);
+    } else if (profile?.display_name) {
+      setDisplayName(profile.display_name);
+    }
+  }, [user, profile]);
 
   useEffect(() => {
     // เช็คว่ากลับมาจากการจ่ายเงินสำเร็จหรือไม่
     const params = new URLSearchParams(window.location.search);
     if (params.get('upgraded') === 'true') {
       setShowToast(true);
+      refreshProfile();
       // ลบ query param ออกจาก URL เพื่อไม่ให้โชว์ซ้ำตอนกดรีเฟรช
       window.history.replaceState({}, document.title, window.location.pathname);
       
       // ปิดแจ้งเตือนอัตโนมัติหลังจาก 5 วินาที
       setTimeout(() => setShowToast(false), 5000);
     }
-  }, []);
-
-  useEffect(() => {
-    const loadUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.user) {
-        navigate('/login');
-        return;
-      }
-      
-      setUser(session.user);
-      setDisplayName(session.user.user_metadata?.full_name || '');
-      
-      const { data, error } = await supabase
-        .rpc('sync_profile_credits', { p_user_id: session.user.id })
-        .single();
-        
-      if (error && error.code !== 'PGRST116') {
-        console.error("Settings load error:", error);
-      }
-        
-      if (data) {
-        setProfile(data);
-      } else {
-        // Fallback in case webhook or trigger hasn't created the profile yet
-        setProfile({
-          tier: 'free',
-          credits: 0,
-          stripe_customer_id: null
-        });
-      }
-    };
-    
-    loadUser();
-  }, [navigate]);
+  }, [refreshProfile]);
 
   const handleUpdateName = async (e) => {
     e.preventDefault();
@@ -80,6 +54,7 @@ function Settings() {
       alert('เกิดข้อผิดพลาดในการบันทึกชื่อ');
     } else {
       alert('บันทึกชื่อเรียบร้อยแล้ว!');
+      refreshProfile();
     }
   };
 
@@ -147,7 +122,7 @@ function Settings() {
         const errData = await res.text();
         alert("ไม่สามารถลบบัญชีได้: " + errData);
       }
-    } catch (err) {
+    } catch {
       alert("เกิดข้อผิดพลาดในการลบบัญชี");
     } finally {
       setIsDeleting(false);

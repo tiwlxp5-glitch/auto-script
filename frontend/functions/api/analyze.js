@@ -94,7 +94,7 @@ export async function onRequestPost({ request, env }) {
               return `--- SOURCE: ${url} ---\n${text.substring(0, 5000)}`; // limit 5000 chars per URL to save context
             }
             return `--- SOURCE: ${url} ---\n[อ่านข้อมูลเว็บนี้ไม่สำเร็จ]`;
-          } catch (e) {
+          } catch {
             return `--- SOURCE: ${url} ---\n[เกิดข้อผิดพลาดในการเชื่อมต่อเว็บ]`;
           }
         }));
@@ -103,7 +103,8 @@ export async function onRequestPost({ request, env }) {
         await writer.write(encoder.encode("\nประมวลผลข้อมูลเสร็จสิ้น! AI กำลังสรุปข้อมูล...\n\n=================================\n\n"));
 
         // 4. Send to Gemini for Streaming Output
-        const ai = new GoogleGenAI({ apiKey: env.GEMINI_API_KEY });
+        const apiKey = env.GEMINI_API_KEY || env.VITE_GEMINI_API_KEY;
+        const ai = new GoogleGenAI({ apiKey });
         const prompt = `You are an expert e-commerce copywriter.
 Analyze the following product details scraped from multiple URLs.
 Extract and summarize the data into 3 distinct sections.

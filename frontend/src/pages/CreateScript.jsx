@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabase';
 import { scanForBannedWords, highlightBannedWords } from '../lib/bannedWords';
 import { containsProfanity } from '../lib/profanityWords';
@@ -6,7 +6,8 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 function CreateScript() {
-  const { user, profile, loading, refreshProfile } = useAuth();
+  const { user, profile, setProfile, loading } = useAuth();
+  const analyzeAbortRef = useRef(null);
   const [productName, setProductName] = useState('');
   const [productDetails, setProductDetails] = useState('');
   const [pricePromo, setPricePromo] = useState('');
@@ -75,28 +76,13 @@ function CreateScript() {
     if (!loading && !user) navigate('/login');
   }, [user, loading, navigate]);
 
-  const fetchProfile = async (userId) => {
-    try {
-      const { data, error } = await supabase
-        .rpc('sync_profile_credits', { p_user_id: userId })
-        .single();
-        
-      if (error) {
-        console.error("Error fetching profile:", error.message);
-        // Fallback or retry logic can be added here
+  useEffect(() => {
+    return () => {
+      if (analyzeAbortRef.current) {
+        analyzeAbortRef.current.abort();
       }
-      
-      if (data) {
-        setProfile(data);
-      } else {
-        // ถ้าไม่มีข้อมูลในตาราง profile เลย ให้จำลองไปก่อนเพื่อให้กดสร้างได้
-        setProfile({ credits: 0, tier: 'free', trial_pro_remaining: 0 });
-      }
-    } catch (err) {
-      console.error("Fetch profile exception:", err);
-      setProfile({ credits: 0, tier: 'free', trial_pro_remaining: 0 });
-    }
-  };
+    };
+  }, []);
 
   const effectiveTier = profile ? (profile.tier === 'free' && profile.trial_pro_remaining > 0 ? 'pro' : profile.tier) : 'free';
 
@@ -136,6 +122,9 @@ function CreateScript() {
     try {
       // ดึง JWT Token ปัจจุบันของผู้ใช้เพื่อส่งไปยืนยันตัวตนที่ Backend
       const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) {
+        throw new Error('กรุณาล็อกอินใหม่');
+      }
       
       const payload = {
         productName,
@@ -179,7 +168,7 @@ function CreateScript() {
       setGeneratedScript(resultJson);
       
       // อัปเดตเครดิตในหน้าเว็บให้ตรงกับที่ Backend หักไป
-      setProfile({ ...profile, credits: newCredits });
+      setProfile(prev => prev ? { ...prev, credits: newCredits } : prev);
       window.dispatchEvent(new Event('profileUpdated'));
 
     } catch (err) {
@@ -300,6 +289,7 @@ function CreateScript() {
         if (profile) {
           setProfile(prev => ({ ...prev, credits: prev.credits + 1 }));
         }
+        window.dispatchEvent(new Event('profileUpdated'));
         setTimeout(() => {
           alert('⚠️ AI ไม่สามารถดึงข้อมูลสินค้าจากลิงก์ได้ (อาจติดระบบป้องกันบอทของแพลตฟอร์ม)\n\nไม่ต้องกังวลครับ ระบบได้ทำการ "คืนเครดิต" ให้คุณเรียบร้อยแล้ว!');
           setShowTerminal(false);
@@ -309,6 +299,7 @@ function CreateScript() {
       }
 
       setTerminalText(prev => prev + '\n\n✅ วิเคราะห์เสร็จสมบูรณ์! กำลังเติมข้อมูลลงในฟอร์ม...');
+      window.dispatchEvent(new Event('profileUpdated'));
       
       // Parse the streamed JSON (assuming the AI is prompted to return valid JSON at the end)
       // Alternatively, we can just extract with Regex if the AI streamed a marked up format
@@ -328,9 +319,10 @@ function CreateScript() {
       }, 3000);
 
     } catch (err) {
-      if (profile) {
-        setProfile(prev => ({ ...prev, credits: prev.credits + 1 }));
+      if (err.name === 'AbortError') {
+        return;
       }
+      setProfile(prev => prev ? { ...prev, credits: prev.credits + 1 } : prev);
       setTerminalText(prev => prev + `\n\n❌ Error: ${err.message}`);
       setIsAnalyzing(false);
     }

@@ -121,8 +121,6 @@ export async function onRequestPost(context) {
 
     const effectiveTier = (profile.tier === 'free' && profile.trial_pro_remaining > 0) ? 'pro' : profile.tier;
 
-    
-
     // 4. Jina AI Scraping (ทำที่ Backend หมดปัญหา CORS - เฉพาะ Tier Pro หรือ Trial Pro)
     userIdForRefund = user.id;
     const { data: updatedCredits, error: creditError } = await supabaseAdmin.rpc('increment_credits', {
@@ -130,6 +128,7 @@ export async function onRequestPost(context) {
       p_amount: -1
     });
     if (creditError) {
+      console.error("RPC increment_credits deduction error:", creditError);
       return new Response(JSON.stringify({ error: "Failed to deduct credits" }), { status: 500, headers: { 'Content-Type': 'application/json' } });
     }
     if (updatedCredits === null || updatedCredits < 0) {
@@ -233,7 +232,7 @@ export async function onRequestPost(context) {
       console.error("Execution failed after deduction. Issuing compensatory refund:", err);
       try {
         await supabaseAdmin.rpc('increment_credits', { p_user_id: userIdForRefund, p_amount: 1 });
-      } catch (refundErr) {}
+      } catch {}
     }
     console.error("Generate API Error:", err);
     return new Response(JSON.stringify({ error: err.message || "Internal Server Error" }), { 

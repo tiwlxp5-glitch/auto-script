@@ -56,7 +56,6 @@ export function containsProfanity(text) {
         // To fix this, we can check if it's part of a safe word.
         
         const safeWords = ["หีบ", "มหาวิทยาลัย", "หมาด", "สมาน", "อหังการ"];
-        let isSafe = false;
         
         // If the text contains the profanity, let's see if the text ONLY contains it as part of a safe word.
         // A simple way is to remove safe words from the text before checking.

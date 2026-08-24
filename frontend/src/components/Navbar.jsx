@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { supabase } from '../lib/supabase';
 
 function Navbar() {
-  const { user, profile } = useAuth();
+  const { user, profile, refreshProfile, signOut } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const menuRef = useRef(null);
@@ -21,46 +20,18 @@ function Navbar() {
   }, []);
 
   useEffect(() => {
-    // เช็คว่ามีใครล็อกอินอยู่ไหมตอนโหลดหน้าเว็บ
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      if (session?.user) fetchProfile(session.user.id);
-    });
-
-    // ดักฟังการเปลี่ยนแปลง (เช่น ตอนล็อกอิน หรือ ล็อกเอาท์)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        fetchProfile(session.user.id);
-      } else {
-        setProfile(null);
-      }
-    });
-
     const handleProfileUpdate = () => {
-      supabase.auth.getSession().then(({ data: { session } }) => {
-        if (session?.user) fetchProfile(session.user.id);
-      });
+      refreshProfile();
     };
     window.addEventListener('profileUpdated', handleProfileUpdate);
 
     return () => {
-      subscription.unsubscribe();
       window.removeEventListener('profileUpdated', handleProfileUpdate);
     };
-  }, []);
-
-  const fetchProfile = async (userId) => {
-    const { data } = await supabase
-      .from('profiles')
-      .select('credits, tier')
-      .eq('id', userId)
-      .single();
-    if (data) setProfile(data);
-  };
+  }, [refreshProfile]);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    await signOut();
     navigate('/');
   };
 
@@ -83,7 +54,6 @@ function Navbar() {
                 <Link to="/history" className="text-slate-600 hover:text-blue-600 px-3 py-2 font-medium hidden sm:block">
                   ประวัติ
                 </Link>
-              <Link to="/pricing" className="block pl-3 pr-4 py-2 text-base font-medium text-slate-600 hover:text-amber-600 hover:bg-slate-50 transition-colors">เติมเครดิต</Link>
                 <Link to="/create" className="text-slate-600 hover:text-blue-600 px-3 py-2 font-medium hidden sm:block">
                   สร้างสคริปต์
                 </Link>
@@ -104,11 +74,25 @@ function Navbar() {
                   {isMenuOpen && (
                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-slate-100 py-1 z-50">
                       <Link 
+                        to="/create" 
+                        onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600 sm:hidden"
+                      >
+                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg> สร้างสคริปต์
+                      </Link>
+                      <Link 
                         to="/history" 
                         onClick={() => setIsMenuOpen(false)}
                         className="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600 sm:hidden"
                       >
                         <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z"></path></svg> ประวัติสคริปต์
+                      </Link>
+                      <Link 
+                        to="/pricing" 
+                        onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-amber-600 sm:hidden"
+                      >
+                        <svg className="w-4 h-4 mr-2 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg> เติมเครดิต
                       </Link>
                       <Link 
                         to="/settings" 
