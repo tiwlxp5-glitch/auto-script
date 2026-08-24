@@ -57,8 +57,8 @@ export async function onRequestPost({ request, env }) {
 
     // 2. Deduct 1 credit for analysis (Atomic RPC)
     const { data: updatedCredits, error: creditError } = await supabase.rpc('increment_credits', {
-      user_id: user.id,
-      amount: -1
+      p_user_id: user.id,
+      p_amount: -1
     });
 
     if (creditError) {

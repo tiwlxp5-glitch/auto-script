@@ -78,8 +78,8 @@ export async function onRequestPost({ request, env }) {
 
         // 2. เติมเครดิตแบบ Atomic ด้วย Supabase RPC increment_credits เพื่อป้องกันปัญหา Race Condition
         const { error: rpcError } = await supabase.rpc('increment_credits', {
-          user_id: userId,
-          amount: addCredits
+          p_user_id: userId,
+          p_amount: addCredits
         });
 
         if (rpcError) {

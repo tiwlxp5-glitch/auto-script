@@ -199,8 +199,8 @@ export async function onRequestPost(context) {
 
     // 7. หักเครดิตแบบ Atomic ด้วย Supabase RPC increment_credits หลังจากบันทึกสำเร็จเท่านั้น
     const { data: updatedCredits, error: rpcError } = await supabaseAdmin.rpc('increment_credits', {
-      user_id: user.id,
-      amount: -1
+      p_user_id: user.id,
+      p_amount: -1
     });
 
     if (rpcError) {
