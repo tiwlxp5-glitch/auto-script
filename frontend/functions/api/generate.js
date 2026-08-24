@@ -89,41 +89,53 @@ export async function onRequestPost(context) {
 
     // 2. ดึงข้อมูลจาก Request
     const body = await request.json();
-    const { productName, productDetails, pricePromo, videoLength, mode, competitor, targetAudience, productUrl } = body;
+    const { productName, productDetails, pricePromo, videoLength, mode, competitor, targetAudience, productUrl, productUrls } = body;
 
-    // 3. ใช้ Service Role ดึงข้อมูล Profile ปัจจุบันเพื่อความปลอดภัย (ห้ามเชื่อ Client)
+    // 3. ใช้ Service Role ดึงข้อมูล Profile ป้องกันการปลอมแปลง (ปลอดภัยกว่า Client)
     const supabaseAdmin = createClient(env.VITE_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY);
-    const { data: profile, error: profileError } = await supabaseAdmin
+    const { data: profile } = await supabaseAdmin
       .from('profiles')
-      .select('credits, tier, trial_pro_remaining, last_free_reset')
+      .select('*')
       .eq('id', user.id)
       .single();
 
-    if (profileError || !profile) {
-      return new Response(JSON.stringify({ error: "Profile not found" }), { 
-        status: 404,
-        headers: { 'Content-Type': 'application/json' }
-      });
+    if (!profile) {
+      return new Response(JSON.stringify({ error: 'Profile not found' }), { status: 404, headers: { 'Content-Type': 'application/json' } });
     }
 
-    // Evaluate effective tier based on Free Pro Trial
     const effectiveTier = (profile.tier === 'free' && profile.trial_pro_remaining > 0) ? 'pro' : profile.tier;
 
-    if (profile.credits <= 0) {
-      return new Response(JSON.stringify({ error: "Insufficient credits" }), { 
-        status: 403,
-        headers: { 'Content-Type': 'application/json' }
-      });
+    if (profile.credits < 1) {
+      return new Response(JSON.stringify({ error: 'เครดิตไม่พอ กรุณาเติมเครดิต' }), { status: 402, headers: { 'Content-Type': 'application/json' } });
     }
 
-    // 4. Jina AI Scraping (ทำที่ Backend ปลอดภัยจาก CORS - เฉพาะ Tier Pro หรือ Trial Pro)
+    // 4. Jina AI Scraping (ทำที่ Backend หมดปัญหา CORS - เฉพาะ Tier Pro หรือ Trial Pro)
     let finalDetails = productDetails;
-    if (effectiveTier === 'pro' && productUrl) {
+    
+    // Support backwards compatibility for productUrl (string) and new productUrls (array)
+    const urlsToScrape = [];
+    if (productUrls && Array.isArray(productUrls)) {
+      urlsToScrape.push(...productUrls.filter(u => u.trim() !== ''));
+    } else if (productUrl) {
+      urlsToScrape.push(productUrl);
+    }
+
+    if (effectiveTier === 'pro' && urlsToScrape.length > 0) {
       try {
-        const jinaRes = await fetch(`https://r.jina.ai/${productUrl}`);
-        if (jinaRes.ok) {
-          const scrapedText = await jinaRes.text();
-          finalDetails += `\n\n[ข้อมูลเสริมจากการสแกน URL]:\n${scrapedText.substring(0, 3000)}`;
+        const scrapedContents = await Promise.all(urlsToScrape.map(async (url) => {
+          const jinaRes = await fetch(`https://r.jina.ai/${url}`, {
+            headers: { 'Accept': 'text/plain', 'X-Return-Format': 'markdown' }
+          });
+          if (jinaRes.ok) {
+            const text = await jinaRes.text();
+            return `--- ข้อมูลจากเว็บ ${url} ---\n${text.substring(0, 3000)}`;
+          }
+          return '';
+        }));
+        
+        const combinedScraped = scrapedContents.filter(c => c).join('\n\n');
+        if (combinedScraped) {
+          finalDetails += `\n\n[ข้อมูลสกัดเพิ่มเติมจาก URL]:\n${combinedScraped}`;
         }
       } catch (err) {
         console.log("Jina scrape error ignored:", err);

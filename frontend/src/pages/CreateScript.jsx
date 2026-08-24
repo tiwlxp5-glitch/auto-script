@@ -13,7 +13,12 @@ function CreateScript() {
   // Premium fields
   const [competitor, setCompetitor] = useState('');
   const [targetAudience, setTargetAudience] = useState('');
-  const [productUrl, setProductUrl] = useState('');
+  const [productUrls, setProductUrls] = useState(['']); // รองรับหลายลิงก์
+  
+  // Streaming Terminal States
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [terminalText, setTerminalText] = useState('');
+  const [showTerminal, setShowTerminal] = useState(false);
   
   const [generatedScript, setGeneratedScript] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -112,7 +117,7 @@ function CreateScript() {
         mode,
         competitor: mode === 'เปรียบเทียบชัดๆ' ? competitor : '',
         targetAudience: effectiveTier !== 'free' ? targetAudience : '',
-        productUrl: effectiveTier === 'pro' ? productUrl : ''
+        productUrls: effectiveTier === 'pro' ? productUrls.filter(url => url.trim() !== '') : []
       };
 
       // ยิงข้อมูลไปให้ Backend (Cloudflare Function) จัดการรวดเดียว
@@ -164,6 +169,105 @@ function CreateScript() {
       .join('\n\n');
     navigator.clipboard.writeText(textToCopy);
     alert('คัดลอกสคริปต์เรียบร้อยแล้ว!');
+  };
+
+  const handleAddUrl = () => {
+    if (productUrls.length < 5) {
+      setProductUrls([...productUrls, '']);
+    }
+  };
+
+  const handleRemoveUrl = (index) => {
+    const newUrls = productUrls.filter((_, i) => i !== index);
+    if (newUrls.length === 0) newUrls.push('');
+    setProductUrls(newUrls);
+  };
+
+  const handleUpdateUrl = (index, value) => {
+    const newUrls = [...productUrls];
+    newUrls[index] = value;
+    setProductUrls(newUrls);
+  };
+
+  const handleAnalyze = async () => {
+    const validUrls = productUrls.filter(u => u.trim() !== '');
+    if (validUrls.length === 0) {
+      setError('กรุณาใส่ลิงก์อย่างน้อย 1 ลิงก์ก่อนกดวิเคราะห์ครับ');
+      return;
+    }
+    
+    // Check credits before making request
+    if (profile.credits < 1) {
+      setError('เครดิตไม่พอสำหรับการวิเคราะห์ครับ');
+      return;
+    }
+
+    try {
+      setError('');
+      setIsAnalyzing(true);
+      setShowTerminal(true);
+      setTerminalText('> เริ่มต้นกระบวนการ AI Analysis...\n> กำลังอ่านข้อมูลจากลิงก์ที่ระบุ...\n');
+      
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error('กรุณาล็อกอินใหม่');
+
+      const response = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`
+        },
+        body: JSON.stringify({ urls: validUrls })
+      });
+
+      if (!response.ok) {
+        const errData = await response.json();
+        throw new Error(errData.error || 'การวิเคราะห์ล้มเหลว');
+      }
+
+      // Handle Streaming Response
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let fullText = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        
+        const chunk = decoder.decode(value, { stream: true });
+        fullText += chunk;
+        setTerminalText(prev => prev + chunk);
+      }
+
+      setTerminalText(prev => prev + '\n\n> ✅ วิเคราะห์เสร็จสมบูรณ์! กำลังเติมข้อมูลลงในฟอร์ม...');
+      
+      // Parse the streamed JSON (assuming the AI is prompted to return valid JSON at the end)
+      // Alternatively, we can just extract with Regex if the AI streamed a marked up format
+      // To be safe with streaming, let's extract sections using regex
+      
+      const nameMatch = fullText.match(/<PRODUCT_NAME>([\s\S]*?)<\/PRODUCT_NAME>/i);
+      const detailsMatch = fullText.match(/<PRODUCT_DETAILS>([\s\S]*?)<\/PRODUCT_DETAILS>/i);
+      const priceMatch = fullText.match(/<PRICE_PROMO>([\s\S]*?)<\/PRICE_PROMO>/i);
+      
+      if (nameMatch) setProductName(nameMatch[1].trim());
+      if (detailsMatch) setProductDetails(detailsMatch[1].trim());
+      if (priceMatch) setPricePromo(priceMatch[1].trim());
+
+      // Update credit balance in UI
+      if (profile) {
+        // Optimistically deduct 1 credit for analysis
+        profile.credits = Math.max(0, profile.credits - 1);
+      }
+
+      setTimeout(() => {
+        setShowTerminal(false);
+        setIsAnalyzing(false);
+      }, 3000);
+
+    } catch (err) {
+      setTerminalText(prev => prev + `\n\n> ❌ Error: ${err.message}`);
+      setIsAnalyzing(false);
+    }
   };
 
   return (
@@ -223,17 +327,66 @@ function CreateScript() {
             
             {effectiveTier === 'pro' && (
               <div className="p-4 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg">
-                <label className="block text-sm font-bold text-amber-800 mb-2 flex items-center">
-                  <span className="mr-2"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" className="hidden"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 21h18M4 18l3-12 5 7 5-7 3 12H4z"></path></svg></span> แปะลิงก์สินค้า (Pro Feature)
+                <label className="block text-sm font-bold text-amber-800 mb-2 flex items-center justify-between">
+                  <div className="flex items-center">
+                    <span className="mr-2"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" className="hidden"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 21h18M4 18l3-12 5 7 5-7 3 12H4z"></path></svg></span> แปะลิงก์สินค้า (Pro Feature)
+                  </div>
+                  <span className="text-xs text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full">{productUrls.length}/5</span>
                 </label>
-                <input
-                  type="url"
-                  value={productUrl}
-                  onChange={(e) => setProductUrl(e.target.value)}
-                  className="w-full px-4 py-2 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none"
-                  placeholder="https://shopee.co.th/..."
-                />
-                <p className="text-[11px] sm:text-xs text-amber-700 mt-1.5 font-medium whitespace-nowrap overflow-hidden text-ellipsis">AI จะดึงข้อมูลจุดเด่นจากลิงก์นี้ให้อัตโนมัติ!</p>
+                
+                <div className="space-y-2 mb-3">
+                  {productUrls.map((url, index) => (
+                    <div key={index} className="flex gap-2">
+                      <input
+                        type="url"
+                        value={url}
+                        onChange={(e) => handleUpdateUrl(index, e.target.value)}
+                        className="flex-1 px-3 py-2 text-sm border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none"
+                        placeholder="https://shopee.co.th/..."
+                      />
+                      {productUrls.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveUrl(index)}
+                          className="px-3 py-2 text-red-500 bg-red-50 hover:bg-red-100 border border-red-200 rounded-lg transition-colors"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-2">
+                  {productUrls.length < 5 && (
+                    <button
+                      type="button"
+                      onClick={handleAddUrl}
+                      className="flex-1 text-sm font-medium text-amber-700 bg-white border border-amber-300 hover:bg-amber-50 py-2 rounded-lg transition-colors flex items-center justify-center gap-1"
+                    >
+                      <span>+</span> เพิ่มลิงก์
+                    </button>
+                  )}
+                  
+                  <button
+                    type="button"
+                    onClick={handleAnalyze}
+                    disabled={isAnalyzing || productUrls.filter(u => u.trim() !== '').length === 0}
+                    className="flex-1 text-sm font-bold text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 py-2 rounded-lg transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  >
+                    {isAnalyzing ? (
+                      <>
+                        <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        กำลังวิเคราะห์...
+                      </>
+                    ) : (
+                      <>
+                        🤖 ให้ AI วิเคราะห์ข้อมูล (หัก 1 เครดิต)
+                      </>
+                    )}
+                  </button>
+                </div>
+                <p className="text-[11px] sm:text-xs text-amber-700 mt-2 font-medium">💡 คำแนะนำ: การวิเคราะห์หลายลิงก์อาจใช้เวลาประมาณ 10-20 วินาที</p>
               </div>
             )}
 
@@ -250,9 +403,9 @@ function CreateScript() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">จุดเด่นสินค้า (ถ้ามีลิงก์ข้างบนไม่ต้องพิมพ์ยาวก็ได้)</label>
+              <label className="block text-sm font-medium text-slate-700 mb-2">รายละเอียดสินค้า (จุดขายที่อยากให้เน้นเป็นพิเศษ)</label>
               <textarea
-                required={!productUrl} // ถ้าไม่มี URL ต้องพิมพ์จุดเด่น
+                required={productUrls.filter(u => u.trim() !== '').length === 0} // ต้องใส่รายละเอียดถ้าไม่ได้ใส่ลิงก์
                 rows="3"
                 value={productDetails}
                 onChange={(e) => setProductDetails(e.target.value)}
@@ -485,6 +638,30 @@ function CreateScript() {
           )}
         </div>
       </div>
+
+      {/* Terminal Overlay Modal */}
+      {showTerminal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm">
+          <div className="w-full max-w-2xl bg-[#0F172A] rounded-xl shadow-2xl overflow-hidden border border-slate-700 flex flex-col h-[60vh] max-h-[600px]">
+            {/* Terminal Header */}
+            <div className="bg-slate-800 px-4 py-3 border-b border-slate-700 flex items-center gap-3">
+              <div className="flex gap-1.5">
+                <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                <div className="w-3 h-3 rounded-full bg-amber-500"></div>
+                <div className="w-3 h-3 rounded-full bg-green-500"></div>
+              </div>
+              <span className="text-xs font-mono text-slate-400">ai_agent_analysis.exe</span>
+            </div>
+            {/* Terminal Body */}
+            <div className="flex-1 p-5 overflow-y-auto font-mono text-sm text-green-400 bg-[#0F172A] whitespace-pre-wrap flex flex-col gap-1">
+              {terminalText}
+              {isAnalyzing && (
+                <span className="inline-block w-2 h-4 bg-green-400 animate-pulse mt-1"></span>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
