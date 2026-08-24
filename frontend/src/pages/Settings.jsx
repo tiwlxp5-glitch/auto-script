@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 function Settings() {
-  const [user, setUser] = useState(null);
-  const [profile, setProfile] = useState(null);
-  
+  const { user, profile } = useAuth();
   const [displayName, setDisplayName] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const [isLoadingPortal, setIsLoadingPortal] = useState(false);
@@ -13,6 +12,13 @@ function Settings() {
   const [showToast, setShowToast] = useState(false);
   
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (profile) {
+      setDisplayName(profile.display_name || '');
+    }
+  }, [profile]);
+      
 
   useEffect(() => {
     // เช็คว่ากลับมาจากการจ่ายเงินสำเร็จหรือไม่

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 function Pricing() {
-  const [user, setUser] = useState(null);
-  const [profile, setProfile] = useState(null);
+  const { user, profile } = useAuth();
   const navigate = useNavigate();
   const [isRedirecting, setIsRedirecting] = useState(false);
 

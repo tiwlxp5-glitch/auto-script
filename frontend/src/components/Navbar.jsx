@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 
 function Navbar() {
-  const [user, setUser] = useState(null);
-  const [profile, setProfile] = useState(null);
+  const { user, profile } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const menuRef = useRef(null);
