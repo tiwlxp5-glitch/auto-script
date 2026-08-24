@@ -433,7 +433,10 @@ function CreateScript() {
                     )}
                   </button>
                 </div>
-                <p className="text-[11px] sm:text-xs text-amber-700 mt-2 font-medium">💡 คำแนะนำ: การวิเคราะห์หลายลิงก์อาจใช้เวลาประมาณ 10-20 วินาที</p>
+                <div className="mt-2 space-y-1">
+                  <p className="text-[11px] sm:text-xs text-amber-700 font-medium">💡 คำแนะนำ: การวิเคราะห์หลายลิงก์อาจใช้เวลาประมาณ 10-20 วินาที</p>
+                  <p className="text-[11px] sm:text-xs text-amber-700/80">⚠️ หมายเหตุ: บางลิงก์อาจดึงข้อมูลไม่สำเร็จเนื่องจากระบบป้องกันบอทของแพลตฟอร์ม (หากดึงไม่สำเร็จ ระบบจะคืนเครดิตให้อัตโนมัติ)</p>
+                </div>
               </div>
             )}
 
