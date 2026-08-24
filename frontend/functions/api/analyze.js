@@ -118,6 +118,9 @@ You MUST wrap your output exactly with these XML tags so the system can parse th
 (Insert price or promotions here. If not found, write "ไม่ระบุ")
 </PRICE_PROMO>
 
+IMPORTANT: If the scraped data does NOT contain any meaningful product information (e.g. it only says 'Chat', 'Follow', 'CAPTCHA', 'Access Denied', or is completely unrelated to a product), you MUST output exactly this tag anywhere in your response:
+<ERROR>NO_PRODUCT_FOUND</ERROR>
+
 Be persuasive and write in Thai.
 
 Scraped Data:
@@ -129,8 +132,19 @@ ${combinedContext}
             contents: prompt
         });
 
+        let fullResponse = "";
         for await (const chunk of responseStream) {
+            fullResponse += chunk.text;
             await writer.write(encoder.encode(chunk.text));
+        }
+
+        // If Gemini detected no product info, refund the credit
+        if (fullResponse.includes('<ERROR>NO_PRODUCT_FOUND</ERROR>')) {
+            await supabase.rpc('increment_credits', {
+              p_user_id: user.id,
+              p_amount: 1
+            });
+            await writer.write(encoder.encode("\n\n⚠️ **ระบบคืนเครดิตให้คุณ 1 เครดิต** (ลิงก์นี้ติดระบบป้องกันของแพลตฟอร์ม ทำให้ AI เข้าถึงข้อมูลไม่ได้)"));
         }
 
         await writer.close();

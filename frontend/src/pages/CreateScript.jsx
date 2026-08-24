@@ -217,8 +217,19 @@ function CreateScript() {
   const handleAnalyze = async () => {
     const validUrls = productUrls.filter(u => u.trim() !== '');
     if (validUrls.length === 0) {
-      setError('กรุณาใส่ลิงก์อย่างน้อย 1 ลิงก์ก่อนกดวิเคราะห์ครับ');
+      setError('กรุณาระบุลิงก์สินค้าอย่างน้อย 1 ลิงก์ก่อนทำการวิเคราะห์ครับ');
       return;
+    }
+
+    // 1. Domain Validation (Security/Anti-virus protection requested by user)
+    const allowedDomains = ['shopee', 'lazada', 'tiktok', 'facebook', 'instagram', 'line.me', 'lin.ee'];
+    for (let url of validUrls) {
+      const lowerUrl = url.toLowerCase();
+      const isAllowed = allowedDomains.some(domain => lowerUrl.includes(domain));
+      if (!isAllowed) {
+        setError(`ไม่อนุญาตให้ใช้ลิงก์: ${url}\n\nเพื่อความปลอดภัย ระบบรองรับเฉพาะเว็บแพลตฟอร์มการขายหลักเท่านั้น (Shopee, Lazada, TikTok, FB, IG, Line)`);
+        return;
+      }
     }
     
     // Check credits before making request
@@ -262,6 +273,17 @@ function CreateScript() {
         const chunk = decoder.decode(value, { stream: true });
         fullText += chunk;
         setTerminalText(prev => prev + chunk);
+      }
+
+      if (fullText.includes('<ERROR>NO_PRODUCT_FOUND</ERROR>')) {
+        // Revert optimistic deduction if AI failed to find product
+        if (profile) profile.credits += 1;
+        setTimeout(() => {
+          alert('⚠️ AI ไม่สามารถดึงข้อมูลสินค้าจากลิงก์ได้ (อาจติดระบบป้องกันบอทของแพลตฟอร์ม)\n\nไม่ต้องกังวลครับ ระบบได้ทำการ "คืนเครดิต" ให้คุณเรียบร้อยแล้ว!');
+          setShowTerminal(false);
+          setIsAnalyzing(false);
+        }, 1500);
+        return;
       }
 
       setTerminalText(prev => prev + '\n\n✅ วิเคราะห์เสร็จสมบูรณ์! กำลังเติมข้อมูลลงในฟอร์ม...');
