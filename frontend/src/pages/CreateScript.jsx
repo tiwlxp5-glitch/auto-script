@@ -31,11 +31,36 @@ function CreateScript() {
   const navigate = useNavigate();
 
   const modes = [
-    { id: 'ขยี้ปัญหา (PAS Formula)', name: '🔥 ขยี้ปัญหา (สูตร PAS)', description: 'เริ่มด้วยปัญหา จี้จุดเจ็บ แล้วจบด้วยสินค้า' },
-    { id: 'นักเล่าเรื่อง (Hook-Story-Offer)', name: '📖 นักเล่าเรื่อง (สูตร HSO)', description: 'เล่าประสบการณ์จริง สร้างความอิน เนียนป้ายยา' },
-    { id: 'โชว์การเปลี่ยนแปลง (BAB Formula)', name: '✨ โชว์การเปลี่ยนแปลง (สูตร BAB)', description: 'เทียบอดีตที่ลำบาก กับปัจจุบันที่ชีวิตดีขึ้น' },
-    { id: 'สายสเปค/ฟังก์ชัน (FAB Formula)', name: '🔬 สายฟังก์ชัน (สูตร FAB)', description: 'เปลี่ยนสเปคจุกจิก ให้เป็นประโยชน์ที่อยากได้' },
-    { id: 'เปรียบเทียบชัดๆ', name: '🥊 เปรียบเทียบชัดๆ', description: 'โจมตีข้อเสียของแบรนด์ทั่วไป ชูจุดเด่นเรา' }
+    { 
+      id: 'ขยี้ปัญหา (PAS Formula)', 
+      name: 'ขยี้ปัญหา (สูตร PAS)', 
+      description: 'เริ่มด้วยปัญหา จี้จุดเจ็บ แล้วจบด้วยสินค้า',
+      icon: <div className="p-1.5 bg-rose-50 rounded-md text-rose-500 shadow-sm border border-rose-100"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg></div>
+    },
+    { 
+      id: 'นักเล่าเรื่อง (Hook-Story-Offer)', 
+      name: 'นักเล่าเรื่อง (สูตร HSO)', 
+      description: 'เล่าประสบการณ์จริง สร้างความอิน เนียนป้ายยา',
+      icon: <div className="p-1.5 bg-indigo-50 rounded-md text-indigo-500 shadow-sm border border-indigo-100"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg></div>
+    },
+    { 
+      id: 'โชว์การเปลี่ยนแปลง (BAB Formula)', 
+      name: 'โชว์การเปลี่ยนแปลง (สูตร BAB)', 
+      description: 'เทียบอดีตที่ลำบาก กับปัจจุบันที่ชีวิตดีขึ้น',
+      icon: <div className="p-1.5 bg-amber-50 rounded-md text-amber-500 shadow-sm border border-amber-100"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg></div>
+    },
+    { 
+      id: 'สายสเปค/ฟังก์ชัน (FAB Formula)', 
+      name: 'สายฟังก์ชัน (สูตร FAB)', 
+      description: 'เปลี่ยนสเปคจุกจิก ให้เป็นประโยชน์ที่อยากได้',
+      icon: <div className="p-1.5 bg-emerald-50 rounded-md text-emerald-500 shadow-sm border border-emerald-100"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path></svg></div>
+    },
+    { 
+      id: 'เปรียบเทียบชัดๆ', 
+      name: 'เปรียบเทียบชัดๆ', 
+      description: 'โจมตีข้อเสียของแบรนด์ทั่วไป ชูจุดเด่นเรา',
+      icon: <div className="p-1.5 bg-cyan-50 rounded-md text-cyan-600 shadow-sm border border-cyan-100"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path></svg></div>
+    }
   ];
 
   const lengths = [
@@ -206,7 +231,7 @@ function CreateScript() {
       setError('');
       setIsAnalyzing(true);
       setShowTerminal(true);
-      setTerminalText('> เริ่มต้นกระบวนการ AI Analysis...\n> กำลังอ่านข้อมูลจากลิงก์ที่ระบุ...\n');
+      setTerminalText('เริ่มต้นกระบวนการ AI Analysis...\nกำลังอ่านข้อมูลจากลิงก์ที่ระบุ...\n');
       
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) throw new Error('กรุณาล็อกอินใหม่');
@@ -239,7 +264,7 @@ function CreateScript() {
         setTerminalText(prev => prev + chunk);
       }
 
-      setTerminalText(prev => prev + '\n\n> ✅ วิเคราะห์เสร็จสมบูรณ์! กำลังเติมข้อมูลลงในฟอร์ม...');
+      setTerminalText(prev => prev + '\n\n✅ วิเคราะห์เสร็จสมบูรณ์! กำลังเติมข้อมูลลงในฟอร์ม...');
       
       // Parse the streamed JSON (assuming the AI is prompted to return valid JSON at the end)
       // Alternatively, we can just extract with Regex if the AI streamed a marked up format
@@ -265,7 +290,7 @@ function CreateScript() {
       }, 3000);
 
     } catch (err) {
-      setTerminalText(prev => prev + `\n\n> ❌ Error: ${err.message}`);
+      setTerminalText(prev => prev + `\n\n❌ Error: ${err.message}`);
       setIsAnalyzing(false);
     }
   };
@@ -479,11 +504,16 @@ function CreateScript() {
                       value={m.id}
                       checked={mode === m.id}
                       onChange={(e) => setMode(e.target.value)}
-                      className="mt-1 h-4 w-4 text-blue-600"
+                      className="mt-1 h-4 w-4 text-blue-600 border-slate-300 focus:ring-blue-500"
                     />
-                    <div className="ml-3">
-                      <span className="block text-sm font-medium text-slate-900">{m.name}</span>
-                      <span className="block text-sm text-slate-500">{m.description}</span>
+                    <div className="ml-3 flex items-start gap-3 w-full">
+                      <div className="mt-0.5 shrink-0">
+                        {m.icon}
+                      </div>
+                      <div>
+                        <span className="block text-sm font-bold text-slate-900">{m.name}</span>
+                        <span className="block text-sm text-slate-500 mt-0.5 leading-snug">{m.description}</span>
+                      </div>
                     </div>
                   </label>
                 ))}
@@ -639,26 +669,46 @@ function CreateScript() {
         </div>
       </div>
 
-      {/* Terminal Overlay Modal */}
+      {/* Modern AI Analysis Loading Modal */}
       {showTerminal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm">
-          <div className="w-full max-w-2xl bg-[#0F172A] rounded-xl shadow-2xl overflow-hidden border border-slate-700 flex flex-col h-[60vh] max-h-[600px]">
-            {/* Terminal Header */}
-            <div className="bg-slate-800 px-4 py-3 border-b border-slate-700 flex items-center gap-3">
-              <div className="flex gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                <div className="w-3 h-3 rounded-full bg-amber-500"></div>
-                <div className="w-3 h-3 rounded-full bg-green-500"></div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-all duration-300">
+          <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-100 flex flex-col relative animate-in fade-in zoom-in-95 duration-200">
+            {/* Header */}
+            <div className="bg-gradient-to-r from-amber-50 to-orange-50 px-6 py-4 border-b border-amber-100/50 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center animate-pulse">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                </div>
+                <h3 className="font-bold text-amber-900">AI กำลังวิเคราะห์ข้อมูลสินค้า</h3>
               </div>
-              <span className="text-xs font-mono text-slate-400">ai_agent_analysis.exe</span>
             </div>
-            {/* Terminal Body */}
-            <div className="flex-1 p-5 overflow-y-auto font-mono text-sm text-green-400 bg-[#0F172A] whitespace-pre-wrap flex flex-col gap-1">
-              {terminalText}
-              {isAnalyzing && (
-                <span className="inline-block w-2 h-4 bg-green-400 animate-pulse mt-1"></span>
-              )}
+            
+            {/* Body */}
+            <div className="p-6">
+              <div className="flex flex-col gap-4">
+                <div className="flex items-start gap-3">
+                  <div className="mt-1">
+                    {isAnalyzing ? (
+                      <svg className="animate-spin h-5 w-5 text-amber-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    ) : terminalText.includes('Error') ? (
+                      <svg className="h-5 w-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    ) : (
+                      <svg className="h-5 w-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    )}
+                  </div>
+                  <div className="flex-1 bg-slate-50 rounded-xl p-4 border border-slate-100 shadow-inner h-48 overflow-y-auto">
+                    <p className="text-sm text-slate-600 whitespace-pre-wrap leading-relaxed font-medium">
+                      {terminalText || 'กำลังเตรียมข้อมูล...'}
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
+            
+            {/* Animated Bottom Border */}
+            {isAnalyzing && (
+              <div className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-amber-400 to-orange-500 animate-[pulse_2s_ease-in-out_infinite] w-full"></div>
+            )}
           </div>
         </div>
       )}

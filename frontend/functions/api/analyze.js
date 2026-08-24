@@ -22,7 +22,7 @@ export async function onRequestPost({ request, env }) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
-    const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY);
+    const supabase = createClient(env.VITE_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY);
     const token = authHeader.replace('Bearer ', '');
     
     const { data: { user }, error: authError } = await supabase.auth.getUser(token);
@@ -73,11 +73,11 @@ export async function onRequestPost({ request, env }) {
     // Fire & Forget the heavy lifting so we can return the stream
     (async () => {
       try {
-        await writer.write(encoder.encode("> กำลังตรวจสอบลิงก์ข้อมูล...\n"));
+        await writer.write(encoder.encode("กำลังตรวจสอบลิงก์ข้อมูล...\n"));
         
         // 3. Scrape URLs concurrently
         const scrapedContents = await Promise.all(urls.map(async (url, idx) => {
-          await writer.write(encoder.encode(`> กำลังอ่านเนื้อหาจากเว็บที่ ${idx + 1}: ${url}\n`));
+          await writer.write(encoder.encode(`กำลังอ่านเนื้อหาจากเว็บที่ ${idx + 1}: ${url}\n`));
           try {
             const jinaRes = await fetch(`https://r.jina.ai/${url}`, {
               headers: {
@@ -96,7 +96,7 @@ export async function onRequestPost({ request, env }) {
         }));
 
         const combinedContext = scrapedContents.join('\n\n');
-        await writer.write(encoder.encode("\n> ประมวลผลข้อมูลเสร็จสิ้น! AI กำลังสรุปข้อมูล...\n\n=================================\n\n"));
+        await writer.write(encoder.encode("\nประมวลผลข้อมูลเสร็จสิ้น! AI กำลังสรุปข้อมูล...\n\n=================================\n\n"));
 
         // 4. Send to Gemini for Streaming Output
         const ai = new GoogleGenAI({ apiKey: env.GEMINI_API_KEY });
