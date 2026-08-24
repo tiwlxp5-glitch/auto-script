@@ -29,3 +29,36 @@ The `targetAudience` feature is a premium feature, but the backend currently acc
 - [ ] Concurrent requests to `/api/webhook` (e.g., simulating 2 rapid checkout sessions) correctly increment the user's credits without overwriting each other (verified via RPC usage).
 - [ ] If inserting into the `scripts` table in `generate.js` fails for any reason, the user's credit balance is NOT deducted.
 - [ ] A 'free' tier user passing a `targetAudience` string to `/api/generate` does not have that string included in the final AI prompt.
+
+## 2026-08-24T00:23:10Z
+
+# Teamwork Project Prompt — Draft
+
+> Status: Launched.
+> Goal: Craft prompt → get user approval → delegate to teamwork_preview
+> Requested team: [none — teamwork routes from the description]
+
+Perform a final, comprehensive security, architecture, and logic audit on the Auto Script project, specifically focusing on the recent Cloudflare Pages API changes (`/api/*.js`). The goal is to ensure absolutely no flaws remain and the project is 100% production-ready without breaking anything.
+
+Working directory: C:\Auto script
+Integrity mode: development
+
+## Requirements
+
+### R1. Audit Security and Race Conditions
+Review the newly implemented Supabase JWT auth, Stripe Webhook idempotency, and the `increment_credits` RPC calls in the `functions/api/` directory. Ensure there are no IDOR, bypassing mechanisms, or race conditions remaining.
+
+### R2. Audit Logic and Order of Operations
+Review `generate.js` to ensure the flow of checking credits, scraping Jina AI, generating via Gemini, saving to the database, and deducting credits is rock-solid and handles all failure states gracefully.
+
+### R3. Audit Client-Side vs Server-Side Enforcement
+Verify that premium features (like `targetAudience` and `productUrl`) are strictly enforced on the server-side based on the user's tier, and cannot be spoofed by modifying the client request.
+
+## Acceptance Criteria
+
+### Security & Architecture
+- [ ] Confirmed that `create-portal.js` cannot be exploited using arbitrary `customerId`s (No IDOR).
+- [ ] Confirmed that credit deduction and incrementing use atomic operations (RPC) and cannot be bypassed via concurrent requests.
+- [ ] Confirmed that all error states in `generate.js` return appropriate HTTP status codes without leaving the database in an inconsistent state (e.g., losing a credit without getting history).
+- [ ] A final Markdown report is produced detailing any remaining issues, or explicitly confirming 100% production readiness.
+

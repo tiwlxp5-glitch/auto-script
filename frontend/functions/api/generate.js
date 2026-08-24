@@ -95,7 +95,7 @@ export async function onRequestPost(context) {
     const supabaseAdmin = createClient(env.VITE_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY);
     const { data: profile, error: profileError } = await supabaseAdmin
       .from('profiles')
-      .select('credits, tier')
+      .select('credits, tier, trial_pro_remaining, last_free_reset')
       .eq('id', user.id)
       .single();
 
@@ -106,6 +106,9 @@ export async function onRequestPost(context) {
       });
     }
 
+    // Evaluate effective tier based on Free Pro Trial
+    const effectiveTier = (profile.tier === 'free' && profile.trial_pro_remaining > 0) ? 'pro' : profile.tier;
+
     if (profile.credits <= 0) {
       return new Response(JSON.stringify({ error: "Insufficient credits" }), { 
         status: 403,
@@ -113,9 +116,9 @@ export async function onRequestPost(context) {
       });
     }
 
-    // 4. Jina AI Scraping (ทำที่ Backend ปลอดภัยจาก CORS - เฉพาะ Tier Pro)
+    // 4. Jina AI Scraping (ทำที่ Backend ปลอดภัยจาก CORS - เฉพาะ Tier Pro หรือ Trial Pro)
     let finalDetails = productDetails;
-    if (profile.tier === 'pro' && productUrl) {
+    if (effectiveTier === 'pro' && productUrl) {
       try {
         const jinaRes = await fetch(`https://r.jina.ai/${productUrl}`);
         if (jinaRes.ok) {
@@ -128,7 +131,7 @@ export async function onRequestPost(context) {
     }
 
     // 4.1 ตรวจสอบสิทธิ์การใช้งาน targetAudience (เฉพาะ Tier Plus และ Pro เท่านั้น)
-    const finalTargetAudience = (profile.tier === 'plus' || profile.tier === 'pro') ? targetAudience : null;
+    const finalTargetAudience = (effectiveTier === 'plus' || effectiveTier === 'pro') ? targetAudience : null;
 
     // 5. เรียกใช้ Google Gemini (Fallback safe for both env names)
     const apiKey = env.GEMINI_API_KEY || env.VITE_GEMINI_API_KEY;

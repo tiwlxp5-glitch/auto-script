@@ -53,9 +53,7 @@ function CreateScript() {
   const fetchProfile = async (userId) => {
     try {
       const { data, error } = await supabase
-        .from('profiles')
-        .select('credits, tier')
-        .eq('id', userId)
+        .rpc('sync_profile_credits', { p_user_id: userId })
         .single();
         
       if (error) {
@@ -67,13 +65,16 @@ function CreateScript() {
         setProfile(data);
       } else {
         // ถ้าไม่มีข้อมูลในตาราง profile เลย ให้จำลองไปก่อนเพื่อให้กดสร้างได้
-        setProfile({ credits: 0, tier: 'free' });
+        setProfile({ credits: 0, tier: 'free', trial_pro_remaining: 0 });
       }
     } catch (err) {
       console.error("Fetch profile exception:", err);
-      setProfile({ credits: 0, tier: 'free' });
+      setProfile({ credits: 0, tier: 'free', trial_pro_remaining: 0 });
     }
   };
+
+  const effectiveTier = profile ? (profile.tier === 'free' && profile.trial_pro_remaining > 0 ? 'pro' : profile.tier) : 'free';
+
 
   const handleGenerate = async (e) => {
     e.preventDefault();
@@ -110,8 +111,8 @@ function CreateScript() {
         videoLength,
         mode,
         competitor: mode === 'เปรียบเทียบชัดๆ' ? competitor : '',
-        targetAudience: profile.tier !== 'free' ? targetAudience : '',
-        productUrl: profile.tier === 'pro' ? productUrl : ''
+        targetAudience: effectiveTier !== 'free' ? targetAudience : '',
+        productUrl: effectiveTier === 'pro' ? productUrl : ''
       };
 
       // ยิงข้อมูลไปให้ Backend (Cloudflare Function) จัดการรวดเดียว
@@ -197,6 +198,12 @@ function CreateScript() {
                 )}
               </div>
             )}
+            
+            {profile && profile.tier === 'free' && profile.trial_pro_remaining > 0 && (
+              <div className="flex items-center space-x-1.5 px-3 py-1 text-[10px] sm:text-xs font-bold tracking-wide rounded-full border shadow-sm whitespace-nowrap shrink-0 bg-gradient-to-r from-purple-50 to-fuchsia-50 border-purple-200 text-purple-700 animate-pulse">
+                <span>🎁 ทดลองใช้ Pro ฟรี (เหลือ {profile.trial_pro_remaining} ครั้ง)</span>
+              </div>
+            )}
           </div>
           <div className="inline-flex items-center bg-blue-50 border border-blue-200 text-blue-700 px-3 py-1.5 rounded-lg text-sm font-medium shadow-sm">
             เหลือโควต้าการสร้าง <strong className="mx-1.5 text-blue-900 font-black">{profile ? profile.credits : '...'}</strong> สคริปต์
@@ -214,8 +221,7 @@ function CreateScript() {
               </div>
             )}
             
-            {/* ฟีเจอร์ Pro: ดูดข้อมูลจากลิงก์ */}
-            {profile?.tier === 'pro' && (
+            {effectiveTier === 'pro' && (
               <div className="p-4 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg">
                 <label className="block text-sm font-bold text-amber-800 mb-2 flex items-center">
                   <span className="mr-2"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" className="hidden"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 21h18M4 18l3-12 5 7 5-7 3 12H4z"></path></svg></span> แปะลิงก์สินค้า (Pro Feature)
@@ -289,8 +295,7 @@ function CreateScript() {
               </div>
             </div>
 
-            {/* ฟีเจอร์ Plus/Pro: กลุ่มเป้าหมาย */}
-            {profile?.tier !== 'free' && (
+            {effectiveTier !== 'free' && (
               <div className="p-4 bg-blue-50 border border-blue-100 rounded-lg">
                 <label className="block text-sm font-bold text-blue-800 mb-2 flex items-center">
                   <span className="mr-2">🎯</span> กลุ่มเป้าหมาย (Plus/Pro Feature)

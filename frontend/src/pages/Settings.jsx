@@ -39,9 +39,7 @@ function Settings() {
       setDisplayName(session.user.user_metadata?.full_name || '');
       
       const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', session.user.id)
+        .rpc('sync_profile_credits', { p_user_id: session.user.id })
         .single();
         
       if (error && error.code !== 'PGRST116') {
@@ -212,14 +210,28 @@ function Settings() {
       {/* 2. แพ็กเกจปัจจุบัน */}
       <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 mb-8">
         <h2 className="text-xl font-semibold mb-4">แพ็กเกจของคุณ</h2>
-        <div className="flex items-center justify-between bg-slate-50 p-4 rounded-lg border border-slate-100 mb-4 flex-wrap gap-2">
-          <div>
-            <p className="text-sm text-slate-500 mb-1 whitespace-nowrap">แผนปัจจุบัน (Plan)</p>
-            <p className="text-2xl font-bold uppercase text-blue-600">{profile.tier}</p>
+        <div className="flex flex-col md:flex-row items-center justify-between bg-slate-50 p-4 rounded-lg border border-slate-100 mb-4 gap-4">
+          <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto text-center sm:text-left">
+            <div>
+              <p className="text-sm text-slate-500 mb-1 whitespace-nowrap">แผนปัจจุบัน (Plan)</p>
+              <p className="text-2xl font-bold uppercase text-blue-600">{profile.tier}</p>
+            </div>
+            
+            {profile.tier === 'free' && profile.trial_pro_remaining > 0 && (
+              <div className="border-l border-slate-200 pl-4">
+                <p className="text-sm text-purple-500 mb-1 whitespace-nowrap">สิทธิ์ทดลอง Pro ฟรี</p>
+                <p className="text-xl font-bold text-purple-700">{profile.trial_pro_remaining} ครั้ง</p>
+              </div>
+            )}
           </div>
-          <div className="text-right">
+          <div className="text-center sm:text-right w-full md:w-auto">
             <p className="text-sm text-slate-500 mb-1 whitespace-nowrap">เครดิตคงเหลือ</p>
-            <p className="text-xl font-semibold">{profile.credits}</p>
+            <p className="text-2xl font-semibold">{profile.credits}</p>
+            {profile.tier === 'free' && profile.last_free_reset && (
+              <p className="text-xs text-slate-400 mt-1">
+                รอบเติมเครดิตฟรีรอบถัดไป: {new Date(new Date(profile.last_free_reset).getTime() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString('th-TH')}
+              </p>
+            )}
           </div>
         </div>
         
