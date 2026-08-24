@@ -238,6 +238,11 @@ function CreateScript() {
       return;
     }
 
+    // Optimistically deduct 1 credit for UI
+    if (profile) {
+      setProfile(prev => ({ ...prev, credits: Math.max(0, prev.credits - 1) }));
+    }
+
     try {
       setError('');
       setIsAnalyzing(true);
@@ -277,7 +282,9 @@ function CreateScript() {
 
       if (fullText.includes('<ERROR>NO_PRODUCT_FOUND</ERROR>')) {
         // Revert optimistic deduction if AI failed to find product
-        if (profile) profile.credits += 1;
+        if (profile) {
+          setProfile(prev => ({ ...prev, credits: prev.credits + 1 }));
+        }
         setTimeout(() => {
           alert('⚠️ AI ไม่สามารถดึงข้อมูลสินค้าจากลิงก์ได้ (อาจติดระบบป้องกันบอทของแพลตฟอร์ม)\n\nไม่ต้องกังวลครับ ระบบได้ทำการ "คืนเครดิต" ให้คุณเรียบร้อยแล้ว!');
           setShowTerminal(false);
@@ -300,18 +307,15 @@ function CreateScript() {
       if (detailsMatch) setProductDetails(detailsMatch[1].trim());
       if (priceMatch) setPricePromo(priceMatch[1].trim());
 
-      // Update credit balance in UI
-      if (profile) {
-        // Optimistically deduct 1 credit for analysis
-        profile.credits = Math.max(0, profile.credits - 1);
-      }
-
       setTimeout(() => {
         setShowTerminal(false);
         setIsAnalyzing(false);
       }, 3000);
 
     } catch (err) {
+      if (profile) {
+        setProfile(prev => ({ ...prev, credits: prev.credits + 1 }));
+      }
       setTerminalText(prev => prev + `\n\n❌ Error: ${err.message}`);
       setIsAnalyzing(false);
     }

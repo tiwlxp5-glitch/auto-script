@@ -140,10 +140,15 @@ ${combinedContext}
 
         // If Gemini detected no product info, refund the credit
         if (fullResponse.includes('<ERROR>NO_PRODUCT_FOUND</ERROR>')) {
-            await supabase.rpc('increment_credits', {
-              p_user_id: user.id,
-              p_amount: 1
-            });
+            // Restore credits and trial_pro_remaining manually
+            const { data: dbProfile } = await supabase.from('profiles').select('credits, trial_pro_remaining, tier').eq('id', user.id).single();
+            if (dbProfile) {
+                const shouldRestoreTrial = dbProfile.tier === 'free' && dbProfile.trial_pro_remaining < 3;
+                await supabase.from('profiles').update({
+                    credits: (dbProfile.credits || 0) + 1,
+                    trial_pro_remaining: shouldRestoreTrial ? (dbProfile.trial_pro_remaining || 0) + 1 : dbProfile.trial_pro_remaining
+                }).eq('id', user.id);
+            }
             await writer.write(encoder.encode("\n\n⚠️ **ระบบคืนเครดิตให้คุณ 1 เครดิต** (ลิงก์นี้ติดระบบป้องกันของแพลตฟอร์ม ทำให้ AI เข้าถึงข้อมูลไม่ได้)"));
         }
 
