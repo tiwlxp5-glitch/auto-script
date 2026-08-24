@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { scanForBannedWords, highlightBannedWords } from '../lib/bannedWords';
+import { containsProfanity } from '../lib/profanityWords';
 import { useNavigate } from 'react-router-dom';
 
 function CreateScript() {
@@ -108,6 +109,14 @@ function CreateScript() {
 
   const handleGenerate = async (e) => {
     e.preventDefault();
+
+    // 0. Profanity Check (Strict Ban)
+    const allInputs = `${productName} ${productDetails} ${competitor} ${targetAudience}`;
+    if (containsProfanity(allInputs)) {
+      setError('ไม่อนุญาตให้ใช้คำหยาบคาย! เว็บ Auto Script ห้ามใช้คำหยาบเด็ดขาด กรุณาแก้ไขข้อมูลของคุณ');
+      return;
+    }
+
     
     if (!user) {
       alert("Error: ไม่พบข้อมูล User (ยังไม่ได้ล็อกอิน)");
@@ -215,6 +224,14 @@ function CreateScript() {
   };
 
   const handleAnalyze = async () => {
+
+    // Profanity Check (Strict Ban)
+    const allInputs = `${productUrls.join(' ')}`;
+    if (containsProfanity(allInputs)) {
+      setError('ไม่อนุญาตให้ใช้คำหยาบคาย! เว็บ Auto Script ห้ามใช้คำหยาบเด็ดขาด');
+      return;
+    }
+
     const validUrls = productUrls.filter(u => u.trim() !== '');
     if (validUrls.length === 0) {
       setError('กรุณาระบุลิงก์สินค้าอย่างน้อย 1 ลิงก์ก่อนทำการวิเคราะห์ครับ');
