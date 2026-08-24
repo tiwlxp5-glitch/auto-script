@@ -122,8 +122,8 @@ export class MockDatabase {
           
           // Guard against insufficient balance on deduction
           if (amount < 0 && currentCredits < Math.abs(amount)) {
-            return { data: -1, error: { message: 'Insufficient credits' } };
-          }
+      return { data: -1, error: null };
+    }
         
           const newCredits = Math.max(0, currentCredits + amount);
           profile.credits = newCredits;

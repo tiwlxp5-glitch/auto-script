@@ -52,13 +52,11 @@ export async function onRequestPost({ request, env }) {
         // ใช้ amount_subtotal แทน amount_total เพื่อแก้ปัญหาเวลาลูกค้าใช้คูปอง 100%
         const amountPaid = session.amount_subtotal; // สกุลเงินจะเป็นหน่วยย่อยสุด (สตางค์) เช่น 59000 = 590 บาท
         
-        let tier = 'plus';
-        let addCredits = 60;
-
-        if (amountPaid >= 59000) {
-          tier = 'pro';
-          addCredits = 150;
-        }
+        let addCredits = amountPaid >= 59000 ? 150 : 60;
+    const { data: existingProfile } = await supabase.from('profiles').select('tier').eq('id', userId).single();
+    const currentTier = existingProfile?.tier;
+    const targetTier = (currentTier === 'pro' || amountPaid >= 59000) ? 'pro' : 'plus';
+    let tier = targetTier; // Keep tier variable for upsert
 
         // 1. อัปเดตข้อมูลระดับผู้ใช้ (Tier) และ Stripe Customer ID โดยไม่แก้ไขจำนวนเครดิตตรงนี้
         const { error: upsertError } = await supabase

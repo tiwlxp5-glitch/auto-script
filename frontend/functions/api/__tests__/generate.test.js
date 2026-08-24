@@ -193,7 +193,7 @@ describe('POST /api/generate (R2: Atomic RPC, R3: Order of Operations, R4: Tier 
   // =========================================================================
 
   describe('Tier 3: R3 - Order of Operations (Insert Script First, Deduct Second)', () => {
-    it('T3.1: should insert generated script to scripts table BEFORE calling credit deduction RPC', async () => {
+    it('T3.1: should call credit deduction RPC BEFORE inserting generated script to scripts table', async () => {
       const request = createGenerateRequest({
         productName: 'กระทะเคลือบหินอ่อน',
         productDetails: 'ไม่ติดกระทะ ล้างง่าย ไร้น้ำมัน',
@@ -210,7 +210,7 @@ describe('POST /api/generate (R2: Atomic RPC, R3: Order of Operations, R4: Tier 
 
       expect(insertCallIndex).toBeGreaterThan(-1);
       expect(rpcCallIndex).toBeGreaterThan(-1);
-      expect(insertCallIndex).toBeLessThan(rpcCallIndex);
+      expect(rpcCallIndex).toBeLessThan(insertCallIndex);
 
       // Verify script insertion details
       expect(globalMockDb.scripts.length).toBe(1);
@@ -221,7 +221,7 @@ describe('POST /api/generate (R2: Atomic RPC, R3: Order of Operations, R4: Tier 
       expect(typeof inserted.content).toBe('string');
     });
 
-    it('T3.2: if scripts insertion fails, credits MUST NOT be deducted and 500 error returned', async () => {
+    it('T3.2: if scripts insertion fails, upfront deduction is refunded and 500 error returned', async () => {
       globalMockDb.seedProfile(userId, { tier: 'free', credits: 5 });
       globalMockDb.failScriptInsert = true;
       globalMockDb.scriptInsertErrorMessage = 'Table scripts connection reset';
@@ -240,8 +240,10 @@ describe('POST /api/generate (R2: Atomic RPC, R3: Order of Operations, R4: Tier 
       expect(body).toHaveProperty('error');
       expect(body.error).toContain('Failed to save script history');
 
-      // CRITICAL ASSERTION: RPC was NEVER called
-      expect(globalMockDb.rpcCalls.length).toBe(0);
+      // CRITICAL ASSERTION: RPC was called twice (deduct then refund)
+      expect(globalMockDb.rpcCalls.length).toBe(2);
+      expect(globalMockDb.rpcCalls[0].args.p_amount).toBe(-1);
+      expect(globalMockDb.rpcCalls[1].args.p_amount).toBe(1);
 
       // CRITICAL ASSERTION: Credits in DB remain exactly 5
       const profile = globalMockDb.getProfile(userId);
@@ -371,7 +373,9 @@ describe('POST /api/generate (R2: Atomic RPC, R3: Order of Operations, R4: Tier 
 
       // Verify no DB writes occurred
       expect(globalMockDb.scripts.length).toBe(0);
-      expect(globalMockDb.rpcCalls.length).toBe(0);
+      expect(globalMockDb.rpcCalls.length).toBe(2);
+      expect(globalMockDb.rpcCalls[0].args.p_amount).toBe(-1);
+      expect(globalMockDb.rpcCalls[1].args.p_amount).toBe(1);
     });
   });
 });

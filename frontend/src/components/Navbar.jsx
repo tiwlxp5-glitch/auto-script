@@ -83,6 +83,7 @@ function Navbar() {
                 <Link to="/history" className="text-slate-600 hover:text-blue-600 px-3 py-2 font-medium hidden sm:block">
                   ประวัติ
                 </Link>
+              <Link to="/pricing" className="block pl-3 pr-4 py-2 text-base font-medium text-slate-600 hover:text-amber-600 hover:bg-slate-50 transition-colors">เติมเครดิต</Link>
                 <Link to="/create" className="text-slate-600 hover:text-blue-600 px-3 py-2 font-medium hidden sm:block">
                   สร้างสคริปต์
                 </Link>

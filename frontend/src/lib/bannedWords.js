@@ -41,16 +41,30 @@ export function scanForBannedWords(text) {
   return foundWarnings;
 }
 
+export function escapeHtml(unsafe) {
+  if (!unsafe) return '';
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 export function highlightBannedWords(text, foundWarnings) {
-  if (!text || foundWarnings.length === 0) return text;
+  if (!text) return text;
   
-  let highlightedText = text;
+  let safeText = escapeHtml(text);
+  if (!foundWarnings || foundWarnings.length === 0) return safeText;
+  
+  let highlightedText = safeText;
   
   foundWarnings.forEach(warning => {
     // ไฮไลต์ด้วยพื้นหลังสีแดง ตัวหนังสือสีขาว
-    const replacement = `<span class="bg-red-500 text-white px-1 rounded mx-0.5 cursor-help" title="${warning.reason}">${warning.word}</span>`;
-    // แทนที่คำทั้งหมดที่เจอ (ใช้ split/join ง่ายสุดสำหรับ String ธรรมดาที่ไม่ใช่ Regex ซับซ้อน)
-    highlightedText = highlightedText.split(warning.word).join(replacement);
+    const safeWord = escapeHtml(warning.word);
+    const safeReason = escapeHtml(warning.reason);
+    const replacement = `<span class="bg-red-500 text-white px-1 rounded mx-0.5 cursor-help" title="${safeReason}">${safeWord}</span>`;
+    highlightedText = highlightedText.split(safeWord).join(replacement);
   });
   
   return highlightedText;

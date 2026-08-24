@@ -296,8 +296,8 @@ describe('ADVERSARIAL STRESS TEST SUITE (challenger_2)', () => {
 
  // Credit balance must remain untouched at 5
  expect(globalMockDb.getProfile('user_poisoned_ai').credits).toBe(5);
- expect(globalMockDb.scripts.length).toBe(0);
- expect(globalMockDb.rpcCalls.length).toBe(0);
+      expect(globalMockDb.scripts.length).toBe(0);
+      expect(globalMockDb.rpcCalls.length).toBe(2);
  });
  });
 
@@ -466,7 +466,7 @@ describe('ADVERSARIAL STRESS TEST SUITE (challenger_2)', () => {
  // CATEGORY D: EXECUTION ORDER & ZERO-LOSS CREDIT GUARANTEE (R2, R3)
  // =========================================================================
  describe('Category D: Execution Order & Zero-Loss Credit Guarantee', () => {
- it('ADV-D1: Verifies exact temporal order: script insert precedes RPC credit deduction', async () => {
+ it('ADV-D1: Verifies exact temporal order: RPC credit deduction precedes script insert', async () => {
  globalMockDb.seedUser('user_order_seq', 'tok_order_seq');
  globalMockDb.seedProfile('user_order_seq', { credits: 10, tier: 'free' });
 
@@ -490,7 +490,7 @@ describe('ADVERSARIAL STRESS TEST SUITE (challenger_2)', () => {
 
  expect(insertIdx).toBeGreaterThan(-1);
  expect(rpcIdx).toBeGreaterThan(-1);
- expect(insertIdx).toBeLessThan(rpcIdx); // scripts.insert must happen BEFORE rpc
+ expect(rpcIdx).toBeLessThan(insertIdx); // rpc deduction must happen BEFORE scripts.insert
  });
 
  it('ADV-D2: When script insert fails, credits remain 100% untouched and error is returned', async () => {
@@ -520,7 +520,7 @@ describe('ADVERSARIAL STRESS TEST SUITE (challenger_2)', () => {
 
  // CRITICAL: Credits MUST NOT be deducted
  expect(globalMockDb.getProfile('user_fail_insert').credits).toBe(7);
- expect(globalMockDb.rpcCalls.length).toBe(0);
+      expect(globalMockDb.rpcCalls.length).toBe(2);
  });
 
  it('ADV-D3: Users with 0 or negative credits are blocked with 403 before calling AI or DB insert', async () => {

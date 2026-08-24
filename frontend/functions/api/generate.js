@@ -63,8 +63,24 @@ The output values MUST BE IN THAI (except for the JSON keys).
 }
 `;
 
+function safeParseJson(rawText) {
+  if (!rawText || typeof rawText !== 'string') {
+    throw new Error('AI_EMPTY_RESPONSE');
+  }
+  let cleaned = rawText.trim();
+  if (cleaned.startsWith('```json')) {
+    cleaned = cleaned.replace(/^```json\s*/i, '').replace(/\s*```$/, '');
+  } else if (cleaned.startsWith('```')) {
+    cleaned = cleaned.replace(/^```\s*/, '').replace(/\s*```$/, '');
+  }
+  return JSON.parse(cleaned);
+}
+
 export async function onRequestPost(context) {
   const { request, env } = context;
+  let creditDeducted = false;
+  let userIdForRefund = null;
+  let supabaseAdmin = null;
 
   try {
     // 1. ตรวจสอบการล็อกอิน (JWT Authorization)
@@ -92,7 +108,7 @@ export async function onRequestPost(context) {
     const { productName, productDetails, pricePromo, videoLength, mode, competitor, targetAudience, productUrl, productUrls } = body;
 
     // 3. ใช้ Service Role ดึงข้อมูล Profile ป้องกันการปลอมแปลง (ปลอดภัยกว่า Client)
-    const supabaseAdmin = createClient(env.VITE_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY);
+    supabaseAdmin = createClient(env.VITE_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY);
     const { data: profile } = await supabaseAdmin
       .from('profiles')
       .select('*')
@@ -105,27 +121,40 @@ export async function onRequestPost(context) {
 
     const effectiveTier = (profile.tier === 'free' && profile.trial_pro_remaining > 0) ? 'pro' : profile.tier;
 
-    if (profile.credits < 1) {
-      return new Response(JSON.stringify({ error: 'เครดิตไม่พอ กรุณาเติมเครดิต' }), { status: 402, headers: { 'Content-Type': 'application/json' } });
-    }
+    
 
     // 4. Jina AI Scraping (ทำที่ Backend หมดปัญหา CORS - เฉพาะ Tier Pro หรือ Trial Pro)
+    userIdForRefund = user.id;
+    const { data: updatedCredits, error: creditError } = await supabaseAdmin.rpc('increment_credits', {
+      p_user_id: user.id,
+      p_amount: -1
+    });
+    if (creditError) {
+      return new Response(JSON.stringify({ error: "Failed to deduct credits" }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+    }
+    if (updatedCredits === null || updatedCredits < 0) {
+      return new Response(JSON.stringify({ error: 'เครดิตไม่พอ กรุณาเติมเครดิต' }), { status: 402, headers: { 'Content-Type': 'application/json' } });
+    }
+    creditDeducted = true;
+    let remainingCredits = updatedCredits;
+
     let finalDetails = productDetails;
     
     // Support backwards compatibility for productUrl (string) and new productUrls (array)
-    const urlsToScrape = [];
+    let rawUrlsToScrape = [];
     if (productUrls && Array.isArray(productUrls)) {
-      urlsToScrape.push(...productUrls.filter(u => u.trim() !== ''));
+      rawUrlsToScrape.push(...productUrls.filter(u => u.trim() !== ''));
     } else if (productUrl) {
-      urlsToScrape.push(productUrl);
+      rawUrlsToScrape.push(productUrl);
     }
-
+    const urlsToScrape = rawUrlsToScrape.slice(0, 3);
     if (effectiveTier === 'pro' && urlsToScrape.length > 0) {
       try {
         const scrapedContents = await Promise.all(urlsToScrape.map(async (url) => {
-          const jinaRes = await fetch(`https://r.jina.ai/${url}`, {
-            headers: { 'Accept': 'text/plain', 'X-Return-Format': 'markdown' }
-          });
+          const jinaRes = await fetch(`https://r.jina.ai/${encodeURI(url)}`, {
+              headers: { 'Accept': 'text/plain', 'X-Return-Format': 'markdown' },
+              signal: AbortSignal.timeout(8000)
+            });
           if (jinaRes.ok) {
             const text = await jinaRes.text();
             return `--- ข้อมูลจากเว็บ ${url} ---\n${text.substring(0, 3000)}`;
@@ -178,7 +207,7 @@ export async function onRequestPost(context) {
       }
     });
 
-    const resultJson = JSON.parse(response.text);
+    const resultJson = safeParseJson(response.text);
 
     // 6. บันทึก History ลงฐานข้อมูล scripts เป็นลำดับแรก (Save first)
     const { error: insertError } = await supabaseAdmin.from('scripts').insert({
@@ -190,28 +219,8 @@ export async function onRequestPost(context) {
     });
 
     if (insertError) {
-      console.error("Failed to save script history:", insertError);
-      return new Response(JSON.stringify({ error: "Failed to save script history" }), { 
-        status: 500,
-        headers: { 'Content-Type': 'application/json' }
-      });
+      throw new Error('Failed to save script history');
     }
-
-    // 7. หักเครดิตแบบ Atomic ด้วย Supabase RPC increment_credits หลังจากบันทึกสำเร็จเท่านั้น
-    const { data: updatedCredits, error: rpcError } = await supabaseAdmin.rpc('increment_credits', {
-      p_user_id: user.id,
-      p_amount: -1
-    });
-
-    if (rpcError) {
-      console.error("RPC credit deduction failed:", rpcError);
-      return new Response(JSON.stringify({ error: "Failed to deduct credits" }), { 
-        status: 500,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-
-    const remainingCredits = typeof updatedCredits === 'number' ? updatedCredits : (profile.credits - 1);
 
     // 8. ส่งผลลัพธ์กลับไปให้หน้าเว็บ
     return new Response(JSON.stringify({ script: resultJson, credits_remaining: remainingCredits }), { 
@@ -220,6 +229,12 @@ export async function onRequestPost(context) {
     });
 
   } catch (err) {
+    if (creditDeducted && userIdForRefund) {
+      console.error("Execution failed after deduction. Issuing compensatory refund:", err);
+      try {
+        await supabaseAdmin.rpc('increment_credits', { p_user_id: userIdForRefund, p_amount: 1 });
+      } catch (refundErr) {}
+    }
     console.error("Generate API Error:", err);
     return new Response(JSON.stringify({ error: err.message || "Internal Server Error" }), { 
       status: 500,

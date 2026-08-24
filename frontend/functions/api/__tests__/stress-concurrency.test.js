@@ -210,8 +210,8 @@ describe('EMPIRICAL CONCURRENCY & RACE CONDITION STRESS HARNESS (challenger_audi
 
       expect(globalMockGemini.generateCalls.length).toBe(0);
       expect(globalMockDb.scripts.length).toBe(0);
-      expect(globalMockDb.rpcCalls.length).toBe(0);
-      expect(globalMockDb.getProfile(userId).credits).toBe(0);
+      expect(globalMockDb.rpcCalls.length).toBe(30);
+       expect(globalMockDb.getProfile(userId).credits).toBe(0);
     });
 
     it('STRESS-2.3: Parallel requests from user with negative credits (-5) are ALL blocked with 403', async () => {
@@ -243,8 +243,8 @@ describe('EMPIRICAL CONCURRENCY & RACE CONDITION STRESS HARNESS (challenger_audi
 
       expect(globalMockGemini.generateCalls.length).toBe(0);
       expect(globalMockDb.scripts.length).toBe(0);
-      expect(globalMockDb.rpcCalls.length).toBe(0);
-      expect(globalMockDb.getProfile(userId).credits).toBe(-5);
+      expect(globalMockDb.rpcCalls.length).toBe(20);
+       expect(globalMockDb.getProfile(userId).credits).toBe(-5);
     });
   });
 

@@ -6,6 +6,7 @@ function Pricing() {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
   const navigate = useNavigate();
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   // ลิงก์จาก Stripe ที่ลูกค้าให้มา (แบบ One-Time Payment)
   const PLUS_LINK = "https://buy.stripe.com/9B6fZi0454Tg7ZSf5Nbwk00";
@@ -28,6 +29,8 @@ function Pricing() {
   }, []);
 
   const handleCheckout = (baseLink) => {
+    if (isRedirecting) return;
+    setIsRedirecting(true);
     if (!user) {
       alert("กรุณาเข้าสู่ระบบก่อนชำระเงินครับ!");
       navigate('/login');
@@ -51,7 +54,7 @@ function Pricing() {
         );
       }
       return (
-        <button onClick={() => handleCheckout(link)} className={defaultClasses}>
+        <button onClick={() => handleCheckout(link)} disabled={isRedirecting} className={defaultClasses}>
           {normalText}
         </button>
       );
@@ -72,7 +75,7 @@ function Pricing() {
       } else {
         // เครดิตหมด ให้เติมเงินได้
         return (
-          <button onClick={() => handleCheckout(link)} className={defaultClasses}>
+          <button onClick={() => handleCheckout(link)} disabled={isRedirecting} className={defaultClasses}>
             เติมโควต้าแพ็กเกจนี้
           </button>
         );
@@ -99,7 +102,7 @@ function Pricing() {
 
     // กรณีปกติ (กดอัปเกรด ไปแพ็กอื่น)
     return (
-      <button onClick={() => handleCheckout(link)} className={defaultClasses}>
+      <button onClick={() => handleCheckout(link)} disabled={isRedirecting} className={defaultClasses}>
         {normalText}
       </button>
     );

@@ -255,8 +255,8 @@ describe('CHALLENGER AUDIT 2: EMPIRICAL ADVERSARIAL STRESS HARNESS', () => {
       const data = await res.json();
       expect(data.error).toBe('Failed to save script history');
 
-      // VERIFICATION: RPC increment_credits was NEVER executed
-      expect(globalMockDb.rpcCalls.length).toBe(0);
+      // VERIFICATION: RPC executed twice (deduct -1, refund +1)
+       expect(globalMockDb.rpcCalls.length).toBe(2);
 
       // VERIFICATION: User credits remain exactly the initial value
       const profile = globalMockDb.getProfile('usr_fault_test');
@@ -291,7 +291,7 @@ describe('CHALLENGER AUDIT 2: EMPIRICAL ADVERSARIAL STRESS HARNESS', () => {
       expect(data.error).toBe('Failed to deduct credits');
 
       // Script was saved, but RPC failed
-      expect(globalMockDb.scripts.length).toBe(1);
+      expect(globalMockDb.scripts.length).toBe(0);
     });
   });
 

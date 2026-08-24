@@ -26,8 +26,7 @@ function CreateScript() {
   const [bannedWarnings, setBannedWarnings] = useState([]);
   const [error, setError] = useState(null);
   
-  const [user, setUser] = useState(null);
-  const [profile, setProfile] = useState(null);
+  
   
   const navigate = useNavigate();
 
@@ -71,15 +70,8 @@ function CreateScript() {
   ];
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        setUser(session.user);
-        fetchProfile(session.user.id);
-      } else {
-        navigate('/login');
-      }
-    });
-  }, [navigate]);
+    if (!loading && !user) navigate('/login');
+  }, [user, loading, navigate]);
 
   const fetchProfile = async (userId) => {
     try {
@@ -224,6 +216,9 @@ function CreateScript() {
   };
 
   const handleAnalyze = async () => {
+    if (analyzeAbortRef.current) analyzeAbortRef.current.abort();
+    const controller = new AbortController();
+    analyzeAbortRef.current = controller;
 
     // Profanity Check (Strict Ban)
     const allInputs = `${productUrls.join(' ')}`;
@@ -275,7 +270,8 @@ function CreateScript() {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${session.access_token}`
         },
-        body: JSON.stringify({ urls: validUrls })
+        body: JSON.stringify({ urls: validUrls }),
+          signal: controller.signal
       });
 
       if (!response.ok) {
