@@ -1,13 +1,23 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Legal() {
+  const navigate = useNavigate();
+
+  const handleBack = (e) => {
+    e.preventDefault();
+    if (window.history.state && window.history.state.idx > 0) {
+      navigate(-1);
+    } else {
+      navigate('/');
+    }
+  };
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
       <div className="mb-6">
-        <Link to="/" className="text-blue-600 hover:underline flex items-center gap-1 text-sm font-medium">
+        <a href="#" onClick={handleBack} className="text-blue-600 hover:underline flex items-center gap-1 text-sm font-medium">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-          กลับหน้าหลัก
-        </Link>
+          ย้อนกลับ
+        </a>
       </div>
 
       <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 text-slate-700 leading-relaxed space-y-8">

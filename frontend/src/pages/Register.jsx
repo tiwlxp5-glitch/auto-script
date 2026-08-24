@@ -119,11 +119,11 @@ function Register() {
             />
             <label htmlFor="privacy" className="ml-2 block text-sm text-slate-600 cursor-pointer">
               ฉันยอมรับ{' '}
-              <Link to="/legal" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+              <Link to="/legal" className="text-blue-600 hover:underline">
                 เงื่อนไขการให้บริการ (Terms of Service)
               </Link>{' '}
               และ{' '}
-              <Link to="/legal" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+              <Link to="/legal" className="text-blue-600 hover:underline">
                 นโยบายความเป็นส่วนตัว (Privacy Policy)
               </Link>
             </label>
