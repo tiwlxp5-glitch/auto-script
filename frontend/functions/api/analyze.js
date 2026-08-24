@@ -57,11 +57,15 @@ export async function onRequestPost({ request, env }) {
 
     // 2. Deduct 1 credit for analysis (Atomic RPC)
     const { data: updatedCredits, error: creditError } = await supabase.rpc('increment_credits', {
-      p_user_id: user.id,
-      p_amount: -1
+      user_id: user.id,
+      amount: -1
     });
 
-    if (creditError || updatedCredits < 0) {
+    if (creditError) {
+      return new Response(JSON.stringify({ error: `RPC Error: ${creditError.message || JSON.stringify(creditError)}` }), { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
+    
+    if (updatedCredits === null || updatedCredits < 0) {
       return new Response(JSON.stringify({ error: 'เครดิตไม่พอ กรุณาเติมเครดิต' }), { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
