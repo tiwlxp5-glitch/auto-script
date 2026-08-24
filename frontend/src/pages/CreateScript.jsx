@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { scanForBannedWords, highlightBannedWords } from '../lib/bannedWords';
 import { containsProfanity } from '../lib/profanityWords';
+import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 function CreateScript() {
+  const { user, profile, loading, refreshProfile } = useAuth();
   const [productName, setProductName] = useState('');
   const [productDetails, setProductDetails] = useState('');
   const [pricePromo, setPricePromo] = useState('');
