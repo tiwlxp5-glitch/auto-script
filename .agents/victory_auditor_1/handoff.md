@@ -1,44 +1,86 @@
-﻿# Victory Audit Handoff Report
+﻿# FORENSIC AUDIT HANDOFF REPORT
+
+**Agent:** Forensic Integrity Auditor (`victory_auditor_1`)  
+**Target:** `C:\Auto script\QA_AUDIT_BLUEPRINT.md` (Master QA Audit Blueprint)  
+**Parent Agent:** `25fa285a-63ee-46c2-9d71-0b849d0c4ce0`  
+**Date:** 2026-08-24  
+**Integrity Mode:** Development Mode  
+**Verdict:** ✅ **CLEAN (NO INTEGRITY VIOLATIONS DETECTED)**
+
+---
 
 ## 1. Observation
-- **Requirement Verification**:
-  - `create-portal.js`: Verified server-side JWT authentication via `supabaseAdmin.auth.getUser(token)` and secure database retrieval of `stripe_customer_id` from `public.profiles` for `user.id`. Any client-provided `customerId` in request payload is discarded.
-  - `webhook.js`: Replaced JavaScript in-memory arithmetic with atomic database RPC `supabase.rpc('increment_credits', { user_id, amount })` (+60 for Plus, +150 for Pro). Idempotency enforced via `public.webhook_events` table with duplicate error handling (code 23505) and retry cleanup.
-  - `generate.js`: Reordered execution flow to insert generated script into `public.scripts` table *before* deducting credit. If insertion fails, returns 500 error and skips credit deduction entirely. Deducts 1 credit via `supabaseAdmin.rpc('increment_credits', { user_id: user.id, amount: -1 })`. Free tier users passing `targetAudience` have the parameter stripped before prompt construction. AI model strictly configured to `gemini-3.6-flash`.
-  - Database Migration: `supabase/migrations/20260824000000_create_increment_credits_rpc.sql` defines PostgreSQL function `increment_credits(user_id UUID, amount INT) RETURNS INT` using `UPDATE public.profiles SET credits = COALESCE(credits, 0) + amount WHERE id = user_id RETURNING credits;`.
-- **Integrity Forensics**:
-  - 0 hardcoded test constants, 0 dummy/facade implementations, 0 pre-populated logs or test artifacts in production codebase.
-- **Independent Test Execution**:
-  - Ran `npm test` (`npx vitest run --reporter=verbose`) in `frontend`:
-    - `functions/api/__tests__/create-portal.test.js`: 11 passed (11 total)
-    - `functions/api/__tests__/generate.test.js`: 16 passed (16 total)
-    - `functions/api/__tests__/webhook.test.js`: 11 passed (11 total)
-    - `functions/api/__tests__/scenarios.test.js`: 6 passed (6 total)
-    - `functions/api/__tests__/adversarial.test.js`: 18 passed (18 total)
-    - **Total**: 5 test files, 62 passed, 0 failed.
-  - Ran `npm run build` in `frontend`: Succeeded in 253ms with 0 errors.
-  - Ran `npm run lint` in `frontend`: Oxlint completed with 0 errors.
+
+Direct empirical observations collected during the forensic audit of `C:\Auto script\QA_AUDIT_BLUEPRINT.md`:
+
+1. **Frontend Findings & Line Accuracy:**
+   - `CreateScript.jsx:694`: Directly observed `dangerouslySetInnerHTML={{ __html: \`"${highlightBannedWords(block.audio_spoken, bannedWarnings)}"\` }}` without escaping in `bannedWords.js:44-57` (`FE-SEC-01` / `ADV-01`).
+   - `CreateScript.jsx:242-250`: Directly observed `allowedDomains.some(domain => lowerUrl.includes(domain))` substring match (`FE-SEC-02` / `ADV-10`).
+   - `CreateScript.jsx:263-339`: Directly observed un-aborted `while(true)` stream loop in `handleAnalyze` (`FE-STATE-01`).
+   - `History.jsx:101-117` vs `CreateScript.jsx:34-65`: Directly observed filter IDs mismatch (`['all', 'ป้ายยาตรงๆ', 'ขยี้ปัญหา', 'เปรียบเทียบชัดๆ']` vs `'ขยี้ปัญหา (PAS Formula)'`, etc.) causing empty filter lists (`FE-VAL-02` / `ADV-12`).
+   - `Navbar.jsx:86-129`: Directly observed "สร้างสคริปต์" (`/create`) present in desktop view but omitted in mobile dropdown menu (`FE-UX-01`).
+   - `Register.jsx:121`: Directly observed dead `href="#"` anchor tags for Terms of Service and Privacy Policy (`FE-UX-02`).
+   - `main.jsx:1-14` & `App.jsx:1-44`: Directly observed zero `<ErrorBoundary>` wrapper and no 404 catch-all route (`FE-ERR-01` / `ADV-14`).
+
+2. **Backend Findings & Line Accuracy:**
+   - `generate.js:108, 171, 184, 201`: Directly observed in-memory credit check at line 108, external Gemini API call at line 171, script insertion at line 184, and delayed RPC deduction at line 201, confirming TOCTOU race condition (`BE-SEC-01` / `ADV-03`).
+   - `analyze.js:59-70` & `20260824_fix_increment_credits.sql:20`: Directly observed `greatest(0, 0 + (-1)) = 0` returned on 0 balance, which passes `if (updatedCredits === null || updatedCredits < 0)` because `0 < 0` is false, granting free analysis (`BE-LOGIC-01` / `ADV-02`).
+   - `analyze.js:142-153`: Directly observed in-memory `.select('credits')` and `.update({ credits: credits + 1 })` read-modify-write on error refund (`BE-STATE-01` / `ADV-07`).
+   - `webhook.js:55-71`: Directly observed `upsert({ id: userId, tier: tier ... })` where `tier` is determined purely from `session.amount_subtotal`, downgrading Pro users to Plus on 249 THB top-up (`WH-LOGIC-01` / `ADV-04`).
+   - `webhook.js:50-91`: Directly observed missing `session.client_reference_id` silently skips fulfillment and returns HTTP 200 without crediting user (`WH-RES-01` / `ADV-13`).
+   - `delete-account.js:22-33`: Directly observed Supabase user deletion without corresponding Stripe customer cleanup (`BE-COMP-01`).
+
+3. **Test Suite & Desync Accuracy:**
+   - Ran `npm test` in `frontend/`. Result: `43 failed | 37 passed (80 total)`.
+   - Directly observed `mockDb.js:107-119` expects `{ user_id, amount }`, whereas production code calls `{ p_user_id, p_amount }`, causing the exact 43 unit test failures reported in `TEST-HARNESS-01` / `ADV-05`.
+
+4. **GEMINI.md Rule Compliance:**
+   - Rule 1: Every remediation code snippet includes beginner analogies, "Why & How", and section breakdowns.
+   - Rule 2: Exclusively specifies `gemini-3.6-flash` (0 deprecated models).
+   - Rule 3: Explicit compliance warnings on PDPA Section 37, GDPR Article 17, and Cloudflare subrequest limits.
+   - Rule 4: Preserves exact Stripe URLs (`PLUS_LINK`, `PRO_LINK`).
+   - Rule 5: Standardizes on `p_user_id` / `p_amount` across all RPC calls.
+
+5. **Safe Non-Destructive Operation:**
+   - `git status` confirmed `frontend/src/`, `frontend/functions/api/`, and `supabase/migrations/` are completely unmodified.
+   - 0 production deployments and 0 production database mutations were executed.
+
+---
 
 ## 2. Logic Chain
-1. *Observation*: `create-portal.js` extracts token from `Authorization: Bearer <token>` and validates with Supabase Auth before querying `profiles` table for `stripe_customer_id` matching `user.id`.
-   *Inference*: R1 is fully met; IDOR is mathematically eliminated since client input cannot select the customer ID.
-2. *Observation*: Both `webhook.js` and `generate.js` delegate credit additions and deductions to `supabase.rpc('increment_credits', ...)`.
-   *Inference*: R2 is fully met; database row-level locking during `UPDATE` prevents lost updates and race conditions under high concurrency.
-3. *Observation*: In `generate.js`, `supabaseAdmin.from('scripts').insert(...)` occurs at line 169, with error handling returning 500 at line 179. The RPC credit deduction occurs at line 186.
-   *Inference*: R3 is fully met; a failure during script insertion aborts execution before the deduction RPC is reached.
-4. *Observation*: In `generate.js`, `finalTargetAudience` evaluates to `null` unless `profile.tier === 'plus' || profile.tier === 'pro'`.
-   *Inference*: R4 is fully met; non-paying tier users cannot inject `targetAudience` into the Gemini prompt.
-5. *Observation*: Independent execution of all 62 automated unit, integration, scenario, and adversarial tests produced 100% pass rate.
-   *Inference*: The implementation is authentic, robust, and matches all claimed criteria.
+
+- **Step 1 (Source Integrity):** The auditor cross-referenced all 24 findings and line citations in `QA_AUDIT_BLUEPRINT.md` against actual repository files using AST inspections and regex searches. Every cited line, function signature, and vulnerable behavior corresponds directly to real code (Observation 1 & 2).
+- **Step 2 (Empirical Reproduction):** The auditor executed `npm test` in `frontend/` and reproduced the exact 43 test failure signature described in `TEST-HARNESS-01`, confirming authentic empirical testing without fabrication (Observation 3).
+- **Step 3 (Rule Adherence):** The auditor evaluated `QA_AUDIT_BLUEPRINT.md` against `GEMINI.md` Rules 1–5. All rules were strictly satisfied with exemplary beginner analogies, correct model versions, proactive compliance warnings, exact literal preservation, and synchronized RPC conventions (Observation 4).
+- **Step 4 (Safety & Constraints):** The auditor verified repository cleanliness via `git status` and confirmed that no unauthorized code changes, live schema alterations, or data deletions took place (Observation 5).
+- **Step 5 (Mission Deliverable):** The document delivers an unequivocal robustness verdict (`NOT 100% ROBUST`), complete severities, reproduction scenarios, step-by-step remediation code, a 6-phase master roadmap, and an automated verification matrix.
+
+---
 
 ## 3. Caveats
-- Production deployment requires running the SQL migration `20260824000000_create_increment_credits_rpc.sql` in the Supabase production dashboard if not already executed.
-- Cloudflare environment variables (`STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `VITE_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `GEMINI_API_KEY`) must be configured in Cloudflare Pages dashboard for live operations.
+
+- **No Live Stripe Webhook Key in Dev:** The Stripe webhook signatures were tested via Vitest async test helpers using mock payloads, not live Stripe HTTP pings.
+- **No Caveats on Codebase Authenticity:** Every single finding in the Blueprint was verified against real repository code.
+
+---
 
 ## 4. Conclusion
-All 4 requirements (R1 IDOR fix, R2 RPC atomic credits, R3 Order of Operations, R4 targetAudience tier check) have been implemented genuinely, securely, and thoroughly verified with 62 passing automated tests. Verdict: **VICTORY CONFIRMED**.
+
+`C:\Auto script\QA_AUDIT_BLUEPRINT.md` is an authentic, rigorous, high-integrity QA Audit Blueprint. It contains zero fabricated findings, adheres 100% to `GEMINI.md` rules 1–5, operated in a completely safe and non-destructive manner, and provides exhaustive, production-grade remediation specifications.
+
+**Final Verdict:** ✅ **CLEAN (NO INTEGRITY VIOLATIONS DETECTED)**
+
+---
 
 ## 5. Verification Method
-1. Run test suite: `cd "c:\Auto script\frontend" && npm test`
-2. Run production build: `cd "c:\Auto script\frontend" && npm run build`
-3. Inspect diffs: `git diff frontend/functions/api/`
+
+To independently verify this audit:
+1. **Verify Line Numbers & AST:**
+   - Check `frontend/src/pages/CreateScript.jsx:694` and `frontend/src/lib/bannedWords.js:44-57` for `highlightBannedWords`.
+   - Check `frontend/functions/api/generate.js:108, 171, 184, 201` for credit deduction order.
+   - Check `frontend/functions/api/analyze.js:59-70` for zero-credit check logic.
+   - Check `frontend/functions/api/webhook.js:55-71` for Pro-to-Plus tier overwrite.
+2. **Verify Test Failure Count:**
+   - Execute `cd "C:\Auto script\frontend" && npm test` and observe the exact 43 failed tests matching `TEST-HARNESS-01`.
+3. **Verify Safe Non-Destructive State:**
+   - Execute `git status` in `C:\Auto script` to verify zero mutations to source files.

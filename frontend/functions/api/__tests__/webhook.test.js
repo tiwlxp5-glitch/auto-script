@@ -122,8 +122,8 @@ describe('R2: POST /api/webhook (Atomic Credit RPC & Webhook Idempotency)', () =
       const rpcCall = globalMockDb.rpcCalls.find(c => c.functionName === 'increment_credits');
       expect(rpcCall).toBeDefined();
       expect(rpcCall.args).toEqual({
-        user_id: userId,
-        amount: 60
+        p_user_id: userId,
+        p_amount: 60
       });
 
       // Verify profile record was updated
@@ -156,8 +156,8 @@ describe('R2: POST /api/webhook (Atomic Credit RPC & Webhook Idempotency)', () =
       const rpcCall = globalMockDb.rpcCalls.find(c => c.functionName === 'increment_credits');
       expect(rpcCall).toBeDefined();
       expect(rpcCall.args).toEqual({
-        user_id: userId,
-        amount: 150
+        p_user_id: userId,
+        p_amount: 150
       });
 
       // Verify profile record

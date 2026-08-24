@@ -1,21 +1,25 @@
-## 2026-08-24T00:33:14Z
-You are reviewer_audit_1 (Architecture & Security Reviewer).
-Your working directory is: C:\Auto script\.agents\reviewer_audit_1
-Project root: C:\Auto script
-Authoritative requirements: C:\Auto script\.agents\ORIGINAL_REQUEST.md
-Project architecture & state: C:\Auto script\PROJECT.md
-Domain skill: c:\Auto script\.agents\skills\cloudflare-supabase-security\SKILL.md
-Project rules: C:\Auto script\GEMINI.md
-Explorer findings: C:\Auto script\.agents\explorer_audit_1\handoff.md, C:\Auto script\.agents\spec_miner_audit_3\handoff.md
+## 2026-08-24T13:11:38Z
+You are Reviewer 1 for the Auto Script Master QA Blueprint.
 
-TASK:
-Perform an independent, objective review and adversarial check of the codebase:
-1. Examine `frontend/functions/api/create-portal.js`, `frontend/functions/api/webhook.js`, `frontend/src/pages/Settings.jsx`, and `supabase/migrations/20260824000000_create_increment_credits_rpc.sql`.
-2. Verify:
-   - IDOR prevention and JWT authentication enforcement in `create-portal.js`.
-   - Webhook signature validation, Postgres idempotency (code 23505), and atomic RPC increment in `webhook.js`.
-   - Security headers in `frontend/public/_headers` and proper token transmission in frontend.
-   - Compliance with `GEMINI.md` rules.
-3. Run the automated test suite in `frontend/` (`npm test`) and verify all test results.
+Your mission is to perform an objective, rigorous review of `C:\Auto script\QA_AUDIT_BLUEPRINT.md`.
+Working directory: C:\Auto script\.agents\reviewer_audit_1
 
-MANDATORY: Provide your explicit verdict (APPROVE or REQUEST_CHANGES) in your handoff report at `C:\Auto script\.agents\reviewer_audit_1\handoff.md` and send a summary message.
+You must first read:
+- C:\Auto script\.agents\ORIGINAL_REQUEST.md
+- C:\Auto script\GEMINI.md
+- C:\Auto script\.agents\PROJECT.md
+- C:\Auto script\QA_AUDIT_BLUEPRINT.md
+
+Review checklist:
+1. Completeness: Does the blueprint cover frontend UI/state edge cases, backend Cloudflare APIs, Stripe webhooks, and Supabase RPCs?
+2. Technical Accuracy: Are the reported bugs, root causes, and reproduction scenarios accurate?
+3. Actionable Remediations: Are the code snippets and step-by-step blueprints clear and implementable by an external AI developer?
+4. GEMINI.md Rules Compliance:
+   - Rule 1: Code explanations with beginner-friendly analogies ('why' and 'how').
+   - Rule 2: Strict requirement of `gemini-3.6-flash`.
+   - Rule 3: Proactive compliance & security warnings.
+   - Rule 4: Exact string and URL preservation (`9B6fZi0454Tg7ZSf5Nbwk00`, `3cIbJ2045adAgwoe1Jbwk01`, `https://lin.ee/x0yVB1kk`).
+   - Rule 5: Supabase schema & RPC parameter synchronization (`p_user_id`, `p_amount`).
+5. Fix for `mockDb.js`: Does the proposed fix accurately restore the 43 failing vitest unit tests?
+
+Deliver your review verdict (APPROVE / REQUEST_CHANGES) and findings to `C:\Auto script\.agents\reviewer_audit_1\review_report.md` and `C:\Auto script\.agents\reviewer_audit_1\handoff.md`. Send a message when complete.

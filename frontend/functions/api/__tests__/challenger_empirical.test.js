@@ -214,7 +214,7 @@ describe('CHALLENGER AUDIT 2: EMPIRICAL ADVERSARIAL STRESS HARNESS', () => {
 
         const aiPrompt = globalMockGemini.generateCalls[0].contents;
         expect(aiPrompt).toContain('- กลุ่มเป้าหมาย: กราฟิกดีไซเนอร์');
-        expect(aiPrompt).toContain('[ข้อมูลเสริมจากการสแกน URL]:');
+        expect(aiPrompt).toContain('[ข้อมูลสกัดเพิ่มเติมจาก URL]:');
         expect(aiPrompt).toContain('มาตรฐานเยอรมัน');
       } finally {
         global.fetch = originalFetch;
@@ -334,7 +334,7 @@ describe('CHALLENGER AUDIT 2: EMPIRICAL ADVERSARIAL STRESS HARNESS', () => {
         // Verification: Gemini was called with original details without scraping appended
         const prompt = globalMockGemini.generateCalls[0].contents;
         expect(prompt).toContain('ตัดเสียง ANC สบายหู');
-        expect(prompt).not.toContain('[ข้อมูลเสริมจากการสแกน URL]:');
+        expect(prompt).not.toContain('[ข้อมูลสกัดเพิ่มเติมจาก URL]:');
       } finally {
         global.fetch = originalFetch;
       }
@@ -373,7 +373,7 @@ describe('CHALLENGER AUDIT 2: EMPIRICAL ADVERSARIAL STRESS HARNESS', () => {
           expect(res.status).toBe(200);
 
           const prompt = globalMockGemini.generateCalls[globalMockGemini.generateCalls.length - 1].contents;
-          expect(prompt).not.toContain('[ข้อมูลเสริมจากการสแกน URL]:');
+          expect(prompt).not.toContain('[ข้อมูลสกัดเพิ่มเติมจาก URL]:');
         }
       } finally {
         global.fetch = originalFetch;

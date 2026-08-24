@@ -1,114 +1,86 @@
-# Review & Adversarial Audit Report: Auto Script Logic & Resilience
+# 5-Component Handoff Report: Reviewer 2 & Adversarial Critic
 
-**Reviewer:** `reviewer_audit_2` (Logic & Resilience Reviewer & Adversarial Critic)  
-**Date:** 2026-08-24  
-**Project:** Auto Script (Cloudflare Pages + Supabase + Google Gemini 3.6 Flash)  
-**Verdict:** **APPROVE**  
-**Integrity Status:** **PASSED (No violations, no facades, genuine implementations)**
-
----
-
-## 1. Review Summary
-
-**Verdict**: **APPROVE**  
-The Auto Script codebase exhibits exceptional security hygiene, robust order of operations, precise server-side tier authorization, and zero-loss credit integrity under failure modes. All requirements from `ORIGINAL_REQUEST.md`, architectural specifications in `PROJECT.md`, rules in `GEMINI.md`, and security practices in `cloudflare-supabase-security/SKILL.md` are rigorously met.
+**Document:** `C:\Auto script\.agents\reviewer_audit_2\handoff.md`  
+**Agent:** `reviewer_audit_2` (Roles: Reviewer, Critic)  
+**Target:** `C:\Auto script\QA_AUDIT_BLUEPRINT.md`  
+**Timestamp:** 2026-08-24T20:25:00Z  
 
 ---
 
-## 2. Findings & Quality Assessment
+## 1. Observation
 
-### 2.1 Correctness & Order of Operations in `generate.js`
-- **Pre-Check (Lines 71–114):** Authenticates JWT token via `supabase.auth.getUser(token)` (Step 1), queries user profile with Service Role Key (Step 3), and halts immediately with `403 Insufficient credits` if `credits <= 0`.
-- **AI Generation (Lines 134–166):** Uses Google GenAI with model `gemini-3.6-flash` (Rule 2 compliant) and parses JSON output.
-- **Database Save FIRST (Lines 169–183):** Persists the generated script into the `public.scripts` table before touching user credits. If the database insert fails, the endpoint returns `500 Failed to save script history` immediately.
-- **Atomic Credit Deduction SECOND (Lines 186–197):** Decrements credit using PostgreSQL atomic RPC `increment_credits(user_id, -1)`. Credits are only deducted if the script was successfully saved.
-- **Zero-Loss Guarantee:** In all failure states (unauthorized token, missing profile, 0 credits, Jina timeout, Gemini AI outage, invalid JSON output, database insert failure), user credits remain 100% untouched.
+1. **Test Suite Baseline Failure (`TEST-HARNESS-01`)**:
+   - Running `npm test` inside `C:\Auto script\frontend` produced: `Test Files 6 failed | 1 passed (7)`, `Tests 43 failed | 37 passed (80)`.
+   - Inspection of `frontend/functions/api/__tests__/helpers/mockDb.js` lines 107–120 showed `increment_credits` destructuring `const { user_id, amount } = args;`.
+   - Inspection of production functions (`generate.js:201`, `webhook.js:80`, `analyze.js:59`) confirmed production calls pass `{ p_user_id, p_amount }`.
+   - Result: `mockDb.js` returned `{ data: null, error: { message: "Profile not found for user undefined" } }`, failing 43 tests with HTTP 500.
 
-### 2.2 Server-Side Tier Authorization & Error Isolation
-- **Free Tier `targetAudience` Sanitization (Line 131):**
-  `const finalTargetAudience = (profile.tier === 'plus' || profile.tier === 'pro') ? targetAudience : null;`
-  When `profile.tier === 'free'`, any client-submitted `targetAudience` is sanitized to `null` and omitted from the Gemini prompt (Line 148). Free users cannot spoof this parameter.
-- **Pro Tier URL Scraping (Lines 118–128):** Jina AI URL scraping is strictly restricted to `profile.tier === 'pro'`. Network timeouts or HTTP errors from Jina are isolated in a dedicated `try/catch` block, ensuring graceful degradation without failing the script generation.
+2. **Stored/Reflected XSS Vulnerability (`FE-SEC-01`)**:
+   - `frontend/src/pages/CreateScript.jsx` line 694 uses `dangerouslySetInnerHTML={{ __html: '"' + highlightBannedWords(block.audio_spoken, bannedWarnings) + '"' }}`.
+   - `frontend/src/lib/bannedWords.js` lines 44–57 performs string replacement without HTML escaping.
+   - Injecting `<svg onload=...>` in AI output executes in user browser session.
 
-### 2.3 HTTP Status Code Conformance
-- `401 Unauthorized`: Missing `Authorization` header, invalid token, or expired token (`generate.js:74,85`, `create-portal.js:11,23`).
-- `403 Forbidden`: Insufficient credits (`credits <= 0`) (`generate.js:111`).
-- `404 Not Found`: User profile not found in database (`generate.js:104`).
-- `400 Bad Request`: User has no Stripe customer ID (`create-portal.js:38`), or invalid webhook signature (`webhook.js:26`).
-- `500 Internal Server Error`: AI configuration error, DB insert failure, or RPC failure (`generate.js:137,180,194,210`).
+3. **Incomplete SQL Migration in Blueprint (`DB-LOGIC-01`)**:
+   - In `QA_AUDIT_BLUEPRINT.md` lines 1167–1202, the proposed migration `20260824_atomic_credit_guard.sql` replaces `increment_credits`.
+   - Inspection of `supabase/migrations/20260824_freemium_trial.sql` lines 30–63 revealed that the existing function handles:
+     a) 7-day freemium reset (`IF v_profile.tier = 'free' AND now() >= v_profile.last_free_reset + interval '7 days' THEN v_profile.credits := 3; v_profile.last_free_reset := now(); END IF;`)
+     b) Trial Pro decrements (`trial_pro_remaining = CASE WHEN p_amount < 0 AND coalesce(trial_pro_remaining, 0) > 0 THEN trial_pro_remaining - 1 ELSE coalesce(trial_pro_remaining, 0) END`)
+   - The blueprint's proposed SQL completely drops both `trial_pro_remaining` and `last_free_reset`.
 
-### 2.4 GEMINI.md Compliance Verification
-- **Rule 1 (Code Explanation Rule):** Thai comments throughout `generate.js`, `create-portal.js`, and `webhook.js` explain the security rationale using clear beginner analogies (e.g. ID card check analogy at gate).
-- **Rule 2 (Model Version Rule):** Exclusively uses `gemini-3.6-flash` (`generate.js:157`). Deprecated models (`gemini-2.5-flash` or older) are absent.
-- **Rule 3 (Proactive Compliance & Security):** PDPA compliance is implemented in `Legal.jsx` (§3) and backed by `/api/delete-account`. Banned advertising keywords are scanned by `bannedWords.js`.
-- **Rule 4 (Exact String Preservation):** Exact Stripe Payment Links are preserved in `Pricing.jsx` (`...9Nbwk00` and `...1Jbwk01`), and LINE support URL in `Legal.jsx` (`https://lin.ee/x0yVB1kk`).
+4. **Missing Column Assumption in Webhook Email Fallback (`WH-RES-01`)**:
+   - In `QA_AUDIT_BLUEPRINT.md` lines 1109–1111, the proposed fallback executes:
+     `supabase.from('profiles').select('id').eq('email', customerEmail).single()`
+   - Inspection of Supabase schema and `mockDb.js` confirmed `profiles` table does NOT have an `email` column; user emails reside in `auth.users`.
+   - This violates GEMINI.md Rule 5 ("Never assume standard database columns exist. Always verify exact schema").
 
----
-
-## 3. Adversarial Challenge & Stress-Test Report
-
-**Overall Risk Assessment:** **LOW (Production Ready)**
-
-| # | Stress Test Scenario | Attack / Stress Vector | Observed Behavior | Status |
-|---|---|---|---|---|
-| ADV-1 | IDOR Hijack on `/api/create-portal` | Client submits victim `customerId` in POST body | Server ignores body and retrieves `stripe_customer_id` from database via authenticated JWT `user.id`. Session is created only for authentic customer. | **PASS** |
-| ADV-2 | Credit Deduction Race Condition | Rapid concurrent script generations | Database RPC `increment_credits(user_id, -1)` performs atomic row updates in PostgreSQL. No lost updates. | **PASS** |
-| ADV-3 | Webhook Concurrency Replay Attack | 30 simultaneous webhooks for same `checkout.session.completed` event | Idempotency check on `webhook_events` catches 29 duplicate inserts (`23505`) and returns 200 "Already processed". Credits are incremented exactly once. | **PASS** |
-| ADV-4 | DB Insert Failure (Zero-Loss Guarantee) | Simulated disk full / table lock on `scripts.insert` | Returns HTTP 500 (`Failed to save script history`). RPC credit deduction is never reached; balance remains 100% untouched. | **PASS** |
-| ADV-5 | Tier Spoofing via POST payload | Free user sends `{ targetAudience: 'VIP', productUrl: 'https://...' }` | Server queries `profiles.tier` directly; strips `targetAudience` and skips Jina fetch. | **PASS** |
-| ADV-6 | Jina AI Outage / Network Timeout | Jina AI endpoint unreachable or returns 503 | Handled in dedicated `try/catch`; script generates successfully with user-entered details. | **PASS** |
-| ADV-7 | Poisoned AI Output | Gemini returns non-JSON or malformed payload | `JSON.parse` catches error; returns 500 without saving broken script or deducting credits. | **PASS** |
-| ADV-8 | 100% Off Discount Coupon | Stripe checkout with `amount_total = 0`, `amount_subtotal = 59000` | Webhook uses `amount_subtotal`, correctly assigning Pro tier and 150 credits without downgrading. | **PASS** |
+5. **Client-Only Domain Whitelisting (`FE-SEC-02`)**:
+   - `CreateScript.jsx` line 245 had insecure `includes(domain)`. Blueprint replaces this with `isValidPlatformUrl`.
+   - However, backend endpoints `functions/api/analyze.js` and `functions/api/generate.js` do not validate URL domains before making outbound fetches to Jina AI (`https://r.jina.ai/${url}`).
 
 ---
 
-## 4. Integrity & Anti-Cheating Attestation
+## 2. Logic Chain
 
-- **No Hardcoded Test Results:** Production source code contains genuine business logic and dynamic database queries.
-- **No Facade Implementations:** Endpoints perform authentic cryptographic verification, database operations, and external API requests.
-- **No Task Bypassing:** All 4 requirements (R1 IDOR, R2 RPC race conditions, R3 Order of operations, R4 Tier authorization) are fully realized in code.
-- **Genuine Verification:** Automated tests executed via independent command line invocation (`npm test`) across 6 suites (73 tests, 100% pass rate).
+1. **From Observation 1**: The 43 failing Vitest tests are not caused by bugs in the Cloudflare API implementations, but by argument name desynchronization in `mockDb.js`. Phase 0 of the roadmap correctly prioritizes updating `mockDb.js` to normalize `{ p_user_id, p_amount }` and `{ user_id, amount }`, which immediately restores the 80-test baseline.
+2. **From Observation 2**: Sanitizing raw AI text with `escapeHtml` before inserting `<span>` highlight tags neutralizes XSS payloads while preserving visual highlighting.
+3. **From Observation 3**: If an external AI developer applies the SQL snippet from `QA_AUDIT_BLUEPRINT.md` line 1167, PostgreSQL will overwrite `increment_credits` and silently delete the 7-day free replenishment and trial pro tracking logic. Therefore, the blueprint migration must be amended to preserve all existing logic while adding the row-level lock and `IF p_amount < 0 AND coalesce(v_profile.credits, 0) < abs(p_amount) THEN RETURN -1; END IF;` guard.
+4. **From Observation 4**: Querying `profiles.email` will trigger a PostgREST error at runtime because `profiles` lacks an `email` column. Using `supabase.auth.admin.listUsers()` safely resolves user IDs from Stripe customer emails without schema alterations.
+5. **From Observation 5**: Attackers can send raw HTTP requests to `/api/analyze` bypassing client validation. Mirroring `isValidPlatformUrl` in Cloudflare Pages backend functions enforces defense-in-depth against SSRF.
 
 ---
 
-## 5. 5-Component Handoff
+## 3. Caveats
 
-### 1. Observation
-- `frontend/functions/api/generate.js`:
-  - Lines 71–88: JWT auth check -> 401.
-  - Lines 95–114: Profile & credit check -> 403 / 404.
-  - Lines 118–128: Jina error recovery.
-  - Line 131: Server-side `targetAudience` tier gating (`finalTargetAudience = (profile.tier === 'plus' || profile.tier === 'pro') ? targetAudience : null`).
-  - Line 157: Model `gemini-3.6-flash`.
-  - Lines 169–183: `scripts.insert` executed FIRST -> returns 500 if error, credits untouched.
-  - Lines 186–197: `increment_credits` RPC executed SECOND.
-- Running `npm test` in `frontend/`:
-  ```
-  Test Files  6 passed (6)
-       Tests  73 passed (73)
-    Duration  1.16s
-  ```
+- **External Services Runtime**: Direct live network requests to Stripe Production and Google Gemini APIs require valid live environment secrets (`STRIPE_SECRET_KEY`, `GEMINI_API_KEY`). Unit and concurrency tests were verified using the project's mock test harness.
+- **Supabase Production Migrations**: SQL migrations are designed for execution via Supabase CLI (`supabase db push`) or the Supabase SQL Editor. Safe auditing constraints prohibited direct mutation of the production database during this QA review.
 
-### 2. Logic Chain
-1. Cryptographic token verification establishes user identity before any business logic.
-2. Server-side database lookup fetches authorized quota and tier, ignoring untrusted client payload properties.
-3. Precedence invariant (`scripts.insert` before `increment_credits`) mathematically guarantees that a user is never charged for a script that fails to save.
-4. Database-level atomic RPC operations eliminate race conditions during concurrent requests.
-5. Error isolation on third-party dependencies (Jina AI) ensures high availability.
+---
 
-### 3. Caveats
-- No caveats. The implementation is robust, complete, and verified against all criteria.
+## 4. Conclusion
 
-### 4. Conclusion
-The codebase is **100% production-ready**. All security invariants, tier authorizations, error handling pipelines, and resilience mechanisms are operational.
-**Final Verdict:** **APPROVE**
+**Verdict:** ⚠️ **REQUEST_CHANGES** (Actionable blueprint updates)
 
-### 5. Verification Method
-To independently verify this evaluation:
-1. Run full automated test suite:
-   ```powershell
-   cd "C:\Auto script\frontend"
-   npm test
-   ```
-   *Expected Result*: 6 test files passed, 73 tests passed (100% pass rate).
-2. Inspect `frontend/functions/api/generate.js` for sequence lines 71-206.
+The Auto Script Master QA Blueprint (`QA_AUDIT_BLUEPRINT.md`) is comprehensive, highly accurate in its root cause analyses, and logically structured across its 5 execution phases. Incorporating the 4 drop-in code patches documented in `review_report.md` (complete SQL migration, safe auth admin email lookup, backend URL whitelist validation, and trial credit refund restoration) will ensure 100% robustness and complete non-destructive database safety.
+
+---
+
+## 5. Verification Method
+
+To independently verify this review and the blueprint remediations:
+
+1. **Verify Mock Database Fix**:
+   - Update `mockDb.js` lines 107–120 with normalized `{ p_user_id, p_amount }`.
+   - Run: `cd "C:\Auto script\frontend" && npm test`
+   - Expect: All 80 unit and concurrency tests pass cleanly.
+
+2. **Verify XSS Sanitization**:
+   - Pass `<img src=x onerror=alert(1)>` to `highlightBannedWords()`.
+   - Expect: Output returns `&lt;img src=x onerror=alert(1)&gt;` with zero executable tags.
+
+3. **Verify SQL Function Logic**:
+   - Inspect `supabase/migrations/20260824_freemium_trial.sql` vs. Patch 1 in `review_report.md`.
+   - Confirm that `trial_pro_remaining`, `last_free_reset`, and atomic `-1` rejection on insufficient balance are all preserved.
+
+4. **Verify Frontend Production Build**:
+   - Run: `cd "C:\Auto script\frontend" && npm run build`
+   - Expect: Zero TypeScript/Vite bundle errors.

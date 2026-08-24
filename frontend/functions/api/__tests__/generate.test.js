@@ -92,9 +92,9 @@ describe('POST /api/generate (R2: Atomic RPC, R3: Order of Operations, R4: Tier 
       const request = createGenerateRequest({ productName: 'Test Product' });
       const response = await onRequestPost({ request, env });
 
-      expect(response.status).toBe(403);
+      expect(response.status).toBe(402);
       const data = await response.json();
-      expect(data).toHaveProperty('error', 'Insufficient credits');
+      expect(data).toHaveProperty('error', 'เครดิตไม่พอ กรุณาเติมเครดิต');
       expect(globalMockGemini.generateCalls.length).toBe(0);
     });
 
@@ -104,9 +104,9 @@ describe('POST /api/generate (R2: Atomic RPC, R3: Order of Operations, R4: Tier 
       const request = createGenerateRequest({ productName: 'Test Product' });
       const response = await onRequestPost({ request, env });
 
-      expect(response.status).toBe(403);
+      expect(response.status).toBe(402);
       const data = await response.json();
-      expect(data).toHaveProperty('error', 'Insufficient credits');
+      expect(data).toHaveProperty('error', 'เครดิตไม่พอ กรุณาเติมเครดิต');
     });
   });
 
@@ -270,7 +270,7 @@ describe('POST /api/generate (R2: Atomic RPC, R3: Order of Operations, R4: Tier 
   // =========================================================================
 
   describe('Tier 4: R2 - Atomic Credit Deduction via RPC', () => {
-    it('T4.1: should call increment_credits RPC with user_id and amount: -1', async () => {
+    it('T4.1: should call increment_credits RPC with user_id and p_amount: -1', async () => {
       globalMockDb.seedProfile(userId, { tier: 'free', credits: 4 });
 
       const request = createGenerateRequest({
@@ -287,8 +287,8 @@ describe('POST /api/generate (R2: Atomic RPC, R3: Order of Operations, R4: Tier 
       const rpcCall = globalMockDb.rpcCalls[0];
       expect(rpcCall.functionName).toBe('increment_credits');
       expect(rpcCall.args).toEqual({
-        user_id: userId,
-        amount: -1
+        p_user_id: userId,
+        p_amount: -1
       });
 
       // Verify updated credits in profile

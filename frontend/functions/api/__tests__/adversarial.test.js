@@ -369,7 +369,7 @@ describe('ADVERSARIAL STRESS TEST SUITE (challenger_2)', () => {
  expect(globalMockDb.rpcCalls.length).toBe(1);
  expect(globalMockDb.rpcCalls[0]).toEqual({
  functionName: 'increment_credits',
- args: { user_id: userId, amount: 150 }
+ args: { p_user_id: userId, p_amount: 150 }
  });
 
  // Final credits must be 10 + 150 = 160 (NOT 10 + 30*150 = 4510)
@@ -535,7 +535,7 @@ describe('ADVERSARIAL STRESS TEST SUITE (challenger_2)', () => {
  });
 
  const resZero = await handleGenerate({ request: reqZero, env });
- expect(resZero.status).toBe(403);
+ expect(resZero.status).toBe(402);
  expect(globalMockGemini.generateCalls.length).toBe(0);
  expect(globalMockDb.scripts.length).toBe(0);
 
@@ -550,7 +550,7 @@ describe('ADVERSARIAL STRESS TEST SUITE (challenger_2)', () => {
  });
 
  const resNeg = await handleGenerate({ request: reqNeg, env });
- expect(resNeg.status).toBe(403);
+ expect(resNeg.status).toBe(402);
  expect(globalMockGemini.generateCalls.length).toBe(0);
  expect(globalMockDb.scripts.length).toBe(0);
  });

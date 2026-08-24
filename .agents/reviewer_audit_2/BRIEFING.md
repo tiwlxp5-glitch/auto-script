@@ -1,50 +1,61 @@
-# BRIEFING — 2026-08-24T07:35:10+07:00
+﻿# BRIEFING — 2026-08-24T20:20:00Z
 
 ## Mission
-Perform independent, objective review and adversarial check of Auto Script codebase (focusing on `generate.js`, order of operations, tier authorization, database consistency, error status codes, test suite validation, and GEMINI.md compliance), issuing a final verdict (APPROVE / REQUEST_CHANGES).
+Independently review, challenge, and stress-test the Auto Script Master QA Blueprint (QA_AUDIT_BLUEPRINT.md) against robustness edge cases, implementation roadmap logic, verification matrix concrete testability, and non-destructive schema integrity.
 
 ## 🔒 My Identity
-- Archetype: reviewer_critic
+- Archetype: reviewer_challenger
 - Roles: reviewer, critic
 - Working directory: C:\Auto script\.agents\reviewer_audit_2
-- Original parent: c039c40c-dc6e-49b3-8cc9-3c870b884d82
-- Milestone: M-Audit-Review-2
-- Instance: 1 of 1
+- Original parent: 25fa285a-63ee-46c2-9d71-0b849d0c4ce0
+- Milestone: qa_audit_review_phase
+- Instance: 2 of 2
 
 ## 🔒 Key Constraints
-- Review-only — do NOT modify implementation code
-- Actively check for integrity violations: hardcoded mocks, dummy/facade implementations, shortcuts, fabricated verification
-- Adhere strictly to GEMINI.md rules, Cloudflare + Supabase security runbook, and ORIGINAL_REQUEST requirements
+- Review-only — do NOT modify production implementation code
+- Adhere strictly to GEMINI.md rules (Beginner explanation, gemini-3.6-flash, Proactive compliance, Exact strings, Supabase schema alignment)
+- Actively check for integrity violations, schema overwrites, and unhandled edge cases
+- All communications via send_message to parent (25fa285a-63ee-46c2-9d71-0b849d0c4ce0)
 
 ## Current Parent
-- Conversation ID: c039c40c-dc6e-49b3-8cc9-3c870b884d82
-- Updated: 2026-08-24T07:35:10+07:00
+- Conversation ID: 25fa285a-63ee-46c2-9d71-0b849d0c4ce0
+- Updated: 2026-08-24T20:20:00Z
 
 ## Review Scope
-- **Files to review**: `frontend/functions/api/generate.js`, `frontend/functions/api/create-portal.js`, `frontend/functions/api/webhook.js`, `frontend/functions/api/delete-account.js`, `frontend/src/pages/Pricing.jsx`, `frontend/src/pages/Settings.jsx`, `frontend/src/pages/CreateScript.jsx`, `frontend/src/pages/Legal.jsx`, `frontend/src/lib/bannedWords.js`, `frontend/public/_headers`, `frontend/src/lib/supabase.js`, `supabase/migrations/20260824000000_create_increment_credits_rpc.sql`, `frontend/functions/api/__tests__/*`
-- **Interface contracts**: `PROJECT.md`, `ORIGINAL_REQUEST.md`, `cloudflare-supabase-security/SKILL.md`
-- **Review criteria**: Correctness, Logical Completeness, Quality, Risk Assessment, Adversarial Edge Cases, Integrity
+- **Files to review**:
+  - C:\Auto script\QA_AUDIT_BLUEPRINT.md
+  - C:\Auto script\.agents\ORIGINAL_REQUEST.md
+  - C:\Auto script\GEMINI.md
+  - C:\Auto script\.agents\PROJECT.md
+  - Production code in rontend/src/, rontend/functions/api/, supabase/migrations/
+- **Review criteria**: Robustness & Edge Cases, Implementation Roadmap, Verification Matrix, Non-Destructive Integrity
 
 ## Key Decisions Made
-- Confirmed order of operations in `generate.js`: Pre-check -> AI generation (`gemini-3.6-flash`) -> Save script to `scripts` table FIRST -> Deduct credit via `increment_credits` RPC SECOND.
-- Confirmed zero credit loss guarantee on failures.
-- Confirmed server-side tier authorization and isolation of Jina AI scraping errors.
-- Verified test suite pass rate: 6 test files, 73 tests passed (100% pass).
-- Verified zero integrity violations, no mock shortcuts or hardcoded facades in production code.
-- Verdict: **APPROVE**.
+- Executed empirical Vitest run (confirmed 43 failing tests due to mockDb.js desync with p_user_id/p_amount).
+- Verified XSS vulnerability and proposed escapeHtml sanitizer.
+- Discovered Critical finding: Blueprint SQL migration 20260824_atomic_credit_guard.sql in line 1167 omits 	rial_pro_remaining decrementing and 7-day freemium replenishment from 20260824_freemium_trial.sql.
+- Discovered Critical finding: Blueprint webhook email fallback queries profiles.email which does not exist in standard Supabase profiles schema (violating GEMINI.md Rule 5).
+- Discovered Major finding: Backend functions /api/analyze and /api/generate lack URL domain validation matching frontend FE-SEC-02.
 
 ## Review Checklist
-- **Items reviewed**: `generate.js`, `create-portal.js`, `webhook.js`, `delete-account.js`, `Pricing.jsx`, `Settings.jsx`, `CreateScript.jsx`, `Legal.jsx`, `bannedWords.js`, `_headers`, `supabase.js`, SQL RPC migration, and test suites.
-- **Verdict**: APPROVE
-- **Unverified claims**: None. All claims verified empirically via code inspection and automated test execution.
+- **Items reviewed**:
+  - QA_AUDIT_BLUEPRINT.md (Executive summary, Findings 1-24, Roadmap phases 0-5, Acceptance Matrix)
+  - supabase/migrations/ (All 3 migration files)
+  - rontend/functions/api/ (All 5 endpoints & mock helpers)
+  - rontend/src/ (Components, pages, utils)
+- **Verdict**: REQUEST_CHANGES (with detailed blueprint corrections for non-destructive schema integrity and backend defense-in-depth)
+- **Unverified claims**: None. All core claims verified empirically against codebase.
 
 ## Attack Surface
-- **Hypotheses tested**: IDOR injection, webhook concurrency/replay, script insert failure credit protection, tier spoofing, prompt injection, Jina network failure degradation, invalid AI output handling, 100% off coupon handling.
-- **Vulnerabilities found**: 0 vulnerabilities remaining.
-- **Untested angles**: None.
+- **Hypotheses tested**:
+  - SQL migration schema overwrite: Confirmed (Omitted trial and 7-day reset logic).
+  - Webhook email lookup column assumption: Confirmed (profiles.email column assumption violates Rule 5).
+  - Backend URL SSRF bypass: Confirmed (Frontend checks domain, backend did not re-check).
+  - Vitest failure root cause: Confirmed (mockDb.js argument destructuring).
 
 ## Artifact Index
-- `C:\Auto script\.agents\reviewer_audit_2\DISPATCH.md` — Inbound task dispatch
-- `C:\Auto script\.agents\reviewer_audit_2\BRIEFING.md` — Persistent memory
-- `C:\Auto script\.agents\reviewer_audit_2\progress.md` — Liveness progress log
-- `C:\Auto script\.agents\reviewer_audit_2\handoff.md` — Final audit review report
+- C:\Auto script\.agents\reviewer_audit_2\DISPATCH.md — Inbound instructions
+- C:\Auto script\.agents\reviewer_audit_2\BRIEFING.md — Working memory & state
+- C:\Auto script\.agents\reviewer_audit_2\progress.md — Liveness & progress log
+- C:\Auto script\.agents\reviewer_audit_2\review_report.md — Detailed review & adversarial challenge report
+- C:\Auto script\.agents\reviewer_audit_2\handoff.md — 5-component handoff document

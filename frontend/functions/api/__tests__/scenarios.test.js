@@ -82,7 +82,7 @@ describe('Tiers 3 & 4: Cross-Feature Combinations & Real-World Application Scena
         request: createGenerateReq({ productName: 'หูฟังบลูทูธ', productDetails: 'ตัดเสียงรบกวน' }),
         env
       });
-      expect(preGenRes.status).toBe(403);
+      expect(preGenRes.status).toBe(402);
 
       // Step 2: Stripe Webhook delivers Plus package checkout (24900 satang)
       const webhookRes = await handleWebhook({
@@ -279,8 +279,8 @@ describe('Tiers 3 & 4: Cross-Feature Combinations & Real-World Application Scena
         request: createGenerateReq({ productName: 'Item 4', productDetails: 'Details 4' }),
         env
       });
-      expect(res4.status).toBe(403);
-      expect((await res4.json()).error).toContain('Insufficient credits');
+      expect(res4.status).toBe(402);
+      expect((await res4.json()).error).toContain('เครดิตไม่พอ กรุณาเติมเครดิต');
       expect(globalMockDb.scripts.length).toBe(3); // Still 3, item 4 was not saved
     });
 

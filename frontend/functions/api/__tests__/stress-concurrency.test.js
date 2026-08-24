@@ -77,7 +77,7 @@ describe('EMPIRICAL CONCURRENCY & RACE CONDITION STRESS HARNESS (challenger_audi
       expect(globalMockDb.rpcCalls.length).toBe(1);
       expect(globalMockDb.rpcCalls[0]).toEqual({
         functionName: 'increment_credits',
-        args: { user_id: userId, amount: 60 }
+        args: { p_user_id: userId, p_amount: 60 }
       });
 
       // Exactly 1 webhook_events entry
@@ -205,7 +205,7 @@ describe('EMPIRICAL CONCURRENCY & RACE CONDITION STRESS HARNESS (challenger_audi
       const results = await Promise.all(promises);
 
       for (const res of results) {
-        expect(res.status).toBe(403);
+        expect(res.status).toBe(402);
       }
 
       expect(globalMockGemini.generateCalls.length).toBe(0);
@@ -238,7 +238,7 @@ describe('EMPIRICAL CONCURRENCY & RACE CONDITION STRESS HARNESS (challenger_audi
       const results = await Promise.all(promises);
 
       for (const res of results) {
-        expect(res.status).toBe(403);
+        expect(res.status).toBe(402);
       }
 
       expect(globalMockGemini.generateCalls.length).toBe(0);
