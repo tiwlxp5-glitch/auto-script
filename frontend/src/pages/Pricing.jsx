@@ -133,7 +133,7 @@ function Pricing() {
             </li>
             <li className="flex items-start">
               <span className="text-slate-300 mr-3">✗</span>
-              <span className="text-slate-400 line-through">แปะลิงก์สินค้า (AI ดูดข้อมูล)</span>
+              <span className="text-slate-400 line-through">สร้างทีเดียว 3 สไตล์ (Multi-Version)</span>
             </li>
           </ul>
           {renderButton('free', null, '', '')}
@@ -170,7 +170,7 @@ function Pricing() {
             </li>
             <li className="flex items-start">
               <span className="text-slate-300 mr-3">✗</span>
-              <span className="text-slate-400 line-through">แปะลิงก์สินค้า (AI ดูดข้อมูล)</span>
+              <span className="text-slate-400 line-through">สร้างทีเดียว 3 สไตล์ (Multi-Version)</span>
             </li>
           </ul>
           {renderButton(
@@ -211,8 +211,8 @@ function Pricing() {
               <span className="text-slate-300">ระบุกลุ่มเป้าหมาย (เพศ/อายุ)</span>
             </li>
             <li className="flex items-center">
-              <span className="text-amber-400 mr-3 shrink-0"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"></path></svg></span>
-              <span className="text-white font-bold bg-slate-800 px-2 py-0.5 rounded whitespace-nowrap text-sm sm:text-base">แปะลิงก์ (AI ดูดข้อมูล)</span>
+              <span className="text-amber-400 mr-3 shrink-0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path fillRule="evenodd" d="M9 4.5a.75.75 0 0 1 .721.544l.813 2.846a3.75 3.75 0 0 0 2.576 2.576l2.846.813a.75.75 0 0 1 0 1.442l-2.846.813a3.75 3.75 0 0 0-2.576 2.576l-.813 2.846a.75.75 0 0 1-1.442 0l-.813-2.846a3.75 3.75 0 0 0-2.576-2.576l-2.846-.813a.75.75 0 0 1 0-1.442l2.846-.813A3.75 3.75 0 0 0 7.466 7.89l.813-2.846A.75.75 0 0 1 9 4.5ZM18 1.5a.75.75 0 0 1 .728.568l.258 1.036c.236.94.97 1.674 1.91 1.91l1.036.258a.75.75 0 0 1 0 1.456l-1.036.258c-.94.236-1.674.97-1.91 1.91l-.258 1.036a.75.75 0 0 1-1.456 0l-.258-1.036a2.625 2.625 0 0 0-1.91-1.91l-1.036-.258a.75.75 0 0 1 0-1.456l1.036-.258a2.625 2.625 0 0 0 1.91-1.91l.258-1.036A.75.75 0 0 1 18 1.5ZM16.5 15a.75.75 0 0 1 .712.513l.394 1.183c.15.447.5.799.948.948l1.183.395a.75.75 0 0 1 0 1.422l-1.183.395c-.447.15-.799.5-.948.948l-.395 1.183a.75.75 0 0 1-1.422 0l-.395-1.183a1.5 1.5 0 0 0-.948-.948l-1.183-.395a.75.75 0 0 1 0-1.422l1.183-.395c.447-.15.799-.5.948-.948l.395-1.183A.75.75 0 0 1 16.5 15Z" clipRule="evenodd" /></svg></span>
+              <span className="text-white font-bold bg-slate-800 px-2 py-0.5 rounded whitespace-nowrap text-sm sm:text-base">สร้างทีเดียว 3 สไตล์ (Multi-Version)</span>
             </li>
             <li className="flex items-center">
               <span className="text-amber-400 mr-3 shrink-0"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg></span>
