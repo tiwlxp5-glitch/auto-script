@@ -155,3 +155,5 @@ c:\Auto script\
    - Used Chain of Thought (CoT) prompting (`neuromarketing_analysis`) to deeply analyze psychology before generating the script.
    - Promoted the feature on the Dashboard Home page ("6 สูตรจิตวิทยาการขายระดับโลก").
    - Added strict client-side validation to prevent empty submissions and avoid 60s timeout errors.
+8. **UX Polish (Error Handling)**:
+   - Implemented Auto-Scroll to validation errors globally (CreateScript, Login, Register) for better UX on mobile and long forms.
