@@ -143,9 +143,12 @@ c:\Auto script\
    - Backend: Double-refund bug, symmetric refunds, input limits, payment_status check, refund/chargeback handlers
    - Frontend: lazyWithRetry, AbortController timeout, Navbar a11y
    - Tests: mockDb stripe_customer_id lookup, all audit tests updated to verify fixes
-6. **Launch Readiness & Auth Polish** (Current Session):
-   - **Auth UI**: Rewrote `Register.jsx` to correctly capture Supabase `session === null` (email verification required), added a prominent Spam folder warning, a "Resend Email" button with a 60s cooldown, and fixed generic error messages in `Login.jsx` to explicitly state "Email not confirmed".
-   - **UX/Premium Feel**: Replaced legacy text emojis with premium Heroicons SVGs across tabs. Improved Navbar credit and trial quota badges.
-   - **Bug Fixes**: Fixed the trial quota bug in `generate.js` to correctly deduct `creditAmount`. Fixed a bug where Cloudflare Pages threw 404s on page refresh by adding the `public/_redirects` SPA rule. Fixed a Navbar Dropdown bug where clicks were intercepted too fast. Fixed a bug in `History.jsx` where `Pro_MultiVersion` scripts showed as "ไม่มีข้อมูล" and crashed on export/copy by properly parsing the `raw_multi_version` XML tags.
-   - **AI Reliability (JSON Parsing Fix)**: Solved `JSON.parse` V8 SyntaxErrors in `generate.js` by adding strict escaping rules to Gemini prompts (forbidding unescaped quotes and raw newlines), intercepting parsing errors to return a localized Thai error message, and enforcing backend validation for Multi-Version XML payloads to prevent silent UI failures and credit loss.
-   - **History UX Polish**: Translated `Pro_MultiVersion` mode to Thai, made the History mode filter dynamic to support all new AI modes, added version badges (`ครั้งที่ X`) and precise timestamps to disambiguate duplicate script generations of the same product, updated the TXT export filenames to append `_vX`, redesigned layout to a mobile-friendly Compact List, and implemented a tabbed Modal for viewing Multi-Version scripts to reduce vertical scrolling.
+6. **Launch Readiness & Auth Polish**:
+   - Auth UI: Rewrote Register.jsx for email verification, Spam warning, Resend button.
+   - UX/Premium Feel: Replaced legacy emojis with Heroicons.
+   - AI Reliability: Strict escaping rules to Gemini prompts.
+7. **Belief-Shifting Script Mode (Pro Feature)** (Current Session):
+   - Added a highly advanced "Belief-Shifting" script generation mode using Epiphany Bridge framework.
+   - Added specific inputs (`falseBelief`, `mechanism`) using textareas for mobile UX.
+   - Used Chain of Thought (CoT) prompting (`neuromarketing_analysis`) to deeply analyze psychology before generating the script.
+   - Promoted the feature on the Dashboard Home page ("6 สูตรจิตวิทยาการขายระดับโลก").
