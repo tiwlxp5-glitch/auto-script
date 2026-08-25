@@ -69,17 +69,19 @@ c:\Auto script\
 | Tier | Credits | Price | Features |
 |------|---------|-------|----------|
 | Free | 3 credits (trial) | Free | Single script, 3 modes |
-| Plus | 60 credits | ~590 THB | Single script |
-| Pro | 150 credits | ~590 THB | Single + Multi-Version (3 styles) |
+| Plus | 60 credits | ~249 THB | Single script |
+| Pro | 150 credits | ~590 THB | Single + Multi-Version + Belief-Shifting |
 
 - **Single script**: costs 1 credit, generates 1 script
 - **Multi-Version** (Pro only): costs 2 credits, generates 3 styles (Funny, Review, FOMO) with XML tag parsing and 3-tab UI
+- **Belief-Shifting** (Pro only): costs 1 credit, generates 1 highly advanced script using Epiphany Bridge framework
 
 ### Script Generation Modes
 1. **ขยี้ปัญหา (PAS Formula)** — Problem, Agitate, Solution
 2. **เล่าเรื่อง (HSO Formula)** — Hook, Story, Offer
 3. **โดนใจ FOMO** — Fear Of Missing Out psychology
-4. **Multi-Version** (Pro only) — generates all 3 styles simultaneously
+4. **โครงสร้างเจาะลึก** (Pro only) — Belief-Shifting & Epiphany Bridge with neuromarketing analysis CoT
+5. **Multi-Version** (Pro only) — generates all 3 styles simultaneously
 
 ### Database Schema (Key Tables)
 - **profiles**: `id` (UUID, = auth.users.id), `tier` (free/plus/pro), `credits` (int), `stripe_customer_id`, `email_verified`

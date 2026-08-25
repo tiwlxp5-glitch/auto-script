@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 function CreateScript() {
   const { user, profile, setProfile, loading } = useAuth();
   const analyzeAbortRef = useRef(null);
+  const errorRef = useRef(null);
   const [productName, setProductName] = useState('');
   const [productDetails, setProductDetails] = useState('');
   const [pricePromo, setPricePromo] = useState('');
@@ -98,26 +99,37 @@ function CreateScript() {
   const effectiveTier = profile ? (profile.tier === 'free' && profile.trial_pro_remaining > 0 ? 'pro' : profile.tier) : 'free';
 
 
+  const scrollToError = () => {
+    setTimeout(() => {
+      if (errorRef.current) {
+        const y = errorRef.current.getBoundingClientRect().top + window.scrollY - 100;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }, 50);
+  };
+
   const handleGenerate = async (e, isMultiVersion = false) => {
     if (e) e.preventDefault();
 
     // Validate required fields
     if (!productName.trim()) {
       setError('กรุณากรอก "ชื่อสินค้า" ก่อนสร้างสคริปต์ครับ');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollToError();
       return;
     }
 
     if (!productDetails.trim()) {
       setError('กรุณากรอก "รายละเอียดสินค้า" เพื่อให้ AI เขียนสคริปต์ได้ตรงใจครับ');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollToError();
       return;
     }
 
     if (mode === 'โครงสร้างเจาะลึก') {
       if (!falseBelief.trim() || !mechanism.trim()) {
         setError('โหมดโครงสร้างเจาะลึก: กรุณากรอก "ความเชื่อผิดๆ" และ "กลไก/ความลับ" ให้ครบถ้วนครับ');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        scrollToError();
         return;
       }
     }
@@ -126,6 +138,7 @@ function CreateScript() {
     const allInputs = `${productName} ${productDetails} ${competitor} ${targetAudience}`;
     if (containsProfanity(allInputs)) {
       setError('ไม่อนุญาตให้ใช้คำหยาบคาย! เว็บ Auto Script ห้ามใช้คำหยาบเด็ดขาด กรุณาแก้ไขข้อมูลของคุณ');
+      scrollToError();
       return;
     }
 
@@ -260,6 +273,7 @@ function CreateScript() {
       } else {
         setError(err.message || "เกิดข้อผิดพลาดในการสร้างสคริปต์ กรุณาลองใหม่อีกครั้งครับ");
       }
+      scrollToError();
     } finally {
       clearTimeout(timeoutId);
       setIsGenerating(false);
@@ -331,7 +345,7 @@ function CreateScript() {
         <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 h-fit">
           <form onSubmit={handleGenerate} className="space-y-6">
             {error && (
-              <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm">
+              <div ref={errorRef} className="bg-red-50 text-red-600 p-3 rounded-lg text-sm">
                 {error}
               </div>
             )}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 
@@ -7,7 +7,15 @@ function Login() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const errorRef = useRef(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (error && errorRef.current) {
+      const y = errorRef.current.getBoundingClientRect().top + window.scrollY - 100;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  }, [error]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -51,7 +59,7 @@ function Login() {
       <h2 className="text-2xl font-bold text-center text-slate-900 mb-6">เข้าสู่ระบบ</h2>
       
       {error && (
-        <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-4">
+        <div ref={errorRef} className="bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-4">
           {error}
         </div>
       )}

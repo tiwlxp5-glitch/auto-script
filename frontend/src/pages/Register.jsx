@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 
@@ -7,10 +7,18 @@ function Register() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const errorRef = useRef(null);
   const [success, setSuccess] = useState(false);
   const [needsEmailVerification, setNeedsEmailVerification] = useState(false);
   const [resendCooldown, setResendCooldown] = useState(0);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (error && errorRef.current) {
+      const y = errorRef.current.getBoundingClientRect().top + window.scrollY - 100;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  }, [error]);
 
   useEffect(() => {
     let timer;
@@ -93,7 +101,7 @@ function Register() {
       <h2 className="text-2xl font-bold text-center text-slate-900 mb-6">สมัครสมาชิกใหม่</h2>
       
       {error && (
-        <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-4">
+        <div ref={errorRef} className="bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-4">
           เกิดข้อผิดพลาด: {error}
         </div>
       )}
