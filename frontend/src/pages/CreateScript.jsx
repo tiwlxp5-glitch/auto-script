@@ -451,7 +451,11 @@ function CreateScript() {
                   </div>
                   <div className="flex items-start gap-1.5 text-amber-700/80">
                     <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                    <p className="text-[11px] sm:text-xs">หมายเหตุ: บางลิงก์อาจดึงข้อมูลไม่สำเร็จเนื่องจากระบบป้องกันบอทของแพลตฟอร์ม (หากดึงไม่สำเร็จ ระบบจะคืนเครดิตให้อัตโนมัติ)</p>
+                    <p className="text-[11px] sm:text-xs">โควต้าวิเคราะห์ลิงก์: <span className="font-bold">Plus 5 ลิงก์/วัน, Pro 20 ลิงก์/วัน</span> (รีเซ็ตทุกเที่ยงคืน)</p>
+                  </div>
+                  <div className="flex items-start gap-1.5 text-amber-700/80">
+                    <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    <p className="text-[11px] sm:text-xs">หมายเหตุ: บางลิงก์อาจดึงข้อมูลไม่สำเร็จเนื่องจากระบบป้องกันบอทของแพลตฟอร์ม (หากดึงไม่สำเร็จ ระบบจะคืนเครดิต + โควต้าให้อัตโนมัติ)</p>
                   </div>
                 </div>
               </div>

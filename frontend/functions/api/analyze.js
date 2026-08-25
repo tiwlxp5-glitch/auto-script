@@ -55,17 +55,43 @@ export async function onRequestPost({ request, env }) {
        return new Response(JSON.stringify({ error: 'Upgrade to Pro to use URL analysis.' }), { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
-    // 2. Deduct 1 credit for analysis (Atomic RPC)
+    // 2. Check & increment daily analyze quota (Lazy Reset pattern)
+    const { data: quotaResult, error: quotaError } = await supabase.rpc('check_and_increment_analyze_quota', {
+      p_user_id: user.id,
+      p_tier: effectiveTier
+    });
+
+    if (quotaError) {
+      return new Response(JSON.stringify({ error: `Quota Error: ${quotaError.message}` }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
+
+    // Daily limit exceeded
+    if (!quotaResult.allowed) {
+      const limit = quotaResult.limit;
+      return new Response(JSON.stringify({ 
+        error: `คุณใช้โควต้าการวิเคราะห์ลิงก์วันนี้ครบแล้ว (${limit}/${limit} ลิงก์/วัน) กรุณารอพรุ่งนี้หรืออัปเกรดแพ็กเกจครับ`
+      }), { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
+
+    // 3. Deduct 1 credit for analysis (Atomic RPC)
     const { data: updatedCredits, error: creditError } = await supabase.rpc('increment_credits', {
       p_user_id: user.id,
       p_amount: -1
     });
 
     if (creditError) {
-      return new Response(JSON.stringify({ error: `RPC Error: ${creditError.message || JSON.stringify(creditError)}` }), { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      // Rollback quota (decrement back)
+      await supabase.from('profiles').update({ 
+        analyze_quota_used: (profile.analyze_quota_used || 1) - 1 
+      }).eq('id', user.id);
+      return new Response(JSON.stringify({ error: `RPC Error: ${creditError.message || JSON.stringify(creditError)}` }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
     
     if (updatedCredits === null || updatedCredits < 0) {
+      // Rollback quota
+      await supabase.from('profiles').update({ 
+        analyze_quota_used: Math.max(0, (quotaResult.used || 1) - 1)
+      }).eq('id', user.id);
       return new Response(JSON.stringify({ error: 'เครดิตไม่พอ กรุณาเติมเครดิต' }), { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
@@ -74,35 +100,46 @@ export async function onRequestPost({ request, env }) {
     const writer = writable.getWriter();
     const encoder = new TextEncoder();
 
+    // Remaining quota info to display to user
+    const remainingQuota = quotaResult.limit - quotaResult.used;
+
     // Fire & Forget the heavy lifting so we can return the stream
     (async () => {
       try {
-        await writer.write(encoder.encode("กำลังตรวจสอบลิงก์ข้อมูล...\n"));
+        await writer.write(encoder.encode(`เริ่มต้นกระบวนการ AI Analysis...\n`));
+        await writer.write(encoder.encode(`กำลังอ่านข้อมูลจากลิงก์ที่ระบุ...\n`));
         
-        // 3. Scrape URLs concurrently
+        // 4. Scrape URLs concurrently using Jina AI
+        // Use API Key if available (higher success rate), otherwise use anonymous
+        const jinaHeaders = {
+          'Accept': 'text/plain',
+          'X-Return-Format': 'markdown'
+        };
+        if (env.JINA_API_KEY) {
+          jinaHeaders['Authorization'] = `Bearer ${env.JINA_API_KEY}`;
+        }
+
         const scrapedContents = await Promise.all(urls.map(async (url, idx) => {
           await writer.write(encoder.encode(`กำลังอ่านเนื้อหาจากเว็บที่ ${idx + 1}: ${url}\n`));
           try {
             const jinaRes = await fetch(`https://r.jina.ai/${url}`, {
-              headers: {
-                'Accept': 'text/plain',
-                'X-Return-Format': 'markdown'
-              }
+              headers: jinaHeaders,
+              signal: AbortSignal.timeout(20000) // 20 second timeout
             });
             if (jinaRes.ok) {
               const text = await jinaRes.text();
-              return `--- SOURCE: ${url} ---\n${text.substring(0, 5000)}`; // limit 5000 chars per URL to save context
+              return `--- SOURCE: ${url} ---\n${text.substring(0, 5000)}`;
             }
-            return `--- SOURCE: ${url} ---\n[อ่านข้อมูลเว็บนี้ไม่สำเร็จ]`;
-          } catch {
-            return `--- SOURCE: ${url} ---\n[เกิดข้อผิดพลาดในการเชื่อมต่อเว็บ]`;
+            return `--- SOURCE: ${url} ---\n[อ่านข้อมูลเว็บนี้ไม่สำเร็จ สถานะ: ${jinaRes.status}]`;
+          } catch (err) {
+            return `--- SOURCE: ${url} ---\n[เกิดข้อผิดพลาดในการเชื่อมต่อเว็บ: ${err.message}]`;
           }
         }));
 
         const combinedContext = scrapedContents.join('\n\n');
         await writer.write(encoder.encode("\nประมวลผลข้อมูลเสร็จสิ้น! AI กำลังสรุปข้อมูล...\n\n=================================\n\n"));
 
-        // 4. Send to Gemini for Streaming Output
+        // 5. Send to Gemini for Streaming Output
         const apiKey = env.GEMINI_API_KEY || env.VITE_GEMINI_API_KEY;
         const ai = new GoogleGenAI({ apiKey });
         const prompt = `You are an expert e-commerce copywriter.
@@ -139,22 +176,28 @@ ${combinedContext}
             await writer.write(encoder.encode(chunk.text));
         }
 
-        // If Gemini detected no product info, refund the credit
+        // If Gemini detected no product info → refund credit AND quota
         if (fullResponse.includes('<ERROR>NO_PRODUCT_FOUND</ERROR>')) {
-            // Restore credits and trial_pro_remaining manually
-            const { data: dbProfile } = await supabase.from('profiles').select('credits, trial_pro_remaining, tier').eq('id', user.id).single();
-            if (dbProfile) {
-                const shouldRestoreTrial = dbProfile.tier === 'free' && dbProfile.trial_pro_remaining < 3;
-                await supabase.from('profiles').update({
-                    credits: (dbProfile.credits || 0) + 1,
-                    trial_pro_remaining: shouldRestoreTrial ? (dbProfile.trial_pro_remaining || 0) + 1 : dbProfile.trial_pro_remaining
-                }).eq('id', user.id);
-            }
-            await writer.write(encoder.encode("\n\n⚠️ **ระบบคืนเครดิตให้คุณ 1 เครดิต** (ลิงก์นี้ติดระบบป้องกันของแพลตฟอร์ม ทำให้ AI เข้าถึงข้อมูลไม่ได้)"));
+            // Refund credit
+            await supabase.rpc('increment_credits', { p_user_id: user.id, p_amount: 1 });
+            // Rollback quota usage
+            await supabase.from('profiles').update({ 
+              analyze_quota_used: Math.max(0, (quotaResult.used || 1) - 1)
+            }).eq('id', user.id);
+            await writer.write(encoder.encode("\n\n⚠️ **ระบบคืนเครดิตให้คุณ 1 เครดิต** (ลิงก์นี้ติดระบบป้องกันของแพลตฟอร์ม ทำให้ AI เข้าถึงข้อมูลไม่ได้)\n⚠️ **โควต้าการวิเคราะห์คืนให้ 1 ครั้ง** ลองใหม่หรือใช้ลิงก์อื่นได้เลยครับ"));
+        } else {
+            await writer.write(encoder.encode(`\n\n✅ วิเคราะห์เสร็จสมบูรณ์! โควต้าคงเหลือวันนี้: ${remainingQuota - 1} ครั้ง`));
         }
 
         await writer.close();
       } catch (err) {
+        // On any crash: refund both credit and quota
+        try {
+          await supabase.rpc('increment_credits', { p_user_id: user.id, p_amount: 1 });
+          await supabase.from('profiles').update({ 
+            analyze_quota_used: Math.max(0, (quotaResult.used || 1) - 1)
+          }).eq('id', user.id);
+        } catch (_) {}
         await writer.write(encoder.encode(`\n\n[SYSTEM ERROR]: ${err.message}`));
         await writer.close();
       }
