@@ -294,21 +294,30 @@ function History() {
                   <div className="flex bg-slate-100 p-1 rounded-lg overflow-x-auto hide-scrollbar shrink-0">
                     <button 
                       onClick={() => setActiveModalTab('funny')} 
-                      className={`flex-1 whitespace-nowrap px-3 py-2 text-sm font-medium rounded-md transition-all ${activeModalTab === 'funny' ? 'bg-white text-blue-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
+                      className={`flex-1 whitespace-nowrap px-3 py-2 text-sm font-medium rounded-md transition-all flex items-center justify-center gap-1.5 ${activeModalTab === 'funny' ? 'bg-white text-blue-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
                     >
-                      🤣 สายฮา
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-amber-500">
+                        <path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-2.625 6c-.54 0-.828.419-.936.634a1.96 1.96 0 0 0-.189.866c0 .298.059.605.189.866.108.215.395.634.936.634.54 0 .828-.419.936-.634.13-.26.189-.568.189-.866 0-.298-.059-.605-.189-.866-.108-.215-.395-.634-.936-.634Zm4.314.634c.108-.215.395-.634.936-.634.54 0 .828.419.936.634.13.26.189.568.189.866 0 .298-.059.605-.189.866-.108.215-.395.634-.936.634-.54 0-.828-.419-.936-.634a1.96 1.96 0 0 1-.189-.866c0-.298.059-.605.189-.866ZM7.65 15.385a.75.75 0 0 1 1.06-.062 3.736 3.736 0 0 0 2.665 1.099h1.25a3.736 3.736 0 0 0 2.665-1.099.75.75 0 1 1 1.06 1.06 5.236 5.236 0 0 1-3.725 1.539h-1.25a5.236 5.236 0 0 1-3.725-1.539.75.75 0 0 1-.061-1.06Z" clipRule="evenodd" />
+                      </svg>
+                      สายฮา
                     </button>
                     <button 
                       onClick={() => setActiveModalTab('review')} 
-                      className={`flex-1 whitespace-nowrap px-3 py-2 text-sm font-medium rounded-md transition-all ${activeModalTab === 'review' ? 'bg-white text-blue-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
+                      className={`flex-1 whitespace-nowrap px-3 py-2 text-sm font-medium rounded-md transition-all flex items-center justify-center gap-1.5 ${activeModalTab === 'review' ? 'bg-white text-blue-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
                     >
-                      ⭐ รีวิว
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-blue-500">
+                        <path fillRule="evenodd" d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12a4.49 4.49 0 0 1-1.549 3.397 4.491 4.491 0 0 1-1.307 3.497 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75a4.49 4.49 0 0 1-3.397-1.549 4.49 4.49 0 0 1-3.498-1.306 4.491 4.491 0 0 1-1.307-3.498A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.497 4.49 4.49 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
+                      </svg>
+                      รีวิว
                     </button>
                     <button 
                       onClick={() => setActiveModalTab('fomo')} 
-                      className={`flex-1 whitespace-nowrap px-3 py-2 text-sm font-medium rounded-md transition-all ${activeModalTab === 'fomo' ? 'bg-white text-blue-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
+                      className={`flex-1 whitespace-nowrap px-3 py-2 text-sm font-medium rounded-md transition-all flex items-center justify-center gap-1.5 ${activeModalTab === 'fomo' ? 'bg-white text-blue-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
                     >
-                      🔥 FOMO
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-rose-500">
+                        <path fillRule="evenodd" d="M12.963 2.286a.75.75 0 0 0-1.071-.136 9.742 9.742 0 0 0-3.539 6.176 7.547 7.547 0 0 1-1.705-1.715.75.75 0 0 0-1.152-.082A9 9 0 1 0 15.68 4.534a7.46 7.46 0 0 1-2.717-2.248ZM15.75 14.25a3.75 3.75 0 1 1-7.313-1.172c.628.465 1.35.81 2.133 1a5.99 5.99 0 0 1 1.925-3.546 3.75 3.75 0 0 1 3.255 3.718Z" clipRule="evenodd" />
+                      </svg>
+                      FOMO
                     </button>
                   </div>
                 )}
@@ -317,12 +326,12 @@ function History() {
               <div className="p-5 overflow-y-auto flex-1 bg-slate-50 text-sm text-slate-700 leading-relaxed whitespace-pre-wrap">
                 {(() => {
                   if (isMultiVersion && parsedMulti) {
-                    const renderMultiVersionBlocks = (blocks, title, emoji) => {
+                    const renderMultiVersionBlocks = (blocks, title, icon) => {
                       if (!blocks || !blocks.script_blocks) return <div className="text-center py-10 text-slate-400">ไม่มีข้อมูลสคริปต์ส่วนนี้</div>;
                       return (
                         <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm animate-fade-in">
                           <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2 border-b border-slate-100 pb-2">
-                            <span className="text-xl">{emoji}</span> {title}
+                            {icon} {title}
                           </h4>
                           <div className="space-y-4">
                             {blocks.script_blocks.map((b, i) => (
@@ -339,9 +348,9 @@ function History() {
                       );
                     };
                     
-                    if (activeModalTab === 'funny') return renderMultiVersionBlocks(parsedMulti.funny, 'สายฮา/กวนๆ', '🤣');
-                    if (activeModalTab === 'review') return renderMultiVersionBlocks(parsedMulti.review, 'รีวิวจริงใจ', '⭐');
-                    if (activeModalTab === 'fomo') return renderMultiVersionBlocks(parsedMulti.fomo, 'เร่งด่วน (FOMO)', '🔥');
+                    if (activeModalTab === 'funny') return renderMultiVersionBlocks(parsedMulti.funny, 'สายฮา/กวนๆ', <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-amber-500"><path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-2.625 6c-.54 0-.828.419-.936.634a1.96 1.96 0 0 0-.189.866c0 .298.059.605.189.866.108.215.395.634.936.634.54 0 .828-.419.936-.634.13-.26.189-.568.189-.866 0-.298-.059-.605-.189-.866-.108-.215-.395-.634-.936-.634Zm4.314.634c.108-.215.395-.634.936-.634.54 0 .828.419.936.634.13.26.189.568.189.866 0 .298-.059.605-.189.866-.108.215-.395.634-.936.634-.54 0-.828-.419-.936-.634a1.96 1.96 0 0 1-.189-.866c0-.298.059-.605.189-.866ZM7.65 15.385a.75.75 0 0 1 1.06-.062 3.736 3.736 0 0 0 2.665 1.099h1.25a3.736 3.736 0 0 0 2.665-1.099.75.75 0 1 1 1.06 1.06 5.236 5.236 0 0 1-3.725 1.539h-1.25a5.236 5.236 0 0 1-3.725-1.539.75.75 0 0 1-.061-1.06Z" clipRule="evenodd" /></svg>);
+                    if (activeModalTab === 'review') return renderMultiVersionBlocks(parsedMulti.review, 'รีวิวจริงใจ', <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-blue-500"><path fillRule="evenodd" d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12a4.49 4.49 0 0 1-1.549 3.397 4.491 4.491 0 0 1-1.307 3.497 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75a4.49 4.49 0 0 1-3.397-1.549 4.49 4.49 0 0 1-3.498-1.306 4.491 4.491 0 0 1-1.307-3.498A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.497 4.49 4.49 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" /></svg>);
+                    if (activeModalTab === 'fomo') return renderMultiVersionBlocks(parsedMulti.fomo, 'เร่งด่วน (FOMO)', <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-rose-500"><path fillRule="evenodd" d="M12.963 2.286a.75.75 0 0 0-1.071-.136 9.742 9.742 0 0 0-3.539 6.176 7.547 7.547 0 0 1-1.705-1.715.75.75 0 0 0-1.152-.082A9 9 0 1 0 15.68 4.534a7.46 7.46 0 0 1-2.717-2.248ZM15.75 14.25a3.75 3.75 0 1 1-7.313-1.172c.628.465 1.35.81 2.133 1a5.99 5.99 0 0 1 1.925-3.546 3.75 3.75 0 0 1 3.255 3.718Z" clipRule="evenodd" /></svg>);
                     return null;
                   } else if (parsed?.script_blocks) {
                     return (
