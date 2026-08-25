@@ -71,34 +71,36 @@ function Home() {
 
             <div className="space-y-4">
               {/* Hook Card */}
-              <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
+              <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 shadow-sm">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-xs font-bold bg-rose-100 text-rose-700 px-2 py-1 rounded flex items-center gap-1"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg> HOOK</span>
-                  <span className="text-xs text-slate-400 flex items-center gap-1"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> 0:00 - 0:03</span>
+                  <span className="text-[11px] sm:text-xs font-bold bg-rose-100 text-rose-700 px-2 py-1 rounded flex items-center gap-1"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg> HOOK (ฮุก)</span>
+                  <span className="text-[10px] sm:text-xs text-slate-400 flex items-center gap-1"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> 0:00 - 0:03</span>
                 </div>
-                <p className="text-slate-800 font-medium text-sm mb-3">
-                  "ใครเป็นสิวซ้ำซาก หายแล้วก็ขึ้นใหม่... หยุดเลื่อนคลิปนี้ด่วน!"
+                <p className="text-slate-800 font-bold text-sm mb-3 leading-relaxed">
+                  "หยุดก่อน! ใครเป็นสิวอักเสบ สิวซ้ำซาก หายแล้วก็ขึ้นใหม่ที่เดิม... ถ้าไม่อยากหน้าพังไปกว่านี้ ดูคลิปนี้ให้จบด่วน!"
                 </p>
-                <div className="bg-white p-2 rounded-lg text-xs text-slate-500 border border-slate-100 flex gap-2 items-start">
+                <div className="bg-white p-2.5 rounded-lg text-xs text-slate-500 border border-slate-200 flex gap-2 items-start">
                   <span className="mt-0.5 text-blue-500"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></span> 
-                  <span><strong className="text-slate-600">ภาพ:</strong> ทำหน้าช็อก ชี้ไปที่สิวบนหน้า</span>
+                  <span className="leading-tight"><strong className="text-slate-700">ภาพ:</strong> ทำหน้าเครียด เอามือจับรอยสิวบนหน้า แล้วซูมกล้องเข้าใกล้ๆ</span>
                 </div>
               </div>
 
               {/* Reveal Card */}
-              <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
+              <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 shadow-sm">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-xs font-bold bg-blue-100 text-blue-700 px-2 py-1 rounded flex items-center gap-1"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg> REVEAL</span>
-                  <span className="text-xs text-slate-400 flex items-center gap-1"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> 0:03 - 0:10</span>
+                  <span className="text-[11px] sm:text-xs font-bold bg-blue-100 text-blue-700 px-2 py-1 rounded flex items-center gap-1"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg> REVEAL (เข้าเนื้อหา)</span>
+                  <span className="text-[10px] sm:text-xs text-slate-400 flex items-center gap-1"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> 0:03 - 0:10</span>
                 </div>
-                <p className="text-slate-800 font-medium text-sm mb-3">
-                  "ตั้งแต่ลองตัวนี้ สิวยุบกริบใน 3 วัน แถมหน้าไม่ลอกสักนิด! ซึมไวสุดๆ"
+                <p className="text-slate-800 font-medium text-sm mb-3 leading-relaxed">
+                  "บอกเลยว่าตั้งแต่ลองตัวนี้ ชีวิตเปลี่ยน! สิวเม็ดเป้งยุบกริบใน 3 วัน แถมหน้าไม่ลอก ไม่แสบแดงเลยสักนิด เนื้อสัมผัสใสแจ๋ว ซึมไวแบบทาปุ๊บแต่งหน้าต่อได้เลย"
                 </p>
-                <div className="bg-white p-2 rounded-lg text-xs text-slate-500 border border-slate-100 flex gap-2 items-start">
+                <div className="bg-white p-2.5 rounded-lg text-xs text-slate-500 border border-slate-200 flex gap-2 items-start">
                   <span className="mt-0.5 text-blue-500"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></span> 
-                  <span><strong className="text-slate-600">ภาพ:</strong> หยดสกินแคร์ลงบนมือให้ดูเนื้อสัมผัสใสๆ</span>
+                  <span className="leading-tight"><strong className="text-slate-700">ภาพ:</strong> บีบสกินแคร์ลงบนหลังมือ ถูเบาๆ ให้ดูความซึมไว (แทรกรูป Before/After ตอนสิวยุบ)</span>
                 </div>
               </div>
+              
+              <p className="text-[11px] text-slate-400 italic text-center mt-1">* นี่เป็นเพียงตัวอย่าง 2 ท่อนแรกจากสคริปต์แบบเต็ม 5 ท่อน</p>
             </div>
 
             <ul className="mt-6 space-y-2 text-sm text-blue-800 font-medium">
