@@ -46,14 +46,45 @@ function History() {
       .eq('id', scriptId);
   };
 
+  const parseMultiVersion = (rawMultiVersion) => {
+    const safeParse = (str) => {
+      try { return JSON.parse(str.replace(/```json/g, '').replace(/```/g, '').trim()); } 
+      catch(e) { return null; }
+    };
+    const funnyMatch = rawMultiVersion.match(/<VERSION_FUNNY>([\s\S]*?)<\/VERSION_FUNNY>/);
+    const reviewMatch = rawMultiVersion.match(/<VERSION_REVIEW>([\s\S]*?)<\/VERSION_REVIEW>/);
+    const fomoMatch = rawMultiVersion.match(/<VERSION_FOMO>([\s\S]*?)<\/VERSION_FOMO>/);
+    
+    return {
+      funny: funnyMatch ? safeParse(funnyMatch[1]) : null,
+      review: reviewMatch ? safeParse(reviewMatch[1]) : null,
+      fomo: fomoMatch ? safeParse(fomoMatch[1]) : null
+    };
+  };
+
   const copyToClipboard = (scriptData) => {
     try {
-      if (!scriptData?.script_blocks) {
-        alert('ไม่พบข้อมูลบทพูดสำหรับคัดลอก');
-        return;
+      let fullText = '';
+      if (scriptData?.raw_multi_version) {
+        const parsedMulti = parseMultiVersion(scriptData.raw_multi_version);
+        const getBlocksText = (obj, title) => {
+          if (!obj?.script_blocks) return '';
+          return `--- ${title} ---\n` + obj.script_blocks.map(b => b.audio_spoken).join(' ') + '\n\n';
+        };
+        fullText += getBlocksText(parsedMulti.funny, 'สายฮา/กวนๆ');
+        fullText += getBlocksText(parsedMulti.review, 'รีวิวจริงใจ');
+        fullText += getBlocksText(parsedMulti.fomo, 'เร่งด่วน (FOMO)');
+        
+        if (!fullText.trim()) throw new Error('No blocks');
+      } else {
+        if (!scriptData?.script_blocks) {
+          alert('ไม่พบข้อมูลบทพูดสำหรับคัดลอก');
+          return;
+        }
+        fullText = scriptData.script_blocks.map(b => b.audio_spoken).join(' ');
       }
-      const fullText = scriptData.script_blocks.map(b => b.audio_spoken).join(' ');
-      navigator.clipboard.writeText(fullText);
+      
+      navigator.clipboard.writeText(fullText.trim());
       alert('คัดลอกสคริปต์เรียบร้อยแล้ว!');
     } catch {
       alert('ไม่สามารถคัดลอกได้');
@@ -61,8 +92,23 @@ function History() {
   };
 
   const exportToText = (scriptData, productName) => {
-    const fullText = scriptData.script_blocks.map(b => `[${b.phase}] ${b.audio_spoken}\n(ภาพ: ${b.visual_direction})`).join('\n\n');
-    const blob = new Blob([fullText], { type: 'text/plain;charset=utf-8' });
+    let fullText = '';
+    
+    if (scriptData?.raw_multi_version) {
+      const parsedMulti = parseMultiVersion(scriptData.raw_multi_version);
+      const getBlocksText = (obj, title) => {
+        if (!obj?.script_blocks) return '';
+        return `=== ${title} ===\n` + obj.script_blocks.map(b => `[${b.phase}] ${b.audio_spoken}\n(ภาพ: ${b.visual_direction})`).join('\n\n') + '\n\n';
+      };
+      fullText += getBlocksText(parsedMulti.funny, 'สายฮา/กวนๆ');
+      fullText += getBlocksText(parsedMulti.review, 'รีวิวจริงใจ');
+      fullText += getBlocksText(parsedMulti.fomo, 'เร่งด่วน (FOMO)');
+    } else {
+      if (!scriptData?.script_blocks) return;
+      fullText = scriptData.script_blocks.map(b => `[${b.phase}] ${b.audio_spoken}\n(ภาพ: ${b.visual_direction})`).join('\n\n');
+    }
+
+    const blob = new Blob([fullText.trim()], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
@@ -174,6 +220,10 @@ function History() {
                   "{(() => {
                     try {
                       const parsed = typeof script.content === 'string' ? JSON.parse(script.content) : script.content;
+                      if (parsed?.raw_multi_version) {
+                        const parsedMulti = parseMultiVersion(parsed.raw_multi_version);
+                        return parsedMulti?.review?.script_blocks?.[0]?.audio_spoken || parsedMulti?.funny?.script_blocks?.[0]?.audio_spoken || 'ไม่มีข้อมูล';
+                      }
                       return parsed?.script_blocks?.[0]?.audio_spoken || 'ไม่มีข้อมูล';
                     } catch {
                       return 'ไม่มีข้อมูล';
