@@ -281,7 +281,7 @@ function CreateScript() {
             
             {profile && profile.tier === 'free' && profile.trial_pro_remaining > 0 && (
               <div className="flex items-center space-x-1.5 px-3 py-1 text-[10px] sm:text-xs font-bold tracking-wide rounded-full border shadow-sm whitespace-nowrap shrink-0 bg-gradient-to-r from-purple-50 to-fuchsia-50 border-purple-200 text-purple-700 animate-pulse">
-                <span>🎁 ทดลองใช้ Pro ฟรี (เหลือ {profile.trial_pro_remaining} ครั้ง)</span>
+                <span>🎁 ทดลองใช้ Pro ฟรี (เหลือ {Math.min(profile.credits, profile.trial_pro_remaining)} ครั้ง)</span>
               </div>
             )}
           </div>
