@@ -30,6 +30,8 @@ You will receive a specific "Mode". Follow its structure strictly:
 ## Output Constraints
 You MUST output ONLY valid JSON. Do not include markdown formatting like \`\`\`json.
 The output values MUST BE IN THAI (except for the JSON keys).
+CRITICAL: You MUST escape all double quotes inside string values.
+CRITICAL: Do NOT use raw newlines or line breaks inside string values.
 
 {
   "metadata": {
@@ -61,6 +63,8 @@ Your goal is to write highly engaging, 15-60 second video scripts that hack the 
 ## MULTI-VERSION OUTPUT CONSTRAINT
 You MUST output EXACTLY 3 distinct versions of the script wrapped in specific XML tags. 
 Inside EACH XML tag, you MUST output ONLY valid JSON format (No markdown blocks like \`\`\`json).
+CRITICAL: You MUST escape all double quotes inside string values.
+CRITICAL: Do NOT use raw newlines or line breaks inside string values.
 
 <VERSION_FUNNY>
 (JSON output here for a Funny/Entertaining script. Use a humorous, relatable, out-of-the-box Hook. Break the fourth wall if necessary. Make it highly shareable.)
@@ -103,7 +107,13 @@ function safeParseJson(rawText) {
   } else if (cleaned.startsWith('```')) {
     cleaned = cleaned.replace(/^```\s*/, '').replace(/\s*```$/, '');
   }
-  return JSON.parse(cleaned);
+  
+  try {
+    return JSON.parse(cleaned);
+  } catch (e) {
+    console.error("JSON Parse Error:", e.message, "Raw:", cleaned);
+    throw new Error("AI ตอบกลับข้อมูลมาในรูปแบบที่อ่านไม่ได้ (มีอักขระพิเศษ) กรุณากดสร้างสคริปต์ใหม่อีกครั้งครับ");
+  }
 }
 
 export async function onRequestPost(context) {
@@ -208,6 +218,18 @@ export async function onRequestPost(context) {
     let rawOutput = response.text;
     
     if (isMultiVersion) {
+      const funnyMatch = rawOutput.match(/<VERSION_FUNNY>([\s\S]*?)<\/VERSION_FUNNY>/);
+      const reviewMatch = rawOutput.match(/<VERSION_REVIEW>([\s\S]*?)<\/VERSION_REVIEW>/);
+      const fomoMatch = rawOutput.match(/<VERSION_FOMO>([\s\S]*?)<\/VERSION_FOMO>/);
+      
+      if (!funnyMatch || !reviewMatch || !fomoMatch) {
+        throw new Error("AI ตอบกลับข้อมูลไม่ครบ 3 รูปแบบ กรุณากดสร้างสคริปต์ใหม่อีกครั้ง");
+      }
+      
+      safeParseJson(funnyMatch[1]);
+      safeParseJson(reviewMatch[1]);
+      safeParseJson(fomoMatch[1]);
+      
       resultJson = { raw_multi_version: rawOutput };
     } else {
       resultJson = safeParseJson(rawOutput);
