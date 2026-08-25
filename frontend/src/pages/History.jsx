@@ -21,7 +21,23 @@ function History() {
       .order('created_at', { ascending: false });
 
     if (!error && data) {
-      setScripts(data);
+      // นับจำนวนสคริปต์ที่มีชื่อสินค้าเดียวกันเพื่อแยกแยะเวอร์ชัน
+      const nameCounts = {};
+      data.forEach(s => {
+        nameCounts[s.product_name] = (nameCounts[s.product_name] || 0) + 1;
+      });
+      
+      const currentCounts = {};
+      const processedData = [...data].reverse().map(s => {
+        currentCounts[s.product_name] = (currentCounts[s.product_name] || 0) + 1;
+        return { 
+          ...s, 
+          versionIndex: currentCounts[s.product_name],
+          totalVersions: nameCounts[s.product_name]
+        };
+      }).reverse();
+
+      setScripts(processedData);
     }
     setLoading(false);
   };
@@ -126,6 +142,14 @@ function History() {
     return matchSearch && matchMode && matchFavorite;
   });
 
+  const uniqueModes = ['all', ...Array.from(new Set(scripts.map(s => s.mode)))];
+  
+  const formatModeDisplay = (modeStr) => {
+    if (modeStr === 'all') return 'ทุกโหมด';
+    if (modeStr === 'Pro_MultiVersion') return 'Multi-Version (3 สไตล์)';
+    return modeStr;
+  };
+
   return (
     <div className="max-w-6xl mx-auto py-6 sm:py-8 px-4 sm:px-6">
       <button 
@@ -150,20 +174,15 @@ function History() {
             className="px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
           />
           <div className="flex bg-slate-100 p-1 rounded-lg overflow-x-auto hide-scrollbar shrink-0">
-            {[
-              { id: 'all', label: 'ทุกโหมด' },
-              { id: 'ป้ายยาตรงๆ', label: 'ป้ายยาตรงๆ' },
-              { id: 'ขยี้ปัญหา', label: 'ขยี้ปัญหา' },
-              { id: 'เปรียบเทียบชัดๆ', label: 'เปรียบเทียบชัดๆ' }
-            ].map(m => (
+            {uniqueModes.map(modeId => (
               <button
-                key={m.id}
-                onClick={() => setFilterMode(m.id)}
+                key={modeId}
+                onClick={() => setFilterMode(modeId)}
                 className={`whitespace-nowrap px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
-                  filterMode === m.id ? 'bg-white text-blue-700 shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/50'
+                  filterMode === modeId ? 'bg-white text-blue-700 shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/50'
                 }`}
               >
-                {m.label}
+                {formatModeDisplay(modeId)}
               </button>
             ))}
           </div>
@@ -197,10 +216,17 @@ function History() {
             <div key={script.id} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow flex flex-col">
               <div className="p-5 border-b border-slate-100 flex justify-between items-start">
                 <div>
-                  <h3 className="text-lg font-bold text-slate-900 mb-1">{script.product_name}</h3>
+                  <h3 className="text-lg font-bold text-slate-900 mb-1 flex items-center flex-wrap gap-2">
+                    <span>{script.product_name}</span>
+                    {script.totalVersions > 1 && (
+                      <span className="text-xs font-normal text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200">
+                        ครั้งที่ {script.versionIndex}
+                      </span>
+                    )}
+                  </h3>
                   <div className="flex items-center space-x-2 text-xs">
-                    <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded">{script.mode}</span>
-                    <span className="text-slate-500">{new Date(script.created_at).toLocaleDateString('th-TH')}</span>
+                    <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded">{formatModeDisplay(script.mode)}</span>
+                    <span className="text-slate-500">{new Date(script.created_at).toLocaleString('th-TH', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })} น.</span>
                   </div>
                 </div>
                 <button 
@@ -237,7 +263,8 @@ function History() {
                   onClick={() => {
                     try {
                       const parsed = typeof script.content === 'string' ? JSON.parse(script.content) : script.content;
-                      exportToText(parsed, script.product_name);
+                      const exportName = script.totalVersions > 1 ? `${script.product_name}_v${script.versionIndex}` : script.product_name;
+                      exportToText(parsed, exportName);
                     } catch {
                       alert('ไม่สามารถอ่านข้อมูลสคริปต์ได้');
                     }
