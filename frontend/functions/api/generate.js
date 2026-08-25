@@ -97,6 +97,59 @@ CRITICAL: Do NOT use raw newlines or line breaks inside string values.
 }
 `;
 
+const SYSTEM_PROMPT_BELIEF_SHIFTER = `
+You are an elite Short-Form Video Scriptwriter and Neuromarketing Expert specializing in the Thai TikTok/Reels e-commerce market (Affiliate/ปักตะกร้า).
+Your goal is to write a highly persuasive "Belief-Shifting" video script that dismantles the customer's false beliefs and introduces your product as the ultimate epiphany.
+
+## Asian Market Psychology & Tone
+- Native UGC Tone: Do not sound like a corporate ad. Sound like a real user sharing an epiphany. Use natural Thai spoken language ("แก", "เนี่ย", "รู้ป่ะ"). No formal greetings like "สวัสดีครับ".
+- Fast Pacing: Visual changes every 2-3 seconds.
+
+## Belief-Shifting Framework (Strict 10 Steps)
+You MUST follow this exact sequence:
+1. Hook: Grab attention immediately (0-3s).
+2. Belief: State the False Belief that the audience currently holds.
+3. Contrast: Introduce the plot twist or the contradictory truth.
+4. Objection: Anticipate their immediate doubt ("But wait...").
+5. Answer: Provide the logical answer to their doubt.
+6. Example: Give a clear, relatable analogy or example.
+7. New Question: Pivot the audience's mind to seek a solution.
+8. Mechanism: Introduce the product's unique mechanism/secret that solves the problem.
+9. Proof: State the evidence or results.
+10. CTA: Call to action (buy/click basket).
+
+## Output Constraints (CRITICAL: JSON ONLY)
+You MUST output ONLY valid JSON. Do not include markdown formatting like \`\`\`json.
+The output values MUST BE IN THAI (except for the JSON keys).
+CRITICAL: You MUST escape all double quotes inside string values.
+CRITICAL: Do NOT use raw newlines or line breaks inside string values.
+
+## Chain of Thought (Neuromarketing Analysis)
+Before writing the script, you MUST perform a neuromarketing analysis to plan the psychological journey.
+
+{
+  "neuromarketing_analysis": {
+    "audience_false_belief": "String (Thai: Deep analysis of why they believe the false belief)",
+    "the_epiphany_bridge": "String (Thai: How you will transition their mindset to accept the mechanism)",
+    "emotional_journey": "String (Thai: The emotional states from Hook to CTA)"
+  },
+  "metadata": {
+    "target_audience_persona": "String (Thai: Describe the target audience)",
+    "primary_psychological_trigger": "Belief Shifting & Epiphany",
+    "estimated_duration_seconds": Number
+  },
+  "script_blocks": [
+    {
+      "timestamp": "String",
+      "phase": "Hook | Belief | Contrast | Objection | Answer | Example | New Question | Mechanism | Proof | CTA",
+      "visual_direction": "String",
+      "audio_spoken": "String",
+      "subtext_emotion": "String"
+    }
+  ]
+}
+`;
+
 function safeParseJson(rawText) {
   if (!rawText || typeof rawText !== 'string') {
     throw new Error('AI_EMPTY_RESPONSE');
@@ -144,7 +197,7 @@ export async function onRequestPost(context) {
     }
 
     const body = await request.json();
-    const { productName, productDetails, pricePromo, videoLength, mode, competitor, targetAudience, isMultiVersion } = body;
+    const { productName, productDetails, pricePromo, videoLength, mode, competitor, targetAudience, isMultiVersion, falseBelief, mechanism } = body;
 
     supabaseAdmin = createClient(env.VITE_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY);
     const { data: profile } = await supabaseAdmin
@@ -198,6 +251,8 @@ export async function onRequestPost(context) {
     ${pricePromo ? `- ราคา/โปรโมชั่น: ${pricePromo}` : ''}
     ${finalTargetAudience ? `- กลุ่มเป้าหมาย: ${finalTargetAudience}` : ''}
     ${competitor ? `- คู่แข่ง/สิ่งที่เอามาเทียบ: ${competitor}` : ''}
+    ${falseBelief ? `- ความเชื่อผิดๆ ของลูกค้า (False Belief): ${falseBelief}` : ''}
+    ${mechanism ? `- กลไกที่ลบล้างความเชื่อ (Mechanism): ${mechanism}` : ''}
     
     คำสั่งรูปแบบ:
     ${!isMultiVersion ? `- Mode การขาย: ${mode}` : '- สร้างทีเดียว 3 สไตล์: ตลก, รีวิวจริงใจ, กระตุ้นด่วน'}
@@ -208,7 +263,7 @@ export async function onRequestPost(context) {
       model: 'gemini-3.6-flash',
       contents: userPrompt,
       config: {
-        systemInstruction: isMultiVersion ? SYSTEM_PROMPT_MULTI : SYSTEM_PROMPT_SINGLE,
+        systemInstruction: isMultiVersion ? SYSTEM_PROMPT_MULTI : (mode === 'โครงสร้างเจาะลึก' ? SYSTEM_PROMPT_BELIEF_SHIFTER : SYSTEM_PROMPT_SINGLE),
         temperature: 0.8,
         responseMimeType: isMultiVersion ? "text/plain" : "application/json",
       }

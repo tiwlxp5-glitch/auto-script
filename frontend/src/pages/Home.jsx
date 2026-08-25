@@ -125,7 +125,7 @@ function Home() {
           </h2>
           <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed px-2">
             เราไม่ได้ใช้แค่พรอมต์ธรรมดา แต่เราฝัง <br className="hidden sm:block" />
-            <strong className="text-slate-800">"5 สูตรจิตวิทยาการขายระดับโลก"</strong> <br />
+            <strong className="text-slate-800">"6 สูตรจิตวิทยาการขายระดับโลก"</strong> <br />
             ที่ Top Creator บน TikTok และ Shopee ใช้จริง <br className="hidden sm:block" />
             เพื่อให้คลิปของคุณปิดการขายได้ง่ายที่สุด
           </p>
@@ -168,8 +168,18 @@ function Home() {
             <p className="text-sm text-slate-600">ดึงฟีเจอร์เด่น (Features) เทียบข้อได้เปรียบเหนือคู่แข่ง (Advantages) และประโยชน์แท้จริงที่ลูกค้าได้ (Benefits)</p>
           </div>
 
+          {/* Belief Shifting */}
+          <div className="bg-white p-6 rounded-2xl border border-purple-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
+            <div className="absolute top-0 right-0 bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg">PRO</div>
+            <div className="w-12 h-12 bg-fuchsia-100 rounded-xl flex items-center justify-center text-fuchsia-600 mb-4">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+            </div>
+            <h3 className="text-lg font-bold text-slate-900 mb-2">Belief Shifting</h3>
+            <p className="text-sm text-slate-600">วิเคราะห์ความเชื่อผิดๆ ของลูกค้า (False Belief) และหักล้างด้วยจุดแข็งของสินค้าอย่างมีชั้นเชิง (Epiphany Bridge)</p>
+          </div>
+
           {/* Reference Banner */}
-          <div className="md:col-span-2 bg-slate-900 p-6 rounded-2xl flex flex-col justify-center relative overflow-hidden">
+          <div className="lg:col-span-1 md:col-span-2 bg-slate-900 p-6 rounded-2xl flex flex-col justify-center relative overflow-hidden">
             <div className="absolute -right-10 -bottom-10 opacity-10">
               <svg className="w-48 h-48 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 3.8l7.2 14.4H4.8L12 5.8z"/></svg>
             </div>
