@@ -122,15 +122,37 @@ export async function onRequestPost({ request, env }) {
         const scrapedContents = await Promise.all(urls.map(async (url, idx) => {
           await writer.write(encoder.encode(`กำลังอ่านเนื้อหาจากเว็บที่ ${idx + 1}: ${url}\n`));
           try {
-            const jinaRes = await fetch(`https://r.jina.ai/${url}`, {
+            // Clean up URLs (especially Shopee) to bypass scrapers failing on tracking params
+            let cleanUrl = url;
+            try {
+              if (url.includes('shopee.')) {
+                // Extract clean product ID if it's a Shopee URL (e.g. -i.123.456)
+                const match = url.match(/-i\.(\d+)\.(\d+)/);
+                if (match) {
+                  cleanUrl = `https://shopee.co.th/product/${match[1]}/${match[2]}`;
+                } else {
+                  // Fallback: Just strip query params
+                  const u = new URL(url);
+                  cleanUrl = u.origin + u.pathname;
+                }
+              } else {
+                // For Lazada/TikTok, strip query params to prevent tracking blocks
+                const u = new URL(url);
+                cleanUrl = u.origin + u.pathname;
+              }
+            } catch (e) {
+              // Ignore URL parsing errors, let Jina handle the raw URL
+            }
+
+            const jinaRes = await fetch(`https://r.jina.ai/${cleanUrl}`, {
               headers: jinaHeaders,
               signal: AbortSignal.timeout(20000) // 20 second timeout
             });
             if (jinaRes.ok) {
               const text = await jinaRes.text();
-              return `--- SOURCE: ${url} ---\n${text.substring(0, 5000)}`;
+              return `--- SOURCE: ${cleanUrl} ---\n${text.substring(0, 5000)}`;
             }
-            return `--- SOURCE: ${url} ---\n[อ่านข้อมูลเว็บนี้ไม่สำเร็จ สถานะ: ${jinaRes.status}]`;
+            return `--- SOURCE: ${cleanUrl} ---\n[อ่านข้อมูลเว็บนี้ไม่สำเร็จ สถานะ: ${jinaRes.status}]`;
           } catch (err) {
             return `--- SOURCE: ${url} ---\n[เกิดข้อผิดพลาดในการเชื่อมต่อเว็บ: ${err.message}]`;
           }
