@@ -225,11 +225,31 @@ export async function onRequestPost(context) {
     });
 
     if (insertError) {
-      throw new Error('Failed to save script history');
+      console.error("Failed to insert script:", insertError);
+      
+      // ROLLBACK: Refund credits if history save fails
+      await supabaseAdmin.rpc('increment_credits', {
+        p_user_id: user.id,
+        p_amount: creditAmount
+      });
+      
+      throw new Error("Failed to save script history");
     }
 
-    // 8. ส่งผลลัพธ์กลับไปให้หน้าเว็บ
-    return new Response(JSON.stringify({ script: resultJson, credits_remaining: remainingCredits }), { 
+    // 7. Deduct Trial Quota if used
+    let updatedTrialRemaining = profile.trial_pro_remaining;
+    if (profile.tier === 'free' && profile.trial_pro_remaining > 0 && isMultiVersion) {
+      updatedTrialRemaining = profile.trial_pro_remaining - 1;
+      await supabaseAdmin.from('profiles').update({ 
+        trial_pro_remaining: updatedTrialRemaining 
+      }).eq('id', user.id);
+    }
+
+    return new Response(JSON.stringify({ 
+      script: resultJson,
+      credits_remaining: remainingCredits,
+      trial_pro_remaining: updatedTrialRemaining
+    }), { 
       status: 200,
       headers: { 'Content-Type': 'application/json' }
     });

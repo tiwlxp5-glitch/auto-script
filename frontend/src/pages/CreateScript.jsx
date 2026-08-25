@@ -26,6 +26,7 @@ function CreateScript() {
   
   const [generatedScript, setGeneratedScript] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [generatingMode, setGeneratingMode] = useState(null);
   const [bannedWarnings, setBannedWarnings] = useState([]);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('funny');
@@ -118,6 +119,7 @@ function CreateScript() {
     }
     
     setIsGenerating(true);
+    setGeneratingMode(isMultiVersion ? 'multi' : 'single');
     setError(null);
     setGeneratedScript(null);
     setBannedWarnings([]);
@@ -199,7 +201,11 @@ function CreateScript() {
       setGeneratedScript(finalScriptData);
       
       // อัปเดตเครดิตในหน้าเว็บให้ตรงกับที่ Backend หักไป
-      setProfile(prev => prev ? { ...prev, credits: newCredits } : prev);
+      setProfile(prev => prev ? { 
+        ...prev, 
+        credits: newCredits,
+        ...(responseData.trial_pro_remaining !== undefined && { trial_pro_remaining: responseData.trial_pro_remaining })
+      } : prev);
       window.dispatchEvent(new Event('profileUpdated'));
 
     } catch (err) {
@@ -207,6 +213,7 @@ function CreateScript() {
       setError("เกิดข้อผิดพลาดในการสร้างสคริปต์ กรุณาลองใหม่อีกครั้งครับ");
     } finally {
       setIsGenerating(false);
+      setGeneratingMode(null);
     }
   };
 
@@ -412,7 +419,7 @@ function CreateScript() {
                 type="submit"
                 onClick={(e) => handleGenerate(e, false)}
                 disabled={isGenerating || !user || !profile}
-                className={`w-full py-3 rounded-lg text-white font-medium transition-all flex items-center justify-center gap-2 ${
+                className={`w-full py-3 rounded-lg text-white font-medium transition-all flex flex-col items-center justify-center gap-1 leading-tight ${
                   isGenerating 
                     ? 'bg-blue-400 cursor-wait' 
                     : (!user || !profile)
@@ -420,12 +427,21 @@ function CreateScript() {
                       : 'bg-blue-600 hover:bg-blue-700'
                 }`}
               >
-                {isGenerating ? (
-                  <><svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg> AI กำลังร่างสคริปต์...</>
+                {generatingMode === 'single' ? (
+                  <div className="flex items-center justify-center gap-2">
+                    <svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg> 
+                    <span>AI กำลังร่างสคริปต์...</span>
+                  </div>
                 ) : (!profile ? (
-                  <><svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> กำลังโหลดข้อมูลบัญชี...</>
+                  <div className="flex items-center justify-center gap-2">
+                    <svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> 
+                    <span>กำลังโหลดข้อมูลบัญชี...</span>
+                  </div>
                 ) : (
-                  <><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg> สร้างสคริปต์ปกติ (หัก 1 เครดิต)</>
+                  <div className="flex items-center justify-center gap-2">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg> 
+                    <span>สร้างสคริปต์ปกติ (หัก 1 เครดิต)</span>
+                  </div>
                 ))}
               </button>
 
@@ -434,7 +450,7 @@ function CreateScript() {
                   type="button"
                   onClick={(e) => handleGenerate(e, true)}
                   disabled={isGenerating || !user || !profile}
-                  className={`w-full py-3 rounded-lg text-white font-bold transition-all flex items-center justify-center gap-2 shadow-sm border ${
+                  className={`w-full py-2.5 rounded-lg text-white font-bold transition-all flex flex-col items-center justify-center gap-0.5 shadow-sm border leading-tight ${
                     isGenerating 
                       ? 'bg-amber-400 cursor-wait border-transparent' 
                       : (!user || !profile)
@@ -442,12 +458,24 @@ function CreateScript() {
                         : 'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 border-amber-600/20'
                   }`}
                 >
-                  {isGenerating ? (
-                    <><svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg> AI กำลังร่างสคริปต์ 3 สไตล์...</>
+                  {generatingMode === 'multi' ? (
+                    <div className="flex items-center justify-center gap-2 py-1">
+                      <svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg> 
+                      <span>AI กำลังร่างสคริปต์ 3 สไตล์...</span>
+                    </div>
                   ) : (!profile ? (
-                    <><svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> กำลังโหลดข้อมูลบัญชี...</>
+                    <div className="flex items-center justify-center gap-2 py-1">
+                      <svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> 
+                      <span>กำลังโหลดข้อมูลบัญชี...</span>
+                    </div>
                   ) : (
-                    <><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg> ✨ สร้างทีเดียว 3 สไตล์ (Pro • หัก 2 เครดิต)</>
+                    <>
+                      <div className="flex items-center justify-center gap-1.5 text-[15px]">
+                        <svg className="w-4 h-4 text-yellow-200" fill="currentColor" viewBox="0 0 24 24"><path d="M11.64 5.232a.5.5 0 0 1 .72 0l1.728 1.968a3.5 3.5 0 0 0 2.224 1.156l2.58.374a.5.5 0 0 1 .28.86l-1.992 1.67a3.5 3.5 0 0 0-1.072 2.302l-.242 2.596a.5.5 0 0 1-.76.4l-2.18-1.34a3.5 3.5 0 0 0-3.652 0l-2.18 1.34a.5.5 0 0 1-.76-.4l-.242-2.596a3.5 3.5 0 0 0-1.072-2.302l-1.992-1.67a.5.5 0 0 1 .28-.86l2.58-.374a3.5 3.5 0 0 0 2.224-1.156l1.728-1.968Z"></path></svg>
+                        <span>สร้างทีเดียว 3 สไตล์</span>
+                      </div>
+                      <span className="text-[11px] font-normal opacity-90">(Pro • หัก 2 เครดิต)</span>
+                    </>
                   ))}
                 </button>
               )}
