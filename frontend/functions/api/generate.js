@@ -1,7 +1,7 @@
 import { GoogleGenAI } from '@google/genai';
 import { createClient } from '@supabase/supabase-js';
 
-const SYSTEM_PROMPT = `
+const SYSTEM_PROMPT_SINGLE = `
 You are an elite Short-Form Video Scriptwriter and Neuromarketing Expert specializing in the Thai TikTok/Reels e-commerce market (Affiliate/ปักตะกร้า).
 Your goal is to write highly engaging, 15-60 second video scripts that hack the viewer's attention and drive impulse purchases.
 
@@ -16,25 +16,11 @@ Every hook MUST be: Urgent, Unique, Useful, and Ultra-specific. Do not use gener
 
 ## Scripting Frameworks (MODE)
 You will receive a specific "Mode". Follow its structure strictly:
-1. "ขยี้ปัญหา (PAS Formula)": 
-   - Problem: Agitate a specific pain point immediately.
-   - Agitate: Make the problem feel worse (costly, annoying, embarrassing).
-   - Solution & CTA: Introduce the product as the hero. Tell them to click the basket (Point & Command).
-2. "นักเล่าเรื่อง (Hook-Story-Offer)": 
-   - Hook: Shocking statement or relatable scenario.
-   - Story: Share a short, emotional personal experience or turning point.
-   - Offer: Transition smoothly to an irresistible deal and urgency.
-3. "โชว์การเปลี่ยนแปลง (BAB Formula)": 
-   - Before: Describe the terrible past situation or pain.
-   - After: Paint the picture of the perfect dream state.
-   - Bridge: Reveal the product as the secret that bridged the gap.
-4. "สายสเปค/ฟังก์ชัน (FAB Formula)": 
-   - Feature: State a technical feature.
-   - Advantage: Explain how it works practically.
-   - Benefit: Translate it into an emotional, life-improving benefit (Why they should care).
-5. "เปรียบเทียบชัดๆ": 
-   - Compare the product against generic competitors directly (Price/Quality/Outcome).
-   - Use factual comparisons. Do not use crude language against competitors.
+1. "ขยี้ปัญหา (PAS Formula)": Problem -> Agitate -> Solution & CTA.
+2. "นักเล่าเรื่อง (Hook-Story-Offer)": Hook -> Story -> Offer & CTA.
+3. "โชว์การเปลี่ยนแปลง (BAB Formula)": Before -> After -> Bridge & CTA.
+4. "สายสเปค/ฟังก์ชัน (FAB Formula)": Feature -> Advantage -> Benefit & CTA.
+5. "เปรียบเทียบชัดๆ": Compare product against generic competitors directly (Price/Quality/Outcome).
 
 ## Length Constraints
 - "สั้น" (10-15 วิ): 3-4 fast-paced blocks.
@@ -42,7 +28,7 @@ You will receive a specific "Mode". Follow its structure strictly:
 - "ยาว" (60 วิ+): 8-12 blocks.
 
 ## Output Constraints
-You MUST output ONLY valid JSON.
+You MUST output ONLY valid JSON. Do not include markdown formatting like \`\`\`json.
 The output values MUST BE IN THAI (except for the JSON keys).
 
 {
@@ -55,7 +41,51 @@ The output values MUST BE IN THAI (except for the JSON keys).
     {
       "timestamp": "String (e.g., 0-3s)",
       "phase": "Hook | Agitation | Story | Reveal | Offer | FOMO | CTA",
-      "visual_direction": "String (Thai: What to show on screen. Must use 'Show, Don't Tell' rule in the first 3s)",
+      "visual_direction": "String (Thai: What to show on screen)",
+      "audio_spoken": "String (Thai: The spoken script. 100% natural conversational Thai)",
+      "subtext_emotion": "String (Thai: The emotion the actor should convey)"
+    }
+  ]
+}
+`;
+
+const SYSTEM_PROMPT_MULTI = `
+You are an elite Short-Form Video Scriptwriter and Neuromarketing Expert specializing in the Thai TikTok/Reels e-commerce market (Affiliate/ปักตะกร้า).
+Your goal is to write highly engaging, 15-60 second video scripts that hack the viewer's attention and drive impulse purchases.
+
+## Asian Market Psychology & Copywriting Formulas (CRITICAL)
+- Native UGC Tone: Do not sound like a corporate ad. Sound like a real user reviewing a product to a friend. Use natural Thai spoken language ("แก", "เนี่ย", "เดี๋ยว"). No formal greetings like "สวัสดีครับ".
+- Fast Pacing: Visual changes or text popups every 2-3 seconds to keep the dopamine loop active.
+- Proven Formulas: You must apply proven formulas like PAS (Problem-Agitate-Solution), Hook-Story-Offer, and BAB (Before-After-Bridge).
+
+## MULTI-VERSION OUTPUT CONSTRAINT
+You MUST output EXACTLY 3 distinct versions of the script wrapped in specific XML tags. 
+Inside EACH XML tag, you MUST output ONLY valid JSON format (No markdown blocks like \`\`\`json).
+
+<VERSION_FUNNY>
+(JSON output here for a Funny/Entertaining script. Use a humorous, relatable, out-of-the-box Hook. Break the fourth wall if necessary. Make it highly shareable.)
+</VERSION_FUNNY>
+
+<VERSION_REVIEW>
+(JSON output here for an Authentic Review script. Use the PAS (Problem-Agitate-Solution) formula. Sound highly credible, trustworthy, and realistic. Focus on honest benefits and solving a real pain point.)
+</VERSION_REVIEW>
+
+<VERSION_FOMO>
+(JSON output here for an Urgency/FOMO script. Use the Hook-Story-Offer formula. Hard sell, extremely urgent, flash sale vibes, pushing the user to click the yellow basket immediately.)
+</VERSION_FOMO>
+
+## JSON Structure (For inside each XML tag)
+{
+  "metadata": {
+    "target_audience_persona": "String (Thai: Describe the target audience persona)",
+    "primary_psychological_trigger": "String (Thai/English: e.g., FOMO, Social Proof, Humor)",
+    "estimated_duration_seconds": Number
+  },
+  "script_blocks": [
+    {
+      "timestamp": "String (e.g., 0-3s)",
+      "phase": "Hook | Problem | Agitation | Solution | Reveal | FOMO | CTA",
+      "visual_direction": "String (Thai: What to show on screen/B-Roll/Text Popups)",
       "audio_spoken": "String (Thai: The spoken script. 100% natural conversational Thai)",
       "subtext_emotion": "String (Thai: The emotion the actor should convey)"
     }
@@ -79,11 +109,11 @@ function safeParseJson(rawText) {
 export async function onRequestPost(context) {
   const { request, env } = context;
   let creditDeducted = false;
+  let creditAmount = 1;
   let userIdForRefund = null;
   let supabaseAdmin = null;
 
   try {
-    // 1. ตรวจสอบการล็อกอิน (JWT Authorization)
     const authHeader = request.headers.get('Authorization');
     if (!authHeader) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), { 
@@ -103,11 +133,9 @@ export async function onRequestPost(context) {
       });
     }
 
-    // 2. ดึงข้อมูลจาก Request
     const body = await request.json();
-    const { productName, productDetails, pricePromo, videoLength, mode, competitor, targetAudience, productUrl, productUrls } = body;
+    const { productName, productDetails, pricePromo, videoLength, mode, competitor, targetAudience, isMultiVersion } = body;
 
-    // 3. ใช้ Service Role ดึงข้อมูล Profile ป้องกันการปลอมแปลง (ปลอดภัยกว่า Client)
     supabaseAdmin = createClient(env.VITE_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY);
     const { data: profile } = await supabaseAdmin
       .from('profiles')
@@ -121,14 +149,19 @@ export async function onRequestPost(context) {
 
     const effectiveTier = (profile.tier === 'free' && profile.trial_pro_remaining > 0) ? 'pro' : profile.tier;
 
-    // 4. Jina AI Scraping (ทำที่ Backend หมดปัญหา CORS - เฉพาะ Tier Pro หรือ Trial Pro)
+    if (isMultiVersion && effectiveTier !== 'pro') {
+      return new Response(JSON.stringify({ error: 'Multi-version scripts require Pro tier.' }), { status: 403, headers: { 'Content-Type': 'application/json' } });
+    }
+
+    creditAmount = isMultiVersion ? 2 : 1;
     userIdForRefund = user.id;
+
     const { data: updatedCredits, error: creditError } = await supabaseAdmin.rpc('increment_credits', {
       p_user_id: user.id,
-      p_amount: -1
+      p_amount: -creditAmount
     });
+    
     if (creditError) {
-      console.error("RPC increment_credits deduction error:", creditError);
       return new Response(JSON.stringify({ error: "Failed to deduct credits" }), { status: 500, headers: { 'Content-Type': 'application/json' } });
     }
     if (updatedCredits === null || updatedCredits < 0) {
@@ -137,44 +170,9 @@ export async function onRequestPost(context) {
     creditDeducted = true;
     let remainingCredits = updatedCredits;
 
-    let finalDetails = productDetails;
-    
-    // Support backwards compatibility for productUrl (string) and new productUrls (array)
-    let rawUrlsToScrape = [];
-    if (productUrls && Array.isArray(productUrls)) {
-      rawUrlsToScrape.push(...productUrls.filter(u => u.trim() !== ''));
-    } else if (productUrl) {
-      rawUrlsToScrape.push(productUrl);
-    }
-    const urlsToScrape = rawUrlsToScrape.slice(0, 3);
-    if (effectiveTier === 'pro' && urlsToScrape.length > 0) {
-      try {
-        const scrapedContents = await Promise.all(urlsToScrape.map(async (url) => {
-          const jinaRes = await fetch(`https://r.jina.ai/${encodeURI(url)}`, {
-              headers: { 'Accept': 'text/plain', 'X-Return-Format': 'markdown' },
-              signal: AbortSignal.timeout(8000)
-            });
-          if (jinaRes.ok) {
-            const text = await jinaRes.text();
-            return `--- ข้อมูลจากเว็บ ${url} ---\n${text.substring(0, 3000)}`;
-          }
-          return '';
-        }));
-        
-        const combinedScraped = scrapedContents.filter(c => c).join('\n\n');
-        if (combinedScraped) {
-          finalDetails += `\n\n[ข้อมูลสกัดเพิ่มเติมจาก URL]:\n${combinedScraped}`;
-        }
-      } catch (err) {
-        console.log("Jina scrape error ignored:", err);
-      }
-    }
-
-    // 4.1 ตรวจสอบสิทธิ์การใช้งาน targetAudience (เฉพาะ Tier Plus และ Pro เท่านั้น)
     const finalTargetAudience = (effectiveTier === 'plus' || effectiveTier === 'pro') ? targetAudience : null;
-
-    // 5. เรียกใช้ Google Gemini (Fallback safe for both env names)
     const apiKey = env.GEMINI_API_KEY || env.VITE_GEMINI_API_KEY;
+
     if (!apiKey) {
       return new Response(JSON.stringify({ error: "API Key not configured" }), { 
         status: 500,
@@ -186,13 +184,13 @@ export async function onRequestPost(context) {
     const userPrompt = `
     ข้อมูลสำหรับการเขียนสคริปต์:
     - ชื่อสินค้า: ${productName}
-    - รายละเอียด/จุดเด่น: ${finalDetails}
+    - รายละเอียด/จุดเด่น: ${productDetails}
     ${pricePromo ? `- ราคา/โปรโมชั่น: ${pricePromo}` : ''}
     ${finalTargetAudience ? `- กลุ่มเป้าหมาย: ${finalTargetAudience}` : ''}
     ${competitor ? `- คู่แข่ง/สิ่งที่เอามาเทียบ: ${competitor}` : ''}
     
     คำสั่งรูปแบบ:
-    - Mode การขาย: ${mode}
+    ${!isMultiVersion ? `- Mode การขาย: ${mode}` : '- สร้างทีเดียว 3 สไตล์: ตลก, รีวิวจริงใจ, กระตุ้นด่วน'}
     - ความยาวคลิป: ${videoLength}
     `;
 
@@ -200,20 +198,29 @@ export async function onRequestPost(context) {
       model: 'gemini-3.6-flash',
       contents: userPrompt,
       config: {
-        systemInstruction: SYSTEM_PROMPT,
+        systemInstruction: isMultiVersion ? SYSTEM_PROMPT_MULTI : SYSTEM_PROMPT_SINGLE,
         temperature: 0.8,
-        responseMimeType: "application/json",
+        responseMimeType: isMultiVersion ? "text/plain" : "application/json",
       }
     });
 
-    const resultJson = safeParseJson(response.text);
+    let resultJson = null;
+    let rawOutput = response.text;
+    
+    if (isMultiVersion) {
+      // In multi-version, the output is raw text containing XML tags
+      // We will parse it out in the frontend, so we just send the raw text inside a standard structure
+      resultJson = { raw_multi_version: rawOutput };
+    } else {
+      resultJson = safeParseJson(rawOutput);
+    }
 
     // 6. บันทึก History ลงฐานข้อมูล scripts เป็นลำดับแรก (Save first)
     const { error: insertError } = await supabaseAdmin.from('scripts').insert({
       user_id: user.id,
       product_name: productName,
-      product_details: finalDetails,
-      mode: mode,
+      product_details: productDetails,
+      mode: isMultiVersion ? 'Pro_MultiVersion' : mode,
       content: JSON.stringify(resultJson)
     });
 

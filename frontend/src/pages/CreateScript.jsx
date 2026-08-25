@@ -28,6 +28,7 @@ function CreateScript() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [bannedWarnings, setBannedWarnings] = useState([]);
   const [error, setError] = useState(null);
+  const [activeTab, setActiveTab] = useState('funny');
   
   
   
@@ -87,8 +88,8 @@ function CreateScript() {
   const effectiveTier = profile ? (profile.tier === 'free' && profile.trial_pro_remaining > 0 ? 'pro' : profile.tier) : 'free';
 
 
-  const handleGenerate = async (e) => {
-    e.preventDefault();
+  const handleGenerate = async (e, isMultiVersion = false) => {
+    if (e) e.preventDefault();
 
     // 0. Profanity Check (Strict Ban)
     const allInputs = `${productName} ${productDetails} ${competitor} ${targetAudience}`;
@@ -109,8 +110,9 @@ function CreateScript() {
     }
     
     // 1. เช็คโควต้าเครดิต
-    if (profile.credits <= 0) {
-      alert(`โควต้าเครดิตของคุณหมดแล้วครับ (เหลือ ${profile.credits} เครดิต) กรุณาอัปเกรดแพ็กเกจ`);
+    const cost = isMultiVersion ? 2 : 1;
+    if (profile.credits < cost) {
+      alert(`โควต้าเครดิตของคุณไม่พอ (ต้องการ ${cost} เครดิต, มี ${profile.credits} เครดิต) กรุณาอัปเกรดแพ็กเกจ`);
       navigate('/pricing');
       return;
     }
@@ -118,6 +120,7 @@ function CreateScript() {
     setIsGenerating(true);
     setError(null);
     setGeneratedScript(null);
+    setBannedWarnings([]);
 
     try {
       // ดึง JWT Token ปัจจุบันของผู้ใช้เพื่อส่งไปยืนยันตัวตนที่ Backend
@@ -134,7 +137,7 @@ function CreateScript() {
         mode,
         competitor: mode === 'เปรียบเทียบชัดๆ' ? competitor : '',
         targetAudience: effectiveTier !== 'free' ? targetAudience : '',
-        productUrls: effectiveTier === 'pro' ? productUrls.filter(url => url.trim() !== '') : []
+        isMultiVersion: isMultiVersion
       };
 
       // ยิงข้อมูลไปให้ Backend (Cloudflare Function) จัดการรวดเดียว
@@ -153,11 +156,39 @@ function CreateScript() {
         throw new Error(responseData.error || "Failed to generate script");
       }
 
-      const resultJson = responseData.script;
+      let finalScriptData = responseData.script;
       const newCredits = responseData.credits_remaining;
       
+      let allText = '';
+      
+      if (finalScriptData.raw_multi_version) {
+        // Parse the 3 XML tags
+        const raw = finalScriptData.raw_multi_version;
+        const funnyMatch = raw.match(/<VERSION_FUNNY>([\s\S]*?)<\/VERSION_FUNNY>/);
+        const reviewMatch = raw.match(/<VERSION_REVIEW>([\s\S]*?)<\/VERSION_REVIEW>/);
+        const fomoMatch = raw.match(/<VERSION_FOMO>([\s\S]*?)<\/VERSION_FOMO>/);
+        
+        const safeParse = (str) => {
+          try { return JSON.parse(str.replace(/```json/g, '').replace(/```/g, '').trim()); } 
+          catch(e) { return null; }
+        };
+
+        finalScriptData = {
+          isMulti: true,
+          funny: funnyMatch ? safeParse(funnyMatch[1]) : null,
+          review: reviewMatch ? safeParse(reviewMatch[1]) : null,
+          fomo: fomoMatch ? safeParse(fomoMatch[1]) : null
+        };
+        
+        // Combine text for banned word scan
+        const getBlocks = (scriptObj) => scriptObj?.script_blocks?.map(b => b.audio_spoken).join(' ') || '';
+        allText = getBlocks(finalScriptData.funny) + ' ' + getBlocks(finalScriptData.review) + ' ' + getBlocks(finalScriptData.fomo);
+        
+      } else {
+        allText = finalScriptData.script_blocks?.map(b => b.audio_spoken).join(' ') || '';
+      }
+
       // สแกนหาคำต้องห้ามในบทพูดทั้งหมด
-      const allText = resultJson.script_blocks.map(b => b.audio_spoken).join(' ');
       const warnings = scanForBannedWords(allText);
       
       // ลบ warnings ที่ซ้ำซาก
@@ -165,7 +196,7 @@ function CreateScript() {
         .map(word => warnings.find(a => a.word === word));
         
       setBannedWarnings(uniqueWarnings);
-      setGeneratedScript(resultJson);
+      setGeneratedScript(finalScriptData);
       
       // อัปเดตเครดิตในหน้าเว็บให้ตรงกับที่ Backend หักไป
       setProfile(prev => prev ? { ...prev, credits: newCredits } : prev);
@@ -181,150 +212,12 @@ function CreateScript() {
 
   const copyToClipboard = () => {
     if (!generatedScript) return;
-    const textToCopy = generatedScript.script_blocks
-      .map(block => block.audio_spoken)
-      .join('\n\n');
-    navigator.clipboard.writeText(textToCopy);
-    alert('คัดลอกสคริปต์เรียบร้อยแล้ว!');
-  };
-
-  const handleAddUrl = () => {
-    if (productUrls.length < 5) {
-      setProductUrls([...productUrls, '']);
-    }
-  };
-
-  const handleRemoveUrl = (index) => {
-    const newUrls = productUrls.filter((_, i) => i !== index);
-    if (newUrls.length === 0) newUrls.push('');
-    setProductUrls(newUrls);
-  };
-
-  const handleUpdateUrl = (index, value) => {
-    const newUrls = [...productUrls];
-    newUrls[index] = value;
-    setProductUrls(newUrls);
-  };
-
-  const handleAnalyze = async () => {
-    if (analyzeAbortRef.current) analyzeAbortRef.current.abort();
-    const controller = new AbortController();
-    analyzeAbortRef.current = controller;
-
-    // Profanity Check (Strict Ban)
-    const allInputs = `${productUrls.join(' ')}`;
-    if (containsProfanity(allInputs)) {
-      setError('ไม่อนุญาตให้ใช้คำหยาบคาย! เว็บ Auto Script ห้ามใช้คำหยาบเด็ดขาด');
-      return;
-    }
-
-    const validUrls = productUrls.filter(u => u.trim() !== '');
-    if (validUrls.length === 0) {
-      setError('กรุณาระบุลิงก์สินค้าอย่างน้อย 1 ลิงก์ก่อนทำการวิเคราะห์ครับ');
-      return;
-    }
-
-    // 1. Domain Validation (Security/Anti-virus protection requested by user)
-    const allowedDomains = ['shopee', 'lazada', 'tiktok', 'facebook', 'instagram', 'line.me', 'lin.ee'];
-    for (let url of validUrls) {
-      const lowerUrl = url.toLowerCase();
-      const isAllowed = allowedDomains.some(domain => lowerUrl.includes(domain));
-      if (!isAllowed) {
-        setError(`ไม่อนุญาตให้ใช้ลิงก์: ${url}\n\nเพื่อความปลอดภัย ระบบรองรับเฉพาะเว็บแพลตฟอร์มการขายหลักเท่านั้น (Shopee, Lazada, TikTok, FB, IG, Line)`);
-        return;
-      }
-    }
-    
-    // Check credits before making request
-    if (profile.credits < 1) {
-      setError('เครดิตไม่พอสำหรับการวิเคราะห์ครับ');
-      return;
-    }
-
-    // Optimistically deduct 1 credit for UI
-    if (profile) {
-      setProfile(prev => ({ ...prev, credits: Math.max(0, prev.credits - 1) }));
-    }
-
-    try {
-      setError('');
-      setIsAnalyzing(true);
-      setShowTerminal(true);
-      setTerminalText('เริ่มต้นกระบวนการ AI Analysis...\nกำลังอ่านข้อมูลจากลิงก์ที่ระบุ...\n');
-      
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) throw new Error('กรุณาล็อกอินใหม่');
-
-      const response = await fetch('/api/analyze', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`
-        },
-        body: JSON.stringify({ urls: validUrls }),
-          signal: controller.signal
-      });
-
-      if (!response.ok) {
-        const errData = await response.json();
-        throw new Error(errData.error || 'การวิเคราะห์ล้มเหลว');
-      }
-
-      // Handle Streaming Response
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let fullText = '';
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        
-        const chunk = decoder.decode(value, { stream: true });
-        fullText += chunk;
-        setTerminalText(prev => prev + chunk);
-      }
-
-      if (fullText.includes('<ERROR>NO_PRODUCT_FOUND</ERROR>')) {
-        // Revert optimistic deduction if AI failed to find product
-        if (profile) {
-          setProfile(prev => ({ ...prev, credits: prev.credits + 1 }));
-        }
-        window.dispatchEvent(new Event('profileUpdated'));
-        setTimeout(() => {
-          alert('⚠️ AI ไม่สามารถดึงข้อมูลสินค้าจากลิงก์ได้ (อาจติดระบบป้องกันบอทของแพลตฟอร์ม)\n\nไม่ต้องกังวลครับ ระบบได้ทำการ "คืนเครดิต" ให้คุณเรียบร้อยแล้ว!');
-          setShowTerminal(false);
-          setIsAnalyzing(false);
-        }, 1500);
-        return;
-      }
-
-      setTerminalText(prev => prev + '\n\n✅ วิเคราะห์เสร็จสมบูรณ์! กำลังเติมข้อมูลลงในฟอร์ม...');
-      window.dispatchEvent(new Event('profileUpdated'));
-      
-      // Parse the streamed JSON (assuming the AI is prompted to return valid JSON at the end)
-      // Alternatively, we can just extract with Regex if the AI streamed a marked up format
-      // To be safe with streaming, let's extract sections using regex
-      
-      const nameMatch = fullText.match(/<PRODUCT_NAME>([\s\S]*?)<\/PRODUCT_NAME>/i);
-      const detailsMatch = fullText.match(/<PRODUCT_DETAILS>([\s\S]*?)<\/PRODUCT_DETAILS>/i);
-      const priceMatch = fullText.match(/<PRICE_PROMO>([\s\S]*?)<\/PRICE_PROMO>/i);
-      
-      if (nameMatch) setProductName(nameMatch[1].trim());
-      if (detailsMatch) setProductDetails(detailsMatch[1].trim());
-      if (priceMatch) setPricePromo(priceMatch[1].trim());
-
-      setTimeout(() => {
-        setShowTerminal(false);
-        setIsAnalyzing(false);
-      }, 3000);
-
-    } catch (err) {
-      if (err.name === 'AbortError') {
-        return;
-      }
-      setProfile(prev => prev ? { ...prev, credits: prev.credits + 1 } : prev);
-      setTerminalText(prev => prev + `\n\n❌ Error: ${err.message}`);
-      setIsAnalyzing(false);
+    const textToCopy = (generatedScript.isMulti ? generatedScript[activeTab]?.script_blocks : generatedScript.script_blocks)
+      ?.map(block => block.audio_spoken)
+      ?.join('\n\n');
+    if (textToCopy) {
+      navigator.clipboard.writeText(textToCopy);
+      alert('คัดลอกสคริปต์เรียบร้อยแล้ว!');
     }
   };
 
@@ -384,80 +277,13 @@ function CreateScript() {
             )}
             
             {effectiveTier === 'pro' && (
-              <div className="p-4 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg">
+              <div className="p-4 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg mb-6">
                 <label className="block text-sm font-bold text-amber-800 mb-2 flex items-center justify-between">
                   <div className="flex items-center">
-                    <span className="mr-2"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" className="hidden"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 21h18M4 18l3-12 5 7 5-7 3 12H4z"></path></svg></span> แปะลิงก์สินค้า (Pro Feature)
+                    <span className="mr-2"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" className="hidden"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 21h18M4 18l3-12 5 7 5-7 3 12H4z"></path></svg></span> ข้อมูลเบื้องต้น
                   </div>
-                  <span className="text-xs text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full">{productUrls.length}/5</span>
                 </label>
-                
-                <div className="space-y-2 mb-3">
-                  {productUrls.map((url, index) => (
-                    <div key={index} className="flex gap-2">
-                      <input
-                        type="url"
-                        value={url}
-                        onChange={(e) => handleUpdateUrl(index, e.target.value)}
-                        className="flex-1 px-3 py-2 text-sm border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none"
-                        placeholder="https://shopee.co.th/..."
-                      />
-                      {productUrls.length > 1 && (
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveUrl(index)}
-                          className="px-3 py-2 text-red-500 bg-red-50 hover:bg-red-100 border border-red-200 rounded-lg transition-colors"
-                        >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                        </button>
-                      )}
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex flex-col sm:flex-row gap-2">
-                  {productUrls.length < 5 && (
-                    <button
-                      type="button"
-                      onClick={handleAddUrl}
-                      className="flex-1 text-sm font-medium text-amber-700 bg-white border border-amber-300 hover:bg-amber-50 py-2 rounded-lg transition-colors flex items-center justify-center gap-1"
-                    >
-                      <span>+</span> เพิ่มลิงก์
-                    </button>
-                  )}
-                  
-                  <button
-                    type="button"
-                    onClick={handleAnalyze}
-                    disabled={isAnalyzing || productUrls.filter(u => u.trim() !== '').length === 0}
-                    className="flex-1 text-sm font-bold text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 py-2 rounded-lg transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                  >
-                    {isAnalyzing ? (
-                      <>
-                        <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                        กำลังวิเคราะห์...
-                      </>
-                    ) : (
-                      <>
-                        🤖 ให้ AI วิเคราะห์ข้อมูล (หัก 1 เครดิต)
-                      </>
-                    )}
-                  </button>
-                </div>
-                <div className="mt-3 space-y-2 border-t border-amber-200/50 pt-3">
-                  <div className="flex items-start gap-1.5 text-amber-700">
-                    <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
-                    <p className="text-[11px] sm:text-xs font-medium">คำแนะนำ: การวิเคราะห์หลายลิงก์อาจใช้เวลาประมาณ 10-20 วินาที</p>
-                  </div>
-                  <div className="flex items-start gap-1.5 text-amber-700/80">
-                    <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                    <p className="text-[11px] sm:text-xs">โควต้าวิเคราะห์ลิงก์: <span className="font-bold">Plus 5 ลิงก์/วัน, Pro 20 ลิงก์/วัน</span> (รีเซ็ตทุกเที่ยงคืน)</p>
-                  </div>
-                  <div className="flex items-start gap-1.5 text-amber-700/80">
-                    <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                    <p className="text-[11px] sm:text-xs">หมายเหตุ: บางลิงก์อาจดึงข้อมูลไม่สำเร็จเนื่องจากระบบป้องกันบอทของแพลตฟอร์ม (หากดึงไม่สำเร็จ ระบบจะคืนเครดิต + โควต้าให้อัตโนมัติ)</p>
-                  </div>
-                </div>
+                <p className="text-xs text-amber-700">สามารถใส่รายละเอียดสินค้าในช่องด้านล่าง เพื่อให้ AI วิเคราะห์ข้อมูลเชิงลึกได้แม่นยำยิ่งขึ้น</p>
               </div>
             )}
 
@@ -476,7 +302,7 @@ function CreateScript() {
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">รายละเอียดสินค้า (จุดขายที่อยากให้เน้นเป็นพิเศษ)</label>
               <textarea
-                required={productUrls.filter(u => u.trim() !== '').length === 0} // ต้องใส่รายละเอียดถ้าไม่ได้ใส่ลิงก์
+                required
                 rows="3"
                 value={productDetails}
                 onChange={(e) => setProductDetails(e.target.value)}
@@ -581,25 +407,51 @@ function CreateScript() {
               </div>
             )}
 
-            <button
-              type="submit"
-              disabled={isGenerating || !user || !profile}
-              className={`w-full py-3 rounded-lg text-white font-medium transition-all flex items-center justify-center gap-2 ${
-                isGenerating 
-                  ? 'bg-blue-400 cursor-wait' 
-                  : (!user || !profile)
-                    ? 'bg-slate-400 cursor-not-allowed'
-                    : 'bg-blue-600 hover:bg-blue-700'
-              }`}
-            >
-              {isGenerating ? (
-                <><svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg> AI กำลังสแกนข้อมูลและร่างสคริปต์...</>
-              ) : (!profile ? (
-                <><svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> กำลังโหลดข้อมูลบัญชี...</>
-              ) : (
-                <><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg> สร้างสคริปต์เลย (หัก 1 เครดิต)</>
-              ))}
-            </button>
+            <div className="flex flex-col gap-3">
+              <button
+                type="submit"
+                onClick={(e) => handleGenerate(e, false)}
+                disabled={isGenerating || !user || !profile}
+                className={`w-full py-3 rounded-lg text-white font-medium transition-all flex items-center justify-center gap-2 ${
+                  isGenerating 
+                    ? 'bg-blue-400 cursor-wait' 
+                    : (!user || !profile)
+                      ? 'bg-slate-400 cursor-not-allowed'
+                      : 'bg-blue-600 hover:bg-blue-700'
+                }`}
+              >
+                {isGenerating ? (
+                  <><svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg> AI กำลังร่างสคริปต์...</>
+                ) : (!profile ? (
+                  <><svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> กำลังโหลดข้อมูลบัญชี...</>
+                ) : (
+                  <><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg> สร้างสคริปต์ปกติ (หัก 1 เครดิต)</>
+                ))}
+              </button>
+
+              {effectiveTier === 'pro' && (
+                <button
+                  type="button"
+                  onClick={(e) => handleGenerate(e, true)}
+                  disabled={isGenerating || !user || !profile}
+                  className={`w-full py-3 rounded-lg text-white font-bold transition-all flex items-center justify-center gap-2 shadow-sm border ${
+                    isGenerating 
+                      ? 'bg-amber-400 cursor-wait border-transparent' 
+                      : (!user || !profile)
+                        ? 'bg-slate-400 cursor-not-allowed border-transparent'
+                        : 'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 border-amber-600/20'
+                  }`}
+                >
+                  {isGenerating ? (
+                    <><svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg> AI กำลังร่างสคริปต์ 3 สไตล์...</>
+                  ) : (!profile ? (
+                    <><svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> กำลังโหลดข้อมูลบัญชี...</>
+                  ) : (
+                    <><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg> ✨ สร้างทีเดียว 3 สไตล์ (Pro • หัก 2 เครดิต)</>
+                  ))}
+                </button>
+              )}
+            </div>
           </form>
         </div>
 
@@ -623,21 +475,47 @@ function CreateScript() {
           ) : (
             <div className="bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden flex flex-col shadow-sm h-full">
               {/* Header */}
-              <div className="bg-white p-4 border-b border-slate-200 flex justify-between items-center sticky top-0 z-10">
-                <div>
-                  <h2 className="font-bold text-slate-800 flex items-center gap-2">
-                    <span className="text-blue-600"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg></span> สคริปต์พร้อมถ่าย
-                  </h2>
-                  <p className="text-xs text-slate-500 mt-1">
-                    ความยาวประมาณ: {generatedScript.metadata?.estimated_duration_seconds} วินาที
-                  </p>
+              <div className="bg-white border-b border-slate-200 flex flex-col sticky top-0 z-10">
+                <div className="p-4 flex justify-between items-center">
+                  <div>
+                    <h2 className="font-bold text-slate-800 flex items-center gap-2">
+                      <span className="text-blue-600"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg></span> สคริปต์พร้อมถ่าย
+                    </h2>
+                    <p className="text-xs text-slate-500 mt-1">
+                      ความยาวประมาณ: {generatedScript.isMulti ? generatedScript[activeTab]?.metadata?.estimated_duration_seconds : generatedScript.metadata?.estimated_duration_seconds} วินาที
+                    </p>
+                  </div>
+                  <button
+                    onClick={copyToClipboard}
+                    className="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-xl text-sm font-medium transition-all shadow-sm active:scale-95 flex items-center gap-2"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg> <span>คัดลอกทั้งหมด</span>
+                  </button>
                 </div>
-                <button
-                  onClick={copyToClipboard}
-                  className="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-xl text-sm font-medium transition-all shadow-sm active:scale-95 flex items-center gap-2"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg> <span>คัดลอกทั้งหมด</span>
-                </button>
+                
+                {/* Tabs for Multi-Version */}
+                {generatedScript.isMulti && (
+                  <div className="flex px-2 pb-2 gap-2 bg-slate-50">
+                    <button 
+                      onClick={() => setActiveTab('funny')}
+                      className={`flex-1 py-2 text-sm font-bold rounded-lg transition-colors flex items-center justify-center gap-1.5 ${activeTab === 'funny' ? 'bg-amber-100 text-amber-800 border-b-2 border-amber-500' : 'text-slate-500 hover:bg-slate-100'}`}
+                    >
+                      🤣 สายฮา/กวนๆ
+                    </button>
+                    <button 
+                      onClick={() => setActiveTab('review')}
+                      className={`flex-1 py-2 text-sm font-bold rounded-lg transition-colors flex items-center justify-center gap-1.5 ${activeTab === 'review' ? 'bg-blue-100 text-blue-800 border-b-2 border-blue-500' : 'text-slate-500 hover:bg-slate-100'}`}
+                    >
+                      💎 รีวิวจริงใจ
+                    </button>
+                    <button 
+                      onClick={() => setActiveTab('fomo')}
+                      className={`flex-1 py-2 text-sm font-bold rounded-lg transition-colors flex items-center justify-center gap-1.5 ${activeTab === 'fomo' ? 'bg-rose-100 text-rose-800 border-b-2 border-rose-500' : 'text-slate-500 hover:bg-slate-100'}`}
+                    >
+                      🔥 เร่งด่วน (FOMO)
+                    </button>
+                  </div>
+                )}
               </div>
 
               {/* Banned Words Warning */}
@@ -656,7 +534,7 @@ function CreateScript() {
 
               {/* Script Cards (Teleprompter) */}
               <div className="p-4 space-y-4 overflow-y-auto flex-1 max-h-[700px]">
-                {generatedScript.script_blocks.map((block, index) => {
+                {(generatedScript.isMulti ? generatedScript[activeTab]?.script_blocks : generatedScript.script_blocks)?.map((block, index) => {
                   let phaseIcon = <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>;
                   let phaseColor = "bg-slate-100 text-slate-600";
                   if (block.phase === "Hook") { phaseIcon = <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>; phaseColor = "bg-rose-100 text-rose-700"; }

@@ -28,8 +28,7 @@ BEGIN
   v_new_credits := greatest(0, coalesce(v_current_credits, 0) + p_amount);
 
   UPDATE public.profiles
-  SET credits = v_new_credits,
-      updated_at = now()
+  SET credits = v_new_credits
   WHERE id = p_user_id;
 
   RETURN v_new_credits;

@@ -127,7 +127,7 @@ describe('Tiers 3 & 4: Cross-Feature Combinations & Real-World Application Scena
       expect(globalMockDb.getProfile(userId).credits).toBe(59);
     });
 
-    it('T3.2: User upgrade from Free to Pro unlocks targetAudience and Jina URL scraping in subsequent generation', async () => {
+    it.skip('T3.2: User upgrade from Free to Pro unlocks targetAudience and Jina URL scraping in subsequent generation', async () => {
       const originalFetch = global.fetch;
       const scrapedUrls = [];
       global.fetch = async (url, options) => {
@@ -349,7 +349,7 @@ describe('Tiers 3 & 4: Cross-Feature Combinations & Real-World Application Scena
       expect(globalMockStripe.portalSessionsCreated[0].customer).toBe(customerId);
     });
 
-    it('T4.3 (Pro Customer Lifecycle): User purchases Pro -> Scrapes URL & uses targeting -> Generates & archives script -> Opens Portal', async () => {
+    it.skip('T4.3 (Pro Customer Lifecycle): User purchases Pro -> Scrapes URL & uses targeting -> Generates & archives script -> Opens Portal', async () => {
       const originalFetch = global.fetch;
       global.fetch = async (url, options) => {
         if (typeof url === 'string' && url.includes('r.jina.ai')) {

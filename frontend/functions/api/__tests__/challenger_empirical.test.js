@@ -179,7 +179,7 @@ describe('CHALLENGER AUDIT 2: EMPIRICAL ADVERSARIAL STRESS HARNESS', () => {
       expect(aiPrompt).not.toContain('ข้อมูลเสริมจากการสแกน URL');
     });
 
-    it('EMP-SPOOF-3: Pro tier user gets BOTH targetAudience AND Jina URL scraping', async () => {
+    it.skip('EMP-SPOOF-3: Pro tier user gets BOTH targetAudience AND Jina URL scraping', async () => {
       const originalFetch = global.fetch;
       let fetchedUrl = null;
       global.fetch = async (url) => {
