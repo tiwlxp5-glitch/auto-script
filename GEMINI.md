@@ -152,3 +152,4 @@ c:\Auto script\
    - Added specific inputs (`falseBelief`, `mechanism`) using textareas for mobile UX.
    - Used Chain of Thought (CoT) prompting (`neuromarketing_analysis`) to deeply analyze psychology before generating the script.
    - Promoted the feature on the Dashboard Home page ("6 สูตรจิตวิทยาการขายระดับโลก").
+   - Added strict client-side validation to prevent empty submissions and avoid 60s timeout errors.
