@@ -113,7 +113,8 @@ export async function onRequestPost({ request, env }) {
         // Use API Key if available (higher success rate), otherwise use anonymous
         const jinaHeaders = {
           'Accept': 'text/plain',
-          'X-Return-Format': 'markdown'
+          'X-Return-Format': 'markdown',
+          'X-Engine': 'browser'  // Force browser engine to bypass JS-heavy sites like Shopee
         };
         if (env.JINA_API_KEY) {
           jinaHeaders['Authorization'] = `Bearer ${env.JINA_API_KEY}`;
