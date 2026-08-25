@@ -285,8 +285,12 @@ function CreateScript() {
               </div>
             )}
           </div>
-          <div className="inline-flex items-center bg-blue-50 border border-blue-200 text-blue-700 px-3 py-1.5 rounded-lg text-sm font-medium shadow-sm">
-            เหลือโควต้าการสร้าง <strong className="mx-1.5 text-blue-900 font-black">{profile ? profile.credits : '...'}</strong> สคริปต์
+          <div className="inline-flex items-center bg-blue-50 border border-blue-200 text-blue-700 px-4 py-2 rounded-xl text-sm font-medium shadow-sm">
+            เหลือโควต้าการสร้าง 
+            <strong className="mx-2 text-xl text-blue-700 font-black bg-white px-2.5 py-0.5 rounded-md shadow-sm border border-blue-100">
+              {profile ? profile.credits : '...'}
+            </strong> 
+            สคริปต์
           </div>
         </div>
       </div>
