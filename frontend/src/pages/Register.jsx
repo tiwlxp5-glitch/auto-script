@@ -9,7 +9,38 @@ function Register() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [needsEmailVerification, setNeedsEmailVerification] = useState(false);
+  const [resendCooldown, setResendCooldown] = useState(0);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    let timer;
+    if (resendCooldown > 0) {
+      timer = setInterval(() => {
+        setResendCooldown((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [resendCooldown]);
+
+  const handleResendVerification = async () => {
+    if (resendCooldown > 0) return;
+    setError(null);
+    
+    const { error } = await supabase.auth.resend({
+      type: 'signup',
+      email: email,
+      options: {
+        emailRedirectTo: `${window.location.origin}/create`
+      }
+    });
+
+    if (error) {
+      setError(error.message);
+    } else {
+      setResendCooldown(60);
+      alert('ส่งอีเมลยืนยันตัวตนใหม่อีกครั้งแล้ว กรุณาเช็คกล่องข้อความของคุณ');
+    }
+  };
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -76,6 +107,21 @@ function Register() {
             <h3 className="text-xl font-bold mb-2">เช็คอีเมลของคุณ! 📧</h3>
             <p className="text-sm mb-4">เราได้ส่งลิงก์ยืนยันตัวตนไปที่ <br/><strong className="text-blue-900">{email}</strong><br/> กรุณากดลิงก์ในอีเมลเพื่อเข้าสู่ระบบ <br/><span className="text-xs text-blue-600">(ถ้าไม่เจอให้ลองหาในโฟลเดอร์ Junk/Spam)</span></p>
             <p className="text-sm font-semibold text-blue-700 bg-blue-100 py-2 rounded-lg mt-4">เมื่อยืนยันแล้ว สามารถกลับมาล็อกอินได้เลย</p>
+            <div className="mt-6 flex flex-col gap-3">
+              <button 
+                onClick={() => navigate('/login')}
+                className="w-full bg-blue-600 text-white font-bold py-2.5 rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
+              >
+                ฉันยืนยันอีเมลแล้ว (ไปเข้าสู่ระบบ)
+              </button>
+              <button 
+                onClick={handleResendVerification}
+                disabled={resendCooldown > 0}
+                className={`w-full py-2 rounded-lg text-sm font-medium transition-colors ${resendCooldown > 0 ? 'bg-slate-200 text-slate-500 cursor-not-allowed' : 'bg-white border border-blue-300 text-blue-700 hover:bg-blue-50'}`}
+              >
+                {resendCooldown > 0 ? `รอส่งอีเมลใหม่อีกครั้ง (${resendCooldown}s)` : 'ส่งอีเมลยืนยันตัวตนใหม่อีกครั้ง'}
+              </button>
+            </div>
           </div>
         ) : (
           <div className="bg-green-50 text-green-700 p-4 rounded-lg text-center">
