@@ -1,9 +1,9 @@
-# Specification & Tier Enforcement Audit Report
+# Infrastructure, Rate Limiting & Webhook Security Audit Report
 
-**Auditor:** `spec_miner_audit_3` (Specification & Tier Enforcement Miner)  
-**Date:** 2026-08-24  
-**Project:** Auto Script (Cloudflare Pages + Supabase + Google Gemini 3.6 Flash)  
-**Audit Scope:** Server-side Tier Authorization (`/api/generate`), GEMINI.md Rules Compliance, Frontend Token & Security Handling.
+**Auditor:** `spec_miner_audit_3` (Infrastructure & API Spec Miner)  
+**Date:** 2026-08-25  
+**Project:** Auto Script (`C:\Auto script`)  
+**Scope:** Cloudflare Pages Functions (`frontend/functions/api/`), Rate Limiting & Resource Exhaustion, Stripe Webhooks, Security Headers & CORS.
 
 ---
 
@@ -11,19 +11,17 @@
 
 | # | Category | Feature | Description | Inputs | Outputs | Error Behavior | Discovered Via |
 |---|----------|---------|-------------|--------|---------|----------------|----------------|
-| F1 | Auth & Tier | JWT Validation & Identity Derivation | Backend verifies user JWT via Supabase Auth and derives `user.id` strictly from token. | `Authorization: Bearer <token>` | Supabase `user` object | 401 Unauthorized (`Missing token` or `Invalid token`) | `frontend/functions/api/generate.js:71-88` |
-| F2 | Tier Enforcement | Profile Tier & Credits Retrieval | Fetches user quota and tier server-side via Supabase Service Role Key (`profiles` table). Client-provided quota/tier is never trusted. | `user.id` | `{ credits: number, tier: string }` | 404 (`Profile not found`), 403 (`Insufficient credits`) | `frontend/functions/api/generate.js:95-114` |
-| F3 | Tier Gating | Free Tier `targetAudience` Sanitization | When `profile.tier === 'free'`, `targetAudience` is cleared (`null`) and completely omitted from the AI prompt. | `{ targetAudience: string }` + `tier: 'free'` | Prompt constructed without target audience line | Target audience ignored silently on server | `frontend/functions/api/generate.js:131,148` |
-| F4 | Tier Gating | Plus/Pro Tier `targetAudience` Inclusion | When `profile.tier === 'plus'` or `'pro'`, `targetAudience` is preserved and injected into the Gemini prompt as `- กลุ่มเป้าหมาย: <value>`. | `{ targetAudience: string }` + `tier: 'plus'\|'pro'` | AI prompt contains `- กลุ่มเป้าหมาย: <value>` | None | `frontend/functions/api/generate.js:131,148` |
-| F5 | Tier Gating | Pro Tier URL Scraping (`productUrl`) | When `profile.tier === 'pro'`, scrapes product URL via Jina AI (`r.jina.ai`) and appends details. Bypassed for Free/Plus tiers. | `{ productUrl: string }` + `tier: 'pro'` | `productDetails` appended with scraped content | Network errors caught gracefully without failing generation | `frontend/functions/api/generate.js:117-128` |
-| F6 | AI Engine | Google Gemini 3.6 Flash Integration | Integrates with `@google/genai` using model `gemini-3.6-flash` and strict JSON MIME output. | Structured prompt + system instructions | JSON script object | 500 (`API Key not configured` or AI generation error) | `frontend/functions/api/generate.js:134-167` |
-| F7 | Integrity | Save Script Precedence (Save First) | Inserts generated script into `scripts` table before deducting credits. | `user.id`, script content | Database insert record | 500 (`Failed to save script history`), credits untouched | `frontend/functions/api/generate.js:169-183` |
-| F8 | Concurrency | Atomic RPC Credit Deduction | Decrements credit via Supabase RPC `increment_credits(user_id, -1)` only after successful script insertion. | `{ user_id, amount: -1 }` | `updatedCredits` integer | 500 (`Failed to deduct credits`) | `frontend/functions/api/generate.js:186-197` |
-| F9 | Security & IDOR | Customer Portal IDOR Elimination | `/api/create-portal` retrieves `stripe_customer_id` from `profiles` based on authenticated JWT; client `customerId` is ignored. | `Authorization: Bearer <token>` | `{ url: string }` (Stripe portal URL) | 401 (`Unauthorized`), 400 (`No Stripe customer found`) | `frontend/functions/api/create-portal.js:8-41` |
-| F10 | Concurrency | Webhook Idempotency & Credit Top-up | Deduplicates webhook deliveries via `webhook_events` table and atomically increments credits via `increment_credits` (+60 for Plus, +150 for Pro). | `stripe-signature` + checkout event | 200 `{ received: true }` or `Already processed` | 400 (Bad signature), 500 (DB failure, triggers event deletion for retry) | `frontend/functions/api/webhook.js:18-96` |
-| F11 | Privacy & Compliance | Account Deletion (PDPA) | `/api/delete-account` removes user authentication and associated data via Service Role Admin API. | `Authorization: Bearer <token>` | 200 `Account deleted` | 401 (`Unauthorized`), 500 (`Delete user error`) | `frontend/functions/api/delete-account.js:5-32` |
-| F12 | Frontend Security | Client-side Token Transmission | Frontend stores zero sensitive secrets (only anon key & URL); attaches `Authorization: Bearer <token>` to all protected API calls. | Supabase user session | HTTP Bearer header on API requests | Alerts user on missing session / redirects to login | `frontend/src/pages/CreateScript.jsx:104-124`, `Settings.jsx:91-104` |
-| F13 | Content Safety | Banned Words Detection | Pre-scans generated Thai script audio against advertising regulations for TikTok/Reels to avoid ad account suspensions. | Script text strings | Array of highlighted warnings and reasons | Renders UI warning box for user correction | `frontend/src/pages/CreateScript.jsx:136-144`, `frontend/src/lib/bannedWords.js` |
+| F1 | Auth | JWT Bearer Verification | Validates Supabase JWT access token on backend before executing business logic. | `Authorization: Bearer <token>` | `user` object with `user.id` | 401 Unauthorized (`Unauthorized` or `Invalid token`) | `frontend/functions/api/generate.js:117-134` |
+| F2 | Authorization | Server-Side Tier & Quota Check | Retrieves user tier and credits from Supabase `profiles` table using Service Role Admin key; client tier is not trusted. | `user.id` | `{ tier, credits, trial_pro_remaining }` | 404 (`Profile not found`), 402 (`เครดิตไม่พอ`) | `frontend/functions/api/generate.js:139-169` |
+| F3 | Concurrency | Upfront Atomic Credit Deduction | Calls PostgreSQL RPC `increment_credits` with `FOR UPDATE` lock to deduct credit before calling AI. | `{ p_user_id, p_amount: -1 \| -2 }` | `updatedCredits` integer | 500 (`Failed to deduct credits`), 402 if `< 0` | `frontend/functions/api/generate.js:159-170` |
+| F4 | AI Generation | Gemini 3.6 Flash Generation | Calls Google Gemini 3.6 Flash model with system instructions and JSON/Text schema. | Structured prompt string | Generated script JSON or raw XML | 500 (`API Key not configured` or Gemini error) | `frontend/functions/api/generate.js:183-216` |
+| F5 | Persistence | Script History Persistence | Stores generated script in Supabase `scripts` table. Rolls back credits if insert fails. | `user_id`, `product_name`, `content` | Insert record | 500 (`Failed to save script history`), triggers credit refund | `frontend/functions/api/generate.js:219-237` |
+| F6 | Billing Portal | IDOR-Protected Portal Creation | Creates Stripe Billing Portal session for authenticated user based on `profiles.stripe_customer_id`. | `Authorization: Bearer <token>` | `{ url: session.url }` | 401 (`Unauthorized`), 400 (`No Stripe customer found`) | `frontend/functions/api/create-portal.js:4-60` |
+| F7 | Compliance | PDPA Account Deletion | Deletes user authentication record in Supabase Auth via admin API. | `Authorization: Bearer <token>` | 200 `Account deleted` | 401 (`Unauthorized`), 500 (`Delete user error`) | `frontend/functions/api/delete-account.js:3-37` |
+| F8 | Webhook Security | Stripe Webhook Cryptographic Verification | Verifies incoming webhook signatures using `stripe.webhooks.constructEventAsync`. | `stripe-signature` header + raw body | Validated Stripe Event object | 400 (`Webhook Error: ...`) | `frontend/functions/api/webhook.js:18-27` |
+| F9 | Webhook Idempotency | Primary Key Deduplication | Inserts `event.id` into `webhook_events` table before processing; skips duplicate deliveries on code `23505`. | `event.id` | 200 `Already processed` on duplicate | 500, deletes event record to permit Stripe retry | `frontend/functions/api/webhook.js:32-44` |
+| F10 | Credit Top-up | Webhook Tier Upgrade & Credit Top-up | Processes `checkout.session.completed`, evaluates `amount_subtotal`, upgrades tier, and adds credits (+60 Plus, +150 Pro). | Stripe Checkout Session | 200 `{ received: true }` | 500 (DB or RPC failure, clears event for retry) | `frontend/functions/api/webhook.js:46-90` |
+| F11 | Security Headers | Strict Security Policy Headers | Enforces CSP, HSTS, X-Frame-Options DENY, nosniff, and restricted permissions in `_headers`. | HTTP Request | HTTP Response Headers | Blocks unauthorized frames, scripts, sniffed MIME | `frontend/public/_headers:1-9` |
 
 ---
 
@@ -31,117 +29,61 @@
 
 | # | Feature | Input | Observed Behavior |
 |---|---------|-------|-------------------|
-| E1 | Tier Spoofing | Free user sending `{ targetAudience: 'Executives 30-45' }` in POST body | Target audience is stripped on backend; prompt sent to Gemini does NOT contain the audience text or the `- กลุ่มเป้าหมาย:` line. |
-| E2 | Tampered Tier Value in DB | DB profile has unexpected tier (e.g. `'FREE'`, `'trial'`, `'admin'`, `null`, `' plus '`) | Ternary `(profile.tier === 'plus' || profile.tier === 'pro')` evaluates to `false`, safely falling back to stripping `targetAudience`. |
-| E3 | Pro URL Scraping Failure | Pro user provides broken/timeout URL to `productUrl` | Jina AI error is caught inside try/catch; generation proceeds normally with user-provided `productDetails`. |
-| E4 | Zero / Negative Credits | User has `credits: 0` or `credits: -1` | Blocked at step 3 with HTTP 403 (`Insufficient credits`); Gemini API and database insert are never called. |
-| E5 | Script Save Database Crash | Database crashes or disk full during `scripts.insert` | Returns HTTP 500 (`Failed to save script history`); RPC credit deduction is never reached; user's credit balance is 100% preserved. |
-| E6 | Malicious Customer ID Injection | Attacker calls `/api/create-portal` with victim's `customerId` in POST body | Backend completely ignores POST body, queries `profiles` for authenticated user's ID, and creates portal session exclusively for the attacker. |
-| E7 | Webhook Concurrent Replay | 30 simultaneous webhooks for the same `checkout.session.completed` event | 1 request succeeds in inserting `event.id` and executes `increment_credits`; 29 requests encounter unique violation `23505` and return 200 `Already processed`. Total credits incremented exactly once. |
-| E8 | 100% Discount Coupon | Stripe checkout session with 100% off coupon (`amount_total: 0`, `amount_subtotal: 59000`) | Webhook evaluates `amount_subtotal` (59000), correctly granting Pro tier and 150 credits without downgrading. |
+| E1 | Concurrency Flood | 1 User sends 1,000 simultaneous `/api/generate` requests with 3 credits | First 3 requests succeed; 997 requests are rejected with HTTP 402 (`เครดิตไม่พอ`) by the atomic `increment_credits` RPC row lock before touching Gemini API. |
+| E2 | Distributed Bot Flood | 100 fake accounts send 300 simultaneous `/api/generate` requests | All 300 requests pass deduction and hit Google Gemini simultaneously, triggering `429 RESOURCE_EXHAUSTED` due to lack of Cloudflare Turnstile / IP rate limiting. |
+| E3 | Script Save Failure Rollback | DB write to `scripts` table fails (e.g. disk full, lock timeout) | **BUG (VULN-01)**: `insertError` refunds credits via RPC and throws Error; outer `catch (err)` also detects `creditDeducted` and refunds a SECOND time. User gains +1 free credit. |
+| E4 | Multi-Version AI Generation Failure | Gemini API fails during multi-version generation (`isMultiVersion: true`) | **DEFECT (VULN-05)**: 2 credits were deducted upfront, but outer `catch` block refunds hardcoded `p_amount: 1`, causing the user to lose 1 credit unfairly. |
+| E5 | Customer Refund / Dispute | Cardholder files refund or dispute in Stripe Dashboard | Webhook receives `charge.refunded` or `charge.dispute.created`, ignores the event, and returns 200. User retains granted Pro tier and unspent credits. |
+| E6 | Delayed / Async Payment Method | Stripe checkout with async payment method (unsettled transfer) | Webhook triggers on `checkout.session.completed` while `session.payment_status === 'unpaid'`; credits are granted before payment settlement. |
+| E7 | Cloudflare Preview URL Access | Browser accesses preview deployment `https://preview.autoscript.pages.dev` | Static header `Access-Control-Allow-Origin: https://autoscript-ai.com` causes CORS rejection on preview branch. |
 
 ---
 
-## Detailed Audit Findings
-
-### 1. Server-Side Tier Authorization in `generate.js`
-
-- **Profile & Tier Evaluation (`lines 95-114`):**
-  User authentication is performed by validating the Bearer token with `supabaseClient.auth.getUser(token)`. The backend queries the `profiles` table using `supabaseAdmin` (`SUPABASE_SERVICE_ROLE_KEY`) with `.select('credits, tier').eq('id', user.id).single()`. Quota is strictly enforced: if `profile.credits <= 0`, HTTP 403 `Insufficient credits` is returned before any AI invocation.
-- **Sanitization of `targetAudience` for Free Tier (`lines 131, 148`):**
-  ```javascript
-  const finalTargetAudience = (profile.tier === 'plus' || profile.tier === 'pro') ? targetAudience : null;
-  ```
-  In prompt construction (`line 148`):
-  ```javascript
-  ${finalTargetAudience ? `- กลุ่มเป้าหมาย: ${finalTargetAudience}` : ''}
-  ```
-  When `profile.tier === 'free'`, `finalTargetAudience` evaluates to `null`, ensuring the prompt string contains no target audience information.
-- **Spoofing Resistance:**
-  Even if a malicious user bypasses frontend UI restrictions and manually submits a POST request containing `{ "targetAudience": "VIP Target", "productUrl": "https://..." }`, the backend evaluates the database record `profile.tier`. For free accounts, `targetAudience` is discarded and `productUrl` scraping is ignored.
-- **Plus and Pro Tier Behavior:**
-  - **Plus Tier (`tier === 'plus'`):** `targetAudience` is included in the Gemini prompt. `productUrl` scraping is blocked (only enabled for `tier === 'pro'`).
-  - **Pro Tier (`tier === 'pro'`):** Both `targetAudience` inclusion and Jina AI URL scraping (`productUrl`) are active.
-
----
-
-### 2. Audit Compliance with `GEMINI.md` Rules
-
-#### Rule 1: Code Explanation Rule (Beginner Clarity & Analogies)
-- **Status:** **COMPLIANT**
-- **Evidence:**
-  - `create-portal.js`: Includes clear Thai annotations explaining the security purpose using analogies (e.g. *"เปรียบเสมือนการตรวจบัตรประชาชนที่ประตูทางเข้า เพื่อป้องกันไม่ให้บุคคลภายนอกที่ไม่ได้รับอนุญาตเข้าถึงระบบ"*, ID card check analogy).
-  - `webhook.js`: Explains atomic credit increment and idempotency using clear analogies (e.g. preventing duplicate event runs).
-  - `generate.js`: Explains order of operations (Save script first, deduct atomic credit second) with step-by-step logic.
-
-#### Rule 2: Gemini Model Version Rule (`gemini-3.6-flash`)
-- **Status:** **COMPLIANT**
-- **Evidence:**
-  - `frontend/functions/api/generate.js:1`: `import { GoogleGenAI } from '@google/genai';`
-  - `frontend/functions/api/generate.js:157`: `model: 'gemini-3.6-flash'`
-  - Deprecated models (`gemini-2.5-flash`, `gemini-1.5`, etc.) are completely absent across the entire repository.
-
-#### Rule 3: Proactive Compliance & Security Warning Rule
-- **Status:** **COMPLIANT**
-- **Evidence:**
-  - **Data Privacy & PDPA:** Implemented in `frontend/src/pages/Legal.jsx` (§3) and backed by the user self-serve deletion endpoint `frontend/functions/api/delete-account.js`.
-  - **Terms & No-Refund Policy:** Clearly defined in `Legal.jsx` (§2) for digital credit purchases.
-  - **Platform Compliance:** Cloudflare Pages deployment avoids commercial SaaS licensing conflicts associated with free platform tiers.
-  - **Content & Ad Policy Protection:** `frontend/src/lib/bannedWords.js` proactively scans AI script output for high-risk advertising buzzwords to protect users against TikTok/Facebook ad account bans.
-
-#### Rule 4: Exact String & URL Preservation Rule
-- **Status:** **COMPLIANT**
-- **Evidence:**
-  - Plus Stripe Link (`Pricing.jsx:11`): `https://buy.stripe.com/9B6fZi0454Tg7ZSf5Nbwk00` (Preserved exactly with suffix `00`).
-  - Pro Stripe Link (`Pricing.jsx:12`): `https://buy.stripe.com/3cIbJ2045adAgwoe1Jbwk01` (Preserved exactly with suffix `01`).
-  - LINE Official Support URL (`Legal.jsx:66`): `https://lin.ee/x0yVB1kk` (Preserved exactly).
-
----
-
-### 3. Frontend Token Transmission & Secrets Handling
-
-- **Token Transmission:**
-  - `CreateScript.jsx:120-124`: Fetches `session.access_token` from `supabase.auth.getSession()` and transmits `Authorization: Bearer ${session.access_token}`.
-  - `Settings.jsx:101-104`: Passes `Authorization: Bearer ${session.access_token}` when requesting billing portal sessions.
-  - `Settings.jsx:134`: Passes `Authorization: Bearer ${session.access_token}` for account deletion.
-- **Secrets Boundary:**
-  - Frontend (`frontend/src/lib/supabase.js`) strictly references `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`.
-  - No sensitive credentials (such as `SUPABASE_SERVICE_ROLE_KEY`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, or `GEMINI_API_KEY`) exist in the client bundle.
-- **HTTP Security Headers:**
-  - `frontend/public/_headers` enforces `Content-Security-Policy`, `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Strict-Transport-Security`, and `Access-Control-Allow-Origin: https://autoscript-ai.com`.
-
----
-
-## 5-Component Handoff
+## 5-Component Handoff Report
 
 ### 1. Observation
-- `frontend/functions/api/generate.js` lines 70-88 enforce JWT authorization via `auth.getUser(token)`.
-- `frontend/functions/api/generate.js` lines 96-100 query `profiles` table using `SUPABASE_SERVICE_ROLE_KEY` to retrieve `credits` and `tier`.
-- `frontend/functions/api/generate.js` line 131 sets `finalTargetAudience = (profile.tier === 'plus' || profile.tier === 'pro') ? targetAudience : null`.
-- `frontend/functions/api/generate.js` line 157 uses `model: 'gemini-3.6-flash'`.
-- `frontend/functions/api/generate.js` lines 169-183 insert script history into `scripts` FIRST, and lines 186-197 execute `increment_credits` RPC SECOND.
-- `frontend/src/pages/Pricing.jsx` lines 11-12 retain exact Stripe URLs (`...9Nbwk00` and `...1Jbwk01`).
-- `frontend/src/lib/supabase.js` only exposes anon keys.
-- Running `npm test` in `frontend/` executes 62 tests across 5 test suites with 100% pass rate (0 failures).
+- **Endpoint File Paths**:
+  - `frontend/functions/api/generate.js` (271 lines)
+  - `frontend/functions/api/create-portal.js` (70 lines)
+  - `frontend/functions/api/delete-account.js` (39 lines)
+  - `frontend/functions/api/webhook.js` (102 lines)
+  - `frontend/public/_headers` (9 lines)
+- **Defect 1 (`generate.js:227-263`)**:
+  Lines 231-234 invoke `await supabaseAdmin.rpc('increment_credits', { p_user_id: user.id, p_amount: creditAmount })` and then line 236 executes `throw new Error("Failed to save script history")`. The outer `catch (err)` block at line 258 inspects `creditDeducted && userIdForRefund` and calls `increment_credits` again with `p_amount: 1`.
+  - Result: 3 tests in Vitest fail (`ADV-D2`, `EMP-FAULT-1`, `T3.2`) where profile credits became 8 instead of 7 because of the double-refund.
+- **Defect 2 (`generate.js:261`)**:
+  Outer `catch (err)` hardcodes `p_amount: 1` instead of `creditAmount` (which is 2 for `isMultiVersion`).
+- **Defect 3 (`generate.js` & `CreateScript.jsx`)**:
+  No Cloudflare Turnstile verification or rate limiter exists in `generate.js` or `CreateScript.jsx`.
+- **Defect 4 (`webhook.js:92-94`)**:
+  Only `checkout.session.completed` is handled. Events `charge.refunded`, `charge.dispute.created`, `invoice.payment_succeeded`, and `customer.subscription.deleted` fall through to unhandled 200 responses.
+- **Defect 5 (`public/_headers:8`)**:
+  `Access-Control-Allow-Origin: https://autoscript-ai.com` is statically pinned to production domain only.
 
 ### 2. Logic Chain
-- User identity is cryptographically proven via Supabase JWT Bearer token validation.
-- User authorization level (tier & quota) is fetched directly from the database server-side, eliminating client-side tampering vectors.
-- Since `finalTargetAudience` is nullified for any tier other than `plus` or `pro`, any client-provided `targetAudience` payload from a free user is completely dropped before prompt compilation.
-- Order of operations ensures database consistency: script history is persisted before quota deduction.
-- Idempotency and atomic RPC eliminate race conditions during concurrent requests.
-- Full compliance with `GEMINI.md` rules and security boundaries is preserved.
+1. **Double Refund Logic**: When `scripts.insert` fails, `creditAmount` is refunded at line 231, but `creditDeducted` flag is NOT reset to `false`. When the error is thrown, the catch block at line 258 evaluates `creditDeducted === true` and issues a second refund, resulting in unintended credit inflation.
+2. **Rate Limiting & Exhaustion Logic**: While single-user balance drain is guarded by the atomic `increment_credits` RPC row lock, multi-account / bot floods are not prevented because Turnstile bot protection is absent. An attacker with multiple accounts can exhaust Google Gemini RPM quota and Supabase connection limits.
+3. **Webhook Refund Logic**: When Stripe refunds a payment, it issues `charge.refunded`. Because `webhook.js` ignores this event, the database state in `profiles` is never updated to revoke credits or downgrade tier.
 
 ### 3. Caveats
-- No caveats. The codebase adheres strictly to all specification rules, security runbooks, and architectural requirements.
+- Stripe integration currently uses one-time payment checkout links (`mode: 'payment'`). If recurring subscriptions (`mode: 'subscription'`) are activated in the future, `invoice.payment_succeeded` and `customer.subscription.deleted` handlers must be implemented to prevent credit desynchronization.
+- Cloudflare WAF rate limiting rules configured in the Cloudflare Dashboard are external to the git repository and cannot be observed directly from local files.
 
 ### 4. Conclusion
-The Auto Script project is **100% production-ready and fully compliant**. Server-side tier authorization is robust against all tested adversarial tampering and client spoofing. All four rules in `GEMINI.md` are rigorously met.
+The Auto Script infrastructure exhibits strong security fundamentals (secure key isolation, server-side tier derivation, atomic RPC locks, and cryptographic webhook verification). However, **two high-priority code defects and two infrastructure gaps must be remediated**:
+1. **Fix Double Refund in `generate.js`**: Reset `creditDeducted = false` after internal refund or consolidate refund logic solely in the `catch` block using `creditAmount`.
+2. **Add Cloudflare Turnstile / Rate Limiting**: Protect `/api/generate` against automated bot floods.
+3. **Add Webhook Handlers for Refunds & Disputes**: Revoke credits and reset tier on `charge.refunded` and `charge.dispute.created`.
+4. **Validate `session.payment_status === 'paid'`**: Guard against crediting pending/unsettled async payments.
 
 ### 5. Verification Method
-Execute the Vitest automated test suite:
-```powershell
-cd "C:\Auto script\frontend"
-npm test
-```
-Expected result: **5 test files passed, 62 tests passed (100% pass rate)**.
+1. **Automated Test Suite**:
+   Run Vitest in `frontend/`:
+   ```powershell
+   cd "C:\Auto script\frontend"
+   npm test
+   ```
+2. **Vulnerability Verification**:
+   - Inspect `frontend/functions/api/generate.js` lines 230-264 to verify the double-refund sequence on `insertError`.
+   - Inspect `frontend/functions/api/webhook.js` lines 46-94 to verify the absence of `charge.refunded` and `invoice.payment_succeeded` handlers.
+   - Inspect `frontend/public/_headers` lines 7-8 to verify CSP and CORS origin configurations.

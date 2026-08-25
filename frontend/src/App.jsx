@@ -1,6 +1,7 @@
-import { lazy, Suspense } from 'react';
+import { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
+import { lazyWithRetry } from './utils/lazyWithRetry';
 
 // ─── Eager (โหลดทันที) ────────────────────────────────────────────
 // หน้าที่ทุกคนเข้าถึงก่อนล็อกอิน โหลดทันทีเพื่อประสบการณ์ที่เร็ว
@@ -8,14 +9,17 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 
-// ─── Lazy (โหลดเมื่อผู้ใช้เปิดหน้านั้น) ─────────────────────────
+// ─── Lazy with Auto-Retry (Fixes FE-01: ChunkLoadError) ──────────
 // เปรียบเหมือนร้านอาหาร "สั่งแล้วทำ" — ไม่เตรียมทุกจานล่วงหน้า
 // ช่วยลดขนาด Bundle แรกจาก ~551KB เหลือ ~200KB
-const CreateScript = lazy(() => import('./pages/CreateScript'));
-const Pricing      = lazy(() => import('./pages/Pricing'));
-const Settings     = lazy(() => import('./pages/Settings'));
-const History      = lazy(() => import('./pages/History'));
-const Legal        = lazy(() => import('./pages/Legal'));
+// lazyWithRetry: ถ้าไฟล์ Bundle เวอร์ชั่นเก่าหาไม่เจอ (404 หลัง Deploy ใหม่)
+// จะรีเฟรชหน้าอัตโนมัติ 1 ครั้งเพื่อดึง Bundle ใหม่ แทนที่จะแสดงหน้าจอ Error
+const CreateScript = lazyWithRetry(() => import('./pages/CreateScript'));
+const Pricing      = lazyWithRetry(() => import('./pages/Pricing'));
+const Settings     = lazyWithRetry(() => import('./pages/Settings'));
+const History      = lazyWithRetry(() => import('./pages/History'));
+const Legal        = lazyWithRetry(() => import('./pages/Legal'));
+
 
 // ─── Loading Spinner ──────────────────────────────────────────────
 // แสดงระหว่างที่ React กำลังโหลด Chunk ของหน้านั้น (~0.2-0.5 วิ)

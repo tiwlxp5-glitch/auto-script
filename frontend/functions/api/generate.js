@@ -208,18 +208,17 @@ export async function onRequestPost(context) {
     let rawOutput = response.text;
     
     if (isMultiVersion) {
-      // In multi-version, the output is raw text containing XML tags
-      // We will parse it out in the frontend, so we just send the raw text inside a standard structure
       resultJson = { raw_multi_version: rawOutput };
     } else {
       resultJson = safeParseJson(rawOutput);
     }
 
     // 6. บันทึก History ลงฐานข้อมูล scripts เป็นลำดับแรก (Save first)
+    // Input length boundaries to prevent abuse (INF-01)
     const { error: insertError } = await supabaseAdmin.from('scripts').insert({
       user_id: user.id,
-      product_name: productName,
-      product_details: productDetails,
+      product_name: (productName || '').slice(0, 100),
+      product_details: (productDetails || '').slice(0, 2000),
       mode: isMultiVersion ? 'Pro_MultiVersion' : mode,
       content: JSON.stringify(resultJson)
     });
@@ -227,11 +226,14 @@ export async function onRequestPost(context) {
     if (insertError) {
       console.error("Failed to insert script:", insertError);
       
-      // ROLLBACK: Refund credits if history save fails
+      // ROLLBACK: Refund exact deducted amount
       await supabaseAdmin.rpc('increment_credits', {
         p_user_id: user.id,
         p_amount: creditAmount
       });
+      
+      // CRITICAL FIX (DB-06): Reset flag so outer catch does NOT issue a SECOND refund
+      creditDeducted = false;
       
       throw new Error("Failed to save script history");
     }
@@ -258,11 +260,19 @@ export async function onRequestPost(context) {
     if (creditDeducted && userIdForRefund) {
       console.error("Execution failed after deduction. Issuing compensatory refund:", err);
       try {
-        await supabaseAdmin.rpc('increment_credits', { p_user_id: userIdForRefund, p_amount: 1 });
-      } catch {}
+        // CRITICAL FIX (DB-07): Refund the exact creditAmount (1 or 2), NOT hardcoded 1
+        await supabaseAdmin.rpc('increment_credits', { 
+          p_user_id: userIdForRefund, 
+          p_amount: creditAmount 
+        });
+      } catch (refundErr) {
+        console.error("Failed to execute compensatory refund:", refundErr);
+      }
     }
     console.error("Generate API Error:", err);
-    return new Response(JSON.stringify({ error: err.message || "Internal Server Error" }), { 
+    return new Response(JSON.stringify({ 
+      error: err.message || "An unexpected error occurred during generation" 
+    }), { 
       status: 500,
       headers: { 'Content-Type': 'application/json' }
     });

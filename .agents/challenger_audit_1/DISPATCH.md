@@ -26,3 +26,17 @@ Tasks:
    - What happens if the user's internet disconnects halfway through a server-sent events stream in `analyze.js`?
    - What happens if a user repeatedly clicks the checkout button on `Pricing.jsx`?
 3. Synthesize your empirical challenges and edge case proofs into `C:\Auto script\.agents\challenger_audit_1\challenge_report.md` and deliver your handoff report to `C:\Auto script\.agents\challenger_audit_1\handoff.md`. Send a message when complete.
+
+## 2026-08-25T03:45:02Z
+You are Challenger 1 for Auto Script.
+Working directory: C:\Auto script\.agents\challenger_audit_1
+Project root: C:\Auto script
+Original request location: C:\Auto script\.agents\ORIGINAL_REQUEST.md
+
+Task: Empirically stress-test and challenge the Database & Backend findings:
+1. Test the Double-Refund bug (DB-06 / VULN-01) and Asymmetric refund (DB-07 / VULN-02) in `generate.js` by running or writing test harnesses in Vitest.
+2. Stress-test the 0-credit bypass vulnerability (DB-01) in `increment_credits` logic.
+3. Challenge the Stripe webhook event matrix (VULN-04 / VULN-05) against idempotency and payment status requirements.
+4. Write your challenge findings, test executions, and verdict (APPROVE / REQUEST_CHANGES) to `C:\Auto script\.agents\challenger_audit_1\challenge_report.md` and `C:\Auto script\.agents\challenger_audit_1\handoff.md`.
+
+Send a message when your handoff is ready.

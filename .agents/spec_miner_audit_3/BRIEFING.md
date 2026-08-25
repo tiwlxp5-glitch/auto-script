@@ -1,44 +1,45 @@
-# BRIEFING — 2026-08-24T07:33:00+07:00
+# BRIEFING — 2026-08-25T03:14:00Z
 
 ## Mission
-Audit client-side vs. server-side tier enforcement, GEMINI.md rule compliance, and frontend token handling across the Auto Script codebase.
+Perform an Infrastructure, Rate Limiting & Webhook Audit on the Cloudflare Pages Functions and Stripe API integration in Auto Script.
 
 ## 🔒 My Identity
-- Archetype: Specification Miner
-- Roles: Teamwork specialist, Specification & Tier Enforcement Miner
+- Archetype: Specification Miner / Infrastructure & API Auditor
+- Roles: Teamwork specialist, API & Infrastructure security auditor
 - Working directory: C:\Auto script\.agents\spec_miner_audit_3
-- Original parent: c039c40c-dc6e-49b3-8cc9-3c870b884d82
-- Milestone: Final Audit & Tier Enforcement Verification
+- Original parent: 9075c91c-4aeb-4342-9819-678f1deaebe7
+- Milestone: Infrastructure & API Security Audit
 
 ## 🔒 Key Constraints
-- Verify server-side tier authorization in `frontend/functions/api/generate.js`.
-- Audit compliance with all 4 rules in `GEMINI.md` (beginner code explanation, `gemini-3.6-flash` model, proactive compliance/security warnings, exact string preservation).
-- Audit frontend components in `frontend/src/` for proper token transmission and secure handling.
-- Do NOT implement anything — read-only auditor/miner.
-- Produce comprehensive handoff.md with 5 components, Features Discovered, and Edge Cases tables.
+- Code Explanation Rule: Detail what code parts do and why.
+- Gemini Model Version Rule: Ensure gemini-3.6-flash is used.
+- Proactive Compliance & Security Warning Rule: Proactively warn about critical risks.
+- Exact String & URL Preservation Rule: Do not alter exact strings/IDs/URLs.
+- Supabase Schema & RPC Alignment Rule: Verify schemas and RPC calls.
+- Strict Credential Confidentiality Rule: Do not leak real keys.
+- Read-only specification miner role: probe and document, do not write implementation code in production dirs.
 
 ## Current Parent
-- Conversation ID: c039c40c-dc6e-49b3-8cc9-3c870b884d82
-- Updated: 2026-08-24T07:33:00+07:00
-
-## Task Summary
-- **What to build**: Specification audit report verifying tier enforcement, GEMINI.md compliance, and frontend auth handling.
-- **Success criteria**: Exhaustive proof and test verification of backend authorization and frontend token transmission.
-- **Interface contracts**: PROJECT.md / ORIGINAL_REQUEST.md
-- **Code layout**: `frontend/functions/api/`, `frontend/src/`
+- Conversation ID: 9075c91c-4aeb-4342-9819-678f1deaebe7
+- Updated: not yet
 
 ## Loaded Skills
-- **Source**: c:\Auto script\.agents\skills\cloudflare-supabase-security\SKILL.md
-- **Local copy**: C:\Auto script\.agents\spec_miner_audit_3\SKILL.md
-- **Core methodology**: Cloudflare Functions backend verification, JWT verification, atomic credits RPC, secrets boundary, frontend security headers.
+- **Source**: C:\Auto script\.agents\skills\cloudflare-supabase-security\SKILL.md
+- **Local copy**: C:\Auto script\.agents\spec_miner_audit_3\skills\cloudflare-supabase-security\SKILL.md
+- **Core methodology**: Production-grade security for Cloudflare Pages + Supabase (secrets separation, backend credit deduction, webhook idempotency, security headers).
+
+## Task Summary
+- **What to audit**:
+  1. All endpoints in `frontend/functions/api/` (generate.js, create-checkout-session.js, stripe-webhook.js, etc.).
+  2. Rate limiting, Turnstile verification, concurrency guards, resource exhaustion (Cloudflare CPU, Gemini API quota, Supabase DB connection pool).
+  3. Stripe Webhook Deep Dive (signature verification, idempotency, event coverage: checkout.session.completed, invoice.payment_succeeded, customer.subscription.*, charge.refunded, charge.dispute.created, payment_intent.payment_failed).
+  4. Security Headers & CORS (`public/_headers`, function response headers, CSP, CORS, X-Frame-Options, HSTS).
+  5. Findings in `analysis.md` and `handoff.md`.
+- **Success criteria**: Detailed, thorough audit report with verified file paths, line numbers, severity ratings, edge cases, and actionable remediation blueprint.
 
 ## Key Decisions Made
-- Confirmed full compliance with GEMINI.md Rules 1-4.
-- Confirmed server-side tier enforcement in `generate.js` is tamper-proof against client spoofing.
-- Confirmed frontend components send Bearer tokens accurately and contain no exposed secrets.
-- Verified test suite passes 62/62 across 5 test suites.
+- Systematic file-by-file inspection of all files in `frontend/functions/`, `frontend/public/_headers`, Supabase schema/migrations, and tests.
 
 ## Artifact Index
-- C:\Auto script\.agents\spec_miner_audit_3\SKILL.md — Local domain skill copy
-- C:\Auto script\.agents\spec_miner_audit_3\progress.md — Liveness heartbeat & progress log
-- C:\Auto script\.agents\spec_miner_audit_3\handoff.md — Final audit report
+- C:\Auto script\.agents\spec_miner_audit_3\analysis.md — Comprehensive Infrastructure & API Security Audit Findings
+- C:\Auto script\.agents\spec_miner_audit_3\handoff.md — 5-Component Handoff Report

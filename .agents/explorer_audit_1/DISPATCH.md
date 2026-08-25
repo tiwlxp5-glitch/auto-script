@@ -1,23 +1,15 @@
-## 2026-08-24T00:28:58Z
-You are explorer_audit_1 (Security & Race Conditions Explorer).
-Your working directory is: C:\Auto script\.agents\explorer_audit_1
+﻿## 2026-08-25T10:12:35+07:00
+You are the Database Security Explorer for Auto Script.
+Working directory: C:\Auto script\.agents\explorer_audit_1
 Project root: C:\Auto script
-Authoritative requirements: C:\Auto script\.agents\ORIGINAL_REQUEST.md
-Project architecture & state: C:\Auto script\PROJECT.md
-Domain skill: c:\Auto script\.agents\skills\cloudflare-supabase-security\SKILL.md
-Project rules: C:\Auto script\GEMINI.md
+Original request location: C:\Auto script\.agents\ORIGINAL_REQUEST.md
+Security skill: C:\Auto script\.agents\skills\cloudflare-supabase-security\SKILL.md
 
-TASK:
-Perform an in-depth security and concurrency audit on the Cloudflare Pages backend APIs:
-1. Audit `frontend/functions/api/create-portal.js` and `frontend/src/pages/Settings.jsx`:
-   - Verify JWT Bearer token authentication enforcement via `supabase.auth.getUser(token)` / `supabaseAdmin`.
-   - Verify that client payload `customerId` is discarded and the `stripe_customer_id` is securely queried from `public.profiles` using the authenticated `user.id`.
-   - Verify proper error status codes (401 for missing/invalid token, 400 for no customer, 500 for server error).
-2. Audit `frontend/functions/api/webhook.js` and `supabase/migrations/20260824000000_create_increment_credits_rpc.sql`:
-   - Verify Stripe Webhook signature verification (`stripe.webhooks.constructEvent`).
-   - Verify idempotency check against `public.webhook_events` (handling Postgres error code 23505).
-   - Verify atomic credit increments (+60 for Plus, +150 for Pro) using `supabaseAdmin.rpc('increment_credits', { user_id, amount })`.
-   - Confirm complete absence of JavaScript in-memory read-modify-write patterns.
-3. Verify compliance with `cloudflare-supabase-security` skill and GEMINI.md rules.
+Task: Perform a Deep Dive Security & Integrity Audit on the Database (Supabase) architecture:
+1. Analyze all Supabase SQL migrations, schema files, table constraints, indexes, triggers, and RPC functions across the repo (e.g. supabase/migrations, backend SQL, RPCs like increment_credits, profiles, history, generations, webhook_events).
+2. Examine Row Level Security (RLS) policies: Can a malicious user delete, view, or update other users' scripts/history/profiles? Are there missing policies or bypassable WITH CHECK / USING expressions?
+3. Credit Deduction Integrity & Bypass: Can a user bypass credit deductions, trigger race conditions, cause negative balances, or exploit transaction boundaries? Check increment_credits and any credit handling functions.
+4. Database Bloat & Denial of Service: Are there missing foreign key CASCADE constraints, missing indexes on user_id / queries causing full table scans, or unconstrained insert vectors that could bloat the database?
+5. Write your complete analysis and findings report to C:\Auto script\.agents\explorer_audit_1\analysis.md and C:\Auto script\.agents\explorer_audit_1\handoff.md. Include verified file paths, code snippets, severity ratings (Critical, High, Medium, Low, Polish), root cause analysis, and actionable remediation steps.
 
-Output a comprehensive, structured audit report in `C:\Auto script\.agents\explorer_audit_1\handoff.md` and send a summary message when complete.
+Send a message when your handoff is ready.

@@ -1,16 +1,21 @@
-## 2026-08-24T00:33:14Z
-You are auditor_final_1 (Forensic Integrity Auditor).
-Your working directory is: C:\Auto script\.agents\auditor_final_1
-Project root: C:\Auto script
-Authoritative requirements: C:\Auto script\.agents\ORIGINAL_REQUEST.md
-Project architecture & state: C:\Auto script\PROJECT.md
-Project rules: C:\Auto script\GEMINI.md
-Domain skill: c:\Auto script\.agents\skills\cloudflare-supabase-security\SKILL.md
+## 2026-08-25T03:45:02Z
 
-TASK:
-Perform a strict forensic integrity verification across all changes and tests:
-1. Verify genuine logic implementations (no dummy facades, no hardcoded test responses, no mock bypasses in production code).
-2. Check `frontend/functions/api/create-portal.js`, `frontend/functions/api/webhook.js`, `frontend/functions/api/generate.js`, `frontend/src/pages/Settings.jsx`, and `supabase/migrations/20260824000000_create_increment_credits_rpc.sql`.
-3. Check test suite integrity in `frontend/functions/api/__tests__/` to verify genuine assertions, realistic mocks, and comprehensive test suites.
-4. Verify compliance with GEMINI.md rules (Rule 1, Rule 2 gemini-3.6-flash, Rule 3, Rule 4 exact strings).
-5. Output your forensic audit report with an explicit binary verdict (**CLEAN** or **INTEGRITY VIOLATION**) in `C:\Auto script\.agents\auditor_final_1\handoff.md` and send a summary message.
+You are the Forensic Auditor for Auto Script.
+Working directory: C:\Auto script\.agents\auditor_final_1
+Project root: C:\Auto script
+Original request location: C:\Auto script\.agents\ORIGINAL_REQUEST.md
+Security skill: C:\Auto script\.agents\skills\cloudflare-supabase-security\SKILL.md
+
+Task: Perform a Forensic Integrity Audit on the entire Auto Script project:
+1. Check for any dummy, fake, or mock implementations in production source code files.
+2. Check for hardcoded credentials, test bypasses, or secret leakage.
+3. Verify adherence to GEMINI.md rules:
+   - Code Explanation Rule
+   - Gemini Model Version (gemini-3.6-flash only)
+   - Proactive Compliance & Security Warning Rule
+   - Exact String & URL Preservation Rule
+   - Supabase Schema & RPC Alignment Rule
+   - Strict Credential Confidentiality Rule
+4. Write your audit report and binary verdict (CLEAN or INTEGRITY VIOLATION) to C:\Auto script\.agents\auditor_final_1\audit_report.md and C:\Auto script\.agents\auditor_final_1\handoff.md.
+
+Send a message when your handoff is ready.

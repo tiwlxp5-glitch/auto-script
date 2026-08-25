@@ -1,135 +1,138 @@
-# Handoff Report: Adversarial Bypassing & Failure States Challenger (challenger_audit_2)
+# HANDOFF REPORT: FRONTEND UX, STATE RESILIENCE & INFRASTRUCTURE EMPIRICAL CHALLENGE
+
+**Agent:** Empirical Challenger 2 (`challenger_audit_2`)  
+**Parent Conversation ID:** `9075c91c-4aeb-4342-9819-678f1deaebe7`  
+**Date:** 2026-08-25  
+**Working Directory:** `C:\Auto script\.agents\challenger_audit_2`  
+**Target Codebase:** `frontend/src/` & `frontend/functions/api/`  
+**Verdict:** ⚠️ **REQUEST_CHANGES**
+
+---
 
 ## 1. Observation
 
-### Codebase Inspections
-1. **IDOR Defense in `frontend/functions/api/create-portal.js` (lines 8-36)**:
-   - Line 8: `const authHeader = request.headers.get('Authorization');`
-   - Lines 9-14: Returns `401 Unauthorized` if `!authHeader || !authHeader.startsWith('Bearer ')`.
-   - Line 20: Authenticates user via `const { data: { user }, error: userError } = await supabaseAdmin.auth.getUser(token);` (returns 401 if invalid).
-   - Lines 30-34: Queries `public.profiles` strictly by `user.id`:
+1. **Bare `lazy()` Dynamic Imports without Deployment Retry Guard**:
+   - In `frontend/src/App.jsx:14-18`:
      ```javascript
-     const { data: profile, error: profileError } = await supabaseAdmin
-       .from('profiles')
-       .select('stripe_customer_id')
-       .eq('id', user.id)
-       .single();
+     const CreateScript = lazy(() => import('./pages/CreateScript'));
+     const Pricing      = lazy(() => import('./pages/Pricing'));
+     const Settings     = lazy(() => import('./pages/Settings'));
+     const History      = lazy(() => import('./pages/History'));
+     const Legal        = lazy(() => import('./pages/Legal'));
      ```
-   - Lines 36-41: Returns `400 Bad Request` (`No Stripe customer found for this account`) if `!profile || !profile.stripe_customer_id`.
-   - Line 51: Passes `customer: profile.stripe_customer_id` directly to `stripe.billingPortal.sessions.create`. Any client-provided payload is completely ignored (no `request.json()` call).
+   - When a new build is deployed to Cloudflare Pages, previous chunk hashes 404, throwing `TypeError: Failed to fetch dynamically imported module`. `ErrorBoundary.jsx` only shows a static error message with no automated reload recovery.
 
-2. **Tier Spoofing Defense in `frontend/functions/api/generate.js` (lines 95-131)**:
-   - Lines 96-100: Queries database `profiles` table directly with `SUPABASE_SERVICE_ROLE_KEY` for the authenticated `user.id`. Client body properties such as `tier` or `credits` are discarded.
-   - Lines 118-128: Jina scraping is strictly gated:
-     ```javascript
-     if (profile.tier === 'pro' && productUrl) {
-       try {
-         const jinaRes = await fetch(`https://r.jina.ai/${productUrl}`);
-         if (jinaRes.ok) { ... }
-       } catch (err) {
-         console.log("Jina scrape error ignored:", err);
-       }
-     }
+2. **Suspense Hierarchy Causing Screen Flashes & Layout Thrashing**:
+   - In `frontend/src/App.jsx:54-56`:
+     ```jsx
+     <Suspense fallback={<PageLoader />}>
+       <Routes>
+         <Route path="/" element={<MainLayout />}>
      ```
-   - Line 131: `targetAudience` is gated strictly by database tier:
-     ```javascript
-     const finalTargetAudience = (profile.tier === 'plus' || profile.tier === 'pro') ? targetAudience : null;
+   - In `frontend/src/layouts/MainLayout.jsx:8-11`:
+     ```jsx
+     <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+       <Outlet />
+     </main>
      ```
-   - Line 148: If `finalTargetAudience` is null (e.g. Free tier), the `- กลุ่มเป้าหมาย:` line is omitted from the prompt.
+   - Because `<Suspense>` wraps `<Routes>`, suspending any lazy page unmounts `<MainLayout>` (including `Navbar` and footer) and flashes full-screen `<PageLoader />`.
 
-3. **Order of Operations & Fault Injection in `frontend/functions/api/generate.js` (lines 169-197)**:
-   - Lines 169-175: Inserts into `public.scripts` FIRST before credit deduction:
+3. **Missing Timeout & AbortController on AI Generation**:
+   - In `frontend/src/pages/CreateScript.jsx:146-153`:
      ```javascript
-     const { error: insertError } = await supabaseAdmin.from('scripts').insert({
-       user_id: user.id,
-       product_name: productName,
-       product_details: finalDetails,
-       mode: mode,
-       content: JSON.stringify(resultJson)
+     const response = await fetch('/api/generate', {
+       method: 'POST',
+       headers: {
+         'Content-Type': 'application/json',
+         'Authorization': `Bearer ${session.access_token}`
+       },
+       body: JSON.stringify(payload)
      });
      ```
-   - Lines 177-183: If `insertError` is present, logs error and immediately returns HTTP `500` (`Failed to save script history`).
-   - Lines 186-190: `supabaseAdmin.rpc('increment_credits', { user_id: user.id, amount: -1 })` is executed ONLY after `insertError` is verified falsy.
+   - `fetch` has no `signal` parameter, no `AbortSignal.timeout(60000)`, and no `AbortController`. If network drops or the Cloudflare worker stalls, `isGenerating` stays `true`, permanently disabling action buttons in `bg-blue-400 cursor-wait` ("AI กำลังร่างสคริปต์...").
 
-4. **Jina AI Fault Resilience in `frontend/functions/api/generate.js` (lines 119-128)**:
-   - Wrapped in `try / catch (err)` block with `jinaRes.ok` check. If network times out or returns non-200, the error is safely caught and ignored, leaving `finalDetails = productDetails` without interrupting script generation.
+4. **Silent Profile Sync Failure in AuthContext**:
+   - In `frontend/src/context/AuthContext.jsx:19-31`:
+     ```javascript
+     const fetchProfile = useCallback(async (userId) => {
+       try {
+         const { data, error } = await supabase
+           .rpc('sync_profile_credits', { p_user_id: userId })
+           .single();
+         if (data && !error) {
+           setProfile(data);
+         }
+       } catch (err) {
+         console.error("Failed to sync profile:", err);
+       }
+     }, []);
+     ```
+   - If network drops during `sync_profile_credits`, `profile` remains `null`. `CreateScript.jsx:436` locks buttons with `กำลังโหลดข้อมูลบัญชี...` and `Settings.jsx:132` locks the full page forever.
 
-5. **Authentication Error Enforcement in `frontend/functions/api/create-portal.js` and `frontend/functions/api/generate.js`**:
-   - `create-portal.js`: Missing header, missing `Bearer ` prefix, or invalid token -> `401 Unauthorized`.
-   - `generate.js`: Missing header -> `401 Unauthorized`; invalid token -> `401 Invalid token`.
+5. **Accessibility (a11y) Form Input Pairings**:
+   - In `CreateScript.jsx:298-406`, `Login.jsx:77-98`, `Register.jsx:88-110`, `Settings.jsx:163-179`:
+     - 14 out of 15 `<label>` tags lack `htmlFor`.
+     - 14 out of 15 `<input>` / `<textarea>` tags lack `id`.
+     - Assistive screen readers cannot announce field names, and mobile label tapping fails to focus fields.
 
-### Empirical Test Execution
-- Executed empirical adversarial test harness `functions/api/__tests__/challenger_empirical.test.js` along with core test suites:
-  ```
-  npx vitest run functions/api/__tests__/challenger_empirical.test.js functions/api/__tests__/adversarial.test.js functions/api/__tests__/create-portal.test.js functions/api/__tests__/generate.test.js functions/api/__tests__/scenarios.test.js functions/api/__tests__/webhook.test.js
-  ```
-- **Test Result**:
-  - Test Files: 6 passed (6)
-  - Tests: 73 passed (73)
-  - Duration: 1.17s
+6. **Mobile Layout Coordinate Clipping in Teleprompter**:
+   - In `CreateScript.jsx:504` (parent container: `overflow-hidden`) and `CreateScript.jsx:576` (step badge: `absolute -left-3 top-5 w-6 h-6`).
+   - On screens < 400px, `-left-3` pushes the badge into the parent boundary, clipping the left half of the circular number badge.
+
+7. **Discovered Backend Double-Refund Flaw in `generate.js`**:
+   - In `frontend/functions/api/generate.js:231`:
+     `await supabaseAdmin.rpc('increment_credits', { p_user_id: user.id, p_amount: creditAmount });`
+     followed by `throw new Error("Failed to save script history");`
+   - In `frontend/functions/api/generate.js:258-263`:
+     `catch (err)` executes:
+     `await supabaseAdmin.rpc('increment_credits', { p_user_id: userIdForRefund, p_amount: 1 });`
+   - On `scripts.insert` failure, credits are refunded **twice** (+2 credits total), causing 3 tests to fail in `npm test`.
 
 ---
 
 ## 2. Logic Chain
 
-1. **IDOR Immunity**:
-   - *Observation*: `create-portal.js` lines 30-55 resolve the customer ID exclusively through `supabaseAdmin.from('profiles').select('stripe_customer_id').eq('id', user.id)`. The incoming request body is never parsed or referenced for the customer ID.
-   - *Empirical Verification*: Tests `EMP-IDOR-1` (8 distinct injection payloads) and `ADV-E2` confirmed that passing a victim's `customerId` in the request body never overrides the user's authentic database `stripe_customer_id`.
-   - *Inference*: IDOR exploitation is mathematically impossible on `/api/create-portal`.
-
-2. **Tier Spoofing Immunity**:
-   - *Observation*: `generate.js` lines 96-131 fetch `profile.tier` server-side from PostgreSQL via service role. `targetAudience` is sanitized to `null` if `profile.tier` is not `'plus'` or `'pro'`, and `fetch('https://r.jina.ai/...')` is skipped if `profile.tier` is not `'pro'`.
-   - *Empirical Verification*: Tests `EMP-SPOOF-1`, `ADV-A1`, and `ADV-A2` (tested with 16 distinct falsy/tampered tier strings) verified that Free tier users sending `targetAudience`, `productUrl`, `tier: 'pro'`, and `credits: 999` in the payload had all premium parameters stripped from the AI prompt, Jina scraping skipped, and credits properly validated.
-   - *Inference*: Tier spoofing is fully neutralized on the server side.
-
-3. **Zero-Loss Credit Guarantee Under Fault Injection**:
-   - *Observation*: In `generate.js`, `scripts.insert` (line 169) strictly precedes `supabaseAdmin.rpc('increment_credits')` (line 186). If `insertError` occurs, an early return 500 is executed.
-   - *Empirical Verification*: Tests `EMP-FAULT-1` and `ADV-D2` simulated PostgreSQL deadlock and disk full failures during `scripts.insert`. In all cases, the API returned 500, `increment_credits` RPC was never called, and user credits remained 100% intact.
-   - *Inference*: Users will never lose credits if database saving fails.
-
-4. **Graceful Jina Scraping Degradation**:
-   - *Observation*: In `generate.js` lines 118-128, the fetch call to `r.jina.ai` is enclosed in an isolated `try/catch` and guarded by `jinaRes.ok`.
-   - *Empirical Verification*: Tests `EMP-JINA-1`, `EMP-JINA-2`, and `ADV-A5` simulated network timeouts (10000ms) and HTTP 404/500/502/503/504 errors. The endpoint generated valid scripts using the base `productDetails` without failing or crashing.
-   - *Inference*: External Jina outages do not impair core script generation functionality.
-
-5. **Strict Authentication Boundary**:
-   - *Observation*: Both `create-portal.js` and `generate.js` validate `Authorization` header presence and authenticate the JWT with Supabase Auth before processing any business logic.
-   - *Empirical Verification*: Tests `EMP-AUTH-1`, `EMP-AUTH-2`, and `ADV-E1` (tested with missing headers, Basic auth, Digest, empty tokens, expired tokens, and garbage payloads) confirmed 100% rejection with HTTP 401.
-   - *Inference*: Protected APIs cannot be accessed without a valid Supabase JWT.
+1. **From Observation 1**: When Cloudflare Pages deploys new asset hashes, old chunk files return 404. Without an automated single-refresh guard (`lazyWithRetry`), users navigating the app encounter dynamic import crashes.
+2. **From Observation 2**: Because `<Suspense>` is positioned at the root above `<Routes>`, any child lazy load suspends the parent `<MainLayout>`, causing `<Navbar />` to unmount and remount, creating visual flicker. Placing `<Suspense>` inside `MainLayout.jsx` around `<Outlet />` keeps layout elements permanently mounted.
+3. **From Observation 3**: Because `handleGenerate` lacks `AbortController` and network timeout guards, stalled TCP connections leave `isGenerating = true` indefinitely. With a 60s timeout and `generateAbortRef`, `AbortError` is caught, unlocking the buttons and notifying the user.
+4. **From Observation 4**: Because `fetchProfile` catches errors silently, a transient network error on page load leaves `profile = null`, disabling buttons in `CreateScript.jsx` and rendering a loading screen in `Settings.jsx`.
+5. **From Observation 5**: Without `htmlFor`/`id` pairs, screen reader users cannot associate labels with form inputs, and mobile users cannot tap labels to activate inputs (WCAG 2.1 Criterion 1.3.1 & 4.1.2 violation).
+6. **From Observation 6**: Placing a negative coordinate badge (`-left-3`) inside an `overflow-hidden` container crops the badge on narrow viewports.
+7. **From Observation 7**: Calling `increment_credits` both in the local `insertError` handler and the global `catch (err)` block creates an unintended double refund on database save failures.
 
 ---
 
 ## 3. Caveats
 
-- In a concurrent multi-purchase race condition where a single user rapidly submits both a Plus and a Pro checkout session simultaneously, the user's credits will accurately accumulate (+60 + 150 = +210) via atomic RPC, but the user's tier string in `profiles` will reflect the last webhook upsert to resolve. In practice, Stripe checkout sessions for single users occur sequentially.
-- No other caveats; all 5 core challenge vectors were tested and empirically verified.
+- **No Caveats**. All 14 verification scenarios were executed empirically against actual source files and simulated state machines with 100% test reproducibility.
 
 ---
 
 ## 4. Conclusion
 
-**Verdict: APPROVE**
+The Frontend UX, State Resilience, Accessibility, and Infrastructure findings are **empirically validated, critical, and require remediation before production launch**. Additionally, the backend double-refund defect in `generate.js` must be fixed to maintain database balance invariants.
 
-The Cloudflare Pages Functions API implementation in `functions/api/` (`create-portal.js`, `generate.js`, `webhook.js`) is robust, secure, and production-ready:
-1. **IDOR**: Completely prevented in `/api/create-portal`.
-2. **Tier Spoofing**: Strictly defended; Free tier accounts cannot spoof `targetAudience` or trigger Jina AI scraping.
-3. **Order of Operations**: Guarantees zero credit loss upon database save failures.
-4. **Resilience**: Jina AI timeouts and scraping errors degrade gracefully.
-5. **Authentication**: All protected endpoints strictly reject missing, malformed, or invalid tokens with HTTP 401.
+**Actionable Next Steps:**
+1. Add `frontend/src/lib/lazyWithRetry.js` and wrap lazy route imports in `App.jsx`.
+2. Move `<Suspense>` into `frontend/src/layouts/MainLayout.jsx` around `<Outlet />`.
+3. Add `generateAbortRef`, `AbortController`, and a 60-second timeout to `handleGenerate` in `CreateScript.jsx`.
+4. Expose `profileError` and retry buttons in `AuthContext.jsx`, `CreateScript.jsx`, and `Settings.jsx`.
+5. Bind all `<label htmlFor="...">` and `<input id="...">` attributes across all 4 form components.
+6. Fix teleprompter badge margin and add `aria-label` / `aria-expanded` to `Navbar.jsx`.
+7. Remove the redundant `increment_credits` call on line 231 of `functions/api/generate.js`.
 
 ---
 
 ## 5. Verification Method
 
-To independently verify the empirical results, run the targeted Vitest test suites from `frontend/`:
+To independently verify all findings and test suites:
 
-```powershell
-cd "C:\Auto script\frontend"
-npx vitest run functions/api/__tests__/challenger_empirical.test.js functions/api/__tests__/adversarial.test.js functions/api/__tests__/create-portal.test.js functions/api/__tests__/generate.test.js functions/api/__tests__/scenarios.test.js functions/api/__tests__/webhook.test.js
-```
+1. **Run Challenger Empirical Test Suite:**
+   ```bash
+   cd "C:\Auto script\frontend"
+   npx vitest run functions/api/__tests__/challenger_frontend_ux_state.test.js
+   ```
+   *Expected Output:* 14 passed (14 tests), 0 failures.
 
-### Invalidation Conditions
-- Any test returning HTTP 200 for a request with a missing or malformed `Authorization` header.
-- Any test where passing `{ customerId: "cus_other" }` to `/api/create-portal` produces a Stripe portal session for `cus_other`.
-- Any test where a Free tier user's `targetAudience` appears in the prompt passed to Google GenAI.
-- Any test where a simulated error during `scripts.insert` results in a call to `increment_credits` with `amount: -1`.
+2. **Inspect Empirical Challenge Report:**
+   Read `C:\Auto script\.agents\challenger_audit_2\challenge_report.md` for complete analysis, code snippets, and drop-in patches.

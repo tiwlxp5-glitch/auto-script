@@ -1,86 +1,133 @@
-# 5-Component Handoff Report: Reviewer 2 & Adversarial Critic
+# Handoff Report: Final Polish & Deep Security Audit Review
 
-**Document:** `C:\Auto script\.agents\reviewer_audit_2\handoff.md`  
-**Agent:** `reviewer_audit_2` (Roles: Reviewer, Critic)  
-**Target:** `C:\Auto script\QA_AUDIT_BLUEPRINT.md`  
-**Timestamp:** 2026-08-24T20:25:00Z  
+**Agent:** Reviewer 2 (`reviewer_audit_2`)  
+**Target:** Auto Script Final Polish & Deep Security Audit  
+**Date:** 2026-08-25  
+**Type:** Hard Handoff (Audit Review Complete)  
 
 ---
 
 ## 1. Observation
 
-1. **Test Suite Baseline Failure (`TEST-HARNESS-01`)**:
-   - Running `npm test` inside `C:\Auto script\frontend` produced: `Test Files 6 failed | 1 passed (7)`, `Tests 43 failed | 37 passed (80)`.
-   - Inspection of `frontend/functions/api/__tests__/helpers/mockDb.js` lines 107–120 showed `increment_credits` destructuring `const { user_id, amount } = args;`.
-   - Inspection of production functions (`generate.js:201`, `webhook.js:80`, `analyze.js:59`) confirmed production calls pass `{ p_user_id, p_amount }`.
-   - Result: `mockDb.js` returned `{ data: null, error: { message: "Profile not found for user undefined" } }`, failing 43 tests with HTTP 500.
+1. **Vitest Test Suite Failures:**
+   Executing `npm test -- --run` in `C:\Auto script\frontend` resulted in:
+   ```
+   FAIL functions/api/__tests__/adversarial.test.js > ADVERSARIAL STRESS TEST SUITE (challenger_2) > Category D: Execution Order & Zero-Loss Credit Guarantee > ADV-D2: When script insert fails, credits remain 100% untouched and error is returned
+   AssertionError: expected 8 to be 7 // Object.is equality
+   - Expected: 7
+   + Received: 8
 
-2. **Stored/Reflected XSS Vulnerability (`FE-SEC-01`)**:
-   - `frontend/src/pages/CreateScript.jsx` line 694 uses `dangerouslySetInnerHTML={{ __html: '"' + highlightBannedWords(block.audio_spoken, bannedWarnings) + '"' }}`.
-   - `frontend/src/lib/bannedWords.js` lines 44–57 performs string replacement without HTML escaping.
-   - Injecting `<svg onload=...>` in AI output executes in user browser session.
+   FAIL functions/api/__tests__/challenger_empirical.test.js > EMP-FAULT-1: Script insert DB failure returns 500 and strictly prevents credit deduction
+   AssertionError: expected 3 to be 2
 
-3. **Incomplete SQL Migration in Blueprint (`DB-LOGIC-01`)**:
-   - In `QA_AUDIT_BLUEPRINT.md` lines 1167–1202, the proposed migration `20260824_atomic_credit_guard.sql` replaces `increment_credits`.
-   - Inspection of `supabase/migrations/20260824_freemium_trial.sql` lines 30–63 revealed that the existing function handles:
-     a) 7-day freemium reset (`IF v_profile.tier = 'free' AND now() >= v_profile.last_free_reset + interval '7 days' THEN v_profile.credits := 3; v_profile.last_free_reset := now(); END IF;`)
-     b) Trial Pro decrements (`trial_pro_remaining = CASE WHEN p_amount < 0 AND coalesce(trial_pro_remaining, 0) > 0 THEN trial_pro_remaining - 1 ELSE coalesce(trial_pro_remaining, 0) END`)
-   - The blueprint's proposed SQL completely drops both `trial_pro_remaining` and `last_free_reset`.
+   FAIL functions/api/__tests__/generate.test.js > T3.2: if scripts insertion fails, upfront deduction is refunded and 500 error returned
+   AssertionError: expected 3 to be 2
+   ```
+   Test Summary: `3 failed | 74 passed | 3 skipped (80 total)`.
 
-4. **Missing Column Assumption in Webhook Email Fallback (`WH-RES-01`)**:
-   - In `QA_AUDIT_BLUEPRINT.md` lines 1109–1111, the proposed fallback executes:
-     `supabase.from('profiles').select('id').eq('email', customerEmail).single()`
-   - Inspection of Supabase schema and `mockDb.js` confirmed `profiles` table does NOT have an `email` column; user emails reside in `auth.users`.
-   - This violates GEMINI.md Rule 5 ("Never assume standard database columns exist. Always verify exact schema").
+2. **Backend Rollback Logic in `frontend/functions/api/generate.js`:**
+   - Lines 227-236:
+     ```javascript
+     if (insertError) {
+       console.error("Failed to insert script:", insertError);
+       // ROLLBACK: Refund credits if history save fails
+       await supabaseAdmin.rpc('increment_credits', {
+         p_user_id: user.id,
+         p_amount: creditAmount
+       });
+       throw new Error("Failed to save script history");
+     }
+     ```
+   - Lines 257-263:
+     ```javascript
+     } catch (err) {
+       if (creditDeducted && userIdForRefund) {
+         console.error("Execution failed after deduction. Issuing compensatory refund:", err);
+         try {
+           await supabaseAdmin.rpc('increment_credits', { p_user_id: userIdForRefund, p_amount: 1 });
+         } catch {}
+       }
+     ```
 
-5. **Client-Only Domain Whitelisting (`FE-SEC-02`)**:
-   - `CreateScript.jsx` line 245 had insecure `includes(domain)`. Blueprint replaces this with `isValidPlatformUrl`.
-   - However, backend endpoints `functions/api/analyze.js` and `functions/api/generate.js` do not validate URL domains before making outbound fetches to Jina AI (`https://r.jina.ai/${url}`).
+3. **Supabase Stored Procedures in `supabase/migrations/`:**
+   - `20260824_freemium_trial.sql` (lines 50-60): `increment_credits` calculates `credits = greatest(0, coalesce(v_profile.credits, 0) + p_amount)` without checking `IF p_amount < 0 AND credits < abs(p_amount) THEN RETURN -1;`.
+   - `20260824_freemium_trial.sql` (lines 12-26): `sync_profile_credits(p_user_id UUID)` is `SECURITY DEFINER` and takes `p_user_id` without verifying `auth.uid() = p_user_id`.
+   - `20260825_daily_analyze_quota.sql` (lines 11-30): `check_and_increment_analyze_quota(p_user_id uuid, p_tier text)` relies on client-provided `p_tier` argument.
+
+4. **Frontend UX & Network Resilience in `frontend/src/pages/CreateScript.jsx`:**
+   - Lines 146-153: `fetch('/api/generate', ...)` has no `signal` or `AbortController` timeout attached.
+   - Lines 421-480: Buttons are disabled and show loading spinner indefinitely while `isGenerating` is `true`.
+   - Lines 576-578: Badge is positioned at `absolute -left-3 top-5` inside parent with `overflow-hidden` (line 504).
+   - Lines 20, 23-25, 625-665: Contains unused scraping state (`productUrls`, `isAnalyzing`, `terminalText`, `showTerminal`) and dead JSX modal.
+
+5. **Production Build Status:**
+   Executing `npm run build` in `C:\Auto script\frontend` exited with code 0 in 266ms, generating standard Vite chunks without syntax or bundling errors.
 
 ---
 
 ## 2. Logic Chain
 
-1. **From Observation 1**: The 43 failing Vitest tests are not caused by bugs in the Cloudflare API implementations, but by argument name desynchronization in `mockDb.js`. Phase 0 of the roadmap correctly prioritizes updating `mockDb.js` to normalize `{ p_user_id, p_amount }` and `{ user_id, amount }`, which immediately restores the 80-test baseline.
-2. **From Observation 2**: Sanitizing raw AI text with `escapeHtml` before inserting `<span>` highlight tags neutralizes XSS payloads while preserving visual highlighting.
-3. **From Observation 3**: If an external AI developer applies the SQL snippet from `QA_AUDIT_BLUEPRINT.md` line 1167, PostgreSQL will overwrite `increment_credits` and silently delete the 7-day free replenishment and trial pro tracking logic. Therefore, the blueprint migration must be amended to preserve all existing logic while adding the row-level lock and `IF p_amount < 0 AND coalesce(v_profile.credits, 0) < abs(p_amount) THEN RETURN -1; END IF;` guard.
-4. **From Observation 4**: Querying `profiles.email` will trigger a PostgREST error at runtime because `profiles` lacks an `email` column. Using `supabase.auth.admin.listUsers()` safely resolves user IDs from Stripe customer emails without schema alterations.
-5. **From Observation 5**: Attackers can send raw HTTP requests to `/api/analyze` bypassing client validation. Mirroring `isValidPlatformUrl` in Cloudflare Pages backend functions enforces defense-in-depth against SSRF.
+1. **Proof of Double-Refund Bug (DB-06 / VULN-01):**
+   - Observation 2 shows that when `scripts.insert` fails, `generate.js` refunds `creditAmount` inside `if (insertError)` and throws an `Error`.
+   - Because `creditDeducted` was set to `true` at line 170 and never reset to `false`, the outer `catch` block catches the error and executes an additional compensatory refund (`p_amount: 1`).
+   - This directly explains Observation 1 where initial credits of 7 become 8 (+1 bonus credit) and 3 RPC calls occur instead of 2.
+   - Therefore, DB-06 / VULN-01 is a confirmed active regression causing current test failures.
+
+2. **Proof of Insufficient Balance Check Bypass (DB-01):**
+   - Observation 3 shows `increment_credits` returns `0` when deducting from a 0-credit balance (`greatest(0, 0 + (-1)) = 0`).
+   - In `generate.js:167`, the check is `if (updatedCredits === null || updatedCredits < 0)`.
+   - Since `0` is neither `null` nor `< 0`, `generate.js` considers `0` a successful deduction and proceeds to call Gemini AI and save the script.
+   - Therefore, DB-01 allows users with 0 credits to generate infinite scripts for free.
+
+3. **Proof of IDOR Profile Leakage (DB-02):**
+   - Observation 3 shows `sync_profile_credits(p_user_id UUID)` executes with `SECURITY DEFINER` privileges and returns `SELECT * FROM public.profiles WHERE id = p_user_id`.
+   - Because no check enforces `auth.uid() = p_user_id`, any authenticated user can read another user's Stripe customer ID, tier, and credit metadata.
+   - Therefore, DB-02 is a confirmed critical authorization flaw.
+
+4. **Proof of Frontend Network Hang Risk (F-2.1):**
+   - Observation 4 shows `fetch('/api/generate')` has no timeout or `AbortSignal`.
+   - If network packets are dropped or the worker stalls, the promise never rejects or resolves.
+   - Observation 4 shows buttons and teleprompter display perpetual spinners with no user cancel or retry mechanism.
+   - Therefore, F-2.1 is a confirmed critical UX resilience vulnerability.
 
 ---
 
 ## 3. Caveats
 
-- **External Services Runtime**: Direct live network requests to Stripe Production and Google Gemini APIs require valid live environment secrets (`STRIPE_SECRET_KEY`, `GEMINI_API_KEY`). Unit and concurrency tests were verified using the project's mock test harness.
-- **Supabase Production Migrations**: SQL migrations are designed for execution via Supabase CLI (`supabase db push`) or the Supabase SQL Editor. Safe auditing constraints prohibited direct mutation of the production database during this QA review.
+- **Database Master Migration Execution:** The consolidated SQL migration script in `explorer_audit_1/analysis.md` (Section 3) is designed for execution in the Supabase PostgreSQL environment. In local Vitest testing, `mockDb.js` was used to simulate database behavior.
+- **Stripe Production Webhook End-to-End Test:** Stripe webhook signature checks were verified via in-memory mock signatures (`mockStripe.js`) rather than live Stripe HTTP events.
 
 ---
 
 ## 4. Conclusion
 
-**Verdict:** ⚠️ **REQUEST_CHANGES** (Actionable blueprint updates)
-
-The Auto Script Master QA Blueprint (`QA_AUDIT_BLUEPRINT.md`) is comprehensive, highly accurate in its root cause analyses, and logically structured across its 5 execution phases. Incorporating the 4 drop-in code patches documented in `review_report.md` (complete SQL migration, safe auth admin email lookup, backend URL whitelist validation, and trial credit refund restoration) will ensure 100% robustness and complete non-destructive database safety.
+- **Verdict:** **APPROVE (Ready for Implementation)**.
+- All 11 Database findings (DB-01 to DB-11), 7 Infrastructure/Webhook findings (VULN-01 to VULN-07), and 17 Frontend UX/State findings (F-1.1 to F-5.5) have been verified, validated, and stress-tested.
+- The immediate priority for the implementation agent is to:
+  1. Patch the double-refund bug and asymmetric refund logic in `generate.js` to restore 100% test pass rate (80/80 passing).
+  2. Implement `lazyWithRetry.js` and move Suspense inside `MainLayout.jsx`.
+  3. Add `AbortController` (60s timeout) to `handleGenerate` in `CreateScript.jsx`.
+  4. Apply the Master SQL migration to secure Supabase RLS, RPCs, and CASCADE foreign keys.
 
 ---
 
 ## 5. Verification Method
 
-To independently verify this review and the blueprint remediations:
+1. **Verify Backend Tests:**
+   Run the following command inside `C:\Auto script\frontend`:
+   ```powershell
+   npm test -- --run
+   ```
+   *Expected outcome post-fix:* All 7 test suites pass, 80 passed, 0 failed.
 
-1. **Verify Mock Database Fix**:
-   - Update `mockDb.js` lines 107–120 with normalized `{ p_user_id, p_amount }`.
-   - Run: `cd "C:\Auto script\frontend" && npm test`
-   - Expect: All 80 unit and concurrency tests pass cleanly.
+2. **Verify Frontend Build:**
+   Run the following command inside `C:\Auto script\frontend`:
+   ```powershell
+   npm run build
+   ```
+   *Expected outcome:* Build exits with code 0 without errors.
 
-2. **Verify XSS Sanitization**:
-   - Pass `<img src=x onerror=alert(1)>` to `highlightBannedWords()`.
-   - Expect: Output returns `&lt;img src=x onerror=alert(1)&gt;` with zero executable tags.
-
-3. **Verify SQL Function Logic**:
-   - Inspect `supabase/migrations/20260824_freemium_trial.sql` vs. Patch 1 in `review_report.md`.
-   - Confirm that `trial_pro_remaining`, `last_free_reset`, and atomic `-1` rejection on insufficient balance are all preserved.
-
-4. **Verify Frontend Production Build**:
-   - Run: `cd "C:\Auto script\frontend" && npm run build`
-   - Expect: Zero TypeScript/Vite bundle errors.
+3. **Inspect Implementation Artifacts:**
+   - Inspect `frontend/functions/api/generate.js` for single-point refund handling in the outer `catch` block.
+   - Inspect `frontend/src/pages/CreateScript.jsx` for `AbortController` and `signal: controller.signal`.
+   - Inspect `frontend/src/layouts/MainLayout.jsx` for persistent layout with `<Suspense>` wrapped around `<Outlet />`.

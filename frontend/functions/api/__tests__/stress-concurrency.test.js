@@ -46,6 +46,7 @@ describe('EMPIRICAL CONCURRENCY & RACE CONDITION STRESS HARNESS (challenger_audi
         data: {
           object: {
             id: 'cs_mass_100',
+            payment_status: 'paid',
             client_reference_id: userId,
             customer: 'cus_mass_100',
             amount_subtotal: 24900
@@ -102,7 +103,8 @@ describe('EMPIRICAL CONCURRENCY & RACE CONDITION STRESS HARNESS (challenger_audi
           data: {
             object: {
               id: `cs_distinct_${i}`,
-              client_reference_id: userId,
+              payment_status: 'paid',
+            client_reference_id: userId,
               customer: `cus_distinct_${i}`,
               amount_subtotal: 24900 // Plus: 60 credits
             }
@@ -266,7 +268,8 @@ describe('EMPIRICAL CONCURRENCY & RACE CONDITION STRESS HARNESS (challenger_audi
           body: JSON.stringify({
             id: `evt_storm_topup_${i}`,
             type: 'checkout.session.completed',
-            data: { object: { id: `cs_s_${i}`, client_reference_id: userId, customer: 'cus_storm', amount_subtotal: 24900 } }
+            data: { object: { id: `cs_s_${i}`, payment_status: 'paid',
+            client_reference_id: userId, customer: 'cus_storm', amount_subtotal: 24900 } }
           })
         });
         return handleWebhook({ request: req, env });
@@ -280,7 +283,8 @@ describe('EMPIRICAL CONCURRENCY & RACE CONDITION STRESS HARNESS (challenger_audi
           body: JSON.stringify({
             id: 'evt_storm_replay_single',
             type: 'checkout.session.completed',
-            data: { object: { id: 'cs_replay_storm', client_reference_id: userId, customer: 'cus_storm', amount_subtotal: 24900 } }
+            data: { object: { id: 'cs_replay_storm', payment_status: 'paid',
+            client_reference_id: userId, customer: 'cus_storm', amount_subtotal: 24900 } }
           })
         });
         return handleWebhook({ request: req, env });

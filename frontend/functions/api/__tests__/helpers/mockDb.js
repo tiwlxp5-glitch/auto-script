@@ -120,10 +120,13 @@ export class MockDatabase {
         
           const currentCredits = profile.credits ?? 0;
           
-          // Guard against insufficient balance on deduction
+          // FIX DB-01: Strict Pre-Deduction Sufficiency Check
+          // Previously: greatest(0, 0 - 1) = 0 which bypassed the >= 0 check
+          // Now: if user has 0 credits and tries to deduct ANY amount, return -1 (fail)
+          // This mirrors the new production SQL: IF p_amount < 0 AND v_current_credits < abs(p_amount) THEN RETURN -1
           if (amount < 0 && currentCredits < Math.abs(amount)) {
-      return { data: -1, error: null };
-    }
+            return { data: -1, error: null };
+          }
         
           const newCredits = Math.max(0, currentCredits + amount);
           profile.credits = newCredits;
@@ -153,7 +156,18 @@ export class MockDatabase {
                   if (db.failProfileQuery) {
                     return { data: null, error: { message: "Failed to fetch profile" } };
                   }
-                  const profile = db.profiles.get(filterValue);
+                  
+                  let profile;
+                  // Support lookup by stripe_customer_id (used by refund/chargeback handler)
+                  if (_filterField === 'stripe_customer_id') {
+                    profile = Array.from(db.profiles.values()).find(
+                      p => p.stripe_customer_id === filterValue
+                    );
+                  } else {
+                    // Default: lookup by id (primary key)
+                    profile = db.profiles.get(filterValue);
+                  }
+                  
                   if (!profile) {
                     return { data: null, error: { message: "Row not found", code: "PGRST116" } };
                   }
@@ -167,6 +181,9 @@ export class MockDatabase {
                   if (columns === 'stripe_customer_id') {
                     return { data: { stripe_customer_id: profile.stripe_customer_id }, error: null };
                   }
+                  if (columns === 'id, credits, tier') {
+                    return { data: { id: profile.id, credits: profile.credits, tier: profile.tier }, error: null };
+                  }
                   return { data: { ...profile }, error: null };
                 }
                 return { data: null, error: { message: `Unknown table ${table}` } };
@@ -174,6 +191,7 @@ export class MockDatabase {
             };
             return chain;
           },
+
 
           insert: (data) => {
             const items = Array.isArray(data) ? data : [data];

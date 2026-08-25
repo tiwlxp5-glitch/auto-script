@@ -124,10 +124,18 @@ function CreateScript() {
     setGeneratedScript(null);
     setBannedWarnings([]);
 
+    // FIX FE-02: AbortController + 60s timeout
+    // Analogy: Like setting a 60-second kitchen timer when making a call.
+    // If the line is silent for too long (mobile tunnel / Wi-Fi drop),
+    // we hang up gracefully instead of holding the phone forever.
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 60000);
+
     try {
       // ดึง JWT Token ปัจจุบันของผู้ใช้เพื่อส่งไปยืนยันตัวตนที่ Backend
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) {
+        clearTimeout(timeoutId);
         throw new Error('กรุณาล็อกอินใหม่');
       }
       
@@ -142,21 +150,25 @@ function CreateScript() {
         isMultiVersion: isMultiVersion
       };
 
-      // ยิงข้อมูลไปให้ Backend (Cloudflare Function) จัดการรวดเดียว
+      // ยิงข้อมูลไปให้ Backend พร้อม signal สำหรับ abort
       const response = await fetch('/api/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${session.access_token}`
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        signal: controller.signal
       });
+
+      clearTimeout(timeoutId);
 
       const responseData = await response.json();
 
       if (!response.ok) {
         throw new Error(responseData.error || "Failed to generate script");
       }
+
 
       let finalScriptData = responseData.script;
       const newCredits = responseData.credits_remaining;
@@ -210,8 +222,14 @@ function CreateScript() {
 
     } catch (err) {
       console.error(err);
-      setError("เกิดข้อผิดพลาดในการสร้างสคริปต์ กรุณาลองใหม่อีกครั้งครับ");
+      // FIX FE-02: Show specific message for network timeout/drop
+      if (err.name === 'AbortError') {
+        setError('การเชื่อมต่อใช้เวลานานเกินไป (60 วินาที) กรุณาตรวจสอบอินเทอร์เน็ตแล้วลองใหม่ครับ');
+      } else {
+        setError(err.message || "เกิดข้อผิดพลาดในการสร้างสคริปต์ กรุณาลองใหม่อีกครั้งครับ");
+      }
     } finally {
+      clearTimeout(timeoutId);
       setIsGenerating(false);
       setGeneratingMode(null);
     }

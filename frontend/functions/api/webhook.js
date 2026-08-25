@@ -8,8 +8,8 @@ export async function onRequestPost({ request, env }) {
   }
 
   const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
-    apiVersion: '2023-10-16', // ใช้ API Version ปัจจุบัน
-    httpClient: Stripe.createFetchHttpClient(), // จำเป็นสำหรับ Cloudflare Workers
+    apiVersion: '2023-10-16',
+    httpClient: Stripe.createFetchHttpClient(),
   });
 
   const supabase = createClient(env.VITE_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY);
@@ -35,46 +35,56 @@ export async function onRequestPost({ request, env }) {
       
     if (insertEventError) {
       if (insertEventError.code === '23505') {
-        // Unique violation - event already processed
         console.log(`Event ${event.id} already processed. Skipping.`);
         return new Response('Already processed', { status: 200 });
       } else {
-        throw insertEventError; // Unexpected error
+        throw insertEventError;
       }
     }
 
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object;
-      const userId = session.client_reference_id; // ดึง ID ของผู้ใช้ที่เราส่งไปตอนกดปุ่มจ่ายเงิน
+
+      // FIX INF-03: Ignore unpaid async sessions (e.g., bank transfers still pending)
+      // Analogy: Don't open the VIP door until the payment machine confirms "APPROVED"
+      if (session.payment_status !== 'paid') {
+        console.log(`Session ${session.id} not paid yet (${session.payment_status}). Skipping.`);
+        await supabase.from('webhook_events').delete().eq('id', event.id);
+        return new Response('Payment pending', { status: 200 });
+      }
+
+      const userId = session.client_reference_id;
 
       if (userId) {
-        // เช็คว่ายอดเงินก่อนหักส่วนลดเท่าไหร่ เพื่อดูว่าซื้อ Plus (249) หรือ Pro (590)
         // ใช้ amount_subtotal แทน amount_total เพื่อแก้ปัญหาเวลาลูกค้าใช้คูปอง 100%
-        const amountPaid = session.amount_subtotal; // สกุลเงินจะเป็นหน่วยย่อยสุด (สตางค์) เช่น 59000 = 590 บาท
-        
+        const amountPaid = session.amount_subtotal;
         let addCredits = amountPaid >= 59000 ? 150 : 60;
-    const { data: existingProfile } = await supabase.from('profiles').select('tier').eq('id', userId).single();
-    const currentTier = existingProfile?.tier;
-    const targetTier = (currentTier === 'pro' || amountPaid >= 59000) ? 'pro' : 'plus';
-    let tier = targetTier; // Keep tier variable for upsert
 
-        // 1. อัปเดตข้อมูลระดับผู้ใช้ (Tier) และ Stripe Customer ID โดยไม่แก้ไขจำนวนเครดิตตรงนี้
+        const { data: existingProfile } = await supabase
+          .from('profiles')
+          .select('tier')
+          .eq('id', userId)
+          .single();
+
+        const currentTier = existingProfile?.tier;
+        const targetTier = (currentTier === 'pro' || amountPaid >= 59000) ? 'pro' : 'plus';
+
+        // 1. อัปเดต Tier และ Stripe Customer ID
         const { error: upsertError } = await supabase
           .from('profiles')
           .upsert({ 
             id: userId, 
-            tier: tier, 
+            tier: targetTier, 
             stripe_customer_id: session.customer 
           }, { onConflict: 'id' });
 
         if (upsertError) {
           console.error("Database upsert failed:", upsertError);
-          // ลบ event ID ออกเพื่อให้รันใหม่ได้ในภายหลังถ้า Database ล้มเหลว
           await supabase.from('webhook_events').delete().eq('id', event.id);
           return new Response(`Database Error: ${upsertError.message}`, { status: 500 });
         }
 
-        // 2. เติมเครดิตแบบ Atomic ด้วย Supabase RPC increment_credits เพื่อป้องกันปัญหา Race Condition
+        // 2. เติมเครดิตแบบ Atomic ด้วย RPC ป้องกัน Race Condition
         const { error: rpcError } = await supabase.rpc('increment_credits', {
           p_user_id: userId,
           p_amount: addCredits
@@ -82,19 +92,47 @@ export async function onRequestPost({ request, env }) {
 
         if (rpcError) {
           console.error("RPC increment_credits failed:", rpcError);
-          // ลบ event ID ออกเพื่อให้รันใหม่ได้ในภายหลังถ้า RPC ล้มเหลว
           await supabase.from('webhook_events').delete().eq('id', event.id);
           return new Response(`Database Error: ${rpcError.message}`, { status: 500 });
         }
       }
     }
 
-    // ลบส่วนจัดการ subscription เก่าออกไปแล้ว (ตามคำแนะนำ PAY-01) เพื่อป้องกันโค้ดรันตีกัน
-    
+    // FIX INF-02: Handle Refunds and Chargebacks
+    // Analogy: If a customer disputes their charge at the bank (chargeback),
+    // the cinema must revoke their VIP membership immediately, not leave it active.
+    if (event.type === 'charge.refunded' || event.type === 'charge.dispute.created') {
+      const charge = event.data.object;
+      const customerId = charge.customer;
+
+      if (customerId) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('id, credits, tier')
+          .eq('stripe_customer_id', customerId)
+          .single();
+
+        if (profile) {
+          console.log(`Revoking access for refunded/disputed customer ${customerId} (event: ${event.type})`);
+          const creditsToDeduct = charge.amount >= 59000 ? 150 : 60;
+          const newCredits = Math.max(0, (profile.credits || 0) - creditsToDeduct);
+          
+          await supabase.from('profiles').update({
+            tier: 'free',
+            credits: newCredits
+          }).eq('id', profile.id);
+
+          console.log(`Downgraded user ${profile.id} to free tier. Credits adjusted to ${newCredits}.`);
+        }
+      }
+
+      return new Response(JSON.stringify({ received: true }), { status: 200 });
+    }
+
     return new Response(JSON.stringify({ received: true }), { status: 200 });
+
   } catch (err) {
     console.error(`Webhook handler failed.`, err.message);
-    // ลบ event ID ออกเพื่อให้รันใหม่ได้ในภายหลัง
     await supabase.from('webhook_events').delete().eq('id', event.id);
     return new Response(`Webhook handler Error: ${err.message}`, { status: 500 });
   }

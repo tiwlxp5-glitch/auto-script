@@ -1,0 +1,1 @@
+const url = "https://shopee.co.th/%E0%B9%81%E0%B8%9A%E0%B8%9A-i.1514837132.57452059386?extraParams=%7B%22display_model_id%22%3A26"; let cleanUrl = url; const match = url.match(/-i\.(\d+)\.(\d+)/); if (match) { cleanUrl = `https://shopee.co.th/product/${match[1]}/${match[2]}`; } console.log(cleanUrl);

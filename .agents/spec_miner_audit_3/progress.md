@@ -1,11 +1,22 @@
-# Progress Log - spec_miner_audit_3
+# Progress — Infrastructure & API Spec Miner
 
-- Last visited: 2026-08-24T07:33:00+07:00
-- Status: Audit completed. Compiling final handoff report.
+Last visited: 2026-08-25T10:44:00+07:00
 
-## Task Breakdown
-1. [x] Audit `frontend/functions/api/generate.js` for tier authorization, profile fetching, sanitization of `targetAudience`, spoofing immunity, Plus/Pro tier behavior.
-2. [x] Audit `frontend/functions/api/` (all endpoints) and `frontend/src/` for GEMINI.md Rules 1-4 compliance.
-3. [x] Audit frontend components (`frontend/src/`) for token handling, secret isolation, headers, and API call integrity.
-4. [x] Verify test suite coverage against all tier enforcement and security cases (62/62 tests passing).
-5. [x] Synthesize findings into Features Discovered and Edge Cases tables and compile handoff.md.
+## Current Status
+- Completed full codebase enumeration for functions, headers, schema, and configuration.
+- Completed deep dive into `/api/generate` (rate limiting, Turnstile absence, Gemini & Supabase exhaustion, double-refund bug).
+- Completed deep dive into `/api/create-portal` and `/api/delete-account`.
+- Completed deep dive into Stripe Webhook (`webhook.js` - signature verification, idempotency, unhandled refund/dispute/subscription events).
+- Completed security headers & CORS analysis (`public/_headers`).
+- Compiling `analysis.md` and `handoff.md`.
+
+## Steps
+- [x] Step 1: Initialize briefing and skill setup.
+- [x] Step 2: Enumerate all files in `frontend/functions/`, `frontend/public/`, and Supabase schema files.
+- [x] Step 3: Deep dive `/api/generate` (Turnstile, Gemini, Supabase deduction, rate limiting, concurrency, DDoS/exhaustion vectors).
+- [x] Step 4: Deep dive `/api/create-portal` and `/api/delete-account`.
+- [x] Step 5: Deep dive `/api/webhook` (Signature verification, idempotency, event handlers coverage, dispute/refund/failure handling).
+- [x] Step 6: Deep dive security headers, CORS, CSP in `frontend/public/_headers` and API responses.
+- [x] Step 7: Analyze edge cases and run tests / verify behaviors.
+- [ ] Step 8: Compile `analysis.md` and `handoff.md`.
+- [ ] Step 9: Notify parent agent via `send_message`.

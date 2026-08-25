@@ -92,7 +92,8 @@ describe('Tiers 3 & 4: Cross-Feature Combinations & Real-World Application Scena
           data: {
             object: {
               id: 'cs_t3_1',
-              client_reference_id: userId,
+              payment_status: 'paid',
+            client_reference_id: userId,
               customer: customerId,
               amount_subtotal: 24900
             }
@@ -165,7 +166,8 @@ describe('Tiers 3 & 4: Cross-Feature Combinations & Real-World Application Scena
             data: {
               object: {
                 id: 'cs_pro_upgrade',
-                client_reference_id: userId,
+                payment_status: 'paid',
+            client_reference_id: userId,
                 customer: customerId,
                 amount_subtotal: 59000
               }
@@ -207,6 +209,7 @@ describe('Tiers 3 & 4: Cross-Feature Combinations & Real-World Application Scena
         data: {
           object: {
             id: 'cs_replay_999',
+            payment_status: 'paid',
             client_reference_id: userId,
             customer: customerId,
             amount_subtotal: 24900 // +60 credits
@@ -300,7 +303,8 @@ describe('Tiers 3 & 4: Cross-Feature Combinations & Real-World Application Scena
           data: {
             object: {
               id: 'cs_journey_plus',
-              client_reference_id: userId,
+              payment_status: 'paid',
+            client_reference_id: userId,
               customer: customerId,
               amount_subtotal: 24900
             }
@@ -371,7 +375,8 @@ describe('Tiers 3 & 4: Cross-Feature Combinations & Real-World Application Scena
             data: {
               object: {
                 id: 'cs_journey_pro',
-                client_reference_id: userId,
+                payment_status: 'paid',
+            client_reference_id: userId,
                 customer: proCustId,
                 amount_subtotal: 59000
               }

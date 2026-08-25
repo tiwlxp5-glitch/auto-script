@@ -69,6 +69,7 @@ describe('R2: POST /api/webhook (Atomic Credit RPC & Webhook Idempotency)', () =
         data: {
           object: {
             id: 'cs_100',
+            payment_status: 'paid',
             client_reference_id: userId,
             customer: customerId,
             amount_subtotal: 24900 // Plus tier: 60 credits
@@ -107,6 +108,7 @@ describe('R2: POST /api/webhook (Atomic Credit RPC & Webhook Idempotency)', () =
         data: {
           object: {
             id: 'cs_plus_200',
+            payment_status: 'paid',
             client_reference_id: userId,
             customer: customerId,
             amount_subtotal: 24900
@@ -141,6 +143,7 @@ describe('R2: POST /api/webhook (Atomic Credit RPC & Webhook Idempotency)', () =
         data: {
           object: {
             id: 'cs_pro_300',
+            payment_status: 'paid',
             client_reference_id: userId,
             customer: customerId,
             amount_subtotal: 59000
@@ -175,6 +178,7 @@ describe('R2: POST /api/webhook (Atomic Credit RPC & Webhook Idempotency)', () =
         data: {
           object: {
             id: 'cs_no_rmw_400',
+            payment_status: 'paid',
             client_reference_id: userId,
             customer: customerId,
             amount_subtotal: 24900
@@ -204,6 +208,7 @@ describe('R2: POST /api/webhook (Atomic Credit RPC & Webhook Idempotency)', () =
         data: {
           object: {
             id: 'cs_fail_500',
+            payment_status: 'paid',
             client_reference_id: userId,
             customer: customerId,
             amount_subtotal: 24900
@@ -248,7 +253,7 @@ describe('R2: POST /api/webhook (Atomic Credit RPC & Webhook Idempotency)', () =
       const reqPro = createWebhookRequest({
         id: 'evt_b_59000',
         type: 'checkout.session.completed',
-        data: { object: { id: 'cs_1', client_reference_id: userId, customer: customerId, amount_subtotal: 59000 } }
+        data: { object: { id: 'cs_1', payment_status: 'paid', client_reference_id: userId, customer: customerId, amount_subtotal: 59000 } }
       });
       await onRequestPost({ request: reqPro, env });
       expect(globalMockDb.getProfile(userId).tier).toBe('pro');
@@ -261,7 +266,7 @@ describe('R2: POST /api/webhook (Atomic Credit RPC & Webhook Idempotency)', () =
       const reqPlus = createWebhookRequest({
         id: 'evt_b_58999',
         type: 'checkout.session.completed',
-        data: { object: { id: 'cs_2', client_reference_id: userId, customer: customerId, amount_subtotal: 58999 } }
+        data: { object: { id: 'cs_2', payment_status: 'paid', client_reference_id: userId, customer: customerId, amount_subtotal: 58999 } }
       });
       await onRequestPost({ request: reqPlus, env });
       expect(globalMockDb.getProfile(userId).tier).toBe('plus');
@@ -275,7 +280,7 @@ describe('R2: POST /api/webhook (Atomic Credit RPC & Webhook Idempotency)', () =
       const reqZero = createWebhookRequest({
         id: 'evt_b_0',
         type: 'checkout.session.completed',
-        data: { object: { id: 'cs_3', client_reference_id: userId, customer: customerId, amount_subtotal: 0 } }
+        data: { object: { id: 'cs_3', payment_status: 'paid', client_reference_id: userId, customer: customerId, amount_subtotal: 0 } }
       });
       await onRequestPost({ request: reqZero, env });
       expect(globalMockDb.getProfile(userId).tier).toBe('plus');
@@ -286,7 +291,7 @@ describe('R2: POST /api/webhook (Atomic Credit RPC & Webhook Idempotency)', () =
       const req = createWebhookRequest({
         id: 'evt_no_client_ref',
         type: 'checkout.session.completed',
-        data: { object: { id: 'cs_external', customer: 'cus_ext', amount_subtotal: 24900 } }
+        data: { object: { id: 'cs_external', payment_status: 'paid', customer: 'cus_ext', amount_subtotal: 24900 } }
       });
 
       const response = await onRequestPost({ request: req, env });
@@ -315,12 +320,12 @@ describe('R2: POST /api/webhook (Atomic Credit RPC & Webhook Idempotency)', () =
       const event1 = {
         id: 'evt_concurrent_1',
         type: 'checkout.session.completed',
-        data: { object: { id: 'cs_c1', client_reference_id: userId, customer: customerId, amount_subtotal: 24900 } }
+        data: { object: { id: 'cs_c1', payment_status: 'paid', client_reference_id: userId, customer: customerId, amount_subtotal: 24900 } }
       };
       const event2 = {
         id: 'evt_concurrent_2',
         type: 'checkout.session.completed',
-        data: { object: { id: 'cs_c2', client_reference_id: userId, customer: customerId, amount_subtotal: 24900 } }
+        data: { object: { id: 'cs_c2', payment_status: 'paid', client_reference_id: userId, customer: customerId, amount_subtotal: 24900 } }
       };
 
       const [res1, res2] = await Promise.all([
