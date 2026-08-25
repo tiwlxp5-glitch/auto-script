@@ -8,6 +8,7 @@ function Register() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [needsEmailVerification, setNeedsEmailVerification] = useState(false);
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
@@ -16,20 +17,30 @@ function Register() {
     setError(null);
 
     // ส่งคำสั่งไปบอก Supabase ให้สร้างผู้ใช้ใหม่
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/create`
+      }
     });
 
     if (error) {
       setError(error.message);
       setLoading(false);
     } else {
-      // บางครั้ง Supabase จะให้ยืนยันอีเมล แต่เพื่อความง่าย เราจะให้สมัครผ่านเลย
-      setSuccess(true);
-      setTimeout(() => {
-        navigate('/create');
-      }, 2000);
+      if (data?.user && data?.session === null) {
+        // Supabase requires email verification
+        setSuccess(true);
+        setNeedsEmailVerification(true);
+        setLoading(false);
+      } else {
+        // Auto logged in (Email verification is OFF in Supabase)
+        setSuccess(true);
+        setTimeout(() => {
+          navigate('/create');
+        }, 2000);
+      }
     }
   };
 
@@ -57,10 +68,21 @@ function Register() {
       )}
 
       {success ? (
-        <div className="bg-green-50 text-green-700 p-4 rounded-lg text-center">
-          <p className="font-bold mb-2">สมัครสมาชิกสำเร็จ! 🎉</p>
-          <p className="text-sm">กำลังพากลับไปหน้าสร้างสคริปต์...</p>
-        </div>
+        needsEmailVerification ? (
+          <div className="bg-blue-50 border border-blue-200 text-blue-800 p-6 rounded-xl text-center">
+            <div className="flex justify-center mb-4">
+              <svg className="w-12 h-12 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+            </div>
+            <h3 className="text-xl font-bold mb-2">เช็คอีเมลของคุณ! 📧</h3>
+            <p className="text-sm mb-4">เราได้ส่งลิงก์ยืนยันตัวตนไปที่ <br/><strong className="text-blue-900">{email}</strong><br/> กรุณากดลิงก์ในอีเมลเพื่อเข้าสู่ระบบ <br/><span className="text-xs text-blue-600">(ถ้าไม่เจอให้ลองหาในโฟลเดอร์ Junk/Spam)</span></p>
+            <p className="text-sm font-semibold text-blue-700 bg-blue-100 py-2 rounded-lg mt-4">เมื่อยืนยันแล้ว สามารถกลับมาล็อกอินได้เลย</p>
+          </div>
+        ) : (
+          <div className="bg-green-50 text-green-700 p-4 rounded-lg text-center">
+            <p className="font-bold mb-2">สมัครสมาชิกสำเร็จ! 🎉</p>
+            <p className="text-sm">กำลังพากลับไปหน้าสร้างสคริปต์...</p>
+          </div>
+        )
       ) : (
         <>
           {/* Google Login Button */}
