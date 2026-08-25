@@ -241,7 +241,7 @@ export async function onRequestPost(context) {
     // 7. Deduct Trial Quota if used
     let updatedTrialRemaining = profile.trial_pro_remaining;
     if (profile.tier === 'free' && profile.trial_pro_remaining > 0) {
-      updatedTrialRemaining = Math.max(0, profile.trial_pro_remaining - creditCost);
+      updatedTrialRemaining = Math.max(0, profile.trial_pro_remaining - creditAmount);
       await supabaseAdmin.from('profiles').update({ 
         trial_pro_remaining: updatedTrialRemaining 
       }).eq('id', user.id);
