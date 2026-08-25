@@ -100,7 +100,11 @@ function Home() {
                 </div>
               </div>
               
-              <p className="text-[11px] text-slate-400 italic text-center mt-1">* นี่เป็นเพียงตัวอย่าง 2 ท่อนแรกจากสคริปต์แบบเต็ม 5 ท่อน</p>
+              <div className="text-center mt-3">
+                <p className="inline-block text-[11px] sm:text-xs font-semibold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200 leading-relaxed shadow-sm">
+                  * นี่เป็นเพียงตัวอย่าง 2 ท่อนแรก <br /> จากสคริปต์แบบเต็ม 5 ท่อน
+                </p>
+              </div>
             </div>
 
             <ul className="mt-6 space-y-2 text-sm text-blue-800 font-medium">
