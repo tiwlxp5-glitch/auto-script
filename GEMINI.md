@@ -143,3 +143,7 @@ c:\Auto script\
    - Backend: Double-refund bug, symmetric refunds, input limits, payment_status check, refund/chargeback handlers
    - Frontend: lazyWithRetry, AbortController timeout, Navbar a11y
    - Tests: mockDb stripe_customer_id lookup, all audit tests updated to verify fixes
+6. **Launch Readiness & Auth Polish** (Current Session):
+   - **Auth UI**: Rewrote `Register.jsx` to correctly capture Supabase `session === null` (email verification required), added a prominent Spam folder warning, a "Resend Email" button with a 60s cooldown, and fixed generic error messages in `Login.jsx` to explicitly state "Email not confirmed".
+   - **UX/Premium Feel**: Replaced legacy text emojis with premium Heroicons SVGs across tabs. Improved Navbar credit and trial quota badges.
+   - **Bug Fixes**: Fixed the trial quota bug in `generate.js` to correctly deduct `creditAmount`. Fixed a bug where Cloudflare Pages threw 404s on page refresh by adding the `public/_redirects` SPA rule. Fixed a Navbar Dropdown bug where clicks were intercepted too fast.
