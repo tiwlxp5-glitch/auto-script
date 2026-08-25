@@ -292,8 +292,27 @@ export async function onRequestPost(context) {
       }
     }
     console.error("Generate API Error:", err);
+    
+    let errorMessage = err.message || "เกิดข้อผิดพลาดที่ไม่คาดคิด กรุณาลองใหม่อีกครั้งครับ";
+    if (typeof errorMessage === 'string') {
+      if (errorMessage.includes('503') || errorMessage.includes('high demand') || errorMessage.includes('UNAVAILABLE')) {
+        errorMessage = "ขณะนี้ระบบ AI ของ Google กำลังมีผู้ใช้งานหนาแน่น (503 Service Unavailable) ระบบได้คืนเครดิตให้คุณแล้ว กรุณาลองกดสร้างใหม่อีกครั้งครับ";
+      } else if (errorMessage.includes('429') || errorMessage.includes('RESOURCE_EXHAUSTED')) {
+        errorMessage = "ระบบ AI ของ Google กำลังทำงานหนักเกินไป (429 Too Many Requests) ระบบได้คืนเครดิตให้คุณแล้ว กรุณารอสักครู่แล้วลองใหม่ครับ";
+      } else if (errorMessage.startsWith('{')) {
+        try {
+          const parsed = JSON.parse(errorMessage);
+          if (parsed.error && parsed.error.message) {
+            errorMessage = "ข้อผิดพลาดจาก AI: " + parsed.error.message;
+          }
+        } catch (e) {
+          // fallback to original string
+        }
+      }
+    }
+
     return new Response(JSON.stringify({ 
-      error: err.message || "An unexpected error occurred during generation" 
+      error: errorMessage
     }), { 
       status: 500,
       headers: { 'Content-Type': 'application/json' }
