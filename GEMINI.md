@@ -205,3 +205,27 @@ c:\Auto script\
 ### New Files
 - `frontend/functions/api/weekly-summary.js` — Weekly AI summary endpoint
 - `supabase/migrations/20260826172700_create_feedbacks_table.sql` — feedbacks table + RLS
+
+20. **Smart Feedback Rating Consistency Warning**: Added client-side sentiment detection (`detectSentiment()`) to `FeedbackModal.jsx`. Uses keyword scoring (positive/negative Thai + English word lists) to detect mismatch between star rating and comment tone. Shows a soft warning (non-blocking) with an explanation in two cases: (1) user selects 4-5 stars but writes a negative comment, or (2) user selects 1-2 stars but writes a positive comment. Triggers on star click and on textarea `onBlur`.
+   - **Bug Fix (React Hooks):** Fixed React Rules of Hooks violation — `checkConsistency` was defined after the `if (!isOpen) return null` early return, causing the app to crash. Moved the function before the early return and converted from `useCallback` to a plain function.
+   - **UI Upgrade (Premium SVG):** Replaced text emojis (⚠️⭐) with Heroicons SVG icons. Warning box is now color-coded: amber (⚠ triangle) for rating-too-high, blue (✦ sparkles) for rating-too-low. Uses Flexbox for icon+text alignment.
+   - **Bug Fix (Sentiment Length):** Removed the 5-character minimum threshold in `detectSentiment()` so short Thai words like `แย่` (3 chars) correctly trigger the warning.
+
+
+---
+
+## Zero-Tolerance End-of-Task Protocol (Project-Level Enforcement)
+
+> **[PERMANENT RULE — Added 2026-08-26 after incident]**
+>
+> On 2026-08-26, the agent skipped Steps 2, 4, and 5 of the End-of-Task Protocol on a "small" UI task, causing user disappointment. This rule is the permanent project-level record of that incident.
+
+**The agent MUST complete ALL 5 steps after EVERY task in this project — no exceptions:**
+
+1. Run `npm run build` — fix errors before proceeding
+2. Run `npm run dev` (`IsDaemon: true`) — provide `http://localhost:PORT` to user
+3. Git push — only after user UAT confirmation and explicit approval
+4. Update this `GEMINI.md` — if any architectural change occurred
+5. Recommend opening a new chat session
+
+**Rationalizing that a task is "too small" to require these steps is explicitly forbidden.**
