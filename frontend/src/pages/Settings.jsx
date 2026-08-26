@@ -175,6 +175,7 @@ function Settings() {
               value={displayName} 
               onChange={(e) => setDisplayName(e.target.value)}
               placeholder="กรอกชื่อของคุณ"
+              maxLength={50}
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
             />
           </div>

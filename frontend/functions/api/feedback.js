@@ -62,7 +62,7 @@ export async function onRequestPost(context) {
         const ai = new GoogleGenAI({ apiKey: env.GEMINI_API_KEY });
         const response = await ai.models.generateContent({
           model: 'gemini-3.6-flash',
-          contents: `วิเคราะห์ข้อความ Feedback ของลูกค้านี้: "${comment}"
+          contents: `วิเคราะห์ข้อความ Feedback ของลูกค้านี้: <user_comment>${comment}</user_comment>
 ให้ตอบกลับมาเป็น JSON เท่านั้น โดยมี 2 ค่า:
 1. "emoji": Emoji 1 ตัวที่ตรงกับความรู้สึกลูกค้าที่สุด (เช่น 🤩, 😍, 😊, 🤔, 😡, 😭, 💡, 🐛, 🙏)
 2. "is_critical_bug": true ถ้าลูกค้ารายงานปัญหาที่ทำให้ใช้งานต่อไม่ได้, จ่ายเงินไม่ได้, หรือระบบล่ม (ถ้าไม่ใช่ ให้เป็น false)`,
