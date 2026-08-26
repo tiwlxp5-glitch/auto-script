@@ -23,6 +23,25 @@ function ForgotPassword() {
     setError(null);
     setMessage(null);
 
+    // 1. ตรวจสอบว่าอีเมลมีอยู่ในระบบหรือไม่ (ป้องกัน email enumeration)
+    const { data: emailExists, error: rpcError } = await supabase.rpc('check_email_exists', {
+      p_email: email
+    });
+
+    if (rpcError) {
+      console.error('Error checking email:', rpcError);
+      setError('เกิดข้อผิดพลาดในการตรวจสอบอีเมล กรุณาลองใหม่อีกครั้ง');
+      setLoading(false);
+      return;
+    }
+
+    if (!emailExists) {
+      setError('อีเมลไม่ถูกต้อง');
+      setLoading(false);
+      return;
+    }
+
+    // 2. ถ้ามีอีเมลอยู่จริง ค่อยส่งลิงก์รีเซ็ต
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/reset-password`,
     });
