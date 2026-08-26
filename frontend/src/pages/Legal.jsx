@@ -12,8 +12,11 @@ function Legal() {
     }
   };
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12">
-      <div className="mb-6">
+    <>
+      <title>นโยบายและข้อตกลงการใช้งาน | Auto Script</title>
+      <meta name="description" content="นโยบายความเป็นส่วนตัว (Privacy Policy) และเงื่อนไขการให้บริการ (Terms of Service) ของ Auto Script" />
+      <div className="max-w-4xl mx-auto px-4 py-12">
+        <div className="mb-6">
         <a href="#" onClick={handleBack} className="text-blue-600 hover:underline flex items-center gap-1 text-sm font-medium">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
           ย้อนกลับ
@@ -87,6 +90,7 @@ function Legal() {
 
       </div>
     </div>
+    </>
   );
 }
 

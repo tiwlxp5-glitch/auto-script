@@ -2,8 +2,11 @@ import { Link } from 'react-router-dom';
 
 function Home() {
   return (
-    <div className="flex flex-col items-center justify-center text-center mt-6 sm:mt-12 px-2">
-      <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight mb-4 leading-snug">
+    <>
+      <title>Auto Script | AI เขียนสคริปต์วิดีโอ TikTok, Reels, ปักตะกร้า</title>
+      <meta name="description" content="Auto Script ช่วยสร้างสคริปต์รีวิวสินค้า ปิดการขายง่ายขึ้นด้วย AI ฝังจิตวิทยาการขาย ไม่ต้องคิดคอนเทนต์เอง" />
+      <div className="flex flex-col items-center justify-center text-center mt-6 sm:mt-12 px-2">
+        <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight mb-4 leading-snug">
         เขียนสคริปต์รีวิวสินค้า <br className="hidden sm:block" />
         <span className="text-blue-600">ให้การทำคลิปง่ายขึ้นด้วย</span>
         <span className="inline-block bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-3 py-0.5 rounded-xl ml-2 shadow-lg">AI</span>
@@ -209,6 +212,7 @@ function Home() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

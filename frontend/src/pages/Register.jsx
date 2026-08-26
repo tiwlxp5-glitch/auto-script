@@ -110,8 +110,11 @@ function Register() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-12 bg-white p-8 rounded-xl shadow-sm border border-slate-200">
-      <h2 className="text-2xl font-bold text-center text-slate-900 mb-6">สมัครสมาชิกใหม่</h2>
+    <>
+      <title>สมัครสมาชิกใหม่ | Auto Script</title>
+      <meta name="description" content="สมัครสมาชิก Auto Script เริ่มต้นสร้างสคริปต์วิดีโอฟรี" />
+      <div className="max-w-md mx-auto mt-12 bg-white p-8 rounded-xl shadow-sm border border-slate-200">
+        <h2 className="text-2xl font-bold text-center text-slate-900 mb-6">สมัครสมาชิกใหม่</h2>
       
       {error && (
         <div ref={errorRef} className="bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-4">
@@ -267,7 +270,8 @@ function Register() {
           </Link>
         </p>
       )}
-    </div>
+      </div>
+    </>
   );
 }
 

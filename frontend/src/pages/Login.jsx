@@ -64,8 +64,11 @@ function Login() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-12 bg-white p-8 rounded-xl shadow-sm border border-slate-200">
-      <h2 className="text-2xl font-bold text-center text-slate-900 mb-6">เข้าสู่ระบบ</h2>
+    <>
+      <title>เข้าสู่ระบบ | Auto Script</title>
+      <meta name="description" content="เข้าสู่ระบบ Auto Script เพื่อใช้งาน AI เขียนสคริปต์วิดีโอ" />
+      <div className="max-w-md mx-auto mt-12 bg-white p-8 rounded-xl shadow-sm border border-slate-200">
+        <h2 className="text-2xl font-bold text-center text-slate-900 mb-6">เข้าสู่ระบบ</h2>
       
       {error && (
         <div ref={errorRef} className="bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-4">
@@ -162,7 +165,8 @@ function Login() {
           สมัครสมาชิกฟรี
         </Link>
       </p>
-    </div>
+      </div>
+    </>
   );
 }
 
