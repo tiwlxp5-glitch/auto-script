@@ -52,8 +52,9 @@ export async function onRequestPost(context) {
       });
     }
 
-    // Determine Avatar & Emoji based on text (if provided) using Gemini, otherwise fallback to Rating
+    // Determine Avatar & Emoji & Critical Bug using Gemini
     let aiEmoji = "";
+    let isCritical = false;
     
     if (env.GEMINI_API_KEY && comment.trim().length > 0) {
       try {
@@ -61,20 +62,27 @@ export async function onRequestPost(context) {
         const ai = new GoogleGenAI({ apiKey: env.GEMINI_API_KEY });
         const response = await ai.models.generateContent({
           model: 'gemini-3.6-flash',
-          contents: `Analyze the sentiment and exact meaning of this Thai customer feedback: "${comment}". 
-Choose exactly ONE emoji that best represents the customer's feeling (e.g., 🤩, 😍, 😊, 🤔, 😡, 😭, 💡, 🐛, 🙏, 🙄, 🤮).
-Output ONLY that single emoji character. No explanation.`,
-          config: { temperature: 0.3 }
+          contents: `วิเคราะห์ข้อความ Feedback ของลูกค้านี้: "${comment}"
+ให้ตอบกลับมาเป็น JSON เท่านั้น โดยมี 2 ค่า:
+1. "emoji": Emoji 1 ตัวที่ตรงกับความรู้สึกลูกค้าที่สุด (เช่น 🤩, 😍, 😊, 🤔, 😡, 😭, 💡, 🐛, 🙏)
+2. "is_critical_bug": true ถ้าลูกค้ารายงานปัญหาที่ทำให้ใช้งานต่อไม่ได้, จ่ายเงินไม่ได้, หรือระบบล่ม (ถ้าไม่ใช่ ให้เป็น false)`,
+          config: { 
+            temperature: 0.1,
+            responseMimeType: "application/json"
+          }
         });
+        
         if (response.text) {
-           aiEmoji = response.text.trim().replace(/[\n\r]/g, '');
+           const aiResult = JSON.parse(response.text);
+           aiEmoji = aiResult.emoji || "";
+           isCritical = aiResult.is_critical_bug === true;
         }
       } catch (e) {
         console.error("Gemini sentiment analysis failed:", e);
       }
     }
 
-    if (!aiEmoji || aiEmoji.length > 5) { // Fallback if AI fails or returns weird text
+    if (!aiEmoji || aiEmoji.length > 5) {
       if (rating === 5) aiEmoji = "🤩";
       else if (rating === 4) aiEmoji = "😊";
       else if (rating === 3) aiEmoji = "🤔";
@@ -82,23 +90,28 @@ Output ONLY that single emoji character. No explanation.`,
     }
 
     // Try to map to Twemoji for Avatar
-    let avatarUrl = "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4ac.png"; // default speech bubble
+    let avatarUrl = "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4ac.png";
     try {
       const codePoint = aiEmoji.codePointAt(0).toString(16);
       avatarUrl = `https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/${codePoint}.png`;
     } catch(e) {}
 
+    // Webhook Routing
+    const targetWebhookUrl = rating >= 4 ? env.DISCORD_WEBHOOK_HIGH_STAR : env.DISCORD_WEBHOOK_LOW_STAR;
+    const finalWebhookUrl = targetWebhookUrl || env.DISCORD_WEBHOOK_URL; // Fallback to original URL if not separated
+
     // Send Discord Webhook if configured
-    if (env.DISCORD_WEBHOOK_URL) {
+    if (finalWebhookUrl) {
       const emailText = user.email || user.id;
       const starStr = '⭐'.repeat(rating);
 
       const payload = {
+        content: isCritical ? "@everyone 🚨 **CRITICAL SYSTEM ALERT** 🚨 ลูกค้าพบปัญหาร้ายแรง/ระบบล่ม กรุณาตรวจสอบด่วน!" : null,
         username: `AutoScript Feedback ${aiEmoji}`,
         avatar_url: avatarUrl,
         embeds: [{
           title: rating >= 4 ? `${aiEmoji} ลูกค้าประทับใจแอปของเรา!` : (rating === 3 ? `${aiEmoji} มีรีวิวใหม่จากลูกค้า` : `${aiEmoji} ลูกค้าพบปัญหา/ไม่พอใจ!`),
-          color: rating >= 4 ? 3066993 : (rating === 3 ? 16776960 : 15158332), // Green/Yellow/Red
+          color: isCritical ? 16711680 : (rating >= 4 ? 3066993 : (rating === 3 ? 16776960 : 15158332)), // Pure Red for critical
           fields: [
             { name: "👤 User", value: emailText, inline: true },
             { name: "⭐️ Rating", value: starStr, inline: true },
@@ -109,7 +122,7 @@ Output ONLY that single emoji character. No explanation.`,
       };
       
       try {
-        await fetch(env.DISCORD_WEBHOOK_URL, {
+        await fetch(finalWebhookUrl, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -118,7 +131,6 @@ Output ONLY that single emoji character. No explanation.`,
         });
       } catch (discordErr) {
         console.error("Failed to send Discord Webhook:", discordErr);
-        // Do not throw error, we still want to return success to the user
       }
     }
 
