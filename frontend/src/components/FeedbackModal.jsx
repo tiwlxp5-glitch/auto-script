@@ -1,7 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
+
+// ─── Sentiment Keywords ───────────────────────────────────────────────────────
+// คำที่บ่งบอกว่า comment เชิง "บวก" (ชื่นชม / ประทับใจ)
+const POSITIVE_KEYWORDS = [
+  'ดี', 'ดีมาก', 'เยี่ยม', 'เยี่ยมมาก', 'ชอบ', 'ชอบมาก', 'ประทับใจ', 'สุดยอด',
+  'เพอร์เฟ็ค', 'เลิศ', 'โคตรดี', 'ปัง', 'ปังมาก', 'ใช้งานง่าย', 'สะดวก',
+  'คุ้มค่า', 'คุ้มมาก', 'แจ่ม', 'เจ๋ง', 'น่าใช้', 'ครบ', 'ครบมาก',
+  'มีประโยชน์', 'ช่วยได้มาก', 'พอใจ', 'พอใจมาก', 'รัก', 'รักเลย',
+  'ขอบคุณ', 'ขอบคุณมาก', 'ขอบใจ', 'ได้ผล', 'ใช้ได้ดี', 'ฉลาด',
+  'น่าทึ่ง', 'ทึ่ง', 'ประหลาดใจ', 'เกินคาด', 'เกินความคาดหมาย', 'perfect',
+  'great', 'good', 'love', 'awesome', 'excellent', 'amazing', 'wow', 'helpful',
+];
+
+// คำที่บ่งบอกว่า comment เชิง "ลบ" (ติชม / ปัญหา)
+const NEGATIVE_KEYWORDS = [
+  'แย่', 'แย่มาก', 'ห่วย', 'ห่วยมาก', 'ไม่ดี', 'ไม่โอเค', 'ไม่ชอบ',
+  'ผิดหวัง', 'ผิดหวังมาก', 'บั๊ก', 'bug', 'error', 'ผิดพลาด', 'พัง',
+  'ใช้ไม่ได้', 'ใช้ยาก', 'งง', 'งงมาก', 'ช้า', 'ช้ามาก', 'แพง', 'แพงมาก',
+  'ไม่คุ้ม', 'เสียเงิน', 'เสียดาย', 'เสียใจ', 'โกรธ', 'หัวร้อน',
+  'น่าหัวเสีย', 'น่าหัวร้อน', 'ฉิบหาย', 'ห่า', 'บ้า', 'ไร้สาระ',
+  'ปัญหา', 'ไม่ work', 'work ไม่ได้', 'หน้าขาว', 'ค้าง', 'หยุด',
+  'ไม่พอใจ', 'ไม่พอ', 'อยากให้แก้', 'ควรปรับ', 'ควรแก้', 'ขอให้ปรับ',
+  'ต้องแก้', 'terrible', 'bad', 'awful', 'worst', 'broken', 'useless', 'hate',
+  'disappointed', 'poor', 'slow', 'expensive',
+];
+
+/**
+ * วิเคราะห์ sentiment ของ comment โดยนับ keyword เชิงบวก/ลบ
+ * @returns 'positive' | 'negative' | 'neutral'
+ */
+function detectSentiment(text) {
+  if (!text || text.trim().length < 5) return 'neutral';
+  const lower = text.toLowerCase();
+  let posScore = 0;
+  let negScore = 0;
+  POSITIVE_KEYWORDS.forEach((kw) => { if (lower.includes(kw.toLowerCase())) posScore++; });
+  NEGATIVE_KEYWORDS.forEach((kw) => { if (lower.includes(kw.toLowerCase())) negScore++; });
+  if (posScore === 0 && negScore === 0) return 'neutral';
+  return posScore >= negScore ? 'positive' : 'negative';
+}
 
 export default function FeedbackModal({ isOpen, onClose }) {
   const [rating, setRating] = useState(0);
@@ -10,8 +50,48 @@ export default function FeedbackModal({ isOpen, onClose }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState(null);
+  // warning แสดงเฉพาะเมื่อ sentiment กับ rating ไม่สอดคล้องกัน
+  const [ratingWarning, setRatingWarning] = useState(null);
 
   if (!isOpen) return null;
+
+  // ─── ตรวจสอบความสอดคล้องระหว่าง rating กับ comment ───────────────────────
+  const checkConsistency = useCallback((currentRating, currentComment) => {
+    const sentiment = detectSentiment(currentComment);
+    if (sentiment === 'neutral') { setRatingWarning(null); return; }
+
+    // กด 4-5 ดาว แต่ comment เชิงลบ
+    if (currentRating >= 4 && sentiment === 'negative') {
+      setRatingWarning({
+        type: 'lower',
+        message: '⚠️ ดูเหมือนว่าคุณมีข้อติชมหรือพบปัญหาอยู่นะครับ — ลองปรับดาวให้ต่ำกว่า 3 ดาวได้เลย',
+        reason: 'เพื่อให้ทีมพัฒนาเห็นว่ามีปัญหาจริง และ prioritize แก้ไขให้เร็วขึ้นครับ ⚡',
+      });
+      return;
+    }
+
+    // กด 1-2 ดาว แต่ comment เชิงบวก
+    if (currentRating <= 2 && sentiment === 'positive') {
+      setRatingWarning({
+        type: 'higher',
+        message: '⭐ ดูเหมือนคุณประทับใจในตัวแอปนะครับ — ลองปรับดาวเป็น 3-5 ดาวได้เลย',
+        reason: 'คะแนนดาวที่สูงขึ้นช่วยให้ทีมรู้ว่าฟีเจอร์ไหนทำได้ดี และช่วยสนับสนุนการพัฒนาต่อยอดครับ 💙',
+      });
+      return;
+    }
+
+    setRatingWarning(null);
+  }, []);
+
+  // เรียก checkConsistency ทุกครั้งที่เปลี่ยน rating หรือออกจาก textarea
+  const handleRatingChange = (star) => {
+    setRating(star);
+    checkConsistency(star, comment);
+  };
+
+  const handleCommentBlur = () => {
+    if (rating > 0) checkConsistency(rating, comment);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,6 +125,7 @@ export default function FeedbackModal({ isOpen, onClose }) {
         setIsSuccess(false);
         setRating(0);
         setComment('');
+        setRatingWarning(null);
       }, 2500);
 
     } catch (err) {
@@ -78,12 +159,12 @@ export default function FeedbackModal({ isOpen, onClose }) {
           </div>
         ) : (
           <form onSubmit={handleSubmit}>
-            <div className="mb-6 flex justify-center space-x-2">
+            <div className="mb-2 flex justify-center space-x-2">
               {[1, 2, 3, 4, 5].map((star) => (
                 <button
                   key={star}
                   type="button"
-                  onClick={() => setRating(star)}
+                  onClick={() => handleRatingChange(star)}
                   onMouseEnter={() => setHoverRating(star)}
                   onMouseLeave={() => setHoverRating(0)}
                   className="focus:outline-none transition-transform hover:scale-110"
@@ -99,7 +180,15 @@ export default function FeedbackModal({ isOpen, onClose }) {
               ))}
             </div>
 
-            <div className="mb-4">
+            {/* ─── Smart Rating Warning ─── */}
+            {ratingWarning && (
+              <div className="mb-4 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm">
+                <p className="font-semibold text-amber-800">{ratingWarning.message}</p>
+                <p className="mt-1 text-amber-700">{ratingWarning.reason}</p>
+              </div>
+            )}
+
+            <div className="mb-4 mt-4">
               <label htmlFor="comment" className="block text-sm font-medium text-gray-700 mb-1">
                 มีอะไรให้เราปรับปรุง หรือประทับใจส่วนไหน พิมพ์บอกเราได้เลยครับ
               </label>
@@ -110,6 +199,7 @@ export default function FeedbackModal({ isOpen, onClose }) {
                 placeholder="เช่น ใช้งานง่ายมากเลยครับ, อยากให้มีฟีเจอร์นี้เพิ่มหน่อย..."
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
+                onBlur={handleCommentBlur}
                 maxLength={1000}
               ></textarea>
             </div>
