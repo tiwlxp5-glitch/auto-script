@@ -21,12 +21,9 @@ FOR SELECT
 TO authenticated
 USING (auth.uid() = user_id);
 
--- Allow service role to insert and view all logs
--- Wait, RLS policies for Service Role are bypassed by default, but it's good practice.
-CREATE POLICY "Service role can manage moderation_logs"
-ON public.moderation_logs
-USING (true)
-WITH CHECK (true);
+-- Service role bypasses RLS inherently, so we DO NOT need a policy for it.
+-- Creating a policy WITHOUT a "TO" clause defaults to PUBLIC, causing a massive data leak.
+-- Intentionally leaving this blank to ensure strict lock-down.
 
 -- Index for performance on queries by user or time
 CREATE INDEX IF NOT EXISTS idx_moderation_logs_user_id ON public.moderation_logs(user_id);

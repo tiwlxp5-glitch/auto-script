@@ -279,7 +279,19 @@ export async function onRequestPost(context) {
     }
 
     const body = await request.json();
-    const { productName, productDetails, pricePromo, videoLength, mode, competitor, targetAudience, isMultiVersion, falseBelief, mechanism, speakerTone } = body;
+    
+    // SECURITY FIX: Truncate inputs immediately to prevent Memory Exhaustion/ReDoS in moderation engine
+    const productName = (body.productName || '').slice(0, 100);
+    const productDetails = (body.productDetails || '').slice(0, 2000);
+    const pricePromo = (body.pricePromo || '').slice(0, 100);
+    const competitor = (body.competitor || '').slice(0, 200);
+    const targetAudience = (body.targetAudience || '').slice(0, 300);
+    const falseBelief = (body.falseBelief || '').slice(0, 500);
+    const mechanism = (body.mechanism || '').slice(0, 500);
+    const mode = body.mode || 'PAS';
+    const videoLength = body.videoLength || '30s';
+    const speakerTone = body.speakerTone || 'ผู้หญิง';
+    const isMultiVersion = !!body.isMultiVersion;
 
     supabaseAdmin = createClient(env.VITE_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY);
 
