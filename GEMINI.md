@@ -172,3 +172,5 @@ c:\Auto script\
 13. **Centralized Thai Error Translation**: Created `translateError.js` utility to seamlessly map english Supabase auth errors (like "New password should be different from the old password.") to natural Thai phrasing. Integrated across `Login.jsx`, `Register.jsx`, `ForgotPassword.jsx`, and `ResetPassword.jsx` for better UX.
 
 14. **Security & UX Upgrade (Password Requirements)**: Enforced 8-character minimum and strictly blocked typing Thai characters across all auth forms (Login, Register, ResetPassword) using onChange validation to silently ignore Thai input. Added a toggle (eye icon) using Heroicons SVG to view passwords during entry for better UX.
+
+15. **Auth UX Enhancement (Forgot Password Verification)**: Implemented an explicit email existence check on the Forgot Password page to improve UX. Created a secure `check_email_exists` RPC function to query `auth.users` on the backend, allowing the frontend to show a clear "อีเมลไม่ถูกต้อง" (Invalid Email) warning and prevent silently failing (and avoiding email enumeration risks natively) when an unregistered email is submitted.
