@@ -67,6 +67,13 @@ function ResetPassword() {
     <div className="max-w-md mx-auto mt-12 bg-white p-8 rounded-xl shadow-sm border border-slate-200">
       <h2 className="text-2xl font-bold text-center text-slate-900 mb-6">ตั้งรหัสผ่านใหม่</h2>
       
+      {!error && (
+        <div className="bg-blue-50 border border-blue-200 text-blue-700 p-4 rounded-lg text-sm mb-6 shadow-sm">
+          <p className="font-semibold mb-1">✅ ยืนยันตัวตนสำเร็จ!</p>
+          <p>ระบบได้เข้าสู่ระบบให้คุณชั่วคราวแล้ว <br/> <strong>กรุณาตั้งรหัสผ่านใหม่ด้านล่างทันที</strong> เพื่อใช้ในการเข้าสู่ระบบครั้งต่อไปครับ</p>
+        </div>
+      )}
+
       {error && (
         <div ref={errorRef} className="bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-4">
           {error}
