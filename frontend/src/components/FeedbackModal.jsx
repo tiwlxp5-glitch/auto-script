@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useAuth } from '../context/AuthContext';
+import { supabase } from '../lib/supabase';
 
 export default function FeedbackModal({ isOpen, onClose }) {
-  const { session } = useAuth();
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [comment, setComment] = useState('');
@@ -24,6 +24,8 @@ export default function FeedbackModal({ isOpen, onClose }) {
     setError(null);
 
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      
       const res = await fetch('/api/feedback', {
         method: 'POST',
         headers: {
