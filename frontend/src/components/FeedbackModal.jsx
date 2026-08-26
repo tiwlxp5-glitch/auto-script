@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useAuth } from '../context/AuthContext';
 
 export default function FeedbackModal({ isOpen, onClose }) {
@@ -51,8 +52,8 @@ export default function FeedbackModal({ isOpen, onClose }) {
     }
   };
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+  const modalContent = (
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
       <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl transition-all">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold text-gray-900">💬 ให้คำติชม / เสนอแนะ</h2>
@@ -129,4 +130,6 @@ export default function FeedbackModal({ isOpen, onClose }) {
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }
