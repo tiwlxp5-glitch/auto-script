@@ -57,11 +57,16 @@ export async function onRequestPost(context) {
       const emailText = user.email || user.id;
       const starStr = '⭐'.repeat(rating);
       
+      let avatarUrl = "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f60a.png"; // 4 stars (😊)
+      if (rating === 5) avatarUrl = "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f929.png"; // 5 stars (🤩)
+      else if (rating === 3) avatarUrl = "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f914.png"; // 3 stars (🤔)
+      else if (rating <= 2) avatarUrl = "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f621.png"; // 1-2 stars (😡)
+
       const payload = {
-        username: "AutoScript Feedback",
-        avatar_url: "https://cdn-icons-png.flaticon.com/512/3260/3260838.png",
+        username: `AutoScript Feedback (${rating} ดาว)`,
+        avatar_url: avatarUrl,
         embeds: [{
-          title: "📢 มีรีวิวใหม่จากลูกค้า!",
+          title: rating >= 4 ? "🎉 ลูกค้าประทับใจแอปของเรา!" : (rating === 3 ? "📢 มีรีวิวใหม่จากลูกค้า (ปานกลาง)" : "🚨 ลูกค้าพบปัญหา/ไม่พอใจ!"),
           color: rating >= 4 ? 3066993 : (rating === 3 ? 16776960 : 15158332), // Green/Yellow/Red
           fields: [
             { name: "👤 User", value: emailText, inline: true },
