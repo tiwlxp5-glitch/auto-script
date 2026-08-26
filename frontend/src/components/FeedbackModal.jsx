@@ -33,7 +33,7 @@ const NEGATIVE_KEYWORDS = [
  * @returns 'positive' | 'negative' | 'neutral'
  */
 function detectSentiment(text) {
-  if (!text || text.trim().length < 5) return 'neutral';
+  if (!text || text.trim().length === 0) return 'neutral';
   const lower = text.toLowerCase();
   let posScore = 0;
   let negScore = 0;
