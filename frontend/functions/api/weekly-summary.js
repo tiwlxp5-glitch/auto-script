@@ -66,7 +66,7 @@ Keep it professional, highly concise, and under 1500 characters.`;
     const summaryText = response.text.trim();
 
     // 4. Send to Discord
-    const webhookUrl = env.DISCORD_WEBHOOK_HIGH_STAR || env.DISCORD_WEBHOOK_URL;
+    const webhookUrl = env.DISCORD_WEBHOOK_WEEKLY_REPORT || env.DISCORD_WEBHOOK_URL;
     
     if (webhookUrl) {
       const payload = {
