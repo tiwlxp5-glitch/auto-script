@@ -217,6 +217,15 @@ c:\Auto script\
    - **Input Limits:** Enforced `maxLength={50}` on the Display Name field in `Settings.jsx`.
    - **Cleaned Up Backups:** Removed `generate.backup.js` from the API folder to prevent vulnerable code from deploying as a live endpoint.
 
+22. **SEO Phase 1 — Basic SEO & Social Cards**:
+   - **`index.html` Meta Tags:** Added full SEO metadata — Primary tags (`description`, `keywords`, `robots`, `author`, `canonical`), Open Graph tags for LINE/Facebook sharing (`og:type`, `og:url`, `og:site_name`, `og:title`, `og:description`, `og:image`, `og:locale`), and Twitter Card tags.
+   - **Language fix:** Changed `<html lang="en">` → `<html lang="th">` to correctly signal Thai content to Google.
+   - **`robots.txt` (NEW):** Created in `public/` — allows Google to crawl public pages, blocks authenticated routes (`/create`, `/settings`, `/history`, `/reset-password`). Includes Sitemap reference.
+   - **`sitemap.xml` (NEW):** Created in `public/` — maps all 5 public URLs with correct `changefreq` and `priority` values (`/` priority 1.0, `/pricing` 0.8, `/login`, `/register`, `/legal` lower).
+   - **Zero Library Install:** Implemented with static files only — no new npm packages required.
+   - **Next Steps (Phase 2):** Add React 19 native `<title>` / `<meta>` per-page metadata using Document Metadata API. (Phase 3: React Router v7 SSG pre-rendering for perfect social unfurling on all routes.)
+
+
 ---
 
 ## Zero-Tolerance End-of-Task Protocol (Project-Level Enforcement)
