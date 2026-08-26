@@ -367,36 +367,12 @@ export async function onRequestPost(context) {
     - โทนเสียง/เพศผู้พูด (Speaker Tone/Gender): ${speakerTone || 'ผู้หญิง'}
     `;
 
-    const baseSystemPrompt = isMultiVersion ? SYSTEM_PROMPT_MULTI : (mode === 'โครงสร้างเจาะลึก' ? SYSTEM_PROMPT_BELIEF_SHIFTER : SYSTEM_PROMPT_SINGLE);
-    
-    const advancedIntelligenceRules = `
-## 🧠 AI INTELLIGENCE UPGRADE (Micro-Persona & Contextual Few-Shot)
-คุณต้องยกระดับความเป็นมนุษย์ (Humanized AI) โดยปฏิบัติตามกฎนี้อย่างเคร่งครัด:
-
-1. สวมวิญญาณนักพูด (Micro-Persona): วิเคราะห์จากสินค้าและเพศผู้พูด แล้วเลือกสวมบทบาท 1 ใน 4 สไตล์นี้:
-   - "เพื่อนสาวจอมแฉ/ป้ายยา": พูดเร็ว, กัดจิก, รีวิวตรงๆ, สแลงเยอะ (ใช้คำเช่น "แกเอ้ย", "เอาดีๆ", "จึ้งมาก", "ตัวมารดา", "ฉ่ำ")
-   - "ผู้เชี่ยวชาญน่าเชื่อถือ": นิ่ง, น่าเชื่อถือ, เน้นผลลัพธ์ (ใช้คำเช่น "รู้หรือไม่...", "หลักการคือ...", "สิ่งสำคัญคือ...")
-   - "แม่ค้าสายฮาร์ดเซลล์": พลังเยอะ, กระตุ้นความคุ้มค่า, รีบเร่ง (ใช้คำเช่น "ฟังนะแม่!", "พลาดคือพลาดมาก", "กดตะกร้าด่วน")
-   - "ผู้ชายรีวิวจริงใจ": แมนๆ, ตรงไปตรงมา, ไม่อ้อมค้อม (ใช้คำเช่น "เอาจริงๆนะ", "บอกตรงๆ", "ของโคตรดี", "อย่างแจ่ม")
-
-2. การเว้นจังหวะหายใจและการเล่นคำ (Breathing & Wordplay):
-   - บังคับใช้เครื่องหมาย "..." เพื่อเว้นจังหวะพักหายใจแบบคนพูดจริงๆ เพื่อไม่ให้เป็นหุ่นยนต์
-   - พยายามใช้คำคล้องจองหรือวลีจำง่าย (Punchline) เพื่อให้คลิปน่าสนใจ
-   
-3. ตัวอย่างการพูดที่เป็นธรรมชาติ (Few-Shot Reference):
-   - [Hook] "แกเอ้ย... ตอนแรกก็ไม่เชื่อนะเว้ย ว่ามันจะเนียนขนาดนี้... คือแบบ... ช็อคมาก!"
-   - [Agitate] "เอาจริงๆนะ... ใครที่หน้ามันเยิ้มระหว่างวัน... หยุดฟังคลิปนี้ด่วนๆ เลยครับ"
-   - [CTA] "ฟังนะแม่!... ตัวนี้คือแรร์ไอเทม... รีบกดตะกร้าเหลืองให้ทันก่อนของจะหมดนะจ๊ะ"
-`;
-
-    const finalSystemInstruction = baseSystemPrompt + advancedIntelligenceRules;
-
     const response = await ai.models.generateContent({
       model: 'gemini-3.6-flash',
       contents: userPrompt,
       config: {
-        systemInstruction: finalSystemInstruction,
-        temperature: 0.85, // Increased from 0.8 to 0.85 for slightly more creativity/wordplay
+        systemInstruction: isMultiVersion ? SYSTEM_PROMPT_MULTI : (mode === 'โครงสร้างเจาะลึก' ? SYSTEM_PROMPT_BELIEF_SHIFTER : SYSTEM_PROMPT_SINGLE),
+        temperature: 0.8,
         responseMimeType: isMultiVersion ? "text/plain" : "application/json",
       }
     });
