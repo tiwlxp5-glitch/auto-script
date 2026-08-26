@@ -177,4 +177,31 @@ c:\Auto script\
 
 17. **Deep Security & Concurrency Audit (Pre-Launch)**: Conducted a comprehensive final sweep. Fixed a DoS vulnerability (Memory Exhaustion) in `generate.js` by truncating inputs before processing them through the moderation engine. Fixed a Data Leak (Information Disclosure) by dropping an improperly scoped `PUBLIC` RLS policy on `moderation_logs`. Fixed a Broken Access Control (Tier Bypass) vulnerability allowing Free users to access the Pro-only Belief-Shifting mode. Fixed a Race Condition in the `trial_pro_remaining` deduction logic by creating an atomic `decrement_trial_quota` RPC. Finally, mitigated an Email Enumeration vulnerability in the Forgot Password flow by adhering to the Standard Security UX ("If this email is in our system...").
 
-18. **Customer Feedback System (Discord Webhook)**: Built a complete feedback loop (`feedbacks` table with RLS) allowing users to rate (1-5 stars) and review the app. Integrated Discord Webhook on the backend (`feedback.js`) to send real-time, color-coded notifications (Green/Yellow/Red based on rating) to the admin's Discord server without blocking the user flow.
+18. **Customer Feedback System (Discord Webhook) — Full Build & Bug Fixes**:
+   - Built complete feedback loop: `feedbacks` table (Supabase RLS), `FeedbackModal.jsx` (5-star + text), integrated in `Navbar.jsx`.
+   - Backend `feedback.js`: validates auth, inserts to DB, sends rich Discord embed (color-coded Green/Yellow/Red).
+   - **Bug Fix (createPortal):** Fixed modal being clipped/pushed up due to Navbar's CSS stacking context. Refactored `FeedbackModal.jsx` to use `ReactDOM.createPortal(..., document.body)` so the modal renders at the root level.
+   - **Bug Fix (Auth Token):** Fixed "เกิดข้อผิดพลาดในการส่งข้อมูล" (401 Unauthorized) because `session` was undefined. Fixed by calling `supabase.auth.getSession()` inside the submit handler to get a fresh token each time.
+   - **AI Sentiment Analysis:** Integrated Gemini into `feedback.js` to analyze comment text and return a JSON `{ emoji, is_critical_bug }`. Avatar and emoji in Discord now reflect the true sentiment of the comment, not just the star rating.
+   - **Critical Bug Alert:** If `is_critical_bug === true`, the Discord message auto-tags `@everyone` with a bright red embed to alert admin immediately.
+   - **Discord Channel Routing:** Separated Discord Webhooks into 2 channels using `DISCORD_WEBHOOK_HIGH_STAR` (4-5 stars) and `DISCORD_WEBHOOK_LOW_STAR` (1-3 stars) env variables, with fallback to `DISCORD_WEBHOOK_URL`.
+
+19. **Weekly Feedback Summary Engine (`/api/weekly-summary`)**:
+   - Created `frontend/functions/api/weekly-summary.js` — a POST-only secured endpoint.
+   - Auth: Protected by `ADMIN_CRON_KEY` Bearer token (stored in Cloudflare env vars). Cannot be triggered by browsing to the URL directly.
+   - Logic: Fetches all feedbacks from the last 7 days from Supabase, sends raw data to Gemini for PM-level analysis.
+   - AI Prompt: Returns structured JSON `{ overall, praise, bugs, requests, action }` with each field capped at 200 chars.
+   - Discord Output: Builds a clean embed with **separate named Fields** per category (📊 ภาพรวม, 📈 สถิติดาว, 💖 ชอบ, 🛠️ ปัญหา, 💡 ฟีเจอร์, 🎯 Next Action) for clear readability. Sends to dedicated `DISCORD_WEBHOOK_WEEKLY_REPORT` channel.
+   - Cron Scheduling: Configured via **cron-job.org** to auto-trigger every Friday at 18:00 (Asia/Bangkok). Import via cURL command for correct POST + Auth header setup.
+
+### New Environment Variables (Cloudflare Pages)
+| Variable | Purpose |
+|---|---|
+| `DISCORD_WEBHOOK_HIGH_STAR` | Discord channel for 4-5 star reviews |
+| `DISCORD_WEBHOOK_LOW_STAR` | Discord channel for 1-3 star reviews |
+| `DISCORD_WEBHOOK_WEEKLY_REPORT` | Discord channel for weekly AI summary report |
+| `ADMIN_CRON_KEY` | Secret password to authenticate `/api/weekly-summary` POST requests |
+
+### New Files
+- `frontend/functions/api/weekly-summary.js` — Weekly AI summary endpoint
+- `supabase/migrations/20260826172700_create_feedbacks_table.sql` — feedbacks table + RLS
