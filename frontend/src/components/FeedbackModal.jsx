@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
@@ -53,10 +53,9 @@ export default function FeedbackModal({ isOpen, onClose }) {
   // warning แสดงเฉพาะเมื่อ sentiment กับ rating ไม่สอดคล้องกัน
   const [ratingWarning, setRatingWarning] = useState(null);
 
-  if (!isOpen) return null;
-
   // ─── ตรวจสอบความสอดคล้องระหว่าง rating กับ comment ───────────────────────
-  const checkConsistency = useCallback((currentRating, currentComment) => {
+  // ⚠️ ต้องอยู่ก่อน early return เพื่อไม่ละเมิด React Rules of Hooks
+  const checkConsistency = (currentRating, currentComment) => {
     const sentiment = detectSentiment(currentComment);
     if (sentiment === 'neutral') { setRatingWarning(null); return; }
 
@@ -64,8 +63,8 @@ export default function FeedbackModal({ isOpen, onClose }) {
     if (currentRating >= 4 && sentiment === 'negative') {
       setRatingWarning({
         type: 'lower',
-        message: '⚠️ ดูเหมือนว่าคุณมีข้อติชมหรือพบปัญหาอยู่นะครับ — ลองปรับดาวให้ต่ำกว่า 3 ดาวได้เลย',
-        reason: 'เพื่อให้ทีมพัฒนาเห็นว่ามีปัญหาจริง และ prioritize แก้ไขให้เร็วขึ้นครับ ⚡',
+        title: 'ดูเหมือนว่าคุณมีข้อติชมหรือพบปัญหาอยู่',
+        message: 'ลองปรับเป็น 1-2 ดาวได้เลยครับ เพื่อให้ทีมพัฒนาเห็นว่ามีปัญหาจริง และจัดลำดับความสำคัญในการแก้ไขให้เร็วขึ้น',
       });
       return;
     }
@@ -74,14 +73,16 @@ export default function FeedbackModal({ isOpen, onClose }) {
     if (currentRating <= 2 && sentiment === 'positive') {
       setRatingWarning({
         type: 'higher',
-        message: '⭐ ดูเหมือนคุณประทับใจในตัวแอปนะครับ — ลองปรับดาวเป็น 3-5 ดาวได้เลย',
-        reason: 'คะแนนดาวที่สูงขึ้นช่วยให้ทีมรู้ว่าฟีเจอร์ไหนทำได้ดี และช่วยสนับสนุนการพัฒนาต่อยอดครับ 💙',
+        title: 'ดูเหมือนคุณจะประทับใจในตัวแอป',
+        message: 'ลองปรับเป็น 4-5 ดาวได้เลยครับ คะแนนที่สูงขึ้นช่วยให้ทีมรู้ว่าฟีเจอร์ไหนทำได้ดี และเป็นกำลังใจในการพัฒนาต่อยอด',
       });
       return;
     }
 
     setRatingWarning(null);
-  }, []);
+  };
+
+  if (!isOpen) return null;
 
   // เรียก checkConsistency ทุกครั้งที่เปลี่ยน rating หรือออกจาก textarea
   const handleRatingChange = (star) => {
@@ -180,11 +181,26 @@ export default function FeedbackModal({ isOpen, onClose }) {
               ))}
             </div>
 
-            {/* ─── Smart Rating Warning ─── */}
+            {/* ─── Smart Rating Warning (Premium Design) ─── */}
             {ratingWarning && (
-              <div className="mb-4 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm">
-                <p className="font-semibold text-amber-800">{ratingWarning.message}</p>
-                <p className="mt-1 text-amber-700">{ratingWarning.reason}</p>
+              <div className={`mb-4 rounded-xl border px-4 py-3 text-sm flex items-start gap-3 transition-all ${
+                ratingWarning.type === 'lower' 
+                  ? 'border-amber-300 bg-amber-50 text-amber-800' 
+                  : 'border-blue-300 bg-blue-50 text-blue-800'
+              }`}>
+                {ratingWarning.type === 'lower' ? (
+                  <svg className="w-5 h-5 shrink-0 text-amber-500 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                ) : (
+                  <svg className="w-5 h-5 shrink-0 text-blue-500 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                  </svg>
+                )}
+                <div>
+                  <p className="font-bold">{ratingWarning.title}</p>
+                  <p className="mt-1 opacity-90 leading-relaxed">{ratingWarning.message}</p>
+                </div>
               </div>
             )}
 
