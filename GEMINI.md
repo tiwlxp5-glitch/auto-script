@@ -170,3 +170,5 @@ c:\Auto script\
 12. **Forgot Password & Smart Recovery Flow**: Added `ForgotPassword.jsx` and `ResetPassword.jsx` using Supabase Auth. Implemented a smart fallback in `MainLayout.jsx` listening to `onAuthStateChange` (`'PASSWORD_RECOVERY'`) to automatically redirect users to the reset page if Supabase defaults to the Site URL, eliminating the need to manually configure Redirect URLs via the Supabase Dashboard.
 
 13. **Centralized Thai Error Translation**: Created `translateError.js` utility to seamlessly map english Supabase auth errors (like "New password should be different from the old password.") to natural Thai phrasing. Integrated across `Login.jsx`, `Register.jsx`, `ForgotPassword.jsx`, and `ResetPassword.jsx` for better UX.
+
+14. **Security & UX Upgrade (Password Requirements)**: Enforced 8-character minimum and strictly blocked typing Thai characters across all auth forms (Login, Register, ResetPassword) using onChange validation to silently ignore Thai input. Added a toggle (eye icon) using Heroicons SVG to view passwords during entry for better UX.
