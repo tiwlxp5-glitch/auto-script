@@ -335,6 +335,10 @@ export async function onRequestPost(context) {
       return new Response(JSON.stringify({ error: 'Multi-version scripts require Pro tier.' }), { status: 403, headers: { 'Content-Type': 'application/json' } });
     }
 
+    if (mode === 'โครงสร้างเจาะลึก' && effectiveTier !== 'pro') {
+      return new Response(JSON.stringify({ error: 'โหมดโครงสร้างเจาะลึก (Belief-Shifting) สงวนไว้สำหรับผู้ใช้ Pro เท่านั้น' }), { status: 403, headers: { 'Content-Type': 'application/json' } });
+    }
+
     creditAmount = isMultiVersion ? 2 : 1;
     userIdForRefund = user.id;
 
@@ -476,10 +480,13 @@ export async function onRequestPost(context) {
     // 7. Deduct Trial Quota if used
     let updatedTrialRemaining = profile.trial_pro_remaining;
     if (profile.tier === 'free' && profile.trial_pro_remaining > 0) {
-      updatedTrialRemaining = Math.max(0, profile.trial_pro_remaining - creditAmount);
-      await supabaseAdmin.from('profiles').update({ 
-        trial_pro_remaining: updatedTrialRemaining 
-      }).eq('id', user.id);
+      const { data: newTrialVal, error: trialErr } = await supabaseAdmin.rpc('decrement_trial_quota', {
+        p_user_id: user.id,
+        p_amount: creditAmount
+      });
+      if (!trialErr && newTrialVal !== null) {
+        updatedTrialRemaining = newTrialVal;
+      }
     }
 
     return new Response(JSON.stringify({ 
