@@ -13,7 +13,8 @@ function CreateScript() {
   const [productDetails, setProductDetails] = useState('');
   const [pricePromo, setPricePromo] = useState('');
   const [videoLength, setVideoLength] = useState('สั้น');
-  const [mode, setMode] = useState('ป้ายยาตรงๆ');
+  const [speakerTone, setSpeakerTone] = useState('ผู้หญิง');
+  const [mode, setMode] = useState('ขยี้ปัญหา (PAS Formula)');
   
   // Premium fields
   const [competitor, setCompetitor] = useState('');
@@ -82,6 +83,11 @@ function CreateScript() {
     { id: 'สั้น', time: '10-15 วิ', desc: '(สั้น/กระชับ)' },
     { id: 'กลาง', time: '30-45 วิ', desc: '(ปานกลาง)' },
     { id: 'ยาว', time: '60 วิ+', desc: '(ละเอียด)' }
+  ];
+
+  const tones = [
+    { id: 'ผู้หญิง', label: 'ผู้หญิง', desc: '(ค่ะ, คะ, ฉัน)', icon: <svg className="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg> },
+    { id: 'ผู้ชาย', label: 'ผู้ชาย', desc: '(ครับ, ผม)', icon: <svg className="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg> }
   ];
 
   useEffect(() => {
@@ -187,6 +193,7 @@ function CreateScript() {
         productDetails,
         pricePromo,
         videoLength,
+        speakerTone,
         mode,
         competitor: mode === 'เปรียบเทียบชัดๆ' ? competitor : '',
         falseBelief: mode === 'โครงสร้างเจาะลึก' ? falseBelief : '',
@@ -413,6 +420,32 @@ function CreateScript() {
                     <span className="block whitespace-nowrap">{l.time}</span>
                     <span className={`text-[10px] sm:text-xs mt-0.5 whitespace-nowrap ${videoLength === l.id ? 'text-blue-400' : 'text-slate-400'}`}>
                       {l.desc}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-3">โทนผู้พูด (Speaker Tone)</label>
+              <div className="grid grid-cols-2 gap-2 bg-slate-100 p-1.5 rounded-xl">
+                {tones.map((t) => (
+                  <button
+                    key={t.id}
+                    type="button"
+                    onClick={() => setSpeakerTone(t.id)}
+                    className={`flex flex-col items-center justify-center py-2 px-2 rounded-lg text-sm font-medium transition-all ${
+                      speakerTone === t.id 
+                        ? (t.id === 'ผู้หญิง' ? 'bg-pink-50 text-pink-600 shadow-sm ring-1 ring-pink-200 scale-[1.02]' : 'bg-blue-50 text-blue-600 shadow-sm ring-1 ring-blue-200 scale-[1.02]')
+                        : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
+                    }`}
+                  >
+                    <div className="flex items-center gap-1.5">
+                      {t.icon}
+                      <span className="block whitespace-nowrap">{t.label}</span>
+                    </div>
+                    <span className={`text-[10px] sm:text-xs mt-0.5 whitespace-nowrap ${speakerTone === t.id ? (t.id === 'ผู้หญิง' ? 'text-pink-400' : 'text-blue-400') : 'text-slate-400'}`}>
+                      {t.desc}
                     </span>
                   </button>
                 ))}

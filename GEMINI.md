@@ -159,3 +159,5 @@ c:\Auto script\
    - Implemented Auto-Scroll to validation errors globally (CreateScript, Login, Register) for better UX on mobile and long forms.
 
 9. **Content Moderation Engine**: Added a fast, deterministic server-side content moderation system. Prevents users from inputting profanity, threats, or illegal keywords with Thai obfuscation detection (e.g., zero-width char removal, space stripping). Logs 'blocked' and 'reviewed' content to moderation_logs (Supabase). Enforced before AI generation (saves credits/cost) and on AI output (failsafe).
+
+10. **Speaker Tone & Natural Language Prompts**: Added the ability to select speaker gender (Female/Male) for AI script generation in the UI. Upgraded system prompts to strictly enforce Natural Language Rules (e.g., forbidden formal words, using filler words, breathing pauses) while preserving the original Elite Scriptwriter and 4 U's framework to maintain high-quality structure.
