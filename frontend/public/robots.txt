@@ -1,0 +1,8 @@
+﻿User-agent: *
+Allow: /
+Disallow: /create
+Disallow: /settings
+Disallow: /history
+Disallow: /reset-password
+
+Sitemap: https://autoscript-ai.com/sitemap.xml
