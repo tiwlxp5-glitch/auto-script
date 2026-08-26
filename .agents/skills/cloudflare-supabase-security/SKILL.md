@@ -45,3 +45,16 @@ When building features for this architecture, you MUST adhere to the following s
 - **Test Payload Completeness**: When implementing new backend guards (e.g., `payment_status` check), search ALL test files for event payloads that trigger that code path and update them to include the new required fields. Use a search + regex replace script to update multiple files at once safely.
 - **No Duplicate Code in Tests**: After using `replace_file_content` tool on test files, ALWAYS verify the file line count to ensure no duplicate blocks were accidentally appended. Use `node -e "require('fs').readFileSync(...)"` to inspect and trim if needed.
 
+## 9. Data Leak Prevention (RLS)
+- **The `TO` Clause Requirement**: When writing `CREATE POLICY` statements in Supabase PostgreSQL, ALWAYS specify the `TO` clause (e.g., `TO authenticated`). Omitting it defaults the policy to `PUBLIC`, which is a critical data leak allowing anonymous internet access.
+- **Service Role RLS**: Do NOT create RLS policies for `service_role`. The `service_role` key natively bypasses RLS. Creating an RLS policy for `service_role` (especially without a `TO` clause) is dangerous and redundant.
+
+## 10. Memory Exhaustion & Edge Function DoS
+- **Pre-Truncation**: Cloudflare Edge Functions have strict memory and CPU limits. Never pass raw user inputs (like `request.json()`) directly into heavy synchronous processing (e.g., regex-based moderation engines).
+- **Destructuring Guard**: Always use `.slice(0, MAX_LENGTH)` immediately upon destructuring the HTTP request body to protect the server from ReDoS (Regular Expression Denial of Service) and OOM (Out of Memory) attacks.
+
+## 11. Advanced Concurrency & Access Control
+- **Strict Tier Enforcement (Broken Access Control)**: When building premium features (e.g., "Pro only" modes), enforce the tier check explicitly against THAT specific mode value on the backend. Do not rely on overarching flags if the user can still bypass the tier by manually modifying the request payload.
+- **Race Condition Prevention (TOC-TOU)**: NEVER read a quota value (e.g., `trial_pro_remaining`) in Node.js, calculate the deduction, and write it back using a simple `UPDATE`. This is vulnerable to concurrent double-click requests. ALWAYS use an atomic SQL RPC (e.g., `decrement_trial_quota`) for any quota or financial deduction.
+- **Email Enumeration Anti-Pattern**: NEVER expose a public RPC like `check_email_exists` to the frontend for UI convenience. For password reset flows, always use the standard security UX ("If this email is in our system, a link has been sent...") to prevent attackers from scraping registered users.
+
