@@ -211,6 +211,11 @@ c:\Auto script\
    - **UI Upgrade (Premium SVG):** Replaced text emojis (⚠️⭐) with Heroicons SVG icons. Warning box is now color-coded: amber (⚠ triangle) for rating-too-high, blue (✦ sparkles) for rating-too-low. Uses Flexbox for icon+text alignment.
    - **Bug Fix (Sentiment Length):** Removed the 5-character minimum threshold in `detectSentiment()` so short Thai words like `แย่` (3 chars) correctly trigger the warning.
 
+21. **Pre-Launch Security Polish**:
+   - **CORS Middleware:** Added `frontend/functions/api/_middleware.js` to handle cross-origin requests for all endpoints.
+   - **Prompt Injection:** Wrapped user comments in `<user_comment>` XML tags in `feedback.js` to prevent Gemini instruction override.
+   - **Input Limits:** Enforced `maxLength={50}` on the Display Name field in `Settings.jsx`.
+   - **Cleaned Up Backups:** Removed `generate.backup.js` from the API folder to prevent vulnerable code from deploying as a live endpoint.
 
 ---
 
