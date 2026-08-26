@@ -98,7 +98,12 @@ function Login() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">รหัสผ่าน</label>
+          <div className="flex justify-between items-center mb-1">
+            <label className="block text-sm font-medium text-slate-700">รหัสผ่าน</label>
+            <Link to="/forgot-password" className="text-sm text-blue-600 hover:underline">
+              ลืมรหัสผ่าน?
+            </Link>
+          </div>
           <input
             type="password"
             required

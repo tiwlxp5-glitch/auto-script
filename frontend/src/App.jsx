@@ -9,6 +9,9 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
+
 // ─── Lazy with Auto-Retry (Fixes FE-01: ChunkLoadError) ──────────
 // เปรียบเหมือนร้านอาหาร "สั่งแล้วทำ" — ไม่เตรียมทุกจานล่วงหน้า
 // ช่วยลดขนาด Bundle แรกจาก ~551KB เหลือ ~200KB
@@ -76,6 +79,8 @@ function App() {
           {/* หน้าเข้าสู่ระบบและสมัครสมาชิก */}
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="reset-password" element={<ResetPassword />} />
 
           {/* หน้านโยบายเงื่อนไข (Legal) */}
           <Route path="legal" element={<Legal />} />

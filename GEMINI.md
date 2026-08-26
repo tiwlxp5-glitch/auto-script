@@ -45,6 +45,9 @@ Auto Script is a Thai-language SaaS web application that uses Google Gemini AI t
 - **Email**: Resend.com SMTP connected to Supabase Auth (domain: `autoscript-ai.com`)
 - **Tests**: Vitest with custom mock helpers (`mockDb.js`, `mockStripe.js`, `mockGemini.js`, `mockEnv.js`)
 
+### Supabase CLI Status
+- **Linked & Ready**: The Supabase CLI is already authenticated and linked to the project locally in the Windows terminal. Do NOT ask the user to run `supabase login` or `supabase link`. Assume commands like `supabase db push` can be executed directly.
+
 ### Key Files & Folders
 ```
 c:\Auto script\
@@ -163,3 +166,5 @@ c:\Auto script\
 10. **Speaker Tone & Natural Language Prompts**: Added the ability to select speaker gender (Female/Male) for AI script generation in the UI. Upgraded system prompts to strictly enforce Natural Language Rules (e.g., forbidden formal words, using filler words, breathing pauses) while preserving the original Elite Scriptwriter and 4 U's framework to maintain high-quality structure.
 
 11. **AI Intelligence Upgrade (Micro-Persona & Contextual Few-Shot)**: Implemented an advanced dynamic system prompt in `generate.js`. The AI now adopts 1 of 4 specific Micro-Personas ("เพื่อนสาวจอมแฉ", "ผู้เชี่ยวชาญ", "แม่ค้าสายฮาร์ดเซลล์", "ผู้ชายรีวิวจริงใจ") based on product context. Added structural Few-Shot references for breathing pauses ("...") and natural spoken wordplay. Increased Gemini temperature from 0.8 to 0.85 for higher creativity and better punchlines.
+
+12. **Forgot Password & Smart Recovery Flow**: Added `ForgotPassword.jsx` and `ResetPassword.jsx` using Supabase Auth. Implemented a smart fallback in `MainLayout.jsx` listening to `onAuthStateChange` (`'PASSWORD_RECOVERY'`) to automatically redirect users to the reset page if Supabase defaults to the Site URL, eliminating the need to manually configure Redirect URLs via the Supabase Dashboard.

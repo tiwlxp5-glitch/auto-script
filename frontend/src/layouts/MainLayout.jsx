@@ -1,7 +1,30 @@
-import { Outlet, Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import { supabase } from '../lib/supabase';
 
 function MainLayout() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    // ดักจับ Event จาก Supabase ถ้าระบบพบว่าเป็นการคลิกลิงก์ Reset Password จากอีเมล
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        navigate('/reset-password');
+      }
+    });
+
+    // สำรอง: เผื่อกรณีที่ Supabase ยังไม่ทันลบ hash ออกจาก URL
+    if (location.hash && location.hash.includes('type=recovery')) {
+      navigate('/reset-password');
+    }
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [location, navigate]);
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       <Navbar />
