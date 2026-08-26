@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { translateError } from '../utils/translateError';
 
 function Register() {
   const [email, setEmail] = useState('');
@@ -43,7 +44,7 @@ function Register() {
     });
 
     if (error) {
-      setError(error.message);
+      setError(translateError(error.message));
     } else {
       setResendCooldown(60);
       alert('ส่งอีเมลยืนยันตัวตนใหม่อีกครั้งแล้ว กรุณาเช็คกล่องข้อความของคุณ');
@@ -65,7 +66,7 @@ function Register() {
     });
 
     if (error) {
-      setError(error.message);
+      setError(translateError(error.message));
       setLoading(false);
     } else {
       if (data?.user && data?.session === null) {
@@ -92,7 +93,7 @@ function Register() {
     });
 
     if (error) {
-      setError(error.message);
+      setError(translateError(error.message));
     }
   };
 
@@ -102,7 +103,7 @@ function Register() {
       
       {error && (
         <div ref={errorRef} className="bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-4">
-          เกิดข้อผิดพลาด: {error}
+          {error}
         </div>
       )}
 

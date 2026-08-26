@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { translateError } from '../utils/translateError';
 
 function ResetPassword() {
   const [password, setPassword] = useState('');
@@ -23,7 +24,7 @@ function ResetPassword() {
     const hash = window.location.hash;
     if (hash && hash.includes('error_description=')) {
       const errorMsg = new URLSearchParams(hash.substring(1)).get('error_description');
-      setError(decodeURIComponent(errorMsg).replace(/\+/g, ' '));
+      setError(translateError(decodeURIComponent(errorMsg).replace(/\+/g, ' ')));
     }
     
     // Supabase PKCE flow auto-exchanges the token and establishes the session.
@@ -52,7 +53,7 @@ function ResetPassword() {
     });
 
     if (error) {
-      setError(error.message);
+      setError(translateError(error.message));
       setLoading(false);
     } else {
       // รหัสผ่านอัปเดตสำเร็จ ส่งกลับไปหน้า login หรือ create

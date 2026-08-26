@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { translateError } from '../utils/translateError';
 
 function ForgotPassword() {
   const [email, setEmail] = useState('');
@@ -27,7 +28,7 @@ function ForgotPassword() {
     });
 
     if (error) {
-      setError(error.message);
+      setError(translateError(error.message));
     } else {
       setMessage('ส่งลิงก์รีเซ็ตรหัสผ่านไปยังอีเมลของคุณแล้ว กรุณาตรวจสอบกล่องข้อความ (หรือโฟลเดอร์ขยะ)');
       setEmail('');

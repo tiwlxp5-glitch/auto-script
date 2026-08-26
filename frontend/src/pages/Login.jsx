@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { translateError } from '../utils/translateError';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -29,11 +30,7 @@ function Login() {
     });
 
     if (error) {
-      if (error.message.includes('Email not confirmed')) {
-        setError('กรุณายืนยันอีเมลของคุณก่อนเข้าสู่ระบบ (เช็คในกล่องข้อความหรือโฟลเดอร์ขยะ)');
-      } else {
-        setError('อีเมลหรือรหัสผ่านไม่ถูกต้อง หรือคุณอาจจะยังไม่ได้สมัครสมาชิกครับ');
-      }
+      setError(translateError(error.message));
       setLoading(false);
     } else {
       // ล็อกอินสำเร็จ ย้ายไปหน้าสร้างสคริปต์
@@ -50,7 +47,7 @@ function Login() {
     });
 
     if (error) {
-      setError(error.message);
+      setError(translateError(error.message));
     }
   };
 
