@@ -1,5 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
 import { createClient } from '@supabase/supabase-js';
+import { moderateText } from '../../src/lib/moderation/engine.js';
 
 const SYSTEM_PROMPT_SINGLE = `
 You are an elite Short-Form Video Scriptwriter and Neuromarketing Expert specializing in the Thai TikTok/Reels e-commerce market (Affiliate/ปักตะกร้า).
@@ -200,6 +201,31 @@ export async function onRequestPost(context) {
     const { productName, productDetails, pricePromo, videoLength, mode, competitor, targetAudience, isMultiVersion, falseBelief, mechanism } = body;
 
     supabaseAdmin = createClient(env.VITE_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY);
+
+    // --- Input Moderation ---
+    const combinedInput = [productName, productDetails, pricePromo, competitor, targetAudience, falseBelief, mechanism]
+      .filter(Boolean)
+      .join(' ');
+      
+    const modResult = moderateText(combinedInput);
+    if (modResult.action === 'block' || modResult.action === 'review') {
+      // Log without saving sensitive input
+      await supabaseAdmin.from('moderation_logs').insert({
+        user_id: user.id,
+        category: modResult.category,
+        severity: modResult.severity,
+        action: modResult.action,
+        matched_rule: modResult.matchedTerms.join(', ')
+      });
+
+      if (modResult.action === 'block' || modResult.severity === 'critical') {
+         return new Response(JSON.stringify({ error: "เนื้อหานี้ไม่สามารถส่งได้ เนื่องจากมีข้อความที่ไม่เหมาะสม" }), { 
+           status: 400, 
+           headers: { 'Content-Type': 'application/json' } 
+         });
+      }
+      // 'review' action passes through but is logged for admins
+    }
     const { data: profile } = await supabaseAdmin
       .from('profiles')
       .select('*')
@@ -288,6 +314,20 @@ export async function onRequestPost(context) {
       resultJson = { raw_multi_version: rawOutput };
     } else {
       resultJson = safeParseJson(rawOutput);
+    }
+
+    // --- Output Moderation ---
+    const outputModResult = moderateText(JSON.stringify(resultJson));
+    if (outputModResult.action === 'block') {
+      await supabaseAdmin.from('moderation_logs').insert({
+        user_id: user.id,
+        category: outputModResult.category,
+        severity: outputModResult.severity,
+        action: 'block',
+        matched_rule: `AI_OUTPUT_${outputModResult.matchedTerms.join(', ')}`
+      });
+      // We throw error here so credit logic handles refunding automatically in the catch block
+      throw new Error("AI สร้างเนื้อหาที่ไม่เหมาะสม (ถูกบล็อกโดยระบบรักษาความปลอดภัย)");
     }
 
     // 6. บันทึก History ลงฐานข้อมูล scripts เป็นลำดับแรก (Save first)

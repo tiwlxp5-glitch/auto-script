@@ -157,3 +157,5 @@ c:\Auto script\
    - Added strict client-side validation to prevent empty submissions and avoid 60s timeout errors.
 8. **UX Polish (Error Handling)**:
    - Implemented Auto-Scroll to validation errors globally (CreateScript, Login, Register) for better UX on mobile and long forms.
+
+9. **Content Moderation Engine**: Added a fast, deterministic server-side content moderation system. Prevents users from inputting profanity, threats, or illegal keywords with Thai obfuscation detection (e.g., zero-width char removal, space stripping). Logs 'blocked' and 'reviewed' content to moderation_logs (Supabase). Enforced before AI generation (saves credits/cost) and on AI output (failsafe).
