@@ -123,7 +123,11 @@ var ErrorBoundary = class extends React.Component {
 		return this.props.children;
 	}
 };
-var supabase = createClient("https://ieomclhmsmskxblcmxpc.supabase.co", "sb_publishable_JUe3tiuvTPBFtO3ViZIVeQ_I2bihkbC");
+//#endregion
+//#region app/lib/supabase.js
+var supabaseUrl = "https://ieomclhmsmskxblcmxpc.supabase.co".trim();
+var supabaseAnonKey = "sb_publishable_JUe3tiuvTPBFtO3ViZIVeQ_I2bihkbC".trim();
+var supabase = createClient(supabaseUrl, supabaseAnonKey);
 //#endregion
 //#region app/context/AuthContext.jsx
 var AuthContext = createContext({

@@ -1,53 +1,51 @@
-var __defProp = Object.defineProperty;
-var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
-
-// .wrangler/tmp/pages-5uVHgk/functionsWorker-0.03628886513571916.mjs
 var __create = Object.create;
-var __defProp2 = Object.defineProperty;
+var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __name2 = /* @__PURE__ */ __name((target, value) => __defProp2(target, "name", { value, configurable: true }), "__name");
-var __esm = /* @__PURE__ */ __name((fn, res, err) => /* @__PURE__ */ __name(function __init() {
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+var __esm = (fn, res, err) => function __init() {
   if (err) throw err[0];
   try {
     return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
   } catch (e) {
     throw err = [e], e;
   }
-}, "__init"), "__esm");
-var __commonJS = /* @__PURE__ */ __name((cb, mod) => /* @__PURE__ */ __name(function __require() {
+};
+var __commonJS = (cb, mod) => function __require() {
   try {
     return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
   } catch (e) {
     throw mod = 0, e;
   }
-}, "__require"), "__commonJS");
-var __export = /* @__PURE__ */ __name((target, all) => {
+};
+var __export = (target, all) => {
   for (var name in all)
-    __defProp2(target, name, { get: all[name], enumerable: true });
-}, "__export");
-var __copyProps = /* @__PURE__ */ __name((to, from, except, desc) => {
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
+var __copyProps = (to, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
     for (let key of __getOwnPropNames(from))
       if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp2(to, key, { get: /* @__PURE__ */ __name(() => from[key], "get"), enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
   }
   return to;
-}, "__copyProps");
-var __toESM = /* @__PURE__ */ __name((mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+};
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
   // If the importer is in node compatibility mode or this is not an ESM
   // file that has been converted to a CommonJS file using a Babel-
   // compatible transform (i.e. "__esModule" has not been set), then set
   // "default" to the CommonJS "module.exports" for node compatibility.
-  isNodeMode || !mod || !mod.__esModule ? __defProp2(target, "default", { value: mod, enumerable: true }) : target,
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
-)), "__toESM");
+));
+
+// ../node_modules/stripe/esm/Types.js
 var DEFAULT_BASE_ADDRESSES;
 var init_Types = __esm({
   "../node_modules/stripe/esm/Types.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     DEFAULT_BASE_ADDRESSES = {
       api: "api.stripe.com",
       files: "files.stripe.com",
@@ -56,14 +54,14 @@ var init_Types = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/utils.js
 function queryStringifyRequestData(data) {
   return stringifyRequestData(data);
 }
-__name(queryStringifyRequestData, "queryStringifyRequestData");
 function encodeQueryValue(value) {
   return encodeURIComponent(value).replace(/!/g, "%21").replace(/\*/g, "%2A").replace(/\(/g, "%28").replace(/\)/g, "%29").replace(/'/g, "%27").replace(/%5B/g, "[").replace(/%5D/g, "]");
 }
-__name(encodeQueryValue, "encodeQueryValue");
 function valueToString(value) {
   if (value instanceof Date) {
     return Math.floor(value.getTime() / 1e3).toString();
@@ -73,7 +71,6 @@ function valueToString(value) {
   }
   return String(value);
 }
-__name(valueToString, "valueToString");
 function stringifyRequestData(data) {
   const pairs = [];
   function encode(key, value) {
@@ -97,7 +94,6 @@ function stringifyRequestData(data) {
     }
   }
   __name(encode, "encode");
-  __name2(encode, "encode");
   if (typeof data === "object" && data !== null) {
     for (const key of Object.keys(data)) {
       encode(key, data[key]);
@@ -105,11 +101,9 @@ function stringifyRequestData(data) {
   }
   return pairs.join("&");
 }
-__name(stringifyRequestData, "stringifyRequestData");
 function isValidEncodeUriComponentType(value) {
   return ["number", "string", "boolean"].includes(typeof value);
 }
-__name(isValidEncodeUriComponentType, "isValidEncodeUriComponentType");
 function processOptions(options) {
   const result = {
     authenticator: null,
@@ -162,7 +156,6 @@ function processOptions(options) {
   }
   return result;
 }
-__name(processOptions, "processOptions");
 function removeNullish(obj) {
   if (typeof obj !== "object") {
     throw new Error("Argument must be an object");
@@ -174,7 +167,6 @@ function removeNullish(obj) {
     return result;
   }, {});
 }
-__name(removeNullish, "removeNullish");
 function normalizeHeaders(obj) {
   if (!(obj && typeof obj === "object")) {
     return obj;
@@ -184,11 +176,9 @@ function normalizeHeaders(obj) {
     return result;
   }, {});
 }
-__name(normalizeHeaders, "normalizeHeaders");
 function normalizeHeader(header) {
   return header.split("-").map((text) => text.charAt(0).toUpperCase() + text.substr(1).toLowerCase()).join("-");
 }
-__name(normalizeHeader, "normalizeHeader");
 function pascalToCamelCase(name) {
   if (name === "OAuth") {
     return "oauth";
@@ -196,15 +186,13 @@ function pascalToCamelCase(name) {
     return name[0].toLowerCase() + name.substring(1);
   }
 }
-__name(pascalToCamelCase, "pascalToCamelCase");
 function isObject(obj) {
   const type = typeof obj;
   return (type === "function" || type === "object") && !!obj;
 }
-__name(isObject, "isObject");
 function flattenAndStringify(data) {
   const result = {};
-  const step = /* @__PURE__ */ __name2((obj, prevKey) => {
+  const step = /* @__PURE__ */ __name((obj, prevKey) => {
     Object.entries(obj).forEach(([key, value]) => {
       const newKey = prevKey ? `${prevKey}[${key}]` : key;
       if (isObject(value)) {
@@ -221,7 +209,6 @@ function flattenAndStringify(data) {
   step(data, null);
   return result;
 }
-__name(flattenAndStringify, "flattenAndStringify");
 function validateInteger(name, n, defaultVal) {
   if (!Number.isInteger(n)) {
     if (defaultVal !== void 0) {
@@ -232,7 +219,6 @@ function validateInteger(name, n, defaultVal) {
   }
   return n;
 }
-__name(validateInteger, "validateInteger");
 function detectAIAgent(env2) {
   for (const [envVar, agentName] of AI_AGENTS) {
     if (env2[envVar]) {
@@ -241,52 +227,44 @@ function detectAIAgent(env2) {
   }
   return "";
 }
-__name(detectAIAgent, "detectAIAgent");
 function createApiKeyAuthenticator(apiKey) {
-  const authenticator = /* @__PURE__ */ __name2((request) => {
+  const authenticator = /* @__PURE__ */ __name((request) => {
     request.headers.Authorization = "Bearer " + apiKey;
     return Promise.resolve();
   }, "authenticator");
   authenticator._apiKey = apiKey;
   return authenticator;
 }
-__name(createApiKeyAuthenticator, "createApiKeyAuthenticator");
 function dateTimeReplacer(key, value) {
   if (this[key] instanceof Date) {
     return Math.floor(this[key].getTime() / 1e3).toString();
   }
   return value;
 }
-__name(dateTimeReplacer, "dateTimeReplacer");
 function jsonStringifyRequestData(data) {
   return JSON.stringify(data, dateTimeReplacer);
 }
-__name(jsonStringifyRequestData, "jsonStringifyRequestData");
 function getAPIMode(path) {
   if (!path) {
     return "v1";
   }
   return path.startsWith("/v2") ? "v2" : "v1";
 }
-__name(getAPIMode, "getAPIMode");
 function parseHttpHeaderAsString(header) {
   if (Array.isArray(header)) {
     return header.join(", ");
   }
   return String(header);
 }
-__name(parseHttpHeaderAsString, "parseHttpHeaderAsString");
 function parseHeadersForFetch(headers) {
   return Object.entries(headers).map(([key, value]) => {
     return [key, parseHttpHeaderAsString(value)];
   });
 }
-__name(parseHeadersForFetch, "parseHeadersForFetch");
 function parsePayload(payload) {
   const raw = payload instanceof Uint8Array ? new TextDecoder("utf8").decode(payload) : payload;
   return JSON.parse(raw);
 }
-__name(parsePayload, "parsePayload");
 function maybeExtractFromCloudProviderEnvelope(payload) {
   const parsed = parsePayload(payload);
   if ("detail" in parsed) {
@@ -300,7 +278,6 @@ function maybeExtractFromCloudProviderEnvelope(payload) {
   }
   throw new Error("Unrecognized event format. The payload must be an AWS EventBridge/Azure Event Grid event envelope or a Stripe webhook (thin event notification or snapshot).");
 }
-__name(maybeExtractFromCloudProviderEnvelope, "maybeExtractFromCloudProviderEnvelope");
 function attachCallSiteToError(err, callSiteStack) {
   if (!err || !err.stack || !callSiteStack) {
     return;
@@ -311,18 +288,15 @@ function attachCallSiteToError(err, callSiteStack) {
   err.stack = `${baseStack}${CALL_SITE_MARKER}
 ${callerFrames}`;
 }
-__name(attachCallSiteToError, "attachCallSiteToError");
-var makeURLInterpolator;
-var AI_AGENTS;
-var CALL_SITE_MARKER;
+var makeURLInterpolator, AI_AGENTS, CALL_SITE_MARKER;
 var init_utils = __esm({
   "../node_modules/stripe/esm/utils.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_Types();
-    __name2(queryStringifyRequestData, "queryStringifyRequestData");
-    __name2(encodeQueryValue, "encodeQueryValue");
-    __name2(valueToString, "valueToString");
-    __name2(stringifyRequestData, "stringifyRequestData");
+    __name(queryStringifyRequestData, "queryStringifyRequestData");
+    __name(encodeQueryValue, "encodeQueryValue");
+    __name(valueToString, "valueToString");
+    __name(stringifyRequestData, "stringifyRequestData");
     makeURLInterpolator = /* @__PURE__ */ (() => {
       const rc = {
         "\n": "\\n",
@@ -342,15 +316,15 @@ var init_utils = __esm({
         };
       };
     })();
-    __name2(isValidEncodeUriComponentType, "isValidEncodeUriComponentType");
-    __name2(processOptions, "processOptions");
-    __name2(removeNullish, "removeNullish");
-    __name2(normalizeHeaders, "normalizeHeaders");
-    __name2(normalizeHeader, "normalizeHeader");
-    __name2(pascalToCamelCase, "pascalToCamelCase");
-    __name2(isObject, "isObject");
-    __name2(flattenAndStringify, "flattenAndStringify");
-    __name2(validateInteger, "validateInteger");
+    __name(isValidEncodeUriComponentType, "isValidEncodeUriComponentType");
+    __name(processOptions, "processOptions");
+    __name(removeNullish, "removeNullish");
+    __name(normalizeHeaders, "normalizeHeaders");
+    __name(normalizeHeader, "normalizeHeader");
+    __name(pascalToCamelCase, "pascalToCamelCase");
+    __name(isObject, "isObject");
+    __name(flattenAndStringify, "flattenAndStringify");
+    __name(validateInteger, "validateInteger");
     AI_AGENTS = [
       // The beginning of the section generated from our OpenAPI spec
       ["ANTIGRAVITY_CLI_ALIAS", "antigravity"],
@@ -366,31 +340,28 @@ var init_utils = __esm({
       ["OPENCODE", "open_code"]
       // The end of the section generated from our OpenAPI spec
     ];
-    __name2(detectAIAgent, "detectAIAgent");
-    __name2(createApiKeyAuthenticator, "createApiKeyAuthenticator");
-    __name2(dateTimeReplacer, "dateTimeReplacer");
-    __name2(jsonStringifyRequestData, "jsonStringifyRequestData");
-    __name2(getAPIMode, "getAPIMode");
-    __name2(parseHttpHeaderAsString, "parseHttpHeaderAsString");
-    __name2(parseHeadersForFetch, "parseHeadersForFetch");
-    __name2(parsePayload, "parsePayload");
-    __name2(maybeExtractFromCloudProviderEnvelope, "maybeExtractFromCloudProviderEnvelope");
+    __name(detectAIAgent, "detectAIAgent");
+    __name(createApiKeyAuthenticator, "createApiKeyAuthenticator");
+    __name(dateTimeReplacer, "dateTimeReplacer");
+    __name(jsonStringifyRequestData, "jsonStringifyRequestData");
+    __name(getAPIMode, "getAPIMode");
+    __name(parseHttpHeaderAsString, "parseHttpHeaderAsString");
+    __name(parseHeadersForFetch, "parseHeadersForFetch");
+    __name(parsePayload, "parsePayload");
+    __name(maybeExtractFromCloudProviderEnvelope, "maybeExtractFromCloudProviderEnvelope");
     CALL_SITE_MARKER = "\nOriginating from:";
-    __name2(attachCallSiteToError, "attachCallSiteToError");
+    __name(attachCallSiteToError, "attachCallSiteToError");
   }
 });
-var HttpClient;
-var HttpClientResponse;
-var HttpClientRuntimeError;
+
+// ../node_modules/stripe/esm/net/HttpClient.js
+var HttpClient, HttpClientResponse, HttpClientRuntimeError;
 var init_HttpClient = __esm({
   "../node_modules/stripe/esm/net/HttpClient.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     HttpClient = class _HttpClient {
       static {
-        __name(this, "_HttpClient");
-      }
-      static {
-        __name2(this, "HttpClient");
+        __name(this, "HttpClient");
       }
       /** The client name used for diagnostics. */
       getClientName() {
@@ -411,9 +382,6 @@ var init_HttpClient = __esm({
     HttpClientResponse = class {
       static {
         __name(this, "HttpClientResponse");
-      }
-      static {
-        __name2(this, "HttpClientResponse");
       }
       constructor(statusCode, headers) {
         this._statusCode = statusCode;
@@ -449,25 +417,20 @@ var init_HttpClient = __esm({
       static {
         __name(this, "HttpClientRuntimeError");
       }
-      static {
-        __name2(this, "HttpClientRuntimeError");
-      }
     };
   }
 });
-var FetchHttpClient;
-var FetchHttpClientResponse;
+
+// ../node_modules/stripe/esm/net/FetchHttpClient.js
+var FetchHttpClient, FetchHttpClientResponse;
 var init_FetchHttpClient = __esm({
   "../node_modules/stripe/esm/net/FetchHttpClient.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_utils();
     init_HttpClient();
     FetchHttpClient = class _FetchHttpClient extends HttpClient {
       static {
-        __name(this, "_FetchHttpClient");
-      }
-      static {
-        __name2(this, "FetchHttpClient");
+        __name(this, "FetchHttpClient");
       }
       constructor(fetchFn) {
         super();
@@ -548,10 +511,7 @@ var init_FetchHttpClient = __esm({
     };
     FetchHttpClientResponse = class _FetchHttpClientResponse extends HttpClientResponse {
       static {
-        __name(this, "_FetchHttpClientResponse");
-      }
-      static {
-        __name2(this, "FetchHttpClientResponse");
+        __name(this, "FetchHttpClientResponse");
       }
       constructor(res) {
         super(res.status, _FetchHttpClientResponse._transformHeadersToObject(res.headers));
@@ -580,17 +540,15 @@ var init_FetchHttpClient = __esm({
     };
   }
 });
-var CryptoProvider;
-var CryptoProviderOnlySupportsAsyncError;
+
+// ../node_modules/stripe/esm/crypto/CryptoProvider.js
+var CryptoProvider, CryptoProviderOnlySupportsAsyncError;
 var init_CryptoProvider = __esm({
   "../node_modules/stripe/esm/crypto/CryptoProvider.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     CryptoProvider = class {
       static {
         __name(this, "CryptoProvider");
-      }
-      static {
-        __name2(this, "CryptoProvider");
       }
       /**
        * Computes a SHA-256 HMAC given a secret and a payload (encoded in UTF-8).
@@ -628,24 +586,19 @@ var init_CryptoProvider = __esm({
       static {
         __name(this, "CryptoProviderOnlySupportsAsyncError");
       }
-      static {
-        __name2(this, "CryptoProviderOnlySupportsAsyncError");
-      }
     };
   }
 });
-var SubtleCryptoProvider;
-var byteHexMapping;
+
+// ../node_modules/stripe/esm/crypto/SubtleCryptoProvider.js
+var SubtleCryptoProvider, byteHexMapping;
 var init_SubtleCryptoProvider = __esm({
   "../node_modules/stripe/esm/crypto/SubtleCryptoProvider.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_CryptoProvider();
     SubtleCryptoProvider = class extends CryptoProvider {
       static {
         __name(this, "SubtleCryptoProvider");
-      }
-      static {
-        __name2(this, "SubtleCryptoProvider");
       }
       constructor(subtleCrypto) {
         super();
@@ -681,18 +634,17 @@ var init_SubtleCryptoProvider = __esm({
     }
   }
 });
+
+// ../node_modules/stripe/esm/platform/PlatformFunctions.js
 var PlatformFunctions;
 var init_PlatformFunctions = __esm({
   "../node_modules/stripe/esm/platform/PlatformFunctions.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_FetchHttpClient();
     init_SubtleCryptoProvider();
     PlatformFunctions = class {
       static {
         __name(this, "PlatformFunctions");
-      }
-      static {
-        __name2(this, "PlatformFunctions");
       }
       constructor() {
         this._fetchFn = null;
@@ -821,17 +773,15 @@ var init_PlatformFunctions = __esm({
     };
   }
 });
-var _StripeEvent;
-var StripeEmitter;
+
+// ../node_modules/stripe/esm/StripeEmitter.js
+var _StripeEvent, StripeEmitter;
 var init_StripeEmitter = __esm({
   "../node_modules/stripe/esm/StripeEmitter.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     _StripeEvent = class extends Event {
       static {
         __name(this, "_StripeEvent");
-      }
-      static {
-        __name2(this, "_StripeEvent");
       }
       constructor(eventName, data) {
         super(eventName);
@@ -842,15 +792,12 @@ var init_StripeEmitter = __esm({
       static {
         __name(this, "StripeEmitter");
       }
-      static {
-        __name2(this, "StripeEmitter");
-      }
       constructor() {
         this.eventTarget = new EventTarget();
         this.listenerMapping = /* @__PURE__ */ new Map();
       }
       on(eventName, listener) {
-        const listenerWrapper = /* @__PURE__ */ __name2((event) => {
+        const listenerWrapper = /* @__PURE__ */ __name((event) => {
           listener(event.data);
         }, "listenerWrapper");
         this.listenerMapping.set(listener, listenerWrapper);
@@ -862,7 +809,7 @@ var init_StripeEmitter = __esm({
         return this.eventTarget.removeEventListener(eventName, listenerWrapper);
       }
       once(eventName, listener) {
-        const listenerWrapper = /* @__PURE__ */ __name2((event) => {
+        const listenerWrapper = /* @__PURE__ */ __name((event) => {
           listener(event.data);
         }, "listenerWrapper");
         this.listenerMapping.set(listener, listenerWrapper);
@@ -876,18 +823,17 @@ var init_StripeEmitter = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/platform/WebPlatformFunctions.js
 var WebPlatformFunctions;
 var init_WebPlatformFunctions = __esm({
   "../node_modules/stripe/esm/platform/WebPlatformFunctions.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_PlatformFunctions();
     init_StripeEmitter();
     WebPlatformFunctions = class extends PlatformFunctions {
       static {
         __name(this, "WebPlatformFunctions");
-      }
-      static {
-        __name2(this, "WebPlatformFunctions");
       }
       /** @override */
       createEmitter() {
@@ -919,14 +865,12 @@ var init_WebPlatformFunctions = __esm({
     };
   }
 });
-var ROUNDING_PRESETS;
-var PLAIN_NOTATION_DIGIT_LIMIT;
-var MAX_EXPONENT;
-var DecimalImpl;
-var Decimal;
+
+// ../node_modules/stripe/esm/Decimal.js
+var ROUNDING_PRESETS, PLAIN_NOTATION_DIGIT_LIMIT, MAX_EXPONENT, DecimalImpl, Decimal;
 var init_Decimal = __esm({
   "../node_modules/stripe/esm/Decimal.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     ROUNDING_PRESETS = {
       "ubb-usage-count": { mode: "significant-figures", value: 15 },
       "v1-api": { mode: "decimal-places", value: 12 }
@@ -935,10 +879,7 @@ var init_Decimal = __esm({
     MAX_EXPONENT = 1e6;
     DecimalImpl = class _DecimalImpl {
       static {
-        __name(this, "_DecimalImpl");
-      }
-      static {
-        __name2(this, "DecimalImpl");
+        __name(this, "DecimalImpl");
       }
       /**
        * Construct and normalise a decimal value.
@@ -1511,7 +1452,7 @@ var init_Decimal = __esm({
         if (decimalPlaces < 0 || !Number.isInteger(decimalPlaces)) {
           throw new Error("decimalPlaces must be a non-negative integer");
         }
-        const formatFixed = /* @__PURE__ */ __name2((coef) => {
+        const formatFixed = /* @__PURE__ */ __name((coef) => {
           const coeffStr = coef.toString();
           const isNeg = coeffStr.startsWith("-");
           const absCoeffStr = isNeg ? coeffStr.slice(1) : coeffStr;
@@ -1637,57 +1578,38 @@ var init_Decimal = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/Error.js
 var Error_exports = {};
 __export(Error_exports, {
-  RateLimitError: /* @__PURE__ */ __name(() => RateLimitError, "RateLimitError"),
-  StripeAPIError: /* @__PURE__ */ __name(() => StripeAPIError, "StripeAPIError"),
-  StripeAuthenticationError: /* @__PURE__ */ __name(() => StripeAuthenticationError, "StripeAuthenticationError"),
-  StripeCardError: /* @__PURE__ */ __name(() => StripeCardError, "StripeCardError"),
-  StripeConnectionError: /* @__PURE__ */ __name(() => StripeConnectionError, "StripeConnectionError"),
-  StripeError: /* @__PURE__ */ __name(() => StripeError, "StripeError"),
-  StripeIdempotencyError: /* @__PURE__ */ __name(() => StripeIdempotencyError, "StripeIdempotencyError"),
-  StripeInvalidClientError: /* @__PURE__ */ __name(() => StripeInvalidClientError, "StripeInvalidClientError"),
-  StripeInvalidGrantError: /* @__PURE__ */ __name(() => StripeInvalidGrantError, "StripeInvalidGrantError"),
-  StripeInvalidRequestError: /* @__PURE__ */ __name(() => StripeInvalidRequestError, "StripeInvalidRequestError"),
-  StripeInvalidScopeError: /* @__PURE__ */ __name(() => StripeInvalidScopeError, "StripeInvalidScopeError"),
-  StripeOAuthError: /* @__PURE__ */ __name(() => StripeOAuthError, "StripeOAuthError"),
-  StripeOAuthInvalidRequestError: /* @__PURE__ */ __name(() => StripeOAuthInvalidRequestError, "StripeOAuthInvalidRequestError"),
-  StripePermissionError: /* @__PURE__ */ __name(() => StripePermissionError, "StripePermissionError"),
-  StripeRateLimitError: /* @__PURE__ */ __name(() => StripeRateLimitError, "StripeRateLimitError"),
-  StripeSignatureVerificationError: /* @__PURE__ */ __name(() => StripeSignatureVerificationError, "StripeSignatureVerificationError"),
-  StripeUnsupportedGrantTypeError: /* @__PURE__ */ __name(() => StripeUnsupportedGrantTypeError, "StripeUnsupportedGrantTypeError"),
-  StripeUnsupportedResponseTypeError: /* @__PURE__ */ __name(() => StripeUnsupportedResponseTypeError, "StripeUnsupportedResponseTypeError"),
-  TemporarySessionExpiredError: /* @__PURE__ */ __name(() => TemporarySessionExpiredError, "TemporarySessionExpiredError"),
-  generateOAuthError: /* @__PURE__ */ __name(() => generateOAuthError, "generateOAuthError"),
-  generateV1Error: /* @__PURE__ */ __name(() => generateV1Error, "generateV1Error"),
-  generateV2Error: /* @__PURE__ */ __name(() => generateV2Error, "generateV2Error")
+  RateLimitError: () => RateLimitError,
+  StripeAPIError: () => StripeAPIError,
+  StripeAuthenticationError: () => StripeAuthenticationError,
+  StripeCardError: () => StripeCardError,
+  StripeConnectionError: () => StripeConnectionError,
+  StripeError: () => StripeError,
+  StripeIdempotencyError: () => StripeIdempotencyError,
+  StripeInvalidClientError: () => StripeInvalidClientError,
+  StripeInvalidGrantError: () => StripeInvalidGrantError,
+  StripeInvalidRequestError: () => StripeInvalidRequestError,
+  StripeInvalidScopeError: () => StripeInvalidScopeError,
+  StripeOAuthError: () => StripeOAuthError,
+  StripeOAuthInvalidRequestError: () => StripeOAuthInvalidRequestError,
+  StripePermissionError: () => StripePermissionError,
+  StripeRateLimitError: () => StripeRateLimitError,
+  StripeSignatureVerificationError: () => StripeSignatureVerificationError,
+  StripeUnsupportedGrantTypeError: () => StripeUnsupportedGrantTypeError,
+  StripeUnsupportedResponseTypeError: () => StripeUnsupportedResponseTypeError,
+  TemporarySessionExpiredError: () => TemporarySessionExpiredError,
+  generateOAuthError: () => generateOAuthError,
+  generateV1Error: () => generateV1Error,
+  generateV2Error: () => generateV2Error
 });
-var generateV1Error;
-var generateOAuthError;
-var generateV2Error;
-var StripeError;
-var StripeCardError;
-var StripeInvalidRequestError;
-var StripeAPIError;
-var StripeAuthenticationError;
-var StripePermissionError;
-var StripeRateLimitError;
-var StripeConnectionError;
-var StripeSignatureVerificationError;
-var StripeIdempotencyError;
-var StripeOAuthError;
-var StripeInvalidGrantError;
-var StripeInvalidClientError;
-var StripeOAuthInvalidRequestError;
-var StripeInvalidScopeError;
-var StripeUnsupportedGrantTypeError;
-var StripeUnsupportedResponseTypeError;
-var RateLimitError;
-var TemporarySessionExpiredError;
+var generateV1Error, generateOAuthError, generateV2Error, StripeError, StripeCardError, StripeInvalidRequestError, StripeAPIError, StripeAuthenticationError, StripePermissionError, StripeRateLimitError, StripeConnectionError, StripeSignatureVerificationError, StripeIdempotencyError, StripeOAuthError, StripeInvalidGrantError, StripeInvalidClientError, StripeOAuthInvalidRequestError, StripeInvalidScopeError, StripeUnsupportedGrantTypeError, StripeUnsupportedResponseTypeError, RateLimitError, TemporarySessionExpiredError;
 var init_Error = __esm({
   "../node_modules/stripe/esm/Error.js"() {
-    init_functionsRoutes_0_6131355600780521();
-    generateV1Error = /* @__PURE__ */ __name2((rawStripeError) => {
+    init_functionsRoutes_0_7667722716287171();
+    generateV1Error = /* @__PURE__ */ __name((rawStripeError) => {
       const statusCode = rawStripeError.statusCode;
       if (statusCode === 429 || statusCode === 400 && rawStripeError.code === "rate_limit") {
         return new StripeRateLimitError(rawStripeError);
@@ -1709,7 +1631,7 @@ var init_Error = __esm({
       }
       return new StripeAPIError(rawStripeError);
     }, "generateV1Error");
-    generateOAuthError = /* @__PURE__ */ __name2((rawStripeError) => {
+    generateOAuthError = /* @__PURE__ */ __name((rawStripeError) => {
       const oauthType = rawStripeError.type;
       switch (oauthType) {
         case "invalid_grant":
@@ -1728,7 +1650,7 @@ var init_Error = __esm({
           return new StripeOAuthError(rawStripeError);
       }
     }, "generateOAuthError");
-    generateV2Error = /* @__PURE__ */ __name2((rawStripeError) => {
+    generateV2Error = /* @__PURE__ */ __name((rawStripeError) => {
       switch (rawStripeError.type) {
         case "idempotency_error":
           return new StripeIdempotencyError(rawStripeError);
@@ -1747,9 +1669,6 @@ var init_Error = __esm({
     StripeError = class extends Error {
       static {
         __name(this, "StripeError");
-      }
-      static {
-        __name2(this, "StripeError");
       }
       // errorProperties: The end of the section generated from our OpenAPI spec
       constructor(raw = {}, type = null) {
@@ -1785,9 +1704,6 @@ var init_Error = __esm({
       static {
         __name(this, "StripeCardError");
       }
-      static {
-        __name2(this, "StripeCardError");
-      }
       constructor(raw = {}) {
         super(raw, "StripeCardError");
         this.decline_code = raw.decline_code ?? "";
@@ -1797,9 +1713,6 @@ var init_Error = __esm({
       static {
         __name(this, "StripeInvalidRequestError");
       }
-      static {
-        __name2(this, "StripeInvalidRequestError");
-      }
       constructor(raw = {}) {
         super(raw, "StripeInvalidRequestError");
       }
@@ -1807,9 +1720,6 @@ var init_Error = __esm({
     StripeAPIError = class extends StripeError {
       static {
         __name(this, "StripeAPIError");
-      }
-      static {
-        __name2(this, "StripeAPIError");
       }
       constructor(raw = {}) {
         super(raw, "StripeAPIError");
@@ -1819,9 +1729,6 @@ var init_Error = __esm({
       static {
         __name(this, "StripeAuthenticationError");
       }
-      static {
-        __name2(this, "StripeAuthenticationError");
-      }
       constructor(raw = {}) {
         super(raw, "StripeAuthenticationError");
       }
@@ -1829,9 +1736,6 @@ var init_Error = __esm({
     StripePermissionError = class extends StripeError {
       static {
         __name(this, "StripePermissionError");
-      }
-      static {
-        __name2(this, "StripePermissionError");
       }
       constructor(raw = {}) {
         super(raw, "StripePermissionError");
@@ -1841,9 +1745,6 @@ var init_Error = __esm({
       static {
         __name(this, "StripeRateLimitError");
       }
-      static {
-        __name2(this, "StripeRateLimitError");
-      }
       constructor(raw = {}) {
         super(raw, "StripeRateLimitError");
       }
@@ -1852,9 +1753,6 @@ var init_Error = __esm({
       static {
         __name(this, "StripeConnectionError");
       }
-      static {
-        __name2(this, "StripeConnectionError");
-      }
       constructor(raw = {}) {
         super(raw, "StripeConnectionError");
       }
@@ -1862,9 +1760,6 @@ var init_Error = __esm({
     StripeSignatureVerificationError = class extends StripeError {
       static {
         __name(this, "StripeSignatureVerificationError");
-      }
-      static {
-        __name2(this, "StripeSignatureVerificationError");
       }
       constructor(header, payload, raw = {}) {
         super(raw, "StripeSignatureVerificationError");
@@ -1876,9 +1771,6 @@ var init_Error = __esm({
       static {
         __name(this, "StripeIdempotencyError");
       }
-      static {
-        __name2(this, "StripeIdempotencyError");
-      }
       constructor(raw = {}) {
         super(raw, "StripeIdempotencyError");
       }
@@ -1886,9 +1778,6 @@ var init_Error = __esm({
     StripeOAuthError = class extends StripeError {
       static {
         __name(this, "StripeOAuthError");
-      }
-      static {
-        __name2(this, "StripeOAuthError");
       }
       constructor(raw = {}, type = "StripeOAuthError") {
         super(raw, type);
@@ -1898,9 +1787,6 @@ var init_Error = __esm({
       static {
         __name(this, "StripeInvalidGrantError");
       }
-      static {
-        __name2(this, "StripeInvalidGrantError");
-      }
       constructor(raw = {}) {
         super(raw, "StripeInvalidGrantError");
       }
@@ -1908,9 +1794,6 @@ var init_Error = __esm({
     StripeInvalidClientError = class extends StripeOAuthError {
       static {
         __name(this, "StripeInvalidClientError");
-      }
-      static {
-        __name2(this, "StripeInvalidClientError");
       }
       constructor(raw = {}) {
         super(raw, "StripeInvalidClientError");
@@ -1920,9 +1803,6 @@ var init_Error = __esm({
       static {
         __name(this, "StripeOAuthInvalidRequestError");
       }
-      static {
-        __name2(this, "StripeOAuthInvalidRequestError");
-      }
       constructor(raw = {}) {
         super(raw, "StripeOAuthInvalidRequestError");
       }
@@ -1930,9 +1810,6 @@ var init_Error = __esm({
     StripeInvalidScopeError = class extends StripeOAuthError {
       static {
         __name(this, "StripeInvalidScopeError");
-      }
-      static {
-        __name2(this, "StripeInvalidScopeError");
       }
       constructor(raw = {}) {
         super(raw, "StripeInvalidScopeError");
@@ -1942,9 +1819,6 @@ var init_Error = __esm({
       static {
         __name(this, "StripeUnsupportedGrantTypeError");
       }
-      static {
-        __name2(this, "StripeUnsupportedGrantTypeError");
-      }
       constructor(raw = {}) {
         super(raw, "StripeUnsupportedGrantTypeError");
       }
@@ -1952,9 +1826,6 @@ var init_Error = __esm({
     StripeUnsupportedResponseTypeError = class extends StripeOAuthError {
       static {
         __name(this, "StripeUnsupportedResponseTypeError");
-      }
-      static {
-        __name2(this, "StripeUnsupportedResponseTypeError");
       }
       constructor(raw = {}) {
         super(raw, "StripeUnsupportedResponseTypeError");
@@ -1964,9 +1835,6 @@ var init_Error = __esm({
       static {
         __name(this, "RateLimitError");
       }
-      static {
-        __name2(this, "RateLimitError");
-      }
       constructor(rawStripeError = {}) {
         super(rawStripeError, "RateLimitError");
       }
@@ -1975,28 +1843,24 @@ var init_Error = __esm({
       static {
         __name(this, "TemporarySessionExpiredError");
       }
-      static {
-        __name2(this, "TemporarySessionExpiredError");
-      }
       constructor(rawStripeError = {}) {
         super(rawStripeError, "TemporarySessionExpiredError");
       }
     };
   }
 });
+
+// ../node_modules/stripe/esm/RequestSender.js
 var RequestSender;
 var init_RequestSender = __esm({
   "../node_modules/stripe/esm/RequestSender.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_Error();
     init_HttpClient();
     init_utils();
     RequestSender = class _RequestSender {
       static {
-        __name(this, "_RequestSender");
-      }
-      static {
-        __name2(this, "RequestSender");
+        __name(this, "RequestSender");
       }
       constructor(stripe, maxBufferedRequestMetric) {
         this._stripe = stripe;
@@ -2053,7 +1917,7 @@ var init_RequestSender = __esm({
         return (res) => {
           const headers = res.getHeaders();
           this._emitStripeNotice(headers);
-          const streamCompleteCallback = /* @__PURE__ */ __name2(() => {
+          const streamCompleteCallback = /* @__PURE__ */ __name(() => {
             const responseEvent = this._makeResponseEvent(requestEvent, res.getStatusCode(), headers);
             this._stripe._emitter.emit("response", responseEvent);
             this._recordRequestMetrics(this._getRequestId(headers), responseEvent.elapsed, usage);
@@ -2169,7 +2033,7 @@ var init_RequestSender = __esm({
       }
       _defaultIdempotencyKey(method, settings, apiMode) {
         const maxRetries = this._getMaxNetworkRetries(settings);
-        const genKey = /* @__PURE__ */ __name2(() => `stripe-node-retry-${this._stripe._platformFunctions.uuid4()}`, "genKey");
+        const genKey = /* @__PURE__ */ __name(() => `stripe-node-retry-${this._stripe._platformFunctions.uuid4()}`, "genKey");
         if (apiMode === "v2") {
           if (method === "POST" || method === "DELETE") {
             return genKey();
@@ -2283,10 +2147,10 @@ var init_RequestSender = __esm({
         let requestData;
         authenticator = authenticator ?? this._stripe._authenticator;
         const apiMode = getAPIMode(path);
-        const retryRequest = /* @__PURE__ */ __name2((requestFn, apiVersion, headers, requestRetries) => {
+        const retryRequest = /* @__PURE__ */ __name((requestFn, apiVersion, headers, requestRetries) => {
           return setTimeout(requestFn, this._getSleepTimeInMS(requestRetries), apiVersion, headers, requestRetries + 1);
         }, "retryRequest");
-        const makeRequest = /* @__PURE__ */ __name2((apiVersion, headers, numRetries) => {
+        const makeRequest = /* @__PURE__ */ __name((apiVersion, headers, numRetries) => {
           const timeout = options.settings && options.settings.timeout && Number.isInteger(options.settings.timeout) && options.settings.timeout >= 0 ? options.settings.timeout : this._stripe.getApiField("timeout");
           const request = {
             host: host || this._stripe.getApiField("host"),
@@ -2344,7 +2208,7 @@ var init_RequestSender = __esm({
             });
           });
         }, "makeRequest");
-        const prepareAndMakeRequest = /* @__PURE__ */ __name2((error, data2) => {
+        const prepareAndMakeRequest = /* @__PURE__ */ __name((error, data2) => {
           if (error) {
             return callback(error);
           }
@@ -2382,13 +2246,14 @@ var init_RequestSender = __esm({
     };
   }
 });
-var coerceV2RequestData;
-var coerceV2ResponseData;
+
+// ../node_modules/stripe/esm/V2Coercion.js
+var coerceV2RequestData, coerceV2ResponseData;
 var init_V2Coercion = __esm({
   "../node_modules/stripe/esm/V2Coercion.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_Decimal();
-    coerceV2RequestData = /* @__PURE__ */ __name2((data, schema) => {
+    coerceV2RequestData = /* @__PURE__ */ __name((data, schema) => {
       if (data == null) {
         return data;
       }
@@ -2419,7 +2284,7 @@ var init_V2Coercion = __esm({
           return coerceV2RequestData(data, schema.inner);
       }
     }, "coerceV2RequestData");
-    coerceV2ResponseData = /* @__PURE__ */ __name2((data, schema) => {
+    coerceV2ResponseData = /* @__PURE__ */ __name((data, schema) => {
       if (data == null) {
         return data;
       }
@@ -2469,13 +2334,14 @@ var init_V2Coercion = __esm({
     }, "coerceV2ResponseData");
   }
 });
+
+// ../node_modules/stripe/esm/autoPagination.js
 function getAsyncIteratorSymbol() {
   if (typeof Symbol !== "undefined" && Symbol.asyncIterator) {
     return Symbol.asyncIterator;
   }
   return "@@asyncIterator";
 }
-__name(getAsyncIteratorSymbol, "getAsyncIteratorSymbol");
 function getDoneCallback(args) {
   if (args.length < 2) {
     return null;
@@ -2486,7 +2352,6 @@ function getDoneCallback(args) {
   }
   return onDone;
 }
-__name(getDoneCallback, "getDoneCallback");
 function getItemCallback(args) {
   if (args.length === 0) {
     return void 0;
@@ -2501,12 +2366,11 @@ function getItemCallback(args) {
   if (onItem.length > 2) {
     throw Error(`The \`onItem\` callback function passed to autoPagingEach must accept at most two arguments; got ${onItem}`);
   }
-  return /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function _onItem(item, next) {
+  return /* @__PURE__ */ __name(function _onItem(item, next) {
     const shouldContinue = onItem(item);
     next(shouldContinue);
-  }, "_onItem"), "_onItem");
+  }, "_onItem");
 }
-__name(getItemCallback, "getItemCallback");
 function getLastId(listResult, reverseIteration) {
   const lastIdx = reverseIteration ? 0 : listResult.data.length - 1;
   const lastItem = listResult.data[lastIdx];
@@ -2516,9 +2380,8 @@ function getLastId(listResult, reverseIteration) {
   }
   return lastId;
 }
-__name(getLastId, "getLastId");
 function makeAutoPagingEach(asyncIteratorNext) {
-  return /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function autoPagingEach() {
+  return /* @__PURE__ */ __name(function autoPagingEach() {
     const callSiteStack = new Error().stack;
     const args = [].slice.call(arguments);
     const onItem = getItemCallback(args);
@@ -2538,11 +2401,10 @@ function makeAutoPagingEach(asyncIteratorNext) {
       autoPagePromise.then(() => onDone(), (err) => onDone(err));
     }
     return autoPagePromise;
-  }, "autoPagingEach"), "autoPagingEach");
+  }, "autoPagingEach");
 }
-__name(makeAutoPagingEach, "makeAutoPagingEach");
 function makeAutoPagingToArray(autoPagingEach) {
-  return /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function autoPagingToArray(opts, onDone) {
+  return /* @__PURE__ */ __name(function autoPagingToArray(opts, onDone) {
     const callSiteStack = new Error().stack;
     const limit = opts && opts.limit;
     if (!limit) {
@@ -2569,9 +2431,8 @@ function makeAutoPagingToArray(autoPagingEach) {
       promise.then((items) => onDone(null, items), (err) => onDone(err));
     }
     return promise;
-  }, "autoPagingToArray"), "autoPagingToArray");
+  }, "autoPagingToArray");
 }
-__name(makeAutoPagingToArray, "makeAutoPagingToArray");
 function wrapAsyncIteratorWithCallback(asyncIteratorNext, onItem) {
   return new Promise((resolve, reject) => {
     function handleIteration(iterResult) {
@@ -2591,27 +2452,17 @@ function wrapAsyncIteratorWithCallback(asyncIteratorNext, onItem) {
       });
     }
     __name(handleIteration, "handleIteration");
-    __name2(handleIteration, "handleIteration");
     asyncIteratorNext().then(handleIteration).catch(reject);
   });
 }
-__name(wrapAsyncIteratorWithCallback, "wrapAsyncIteratorWithCallback");
-var V1Iterator;
-var V1ListIterator;
-var V1SearchIterator;
-var V2ListIterator;
-var makeAutoPaginationMethods;
-var makeAutoPaginationMethodsFromIterator;
+var V1Iterator, V1ListIterator, V1SearchIterator, V2ListIterator, makeAutoPaginationMethods, makeAutoPaginationMethodsFromIterator;
 var init_autoPagination = __esm({
   "../node_modules/stripe/esm/autoPagination.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_utils();
     V1Iterator = class {
       static {
         __name(this, "V1Iterator");
-      }
-      static {
-        __name2(this, "V1Iterator");
       }
       constructor(firstPagePromise, params, options, method, path, spec, stripeResource) {
         this.index = 0;
@@ -2666,9 +2517,6 @@ var init_autoPagination = __esm({
       static {
         __name(this, "V1ListIterator");
       }
-      static {
-        __name2(this, "V1ListIterator");
-      }
       getNextPage(pageResult) {
         const reverseIteration = !!this.params.ending_before;
         const lastId = getLastId(pageResult, reverseIteration);
@@ -2682,9 +2530,6 @@ var init_autoPagination = __esm({
     V1SearchIterator = class extends V1Iterator {
       static {
         __name(this, "V1SearchIterator");
-      }
-      static {
-        __name2(this, "V1SearchIterator");
       }
       getNextPage(pageResult) {
         if (!pageResult.next_page) {
@@ -2700,9 +2545,6 @@ var init_autoPagination = __esm({
     V2ListIterator = class {
       static {
         __name(this, "V2ListIterator");
-      }
-      static {
-        __name2(this, "V2ListIterator");
       }
       constructor(firstPagePromise, options, spec, stripeResource) {
         this.firstPagePromise = firstPagePromise;
@@ -2763,7 +2605,7 @@ var init_autoPagination = __esm({
         return nextPromise;
       }
     };
-    makeAutoPaginationMethods = /* @__PURE__ */ __name2((stripeResource, params, options, method, path, spec, firstPagePromise) => {
+    makeAutoPaginationMethods = /* @__PURE__ */ __name((stripeResource, params, options, method, path, spec, firstPagePromise) => {
       const apiMode = getAPIMode(path);
       const methodType = spec?.methodType;
       if (apiMode !== "v2" && methodType === "search") {
@@ -2777,15 +2619,15 @@ var init_autoPagination = __esm({
       }
       return null;
     }, "makeAutoPaginationMethods");
-    makeAutoPaginationMethodsFromIterator = /* @__PURE__ */ __name2((iterator) => {
+    makeAutoPaginationMethodsFromIterator = /* @__PURE__ */ __name((iterator) => {
       const autoPagingEach = makeAutoPagingEach((...args) => iterator.next(...args));
       const autoPagingToArray = makeAutoPagingToArray(autoPagingEach);
       const autoPaginationMethods = {
         autoPagingEach,
         autoPagingToArray,
         // Async iterator functions:
-        next: /* @__PURE__ */ __name2(() => iterator.next(), "next"),
-        return: /* @__PURE__ */ __name2(() => {
+        next: /* @__PURE__ */ __name(() => iterator.next(), "next"),
+        return: /* @__PURE__ */ __name(() => {
           return {};
         }, "return"),
         [getAsyncIteratorSymbol()]: () => {
@@ -2794,28 +2636,27 @@ var init_autoPagination = __esm({
       };
       return autoPaginationMethods;
     }, "makeAutoPaginationMethodsFromIterator");
-    __name2(getAsyncIteratorSymbol, "getAsyncIteratorSymbol");
-    __name2(getDoneCallback, "getDoneCallback");
-    __name2(getItemCallback, "getItemCallback");
-    __name2(getLastId, "getLastId");
-    __name2(makeAutoPagingEach, "makeAutoPagingEach");
-    __name2(makeAutoPagingToArray, "makeAutoPagingToArray");
-    __name2(wrapAsyncIteratorWithCallback, "wrapAsyncIteratorWithCallback");
+    __name(getAsyncIteratorSymbol, "getAsyncIteratorSymbol");
+    __name(getDoneCallback, "getDoneCallback");
+    __name(getItemCallback, "getItemCallback");
+    __name(getLastId, "getLastId");
+    __name(makeAutoPagingEach, "makeAutoPagingEach");
+    __name(makeAutoPagingToArray, "makeAutoPagingToArray");
+    __name(wrapAsyncIteratorWithCallback, "wrapAsyncIteratorWithCallback");
   }
 });
+
+// ../node_modules/stripe/esm/StripeResource.js
 var StripeResource;
 var init_StripeResource = __esm({
   "../node_modules/stripe/esm/StripeResource.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_utils();
     init_V2Coercion();
     init_autoPagination();
     StripeResource = class {
       static {
         __name(this, "StripeResource");
-      }
-      static {
-        __name2(this, "StripeResource");
       }
       constructor(stripe, deprecatedUrlData) {
         this.resourcePath = "";
@@ -2876,7 +2717,6 @@ var init_StripeResource = __esm({
             }
           }
           __name(requestCallback, "requestCallback");
-          __name2(requestCallback, "requestCallback");
           const emptyQuery = Object.keys(queryData).length === 0;
           const fullPath = [
             path,
@@ -2898,16 +2738,15 @@ var init_StripeResource = __esm({
     StripeResource.MAX_BUFFERED_REQUEST_METRICS = 100;
   }
 });
+
+// ../node_modules/stripe/esm/StripeContext.js
 var StripeContext;
 var init_StripeContext = __esm({
   "../node_modules/stripe/esm/StripeContext.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     StripeContext = class _StripeContext {
       static {
-        __name(this, "_StripeContext");
-      }
-      static {
-        __name2(this, "StripeContext");
+        __name(this, "StripeContext");
       }
       /**
        * Creates a new StripeContext with the given segments.
@@ -2958,6 +2797,8 @@ var init_StripeContext = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/Webhooks.js
 function createWebhooks(platformFunctions) {
   function buildEvent(jsonPayload) {
     if (jsonPayload && jsonPayload.object === "v2.core.event") {
@@ -2966,7 +2807,6 @@ function createWebhooks(platformFunctions) {
     return jsonPayload;
   }
   __name(buildEvent, "buildEvent");
-  __name2(buildEvent, "buildEvent");
   const Webhook = {
     DEFAULT_TOLERANCE: 300,
     signature: null,
@@ -2996,7 +2836,7 @@ function createWebhooks(platformFunctions) {
     constructEventWithoutVerification(payload) {
       return buildEvent(maybeExtractFromCloudProviderEnvelope(payload));
     },
-    generateTestHeaderString: /* @__PURE__ */ __name2(function(opts) {
+    generateTestHeaderString: /* @__PURE__ */ __name(function(opts) {
       try {
         const preparedOpts = prepareOptions(opts);
         const signature2 = preparedOpts.signature || preparedOpts.cryptoProvider.computeHMACSignature(preparedOpts.payloadString, preparedOpts.secret);
@@ -3008,7 +2848,7 @@ function createWebhooks(platformFunctions) {
         throw e;
       }
     }, "generateTestHeaderString"),
-    generateTestHeaderStringAsync: /* @__PURE__ */ __name2(async function(opts) {
+    generateTestHeaderStringAsync: /* @__PURE__ */ __name(async function(opts) {
       const preparedOpts = prepareOptions(opts);
       const signature2 = preparedOpts.signature || await preparedOpts.cryptoProvider.computeHMACSignatureAsync(preparedOpts.payloadString, preparedOpts.secret);
       return preparedOpts.generateHeaderString(signature2);
@@ -3036,7 +2876,6 @@ function createWebhooks(platformFunctions) {
     return `${details.timestamp}.${payload}`;
   }
   __name(makeHMACContent, "makeHMACContent");
-  __name2(makeHMACContent, "makeHMACContent");
   function parseEventDetails(encodedPayload, encodedHeader, expectedScheme) {
     if (Array.isArray(encodedHeader)) {
       throw new Error("Unexpected: An array was passed as a header, which should not be possible for the stripe-signature header.");
@@ -3074,7 +2913,6 @@ function createWebhooks(platformFunctions) {
     };
   }
   __name(parseEventDetails, "parseEventDetails");
-  __name2(parseEventDetails, "parseEventDetails");
   function validateComputedSignature(payload, header, details, expectedSignature, tolerance, suspectPayloadType, secretContainsWhitespace, receivedAt) {
     const signatureFound = !!details.signatures.filter(platformFunctions.secureCompare.bind(platformFunctions, expectedSignature)).length;
     const docsLocation = "\nLearn more about webhook signing and explore webhook integration examples for various frameworks at https://docs.stripe.com/webhooks/signature";
@@ -3098,7 +2936,6 @@ function createWebhooks(platformFunctions) {
     return true;
   }
   __name(validateComputedSignature, "validateComputedSignature");
-  __name2(validateComputedSignature, "validateComputedSignature");
   function parseHeader(header, scheme) {
     if (typeof header !== "string") {
       return null;
@@ -3119,7 +2956,6 @@ function createWebhooks(platformFunctions) {
     });
   }
   __name(parseHeader, "parseHeader");
-  __name2(parseHeader, "parseHeader");
   let webhooksCryptoProviderInstance = null;
   function getCryptoProvider() {
     if (!webhooksCryptoProviderInstance) {
@@ -3128,7 +2964,6 @@ function createWebhooks(platformFunctions) {
     return webhooksCryptoProviderInstance;
   }
   __name(getCryptoProvider, "getCryptoProvider");
-  __name2(getCryptoProvider, "getCryptoProvider");
   function prepareOptions(opts) {
     if (!opts) {
       throw new StripeError({
@@ -3139,7 +2974,7 @@ function createWebhooks(platformFunctions) {
     const scheme = opts.scheme || signature.EXPECTED_SCHEME;
     const cryptoProvider = opts.cryptoProvider || getCryptoProvider();
     const payloadString = `${timestamp}.${opts.payload}`;
-    const generateHeaderString = /* @__PURE__ */ __name2((signature2) => {
+    const generateHeaderString = /* @__PURE__ */ __name((signature2) => {
       return `t=${timestamp},${scheme}=${signature2}`;
     }, "generateHeaderString");
     return {
@@ -3152,29 +2987,30 @@ function createWebhooks(platformFunctions) {
     };
   }
   __name(prepareOptions, "prepareOptions");
-  __name2(prepareOptions, "prepareOptions");
   Webhook.signature = signature;
   return Webhook;
 }
-__name(createWebhooks, "createWebhooks");
 var init_Webhooks = __esm({
   "../node_modules/stripe/esm/Webhooks.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_Error();
     init_CryptoProvider();
     init_utils();
-    __name2(createWebhooks, "createWebhooks");
+    __name(createWebhooks, "createWebhooks");
   }
 });
-var ApiVersion;
-var ApiMajorVersion;
+
+// ../node_modules/stripe/esm/apiVersion.js
+var ApiVersion, ApiMajorVersion;
 var init_apiVersion = __esm({
   "../node_modules/stripe/esm/apiVersion.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     ApiVersion = "2026-07-29.dahlia";
     ApiMajorVersion = "dahlia";
   }
 });
+
+// ../node_modules/stripe/esm/ResourceNamespace.js
 function ResourceNamespace(stripe, resources) {
   for (const name in resources) {
     if (!Object.prototype.hasOwnProperty.call(resources, name)) {
@@ -3185,31 +3021,28 @@ function ResourceNamespace(stripe, resources) {
     this[camelCaseName] = resource;
   }
 }
-__name(ResourceNamespace, "ResourceNamespace");
 function resourceNamespace(namespace, resources) {
   return function(stripe) {
     return new ResourceNamespace(stripe, resources);
   };
 }
-__name(resourceNamespace, "resourceNamespace");
 var init_ResourceNamespace = __esm({
   "../node_modules/stripe/esm/ResourceNamespace.js"() {
-    init_functionsRoutes_0_6131355600780521();
-    __name2(ResourceNamespace, "ResourceNamespace");
-    __name2(resourceNamespace, "resourceNamespace");
+    init_functionsRoutes_0_7667722716287171();
+    __name(ResourceNamespace, "ResourceNamespace");
+    __name(resourceNamespace, "resourceNamespace");
   }
 });
+
+// ../node_modules/stripe/esm/resources/V2/Core/AccountLinks.js
 var AccountLinkResource;
 var init_AccountLinks = __esm({
   "../node_modules/stripe/esm/resources/V2/Core/AccountLinks.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     AccountLinkResource = class extends StripeResource {
       static {
         __name(this, "AccountLinkResource");
-      }
-      static {
-        __name2(this, "AccountLinkResource");
       }
       /**
        * Creates an AccountLink object that includes a single-use URL that an account can use to access a Stripe-hosted flow for collecting or updating required information.
@@ -3221,17 +3054,16 @@ var init_AccountLinks = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/V2/Core/AccountTokens.js
 var AccountTokenResource;
 var init_AccountTokens = __esm({
   "../node_modules/stripe/esm/resources/V2/Core/AccountTokens.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     AccountTokenResource = class extends StripeResource {
       static {
         __name(this, "AccountTokenResource");
-      }
-      static {
-        __name2(this, "AccountTokenResource");
       }
       /**
        * Create an account token with a publishable key and pass it to the Accounts v2 API to
@@ -3274,17 +3106,16 @@ var init_AccountTokens = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/FinancialConnections/Accounts.js
 var AccountResource;
 var init_Accounts = __esm({
   "../node_modules/stripe/esm/resources/FinancialConnections/Accounts.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     AccountResource = class extends StripeResource {
       static {
         __name(this, "AccountResource");
-      }
-      static {
-        __name2(this, "AccountResource");
       }
       /**
        * Returns a list of Financial Connections Account objects.
@@ -3335,17 +3166,16 @@ var init_Accounts = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/V2/Core/Accounts/Persons.js
 var PersonResource;
 var init_Persons = __esm({
   "../node_modules/stripe/esm/resources/V2/Core/Accounts/Persons.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     PersonResource = class extends StripeResource {
       static {
         __name(this, "PersonResource");
-      }
-      static {
-        __name2(this, "PersonResource");
       }
       /**
        * Returns a paginated list of Persons associated with an Account.
@@ -3452,17 +3282,16 @@ var init_Persons = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/V2/Core/Accounts/PersonTokens.js
 var PersonTokenResource;
 var init_PersonTokens = __esm({
   "../node_modules/stripe/esm/resources/V2/Core/Accounts/PersonTokens.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     PersonTokenResource = class extends StripeResource {
       static {
         __name(this, "PersonTokenResource");
-      }
-      static {
-        __name2(this, "PersonTokenResource");
       }
       /**
        * Creates a single-use token that represents the details for a person. Use this when you create or update persons associated with an Account v2. Learn more about [account tokens](https://docs.stripe.com/connect/account-tokens).
@@ -3492,19 +3321,18 @@ var init_PersonTokens = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/V2/Core/Accounts.js
 var AccountResource2;
 var init_Accounts2 = __esm({
   "../node_modules/stripe/esm/resources/V2/Core/Accounts.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     init_Persons();
     init_PersonTokens();
     AccountResource2 = class extends StripeResource {
       static {
-        __name(this, "AccountResource2");
-      }
-      static {
-        __name2(this, "AccountResource");
+        __name(this, "AccountResource");
       }
       constructor(stripe) {
         super(stripe);
@@ -3697,17 +3525,16 @@ var init_Accounts2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Entitlements/ActiveEntitlements.js
 var ActiveEntitlementResource;
 var init_ActiveEntitlements = __esm({
   "../node_modules/stripe/esm/resources/Entitlements/ActiveEntitlements.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     ActiveEntitlementResource = class extends StripeResource {
       static {
         __name(this, "ActiveEntitlementResource");
-      }
-      static {
-        __name2(this, "ActiveEntitlementResource");
       }
       /**
        * Retrieve a list of active entitlements for a customer
@@ -3726,17 +3553,16 @@ var init_ActiveEntitlements = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Billing/Alerts.js
 var AlertResource;
 var init_Alerts = __esm({
   "../node_modules/stripe/esm/resources/Billing/Alerts.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     AlertResource = class extends StripeResource {
       static {
         __name(this, "AlertResource");
-      }
-      static {
-        __name2(this, "AlertResource");
       }
       /**
        * Lists billing active and inactive alerts
@@ -3779,17 +3605,16 @@ var init_Alerts = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Tax/Associations.js
 var AssociationResource;
 var init_Associations = __esm({
   "../node_modules/stripe/esm/resources/Tax/Associations.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     AssociationResource = class extends StripeResource {
       static {
         __name(this, "AssociationResource");
-      }
-      static {
-        __name2(this, "AssociationResource");
       }
       /**
        * Finds a tax association object by PaymentIntent id.
@@ -3800,17 +3625,16 @@ var init_Associations = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Issuing/Authorizations.js
 var AuthorizationResource;
 var init_Authorizations = __esm({
   "../node_modules/stripe/esm/resources/Issuing/Authorizations.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     AuthorizationResource = class extends StripeResource {
       static {
         __name(this, "AuthorizationResource");
-      }
-      static {
-        __name2(this, "AuthorizationResource");
       }
       /**
        * Returns a list of Issuing Authorization objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.
@@ -4681,17 +4505,16 @@ var init_Authorizations = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/TestHelpers/Issuing/Authorizations.js
 var AuthorizationResource2;
 var init_Authorizations2 = __esm({
   "../node_modules/stripe/esm/resources/TestHelpers/Issuing/Authorizations.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     AuthorizationResource2 = class extends StripeResource {
       static {
-        __name(this, "AuthorizationResource2");
-      }
-      static {
-        __name2(this, "AuthorizationResource");
+        __name(this, "AuthorizationResource");
       }
       /**
        * Create a test-mode authorization.
@@ -6006,17 +5829,16 @@ var init_Authorizations2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Tax/Calculations.js
 var CalculationResource;
 var init_Calculations = __esm({
   "../node_modules/stripe/esm/resources/Tax/Calculations.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     CalculationResource = class extends StripeResource {
       static {
         __name(this, "CalculationResource");
-      }
-      static {
-        __name2(this, "CalculationResource");
       }
       /**
        * Retrieves a Tax Calculation object, if the calculation hasn't expired.
@@ -6041,17 +5863,16 @@ var init_Calculations = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Issuing/Cardholders.js
 var CardholderResource;
 var init_Cardholders = __esm({
   "../node_modules/stripe/esm/resources/Issuing/Cardholders.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     CardholderResource = class extends StripeResource {
       static {
         __name(this, "CardholderResource");
-      }
-      static {
-        __name2(this, "CardholderResource");
       }
       /**
        * Returns a list of Issuing Cardholder objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.
@@ -6082,17 +5903,16 @@ var init_Cardholders = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Issuing/Cards.js
 var CardResource;
 var init_Cards = __esm({
   "../node_modules/stripe/esm/resources/Issuing/Cards.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     CardResource = class extends StripeResource {
       static {
         __name(this, "CardResource");
-      }
-      static {
-        __name2(this, "CardResource");
       }
       /**
        * Returns a list of Issuing Card objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.
@@ -6123,17 +5943,16 @@ var init_Cards = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/TestHelpers/Issuing/Cards.js
 var CardResource2;
 var init_Cards2 = __esm({
   "../node_modules/stripe/esm/resources/TestHelpers/Issuing/Cards.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     CardResource2 = class extends StripeResource {
       static {
-        __name(this, "CardResource2");
-      }
-      static {
-        __name2(this, "CardResource");
+        __name(this, "CardResource");
       }
       /**
        * Updates the shipping status of the specified Issuing Card object to delivered.
@@ -6168,17 +5987,16 @@ var init_Cards2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/BillingPortal/Configurations.js
 var ConfigurationResource;
 var init_Configurations = __esm({
   "../node_modules/stripe/esm/resources/BillingPortal/Configurations.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     ConfigurationResource = class extends StripeResource {
       static {
         __name(this, "ConfigurationResource");
-      }
-      static {
-        __name2(this, "ConfigurationResource");
       }
       /**
        * Returns a list of configurations that describe the functionality of the customer portal.
@@ -6209,17 +6027,16 @@ var init_Configurations = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Terminal/Configurations.js
 var ConfigurationResource2;
 var init_Configurations2 = __esm({
   "../node_modules/stripe/esm/resources/Terminal/Configurations.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     ConfigurationResource2 = class extends StripeResource {
       static {
-        __name(this, "ConfigurationResource2");
-      }
-      static {
-        __name2(this, "ConfigurationResource");
+        __name(this, "ConfigurationResource");
       }
       /**
        * Deletes a Configuration object.
@@ -6256,17 +6073,16 @@ var init_Configurations2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/TestHelpers/ConfirmationTokens.js
 var ConfirmationTokenResource;
 var init_ConfirmationTokens = __esm({
   "../node_modules/stripe/esm/resources/TestHelpers/ConfirmationTokens.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     ConfirmationTokenResource = class extends StripeResource {
       static {
         __name(this, "ConfirmationTokenResource");
-      }
-      static {
-        __name2(this, "ConfirmationTokenResource");
       }
       /**
        * Creates a test mode Confirmation Token server side for your integration tests.
@@ -6277,17 +6093,16 @@ var init_ConfirmationTokens = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Terminal/ConnectionTokens.js
 var ConnectionTokenResource;
 var init_ConnectionTokens = __esm({
   "../node_modules/stripe/esm/resources/Terminal/ConnectionTokens.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     ConnectionTokenResource = class extends StripeResource {
       static {
         __name(this, "ConnectionTokenResource");
-      }
-      static {
-        __name2(this, "ConnectionTokenResource");
       }
       /**
        * To connect to a reader the Stripe Terminal SDK needs to retrieve a short-lived connection token from Stripe, proxied through your server. On your backend, add an endpoint that creates and returns a connection token.
@@ -6298,17 +6113,16 @@ var init_ConnectionTokens = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Billing/CreditBalanceSummary.js
 var CreditBalanceSummaryResource;
 var init_CreditBalanceSummary = __esm({
   "../node_modules/stripe/esm/resources/Billing/CreditBalanceSummary.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     CreditBalanceSummaryResource = class extends StripeResource {
       static {
         __name(this, "CreditBalanceSummaryResource");
-      }
-      static {
-        __name2(this, "CreditBalanceSummaryResource");
       }
       /**
        * Retrieves the credit balance summary for a customer.
@@ -6319,17 +6133,16 @@ var init_CreditBalanceSummary = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Billing/CreditBalanceTransactions.js
 var CreditBalanceTransactionResource;
 var init_CreditBalanceTransactions = __esm({
   "../node_modules/stripe/esm/resources/Billing/CreditBalanceTransactions.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     CreditBalanceTransactionResource = class extends StripeResource {
       static {
         __name(this, "CreditBalanceTransactionResource");
-      }
-      static {
-        __name2(this, "CreditBalanceTransactionResource");
       }
       /**
        * Retrieve a list of credit balance transactions.
@@ -6348,17 +6161,16 @@ var init_CreditBalanceTransactions = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Billing/CreditGrants.js
 var CreditGrantResource;
 var init_CreditGrants = __esm({
   "../node_modules/stripe/esm/resources/Billing/CreditGrants.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     CreditGrantResource = class extends StripeResource {
       static {
         __name(this, "CreditGrantResource");
-      }
-      static {
-        __name2(this, "CreditGrantResource");
       }
       /**
        * Retrieve a list of credit grants.
@@ -6401,17 +6213,16 @@ var init_CreditGrants = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Treasury/CreditReversals.js
 var CreditReversalResource;
 var init_CreditReversals = __esm({
   "../node_modules/stripe/esm/resources/Treasury/CreditReversals.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     CreditReversalResource = class extends StripeResource {
       static {
         __name(this, "CreditReversalResource");
-      }
-      static {
-        __name2(this, "CreditReversalResource");
       }
       /**
        * Returns a list of CreditReversals.
@@ -6436,17 +6247,16 @@ var init_CreditReversals = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/TestHelpers/Customers.js
 var CustomerResource;
 var init_Customers = __esm({
   "../node_modules/stripe/esm/resources/TestHelpers/Customers.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     CustomerResource = class extends StripeResource {
       static {
         __name(this, "CustomerResource");
-      }
-      static {
-        __name2(this, "CustomerResource");
       }
       /**
        * Create an incoming testmode bank transfer
@@ -6457,17 +6267,16 @@ var init_Customers = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Treasury/DebitReversals.js
 var DebitReversalResource;
 var init_DebitReversals = __esm({
   "../node_modules/stripe/esm/resources/Treasury/DebitReversals.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     DebitReversalResource = class extends StripeResource {
       static {
         __name(this, "DebitReversalResource");
-      }
-      static {
-        __name2(this, "DebitReversalResource");
       }
       /**
        * Returns a list of DebitReversals.
@@ -6492,17 +6301,16 @@ var init_DebitReversals = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Issuing/Disputes.js
 var DisputeResource;
 var init_Disputes = __esm({
   "../node_modules/stripe/esm/resources/Issuing/Disputes.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     DisputeResource = class extends StripeResource {
       static {
         __name(this, "DisputeResource");
-      }
-      static {
-        __name2(this, "DisputeResource");
       }
       /**
        * Returns a list of Issuing Dispute objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.
@@ -6539,17 +6347,16 @@ var init_Disputes = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Radar/EarlyFraudWarnings.js
 var EarlyFraudWarningResource;
 var init_EarlyFraudWarnings = __esm({
   "../node_modules/stripe/esm/resources/Radar/EarlyFraudWarnings.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     EarlyFraudWarningResource = class extends StripeResource {
       static {
         __name(this, "EarlyFraudWarningResource");
-      }
-      static {
-        __name2(this, "EarlyFraudWarningResource");
       }
       /**
        * Returns a list of early fraud warnings.
@@ -6570,17 +6377,16 @@ var init_EarlyFraudWarnings = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/V2/Core/EventDestinations.js
 var EventDestinationResource;
 var init_EventDestinations = __esm({
   "../node_modules/stripe/esm/resources/V2/Core/EventDestinations.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     EventDestinationResource = class extends StripeResource {
       static {
         __name(this, "EventDestinationResource");
-      }
-      static {
-        __name2(this, "EventDestinationResource");
       }
       /**
        * Lists all event destinations.
@@ -6635,23 +6441,22 @@ var init_EventDestinations = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/V2/Core/Events.js
 var EventResource;
 var init_Events = __esm({
   "../node_modules/stripe/esm/resources/V2/Core/Events.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     EventResource = class extends StripeResource {
       static {
         __name(this, "EventResource");
       }
-      static {
-        __name2(this, "EventResource");
-      }
       /**
        * List events, going back up to 30 days.
        */
       list(params, options) {
-        const transformResponseData = /* @__PURE__ */ __name2((response) => {
+        const transformResponseData = /* @__PURE__ */ __name((response) => {
           return {
             ...response,
             data: response.data.map(this.addFetchRelatedObjectIfNeeded.bind(this))
@@ -6667,7 +6472,7 @@ var init_Events = __esm({
        * identifier of the event, which might have been delivered to your event destination.
        */
       retrieve(id, params, options) {
-        const transformResponseData = /* @__PURE__ */ __name2((response) => {
+        const transformResponseData = /* @__PURE__ */ __name((response) => {
           return this.addFetchRelatedObjectIfNeeded(response);
         }, "transformResponseData");
         return this._makeRequest("GET", `/v2/core/events/${encodeURIComponent(id)}`, params, options, {
@@ -6689,7 +6494,7 @@ var init_Events = __esm({
         }
         return {
           ...pulledEvent,
-          fetchRelatedObject: /* @__PURE__ */ __name2(() => this._makeRequest("GET", pulledEvent.related_object.url, void 0, {
+          fetchRelatedObject: /* @__PURE__ */ __name(() => this._makeRequest("GET", pulledEvent.related_object.url, void 0, {
             stripeContext: pulledEvent.context,
             headers: {
               "Stripe-Request-Trigger": `event=${pulledEvent.id}`
@@ -6700,17 +6505,16 @@ var init_Events = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Entitlements/Features.js
 var FeatureResource;
 var init_Features = __esm({
   "../node_modules/stripe/esm/resources/Entitlements/Features.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     FeatureResource = class extends StripeResource {
       static {
         __name(this, "FeatureResource");
-      }
-      static {
-        __name2(this, "FeatureResource");
       }
       /**
        * Retrieve a list of features
@@ -6741,17 +6545,16 @@ var init_Features = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Treasury/FinancialAccounts.js
 var FinancialAccountResource;
 var init_FinancialAccounts = __esm({
   "../node_modules/stripe/esm/resources/Treasury/FinancialAccounts.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     FinancialAccountResource = class extends StripeResource {
       static {
         __name(this, "FinancialAccountResource");
-      }
-      static {
-        __name2(this, "FinancialAccountResource");
       }
       /**
        * Returns a list of FinancialAccounts.
@@ -6800,17 +6603,16 @@ var init_FinancialAccounts = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/V2/Commerce/ProductCatalog/Imports.js
 var ImportResource;
 var init_Imports = __esm({
   "../node_modules/stripe/esm/resources/V2/Commerce/ProductCatalog/Imports.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     ImportResource = class extends StripeResource {
       static {
         __name(this, "ImportResource");
-      }
-      static {
-        __name2(this, "ImportResource");
       }
       /**
        * Returns a list of ProductCatalogImport objects.
@@ -6962,17 +6764,16 @@ var init_Imports = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/TestHelpers/Treasury/InboundTransfers.js
 var InboundTransferResource;
 var init_InboundTransfers = __esm({
   "../node_modules/stripe/esm/resources/TestHelpers/Treasury/InboundTransfers.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     InboundTransferResource = class extends StripeResource {
       static {
         __name(this, "InboundTransferResource");
-      }
-      static {
-        __name2(this, "InboundTransferResource");
       }
       /**
        * Transitions a test mode created InboundTransfer to the failed status. The InboundTransfer must already be in the processing state.
@@ -6995,17 +6796,16 @@ var init_InboundTransfers = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Treasury/InboundTransfers.js
 var InboundTransferResource2;
 var init_InboundTransfers2 = __esm({
   "../node_modules/stripe/esm/resources/Treasury/InboundTransfers.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     InboundTransferResource2 = class extends StripeResource {
       static {
-        __name(this, "InboundTransferResource2");
-      }
-      static {
-        __name2(this, "InboundTransferResource");
+        __name(this, "InboundTransferResource");
       }
       /**
        * Returns a list of InboundTransfers sent from the specified FinancialAccount.
@@ -7036,17 +6836,16 @@ var init_InboundTransfers2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Terminal/Locations.js
 var LocationResource;
 var init_Locations = __esm({
   "../node_modules/stripe/esm/resources/Terminal/Locations.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     LocationResource = class extends StripeResource {
       static {
         __name(this, "LocationResource");
-      }
-      static {
-        __name2(this, "LocationResource");
       }
       /**
        * Deletes a Location object.
@@ -7084,17 +6883,16 @@ var init_Locations = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Billing/MeterEventAdjustments.js
 var MeterEventAdjustmentResource;
 var init_MeterEventAdjustments = __esm({
   "../node_modules/stripe/esm/resources/Billing/MeterEventAdjustments.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     MeterEventAdjustmentResource = class extends StripeResource {
       static {
         __name(this, "MeterEventAdjustmentResource");
-      }
-      static {
-        __name2(this, "MeterEventAdjustmentResource");
       }
       /**
        * Creates a billing meter event adjustment.
@@ -7105,17 +6903,16 @@ var init_MeterEventAdjustments = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/V2/Billing/MeterEventAdjustments.js
 var MeterEventAdjustmentResource2;
 var init_MeterEventAdjustments2 = __esm({
   "../node_modules/stripe/esm/resources/V2/Billing/MeterEventAdjustments.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     MeterEventAdjustmentResource2 = class extends StripeResource {
       static {
-        __name(this, "MeterEventAdjustmentResource2");
-      }
-      static {
-        __name2(this, "MeterEventAdjustmentResource");
+        __name(this, "MeterEventAdjustmentResource");
       }
       /**
        * Creates a meter event adjustment to cancel a previously sent meter event.
@@ -7126,17 +6923,16 @@ var init_MeterEventAdjustments2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/V2/Billing/MeterEventSession.js
 var MeterEventSessionResource;
 var init_MeterEventSession = __esm({
   "../node_modules/stripe/esm/resources/V2/Billing/MeterEventSession.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     MeterEventSessionResource = class extends StripeResource {
       static {
         __name(this, "MeterEventSessionResource");
-      }
-      static {
-        __name2(this, "MeterEventSessionResource");
       }
       /**
        * Creates a meter event session to send usage on the high-throughput meter event stream. Authentication tokens are only valid for 15 minutes, so you need to create a new meter event session when your token expires.
@@ -7147,17 +6943,16 @@ var init_MeterEventSession = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/V2/Billing/MeterEventStream.js
 var MeterEventStreamResource;
 var init_MeterEventStream = __esm({
   "../node_modules/stripe/esm/resources/V2/Billing/MeterEventStream.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     MeterEventStreamResource = class extends StripeResource {
       static {
         __name(this, "MeterEventStreamResource");
-      }
-      static {
-        __name2(this, "MeterEventStreamResource");
       }
       /**
        * Creates meter events. Events are processed asynchronously, including validation. Requires a meter event session for authentication. Supports up to 10,000 requests per second in livemode. For even higher rate-limits, contact sales.
@@ -7171,17 +6966,16 @@ var init_MeterEventStream = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Billing/MeterEvents.js
 var MeterEventResource;
 var init_MeterEvents = __esm({
   "../node_modules/stripe/esm/resources/Billing/MeterEvents.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     MeterEventResource = class extends StripeResource {
       static {
         __name(this, "MeterEventResource");
-      }
-      static {
-        __name2(this, "MeterEventResource");
       }
       /**
        * Creates a billing meter event.
@@ -7192,17 +6986,16 @@ var init_MeterEvents = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/V2/Billing/MeterEvents.js
 var MeterEventResource2;
 var init_MeterEvents2 = __esm({
   "../node_modules/stripe/esm/resources/V2/Billing/MeterEvents.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     MeterEventResource2 = class extends StripeResource {
       static {
-        __name(this, "MeterEventResource2");
-      }
-      static {
-        __name2(this, "MeterEventResource");
+        __name(this, "MeterEventResource");
       }
       /**
        * Creates a meter event. Events are validated synchronously, but are processed asynchronously. Supports up to 1,000 events per second in livemode. For higher rate-limits, please use meter event streams instead.
@@ -7213,17 +7006,16 @@ var init_MeterEvents2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Billing/Meters.js
 var MeterResource;
 var init_Meters = __esm({
   "../node_modules/stripe/esm/resources/Billing/Meters.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     MeterResource = class extends StripeResource {
       static {
         __name(this, "MeterResource");
-      }
-      static {
-        __name2(this, "MeterResource");
       }
       /**
        * Retrieve a list of billing meters.
@@ -7274,17 +7066,16 @@ var init_Meters = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Terminal/OnboardingLinks.js
 var OnboardingLinkResource;
 var init_OnboardingLinks = __esm({
   "../node_modules/stripe/esm/resources/Terminal/OnboardingLinks.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     OnboardingLinkResource = class extends StripeResource {
       static {
         __name(this, "OnboardingLinkResource");
-      }
-      static {
-        __name2(this, "OnboardingLinkResource");
       }
       /**
        * Creates a new OnboardingLink object that contains a redirect_url used for onboarding onto Tap to Pay on iPhone.
@@ -7295,17 +7086,16 @@ var init_OnboardingLinks = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Climate/Orders.js
 var OrderResource;
 var init_Orders = __esm({
   "../node_modules/stripe/esm/resources/Climate/Orders.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     OrderResource = class extends StripeResource {
       static {
         __name(this, "OrderResource");
-      }
-      static {
-        __name2(this, "OrderResource");
       }
       /**
        * Lists all Climate order objects. The orders are returned sorted by creation date, with the
@@ -7383,17 +7173,16 @@ var init_Orders = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/TestHelpers/Treasury/OutboundPayments.js
 var OutboundPaymentResource;
 var init_OutboundPayments = __esm({
   "../node_modules/stripe/esm/resources/TestHelpers/Treasury/OutboundPayments.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     OutboundPaymentResource = class extends StripeResource {
       static {
         __name(this, "OutboundPaymentResource");
-      }
-      static {
-        __name2(this, "OutboundPaymentResource");
       }
       /**
        * Updates a test mode created OutboundPayment with tracking details. The OutboundPayment must not be cancelable, and cannot be in the canceled or failed states.
@@ -7422,17 +7211,16 @@ var init_OutboundPayments = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Treasury/OutboundPayments.js
 var OutboundPaymentResource2;
 var init_OutboundPayments2 = __esm({
   "../node_modules/stripe/esm/resources/Treasury/OutboundPayments.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     OutboundPaymentResource2 = class extends StripeResource {
       static {
-        __name(this, "OutboundPaymentResource2");
-      }
-      static {
-        __name2(this, "OutboundPaymentResource");
+        __name(this, "OutboundPaymentResource");
       }
       /**
        * Returns a list of OutboundPayments sent from the specified FinancialAccount.
@@ -7463,17 +7251,16 @@ var init_OutboundPayments2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/TestHelpers/Treasury/OutboundTransfers.js
 var OutboundTransferResource;
 var init_OutboundTransfers = __esm({
   "../node_modules/stripe/esm/resources/TestHelpers/Treasury/OutboundTransfers.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     OutboundTransferResource = class extends StripeResource {
       static {
         __name(this, "OutboundTransferResource");
-      }
-      static {
-        __name2(this, "OutboundTransferResource");
       }
       /**
        * Updates a test mode created OutboundTransfer with tracking details. The OutboundTransfer must not be cancelable, and cannot be in the canceled or failed states.
@@ -7502,17 +7289,16 @@ var init_OutboundTransfers = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Treasury/OutboundTransfers.js
 var OutboundTransferResource2;
 var init_OutboundTransfers2 = __esm({
   "../node_modules/stripe/esm/resources/Treasury/OutboundTransfers.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     OutboundTransferResource2 = class extends StripeResource {
       static {
-        __name(this, "OutboundTransferResource2");
-      }
-      static {
-        __name2(this, "OutboundTransferResource");
+        __name(this, "OutboundTransferResource");
       }
       /**
        * Returns a list of OutboundTransfers sent from the specified FinancialAccount.
@@ -7543,17 +7329,16 @@ var init_OutboundTransfers2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Radar/PaymentEvaluations.js
 var PaymentEvaluationResource;
 var init_PaymentEvaluations = __esm({
   "../node_modules/stripe/esm/resources/Radar/PaymentEvaluations.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     PaymentEvaluationResource = class extends StripeResource {
       static {
         __name(this, "PaymentEvaluationResource");
-      }
-      static {
-        __name2(this, "PaymentEvaluationResource");
       }
       /**
        * Request a Radar API fraud risk score from Stripe for a payment before sending it for external processor authorization.
@@ -7564,17 +7349,16 @@ var init_PaymentEvaluations = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Issuing/PersonalizationDesigns.js
 var PersonalizationDesignResource;
 var init_PersonalizationDesigns = __esm({
   "../node_modules/stripe/esm/resources/Issuing/PersonalizationDesigns.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     PersonalizationDesignResource = class extends StripeResource {
       static {
         __name(this, "PersonalizationDesignResource");
-      }
-      static {
-        __name2(this, "PersonalizationDesignResource");
       }
       /**
        * Returns a list of personalization design objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.
@@ -7605,17 +7389,16 @@ var init_PersonalizationDesigns = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/TestHelpers/Issuing/PersonalizationDesigns.js
 var PersonalizationDesignResource2;
 var init_PersonalizationDesigns2 = __esm({
   "../node_modules/stripe/esm/resources/TestHelpers/Issuing/PersonalizationDesigns.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     PersonalizationDesignResource2 = class extends StripeResource {
       static {
-        __name(this, "PersonalizationDesignResource2");
-      }
-      static {
-        __name2(this, "PersonalizationDesignResource");
+        __name(this, "PersonalizationDesignResource");
       }
       /**
        * Updates the status of the specified testmode personalization design object to active.
@@ -7638,17 +7421,16 @@ var init_PersonalizationDesigns2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Issuing/PhysicalBundles.js
 var PhysicalBundleResource;
 var init_PhysicalBundles = __esm({
   "../node_modules/stripe/esm/resources/Issuing/PhysicalBundles.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     PhysicalBundleResource = class extends StripeResource {
       static {
         __name(this, "PhysicalBundleResource");
-      }
-      static {
-        __name2(this, "PhysicalBundleResource");
       }
       /**
        * Returns a list of physical bundle objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.
@@ -7667,17 +7449,16 @@ var init_PhysicalBundles = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Climate/Products.js
 var ProductResource;
 var init_Products = __esm({
   "../node_modules/stripe/esm/resources/Climate/Products.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     ProductResource = class extends StripeResource {
       static {
         __name(this, "ProductResource");
-      }
-      static {
-        __name2(this, "ProductResource");
       }
       /**
        * Lists all available Climate product objects.
@@ -7713,17 +7494,16 @@ var init_Products = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Terminal/Readers.js
 var ReaderResource;
 var init_Readers = __esm({
   "../node_modules/stripe/esm/resources/Terminal/Readers.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     ReaderResource = class extends StripeResource {
       static {
         __name(this, "ReaderResource");
-      }
-      static {
-        __name2(this, "ReaderResource");
       }
       /**
        * Deletes a Reader object.
@@ -7808,17 +7588,16 @@ var init_Readers = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/TestHelpers/Terminal/Readers.js
 var ReaderResource2;
 var init_Readers2 = __esm({
   "../node_modules/stripe/esm/resources/TestHelpers/Terminal/Readers.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     ReaderResource2 = class extends StripeResource {
       static {
-        __name(this, "ReaderResource2");
-      }
-      static {
-        __name2(this, "ReaderResource");
+        __name(this, "ReaderResource");
       }
       /**
        * Presents a payment method on a simulated reader. Can be used to simulate accepting a payment, saving a card or refunding a transaction.
@@ -7841,17 +7620,16 @@ var init_Readers2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/TestHelpers/Treasury/ReceivedCredits.js
 var ReceivedCreditResource;
 var init_ReceivedCredits = __esm({
   "../node_modules/stripe/esm/resources/TestHelpers/Treasury/ReceivedCredits.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     ReceivedCreditResource = class extends StripeResource {
       static {
         __name(this, "ReceivedCreditResource");
-      }
-      static {
-        __name2(this, "ReceivedCreditResource");
       }
       /**
        * Use this endpoint to simulate a test mode ReceivedCredit initiated by a third party. In live mode, you can't directly create ReceivedCredits initiated by third parties.
@@ -7862,17 +7640,16 @@ var init_ReceivedCredits = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Treasury/ReceivedCredits.js
 var ReceivedCreditResource2;
 var init_ReceivedCredits2 = __esm({
   "../node_modules/stripe/esm/resources/Treasury/ReceivedCredits.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     ReceivedCreditResource2 = class extends StripeResource {
       static {
-        __name(this, "ReceivedCreditResource2");
-      }
-      static {
-        __name2(this, "ReceivedCreditResource");
+        __name(this, "ReceivedCreditResource");
       }
       /**
        * Returns a list of ReceivedCredits.
@@ -7891,17 +7668,16 @@ var init_ReceivedCredits2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/TestHelpers/Treasury/ReceivedDebits.js
 var ReceivedDebitResource;
 var init_ReceivedDebits = __esm({
   "../node_modules/stripe/esm/resources/TestHelpers/Treasury/ReceivedDebits.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     ReceivedDebitResource = class extends StripeResource {
       static {
         __name(this, "ReceivedDebitResource");
-      }
-      static {
-        __name2(this, "ReceivedDebitResource");
       }
       /**
        * Use this endpoint to simulate a test mode ReceivedDebit initiated by a third party. In live mode, you can't directly create ReceivedDebits initiated by third parties.
@@ -7912,17 +7688,16 @@ var init_ReceivedDebits = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Treasury/ReceivedDebits.js
 var ReceivedDebitResource2;
 var init_ReceivedDebits2 = __esm({
   "../node_modules/stripe/esm/resources/Treasury/ReceivedDebits.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     ReceivedDebitResource2 = class extends StripeResource {
       static {
-        __name(this, "ReceivedDebitResource2");
-      }
-      static {
-        __name2(this, "ReceivedDebitResource");
+        __name(this, "ReceivedDebitResource");
       }
       /**
        * Returns a list of ReceivedDebits.
@@ -7941,17 +7716,16 @@ var init_ReceivedDebits2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/TestHelpers/Refunds.js
 var RefundResource;
 var init_Refunds = __esm({
   "../node_modules/stripe/esm/resources/TestHelpers/Refunds.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     RefundResource = class extends StripeResource {
       static {
         __name(this, "RefundResource");
-      }
-      static {
-        __name2(this, "RefundResource");
       }
       /**
        * Expire a refund with a status of requires_action.
@@ -7962,17 +7736,16 @@ var init_Refunds = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Tax/Registrations.js
 var RegistrationResource;
 var init_Registrations = __esm({
   "../node_modules/stripe/esm/resources/Tax/Registrations.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     RegistrationResource = class extends StripeResource {
       static {
         __name(this, "RegistrationResource");
-      }
-      static {
-        __name2(this, "RegistrationResource");
       }
       /**
        * Returns a list of Tax Registration objects.
@@ -8005,17 +7778,16 @@ var init_Registrations = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Reporting/ReportRuns.js
 var ReportRunResource;
 var init_ReportRuns = __esm({
   "../node_modules/stripe/esm/resources/Reporting/ReportRuns.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     ReportRunResource = class extends StripeResource {
       static {
         __name(this, "ReportRunResource");
-      }
-      static {
-        __name2(this, "ReportRunResource");
       }
       /**
        * Returns a list of Report Runs, with the most recent appearing first.
@@ -8040,17 +7812,16 @@ var init_ReportRuns = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Reporting/ReportTypes.js
 var ReportTypeResource;
 var init_ReportTypes = __esm({
   "../node_modules/stripe/esm/resources/Reporting/ReportTypes.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     ReportTypeResource = class extends StripeResource {
       static {
         __name(this, "ReportTypeResource");
-      }
-      static {
-        __name2(this, "ReportTypeResource");
       }
       /**
        * Returns a full list of Report Types.
@@ -8069,17 +7840,16 @@ var init_ReportTypes = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Forwarding/Requests.js
 var RequestResource;
 var init_Requests = __esm({
   "../node_modules/stripe/esm/resources/Forwarding/Requests.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     RequestResource = class extends StripeResource {
       static {
         __name(this, "RequestResource");
-      }
-      static {
-        __name2(this, "RequestResource");
       }
       /**
        * Lists all ForwardingRequest objects.
@@ -8104,17 +7874,16 @@ var init_Requests = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Sigma/ScheduledQueryRuns.js
 var ScheduledQueryRunResource;
 var init_ScheduledQueryRuns = __esm({
   "../node_modules/stripe/esm/resources/Sigma/ScheduledQueryRuns.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     ScheduledQueryRunResource = class extends StripeResource {
       static {
         __name(this, "ScheduledQueryRunResource");
-      }
-      static {
-        __name2(this, "ScheduledQueryRunResource");
       }
       /**
        * Returns a list of scheduled query runs.
@@ -8133,17 +7902,16 @@ var init_ScheduledQueryRuns = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Apps/Secrets.js
 var SecretResource;
 var init_Secrets = __esm({
   "../node_modules/stripe/esm/resources/Apps/Secrets.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     SecretResource = class extends StripeResource {
       static {
         __name(this, "SecretResource");
-      }
-      static {
-        __name2(this, "SecretResource");
       }
       /**
        * List all secrets stored on the given scope.
@@ -8174,17 +7942,16 @@ var init_Secrets = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/BillingPortal/Sessions.js
 var SessionResource;
 var init_Sessions = __esm({
   "../node_modules/stripe/esm/resources/BillingPortal/Sessions.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     SessionResource = class extends StripeResource {
       static {
         __name(this, "SessionResource");
-      }
-      static {
-        __name2(this, "SessionResource");
       }
       /**
        * Creates a session of the customer portal.
@@ -8195,17 +7962,16 @@ var init_Sessions = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Checkout/Sessions.js
 var SessionResource2;
 var init_Sessions2 = __esm({
   "../node_modules/stripe/esm/resources/Checkout/Sessions.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     SessionResource2 = class extends StripeResource {
       static {
-        __name(this, "SessionResource2");
-      }
-      static {
-        __name2(this, "SessionResource");
+        __name(this, "SessionResource");
       }
       /**
        * Returns a list of Checkout Sessions.
@@ -8774,17 +8540,16 @@ var init_Sessions2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/FinancialConnections/Sessions.js
 var SessionResource3;
 var init_Sessions3 = __esm({
   "../node_modules/stripe/esm/resources/FinancialConnections/Sessions.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     SessionResource3 = class extends StripeResource {
       static {
-        __name(this, "SessionResource3");
-      }
-      static {
-        __name2(this, "SessionResource");
+        __name(this, "SessionResource");
       }
       /**
        * Retrieves the details of a Financial Connections Session
@@ -8801,17 +8566,16 @@ var init_Sessions3 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Tax/Settings.js
 var SettingResource;
 var init_Settings = __esm({
   "../node_modules/stripe/esm/resources/Tax/Settings.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     SettingResource = class extends StripeResource {
       static {
         __name(this, "SettingResource");
-      }
-      static {
-        __name2(this, "SettingResource");
       }
       /**
        * Retrieves Tax Settings for a merchant.
@@ -8828,17 +8592,16 @@ var init_Settings = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Climate/Suppliers.js
 var SupplierResource;
 var init_Suppliers = __esm({
   "../node_modules/stripe/esm/resources/Climate/Suppliers.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     SupplierResource = class extends StripeResource {
       static {
         __name(this, "SupplierResource");
-      }
-      static {
-        __name2(this, "SupplierResource");
       }
       /**
        * Lists all available Climate supplier objects.
@@ -8857,17 +8620,16 @@ var init_Suppliers = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/TestHelpers/TestClocks.js
 var TestClockResource;
 var init_TestClocks = __esm({
   "../node_modules/stripe/esm/resources/TestHelpers/TestClocks.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     TestClockResource = class extends StripeResource {
       static {
         __name(this, "TestClockResource");
-      }
-      static {
-        __name2(this, "TestClockResource");
       }
       /**
        * Deletes a test clock.
@@ -8904,17 +8666,16 @@ var init_TestClocks = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Issuing/Tokens.js
 var TokenResource;
 var init_Tokens = __esm({
   "../node_modules/stripe/esm/resources/Issuing/Tokens.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     TokenResource = class extends StripeResource {
       static {
         __name(this, "TokenResource");
-      }
-      static {
-        __name2(this, "TokenResource");
       }
       /**
        * Lists all Issuing Token objects for a given card.
@@ -8939,17 +8700,16 @@ var init_Tokens = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Treasury/TransactionEntries.js
 var TransactionEntryResource;
 var init_TransactionEntries = __esm({
   "../node_modules/stripe/esm/resources/Treasury/TransactionEntries.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     TransactionEntryResource = class extends StripeResource {
       static {
         __name(this, "TransactionEntryResource");
-      }
-      static {
-        __name2(this, "TransactionEntryResource");
       }
       /**
        * Retrieves a list of TransactionEntry objects.
@@ -9347,17 +9107,16 @@ var init_TransactionEntries = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/FinancialConnections/Transactions.js
 var TransactionResource;
 var init_Transactions = __esm({
   "../node_modules/stripe/esm/resources/FinancialConnections/Transactions.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     TransactionResource = class extends StripeResource {
       static {
         __name(this, "TransactionResource");
-      }
-      static {
-        __name2(this, "TransactionResource");
       }
       /**
        * Returns a list of Financial Connections Transaction objects.
@@ -9376,17 +9135,16 @@ var init_Transactions = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Issuing/Transactions.js
 var TransactionResource2;
 var init_Transactions2 = __esm({
   "../node_modules/stripe/esm/resources/Issuing/Transactions.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     TransactionResource2 = class extends StripeResource {
       static {
-        __name(this, "TransactionResource2");
-      }
-      static {
-        __name2(this, "TransactionResource");
+        __name(this, "TransactionResource");
       }
       /**
        * Returns a list of Issuing Transaction objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.
@@ -9667,17 +9425,16 @@ var init_Transactions2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Tax/Transactions.js
 var TransactionResource3;
 var init_Transactions3 = __esm({
   "../node_modules/stripe/esm/resources/Tax/Transactions.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     TransactionResource3 = class extends StripeResource {
       static {
-        __name(this, "TransactionResource3");
-      }
-      static {
-        __name2(this, "TransactionResource");
+        __name(this, "TransactionResource");
       }
       /**
        * Retrieves a Tax Transaction object.
@@ -9708,17 +9465,16 @@ var init_Transactions3 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/TestHelpers/Issuing/Transactions.js
 var TransactionResource4;
 var init_Transactions4 = __esm({
   "../node_modules/stripe/esm/resources/TestHelpers/Issuing/Transactions.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     TransactionResource4 = class extends StripeResource {
       static {
-        __name(this, "TransactionResource4");
-      }
-      static {
-        __name2(this, "TransactionResource");
+        __name(this, "TransactionResource");
       }
       /**
        * Refund a test-mode Transaction.
@@ -10096,17 +9852,16 @@ var init_Transactions4 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Treasury/Transactions.js
 var TransactionResource5;
 var init_Transactions5 = __esm({
   "../node_modules/stripe/esm/resources/Treasury/Transactions.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     TransactionResource5 = class extends StripeResource {
       static {
-        __name(this, "TransactionResource5");
-      }
-      static {
-        __name2(this, "TransactionResource");
+        __name(this, "TransactionResource");
       }
       /**
        * Retrieves a list of Transaction objects.
@@ -10556,17 +10311,16 @@ var init_Transactions5 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Radar/ValueListItems.js
 var ValueListItemResource;
 var init_ValueListItems = __esm({
   "../node_modules/stripe/esm/resources/Radar/ValueListItems.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     ValueListItemResource = class extends StripeResource {
       static {
         __name(this, "ValueListItemResource");
-      }
-      static {
-        __name2(this, "ValueListItemResource");
       }
       /**
        * Deletes a ValueListItem object, removing it from its parent value list.
@@ -10597,17 +10351,16 @@ var init_ValueListItems = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Radar/ValueLists.js
 var ValueListResource;
 var init_ValueLists = __esm({
   "../node_modules/stripe/esm/resources/Radar/ValueLists.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     ValueListResource = class extends StripeResource {
       static {
         __name(this, "ValueListResource");
-      }
-      static {
-        __name2(this, "ValueListResource");
       }
       /**
        * Deletes a ValueList object, also deleting any items contained within the value list. To be deleted, a value list must not be referenced in any rules.
@@ -10644,17 +10397,16 @@ var init_ValueLists = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Identity/VerificationReports.js
 var VerificationReportResource;
 var init_VerificationReports = __esm({
   "../node_modules/stripe/esm/resources/Identity/VerificationReports.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     VerificationReportResource = class extends StripeResource {
       static {
         __name(this, "VerificationReportResource");
-      }
-      static {
-        __name2(this, "VerificationReportResource");
       }
       /**
        * List all verification reports.
@@ -10673,17 +10425,16 @@ var init_VerificationReports = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Identity/VerificationSessions.js
 var VerificationSessionResource;
 var init_VerificationSessions = __esm({
   "../node_modules/stripe/esm/resources/Identity/VerificationSessions.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     VerificationSessionResource = class extends StripeResource {
       static {
         __name(this, "VerificationSessionResource");
-      }
-      static {
-        __name2(this, "VerificationSessionResource");
       }
       /**
        * Returns a list of VerificationSessions
@@ -10758,17 +10509,16 @@ var init_VerificationSessions = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Accounts.js
 var AccountResource3;
 var init_Accounts3 = __esm({
   "../node_modules/stripe/esm/resources/Accounts.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     AccountResource3 = class extends StripeResource {
       static {
-        __name(this, "AccountResource3");
-      }
-      static {
-        __name2(this, "AccountResource");
+        __name(this, "AccountResource");
       }
       /**
        * With [Connect](https://docs.stripe.com/connect), you can delete accounts you manage.
@@ -10955,17 +10705,16 @@ var init_Accounts3 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/AccountLinks.js
 var AccountLinkResource2;
 var init_AccountLinks2 = __esm({
   "../node_modules/stripe/esm/resources/AccountLinks.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     AccountLinkResource2 = class extends StripeResource {
       static {
-        __name(this, "AccountLinkResource2");
-      }
-      static {
-        __name2(this, "AccountLinkResource");
+        __name(this, "AccountLinkResource");
       }
       /**
        * Creates an AccountLink object that includes a single-use Stripe URL that the platform can redirect their user to in order to take them through the Connect Onboarding flow.
@@ -10976,17 +10725,16 @@ var init_AccountLinks2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/AccountSessions.js
 var AccountSessionResource;
 var init_AccountSessions = __esm({
   "../node_modules/stripe/esm/resources/AccountSessions.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     AccountSessionResource = class extends StripeResource {
       static {
         __name(this, "AccountSessionResource");
-      }
-      static {
-        __name2(this, "AccountSessionResource");
       }
       /**
        * Creates a AccountSession object that includes a single-use token that the platform can use on their front-end to grant client-side API access.
@@ -10997,17 +10745,16 @@ var init_AccountSessions = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/ApplePayDomains.js
 var ApplePayDomainResource;
 var init_ApplePayDomains = __esm({
   "../node_modules/stripe/esm/resources/ApplePayDomains.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     ApplePayDomainResource = class extends StripeResource {
       static {
         __name(this, "ApplePayDomainResource");
-      }
-      static {
-        __name2(this, "ApplePayDomainResource");
       }
       /**
        * Delete an apple pay domain.
@@ -11038,17 +10785,16 @@ var init_ApplePayDomains = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/ApplicationFees.js
 var ApplicationFeeResource;
 var init_ApplicationFees = __esm({
   "../node_modules/stripe/esm/resources/ApplicationFees.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     ApplicationFeeResource = class extends StripeResource {
       static {
         __name(this, "ApplicationFeeResource");
-      }
-      static {
-        __name2(this, "ApplicationFeeResource");
       }
       /**
        * Returns a list of application fees you've previously collected. The application fees are returned in sorted order, with the most recent fees appearing first.
@@ -11103,17 +10849,16 @@ var init_ApplicationFees = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Balance.js
 var BalanceResource;
 var init_Balance = __esm({
   "../node_modules/stripe/esm/resources/Balance.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     BalanceResource = class extends StripeResource {
       static {
         __name(this, "BalanceResource");
-      }
-      static {
-        __name2(this, "BalanceResource");
       }
       /**
        * Retrieves the current account balance, based on the authentication that was used to make the request.
@@ -11125,17 +10870,16 @@ var init_Balance = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/BalanceSettings.js
 var BalanceSettingResource;
 var init_BalanceSettings = __esm({
   "../node_modules/stripe/esm/resources/BalanceSettings.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     BalanceSettingResource = class extends StripeResource {
       static {
         __name(this, "BalanceSettingResource");
-      }
-      static {
-        __name2(this, "BalanceSettingResource");
       }
       /**
        * Retrieves balance settings for a given connected account.
@@ -11154,17 +10898,16 @@ var init_BalanceSettings = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/BalanceTransactions.js
 var BalanceTransactionResource;
 var init_BalanceTransactions = __esm({
   "../node_modules/stripe/esm/resources/BalanceTransactions.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     BalanceTransactionResource = class extends StripeResource {
       static {
         __name(this, "BalanceTransactionResource");
-      }
-      static {
-        __name2(this, "BalanceTransactionResource");
       }
       /**
        * Returns a list of transactions that have contributed to the Stripe account balance (for example, charges, transfers, and so on). The transactions return in sorted order, with the most recent transactions appearing first.
@@ -11187,17 +10930,16 @@ var init_BalanceTransactions = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Charges.js
 var ChargeResource;
 var init_Charges = __esm({
   "../node_modules/stripe/esm/resources/Charges.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     ChargeResource = class extends StripeResource {
       static {
         __name(this, "ChargeResource");
-      }
-      static {
-        __name2(this, "ChargeResource");
       }
       /**
        * Returns a list of charges you've previously created. The charges are returned in sorted order, with the most recent charges appearing first.
@@ -11251,17 +10993,16 @@ var init_Charges = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/ConfirmationTokens.js
 var ConfirmationTokenResource2;
 var init_ConfirmationTokens2 = __esm({
   "../node_modules/stripe/esm/resources/ConfirmationTokens.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     ConfirmationTokenResource2 = class extends StripeResource {
       static {
-        __name(this, "ConfirmationTokenResource2");
-      }
-      static {
-        __name2(this, "ConfirmationTokenResource");
+        __name(this, "ConfirmationTokenResource");
       }
       /**
        * Retrieves an existing ConfirmationToken object
@@ -11272,17 +11013,16 @@ var init_ConfirmationTokens2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/CountrySpecs.js
 var CountrySpecResource;
 var init_CountrySpecs = __esm({
   "../node_modules/stripe/esm/resources/CountrySpecs.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     CountrySpecResource = class extends StripeResource {
       static {
         __name(this, "CountrySpecResource");
-      }
-      static {
-        __name2(this, "CountrySpecResource");
       }
       /**
        * Lists all Country Spec objects available in the API.
@@ -11301,17 +11041,16 @@ var init_CountrySpecs = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Coupons.js
 var CouponResource;
 var init_Coupons = __esm({
   "../node_modules/stripe/esm/resources/Coupons.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     CouponResource = class extends StripeResource {
       static {
         __name(this, "CouponResource");
-      }
-      static {
-        __name2(this, "CouponResource");
       }
       /**
        * You can delete coupons via the [coupon management](https://dashboard.stripe.com/coupons) page of the Stripe dashboard. However, deleting a coupon does not affect any customers who have already applied the coupon; it means that new customers can't redeem the coupon. You can also delete coupons via the API.
@@ -11350,17 +11089,16 @@ var init_Coupons = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/CreditNotes.js
 var CreditNoteResource;
 var init_CreditNotes = __esm({
   "../node_modules/stripe/esm/resources/CreditNotes.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     CreditNoteResource = class extends StripeResource {
       static {
         __name(this, "CreditNoteResource");
-      }
-      static {
-        __name2(this, "CreditNoteResource");
       }
       /**
        * Returns a list of credit notes.
@@ -11648,17 +11386,16 @@ var init_CreditNotes = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Customers.js
 var CustomerResource2;
 var init_Customers2 = __esm({
   "../node_modules/stripe/esm/resources/Customers.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     CustomerResource2 = class extends StripeResource {
       static {
-        __name(this, "CustomerResource2");
-      }
-      static {
-        __name2(this, "CustomerResource");
+        __name(this, "CustomerResource");
       }
       /**
        * Permanently deletes a customer. It cannot be undone. Also immediately cancels any active subscriptions on the customer.
@@ -12322,17 +12059,16 @@ var init_Customers2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/CustomerSessions.js
 var CustomerSessionResource;
 var init_CustomerSessions = __esm({
   "../node_modules/stripe/esm/resources/CustomerSessions.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     CustomerSessionResource = class extends StripeResource {
       static {
         __name(this, "CustomerSessionResource");
-      }
-      static {
-        __name2(this, "CustomerSessionResource");
       }
       /**
        * Creates a Customer Session object that includes a single-use client secret that you can use on your front-end to grant client-side API access for certain customer resources.
@@ -12343,17 +12079,16 @@ var init_CustomerSessions = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Disputes.js
 var DisputeResource2;
 var init_Disputes2 = __esm({
   "../node_modules/stripe/esm/resources/Disputes.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     DisputeResource2 = class extends StripeResource {
       static {
-        __name(this, "DisputeResource2");
-      }
-      static {
-        __name2(this, "DisputeResource");
+        __name(this, "DisputeResource");
       }
       /**
        * Returns a list of your disputes.
@@ -12388,17 +12123,16 @@ var init_Disputes2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/EphemeralKeys.js
 var EphemeralKeyResource;
 var init_EphemeralKeys = __esm({
   "../node_modules/stripe/esm/resources/EphemeralKeys.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     EphemeralKeyResource = class extends StripeResource {
       static {
         __name(this, "EphemeralKeyResource");
-      }
-      static {
-        __name2(this, "EphemeralKeyResource");
       }
       /**
        * Invalidates a short-lived API key for a given resource.
@@ -12408,7 +12142,7 @@ var init_EphemeralKeys = __esm({
       }
       create(params, options) {
         return this._makeRequest("POST", "/v1/ephemeral_keys", params, options, {
-          validator: /* @__PURE__ */ __name2((data, options2) => {
+          validator: /* @__PURE__ */ __name((data, options2) => {
             if (!options2.headers || !options2.headers["Stripe-Version"]) {
               throw new Error("Passing apiVersion in a separate options hash is required to create an ephemeral key. See https://stripe.com/docs/api/versioning?lang=node");
             }
@@ -12418,17 +12152,16 @@ var init_EphemeralKeys = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Events.js
 var EventResource2;
 var init_Events2 = __esm({
   "../node_modules/stripe/esm/resources/Events.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     EventResource2 = class extends StripeResource {
       static {
-        __name(this, "EventResource2");
-      }
-      static {
-        __name2(this, "EventResource");
+        __name(this, "EventResource");
       }
       /**
        * List events, going back up to 30 days. Each event data is rendered according to Stripe API version at its creation time, specified in [event object](https://docs.stripe.com/api/events/object) api_version attribute (not according to your current Stripe API version or Stripe-Version header).
@@ -12447,17 +12180,16 @@ var init_Events2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/ExchangeRates.js
 var ExchangeRateResource;
 var init_ExchangeRates = __esm({
   "../node_modules/stripe/esm/resources/ExchangeRates.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     ExchangeRateResource = class extends StripeResource {
       static {
         __name(this, "ExchangeRateResource");
-      }
-      static {
-        __name2(this, "ExchangeRateResource");
       }
       /**
        * [Deprecated] The ExchangeRate APIs are deprecated. Please use the [FX Quotes API](https://docs.stripe.com/payments/currencies/localize-prices/fx-quotes-api) instead.
@@ -12482,6 +12214,8 @@ var init_ExchangeRates = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/multipart.js
 function multipartRequestDataProcessor(method, data, headers, callback) {
   data = data || {};
   if (method !== "POST") {
@@ -12492,13 +12226,12 @@ function multipartRequestDataProcessor(method, data, headers, callback) {
     return callback(null, buffer);
   }).catch((err) => callback(err, null));
 }
-__name(multipartRequestDataProcessor, "multipartRequestDataProcessor");
 var multipartDataGenerator;
 var init_multipart = __esm({
   "../node_modules/stripe/esm/multipart.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_utils();
-    multipartDataGenerator = /* @__PURE__ */ __name2((method, data, headers) => {
+    multipartDataGenerator = /* @__PURE__ */ __name((method, data, headers) => {
       const segno = (Math.round(Math.random() * 1e16) + Math.round(Math.random() * 1e16)).toString();
       headers["Content-Type"] = `multipart/form-data; boundary=${segno}`;
       const textEncoder = new TextEncoder();
@@ -12513,12 +12246,10 @@ var init_multipart = __esm({
         buffer.set(endBuffer, buffer.length - 2);
       }
       __name(push, "push");
-      __name2(push, "push");
       function q(s) {
         return `"${s.replace(/"|"/g, "%22").replace(/\r\n|\r|\n/g, " ")}"`;
       }
       __name(q, "q");
-      __name2(q, "q");
       const flattenedData = flattenAndStringify(data);
       for (const k in flattenedData) {
         if (!Object.prototype.hasOwnProperty.call(flattenedData, k)) {
@@ -12541,21 +12272,20 @@ var init_multipart = __esm({
       push(`--${segno}--`);
       return buffer;
     }, "multipartDataGenerator");
-    __name2(multipartRequestDataProcessor, "multipartRequestDataProcessor");
+    __name(multipartRequestDataProcessor, "multipartRequestDataProcessor");
   }
 });
+
+// ../node_modules/stripe/esm/resources/Files.js
 var FileResource;
 var init_Files = __esm({
   "../node_modules/stripe/esm/resources/Files.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_multipart();
     init_StripeResource();
     FileResource = class extends StripeResource {
       static {
         __name(this, "FileResource");
-      }
-      static {
-        __name2(this, "FileResource");
       }
       constructor() {
         super(...arguments);
@@ -12591,17 +12321,16 @@ var init_Files = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/FileLinks.js
 var FileLinkResource;
 var init_FileLinks = __esm({
   "../node_modules/stripe/esm/resources/FileLinks.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     FileLinkResource = class extends StripeResource {
       static {
         __name(this, "FileLinkResource");
-      }
-      static {
-        __name2(this, "FileLinkResource");
       }
       /**
        * Returns a list of file links.
@@ -12632,17 +12361,16 @@ var init_FileLinks = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Invoices.js
 var InvoiceResource;
 var init_Invoices = __esm({
   "../node_modules/stripe/esm/resources/Invoices.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     InvoiceResource = class extends StripeResource {
       static {
         __name(this, "InvoiceResource");
-      }
-      static {
-        __name2(this, "InvoiceResource");
       }
       /**
        * Permanently deletes a one-off invoice draft. This cannot be undone. Attempts to delete invoices that are no longer in a draft state will fail; once an invoice has been finalized or if an invoice is for a subscription, it must be [voided](https://docs.stripe.com/api/invoices/void).
@@ -13506,17 +13234,16 @@ var init_Invoices = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/InvoiceItems.js
 var InvoiceItemResource;
 var init_InvoiceItems = __esm({
   "../node_modules/stripe/esm/resources/InvoiceItems.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     InvoiceItemResource = class extends StripeResource {
       static {
         __name(this, "InvoiceItemResource");
-      }
-      static {
-        __name2(this, "InvoiceItemResource");
       }
       /**
        * Deletes an invoice item, removing it from an invoice. Deleting invoice items is only possible when they're not attached to invoices, or if it's attached to a draft invoice.
@@ -13658,17 +13385,16 @@ var init_InvoiceItems = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/InvoicePayments.js
 var InvoicePaymentResource;
 var init_InvoicePayments = __esm({
   "../node_modules/stripe/esm/resources/InvoicePayments.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     InvoicePaymentResource = class extends StripeResource {
       static {
         __name(this, "InvoicePaymentResource");
-      }
-      static {
-        __name2(this, "InvoicePaymentResource");
       }
       /**
        * When retrieving an invoice, there is an includable payments property containing the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of payments.
@@ -13687,17 +13413,16 @@ var init_InvoicePayments = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/InvoiceRenderingTemplates.js
 var InvoiceRenderingTemplateResource;
 var init_InvoiceRenderingTemplates = __esm({
   "../node_modules/stripe/esm/resources/InvoiceRenderingTemplates.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     InvoiceRenderingTemplateResource = class extends StripeResource {
       static {
         __name(this, "InvoiceRenderingTemplateResource");
-      }
-      static {
-        __name2(this, "InvoiceRenderingTemplateResource");
       }
       /**
        * List all templates, ordered by creation date, with the most recently created template appearing first.
@@ -13728,17 +13453,16 @@ var init_InvoiceRenderingTemplates = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Mandates.js
 var MandateResource;
 var init_Mandates = __esm({
   "../node_modules/stripe/esm/resources/Mandates.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     MandateResource = class extends StripeResource {
       static {
         __name(this, "MandateResource");
-      }
-      static {
-        __name2(this, "MandateResource");
       }
       /**
        * Retrieves a Mandate object.
@@ -13749,19 +13473,18 @@ var init_Mandates = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/OAuth.js
 var OAuthResource;
 var init_OAuth = __esm({
   "../node_modules/stripe/esm/resources/OAuth.js"() {
     "use strict";
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     init_utils();
     OAuthResource = class extends StripeResource {
       static {
         __name(this, "OAuthResource");
-      }
-      static {
-        __name2(this, "OAuthResource");
       }
       constructor() {
         super(...arguments);
@@ -13802,17 +13525,16 @@ var init_OAuth = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/PaymentAttemptRecords.js
 var PaymentAttemptRecordResource;
 var init_PaymentAttemptRecords = __esm({
   "../node_modules/stripe/esm/resources/PaymentAttemptRecords.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     PaymentAttemptRecordResource = class extends StripeResource {
       static {
         __name(this, "PaymentAttemptRecordResource");
-      }
-      static {
-        __name2(this, "PaymentAttemptRecordResource");
       }
       /**
        * List all the Payment Attempt Records attached to the specified Payment Record.
@@ -13831,17 +13553,16 @@ var init_PaymentAttemptRecords = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/PaymentIntents.js
 var PaymentIntentResource;
 var init_PaymentIntents = __esm({
   "../node_modules/stripe/esm/resources/PaymentIntents.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     PaymentIntentResource = class extends StripeResource {
       static {
         __name(this, "PaymentIntentResource");
-      }
-      static {
-        __name2(this, "PaymentIntentResource");
       }
       /**
        * Returns a list of PaymentIntents.
@@ -14008,17 +13729,16 @@ var init_PaymentIntents = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/PaymentLinks.js
 var PaymentLinkResource;
 var init_PaymentLinks = __esm({
   "../node_modules/stripe/esm/resources/PaymentLinks.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     PaymentLinkResource = class extends StripeResource {
       static {
         __name(this, "PaymentLinkResource");
-      }
-      static {
-        __name2(this, "PaymentLinkResource");
       }
       /**
        * Returns a list of your payment links.
@@ -14450,17 +14170,16 @@ var init_PaymentLinks = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/PaymentMethods.js
 var PaymentMethodResource;
 var init_PaymentMethods = __esm({
   "../node_modules/stripe/esm/resources/PaymentMethods.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     PaymentMethodResource = class extends StripeResource {
       static {
         __name(this, "PaymentMethodResource");
-      }
-      static {
-        __name2(this, "PaymentMethodResource");
       }
       /**
        * Returns a list of all PaymentMethods.
@@ -14517,17 +14236,16 @@ var init_PaymentMethods = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/PaymentMethodConfigurations.js
 var PaymentMethodConfigurationResource;
 var init_PaymentMethodConfigurations = __esm({
   "../node_modules/stripe/esm/resources/PaymentMethodConfigurations.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     PaymentMethodConfigurationResource = class extends StripeResource {
       static {
         __name(this, "PaymentMethodConfigurationResource");
-      }
-      static {
-        __name2(this, "PaymentMethodConfigurationResource");
       }
       /**
        * List payment method configurations
@@ -14558,17 +14276,16 @@ var init_PaymentMethodConfigurations = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/PaymentMethodDomains.js
 var PaymentMethodDomainResource;
 var init_PaymentMethodDomains = __esm({
   "../node_modules/stripe/esm/resources/PaymentMethodDomains.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     PaymentMethodDomainResource = class extends StripeResource {
       static {
         __name(this, "PaymentMethodDomainResource");
-      }
-      static {
-        __name2(this, "PaymentMethodDomainResource");
       }
       /**
        * Lists the details of existing payment method domains.
@@ -14610,17 +14327,16 @@ var init_PaymentMethodDomains = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/PaymentRecords.js
 var PaymentRecordResource;
 var init_PaymentRecords = __esm({
   "../node_modules/stripe/esm/resources/PaymentRecords.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     PaymentRecordResource = class extends StripeResource {
       static {
         __name(this, "PaymentRecordResource");
-      }
-      static {
-        __name2(this, "PaymentRecordResource");
       }
       /**
        * List all the Payment Records for a given merchant.
@@ -14688,17 +14404,16 @@ var init_PaymentRecords = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Payouts.js
 var PayoutResource;
 var init_Payouts = __esm({
   "../node_modules/stripe/esm/resources/Payouts.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     PayoutResource = class extends StripeResource {
       static {
         __name(this, "PayoutResource");
-      }
-      static {
-        __name2(this, "PayoutResource");
       }
       /**
        * Returns a list of existing payouts sent to third-party bank accounts or payouts that Stripe sent to you. The payouts return in sorted order, with the most recently created payouts appearing first.
@@ -14747,17 +14462,16 @@ var init_Payouts = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Plans.js
 var PlanResource;
 var init_Plans = __esm({
   "../node_modules/stripe/esm/resources/Plans.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     PlanResource = class extends StripeResource {
       static {
         __name(this, "PlanResource");
-      }
-      static {
-        __name2(this, "PlanResource");
       }
       /**
        * Deleting plans means new subscribers can't be added. Existing subscribers aren't affected.
@@ -14912,17 +14626,16 @@ var init_Plans = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Prices.js
 var PriceResource;
 var init_Prices = __esm({
   "../node_modules/stripe/esm/resources/Prices.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     PriceResource = class extends StripeResource {
       static {
         __name(this, "PriceResource");
-      }
-      static {
-        __name2(this, "PriceResource");
       }
       /**
        * Returns a list of your active prices, excluding [inline prices](https://docs.stripe.com/docs/products-prices/pricing-models#inline-pricing). For the list of inactive prices, set active to false.
@@ -15283,17 +14996,16 @@ var init_Prices = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Products.js
 var ProductResource2;
 var init_Products2 = __esm({
   "../node_modules/stripe/esm/resources/Products.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     ProductResource2 = class extends StripeResource {
       static {
-        __name(this, "ProductResource2");
-      }
-      static {
-        __name2(this, "ProductResource");
+        __name(this, "ProductResource");
       }
       /**
        * Delete a product. Deleting a product is only possible if it has no prices associated with it. Additionally, deleting a product with type=good is only possible if it has no SKUs associated with it.
@@ -15398,17 +15110,16 @@ var init_Products2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/PromotionCodes.js
 var PromotionCodeResource;
 var init_PromotionCodes = __esm({
   "../node_modules/stripe/esm/resources/PromotionCodes.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     PromotionCodeResource = class extends StripeResource {
       static {
         __name(this, "PromotionCodeResource");
-      }
-      static {
-        __name2(this, "PromotionCodeResource");
       }
       /**
        * Returns a list of your promotion codes.
@@ -15439,17 +15150,16 @@ var init_PromotionCodes = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Quotes.js
 var QuoteResource;
 var init_Quotes = __esm({
   "../node_modules/stripe/esm/resources/Quotes.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     QuoteResource = class extends StripeResource {
       static {
         __name(this, "QuoteResource");
-      }
-      static {
-        __name2(this, "QuoteResource");
       }
       /**
        * Returns a list of your quotes.
@@ -16321,17 +16031,16 @@ var init_Quotes = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Refunds.js
 var RefundResource2;
 var init_Refunds2 = __esm({
   "../node_modules/stripe/esm/resources/Refunds.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     RefundResource2 = class extends StripeResource {
       static {
-        __name(this, "RefundResource2");
-      }
-      static {
-        __name2(this, "RefundResource");
+        __name(this, "RefundResource");
       }
       /**
        * Returns a list of all refunds you created. We return the refunds in sorted order, with the most recent refunds appearing first. The 10 most recent refunds are always available by default on the Charge object.
@@ -16382,17 +16091,16 @@ var init_Refunds2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Reviews.js
 var ReviewResource;
 var init_Reviews = __esm({
   "../node_modules/stripe/esm/resources/Reviews.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     ReviewResource = class extends StripeResource {
       static {
         __name(this, "ReviewResource");
-      }
-      static {
-        __name2(this, "ReviewResource");
       }
       /**
        * Returns a list of Review objects that have open set to true. The objects are sorted in descending order by creation date, with the most recently created object appearing first.
@@ -16417,17 +16125,16 @@ var init_Reviews = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/SetupAttempts.js
 var SetupAttemptResource;
 var init_SetupAttempts = __esm({
   "../node_modules/stripe/esm/resources/SetupAttempts.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     SetupAttemptResource = class extends StripeResource {
       static {
         __name(this, "SetupAttemptResource");
-      }
-      static {
-        __name2(this, "SetupAttemptResource");
       }
       /**
        * Returns a list of SetupAttempts that associate with a provided SetupIntent.
@@ -16440,17 +16147,16 @@ var init_SetupAttempts = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/SetupIntents.js
 var SetupIntentResource;
 var init_SetupIntents = __esm({
   "../node_modules/stripe/esm/resources/SetupIntents.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     SetupIntentResource = class extends StripeResource {
       static {
         __name(this, "SetupIntentResource");
-      }
-      static {
-        __name2(this, "SetupIntentResource");
       }
       /**
        * Returns a list of SetupIntents.
@@ -16521,17 +16227,16 @@ var init_SetupIntents = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/ShippingRates.js
 var ShippingRateResource;
 var init_ShippingRates = __esm({
   "../node_modules/stripe/esm/resources/ShippingRates.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     ShippingRateResource = class extends StripeResource {
       static {
         __name(this, "ShippingRateResource");
-      }
-      static {
-        __name2(this, "ShippingRateResource");
       }
       /**
        * Returns a list of your shipping rates.
@@ -16562,17 +16267,16 @@ var init_ShippingRates = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Sources.js
 var SourceResource;
 var init_Sources = __esm({
   "../node_modules/stripe/esm/resources/Sources.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     SourceResource = class extends StripeResource {
       static {
         __name(this, "SourceResource");
-      }
-      static {
-        __name2(this, "SourceResource");
       }
       /**
        * Retrieves an existing source object. Supply the unique source ID from a source creation request and Stripe will return the corresponding up-to-date source object information.
@@ -16611,17 +16315,16 @@ var init_Sources = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Subscriptions.js
 var SubscriptionResource;
 var init_Subscriptions = __esm({
   "../node_modules/stripe/esm/resources/Subscriptions.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     SubscriptionResource = class extends StripeResource {
       static {
         __name(this, "SubscriptionResource");
-      }
-      static {
-        __name2(this, "SubscriptionResource");
       }
       /**
        * Cancels a customer's subscription immediately. The customer won't be charged again for the subscription. After it's canceled, the subscription is largely immutable. You can still update its [metadata](https://docs.stripe.com/metadata) and cancellation_details.
@@ -17565,17 +17268,16 @@ var init_Subscriptions = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/SubscriptionItems.js
 var SubscriptionItemResource;
 var init_SubscriptionItems = __esm({
   "../node_modules/stripe/esm/resources/SubscriptionItems.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     SubscriptionItemResource = class extends StripeResource {
       static {
         __name(this, "SubscriptionItemResource");
-      }
-      static {
-        __name2(this, "SubscriptionItemResource");
       }
       /**
        * Deletes an item from the subscription. Removing a subscription item from a subscription will not cancel the subscription.
@@ -17973,17 +17675,16 @@ var init_SubscriptionItems = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/SubscriptionSchedules.js
 var SubscriptionScheduleResource;
 var init_SubscriptionSchedules = __esm({
   "../node_modules/stripe/esm/resources/SubscriptionSchedules.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     SubscriptionScheduleResource = class extends StripeResource {
       static {
         __name(this, "SubscriptionScheduleResource");
-      }
-      static {
-        __name2(this, "SubscriptionScheduleResource");
       }
       /**
        * Retrieves the list of your subscription schedules.
@@ -18110,17 +17811,16 @@ var init_SubscriptionSchedules = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/TaxCodes.js
 var TaxCodeResource;
 var init_TaxCodes = __esm({
   "../node_modules/stripe/esm/resources/TaxCodes.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     TaxCodeResource = class extends StripeResource {
       static {
         __name(this, "TaxCodeResource");
-      }
-      static {
-        __name2(this, "TaxCodeResource");
       }
       /**
        * A list of [all tax codes available](https://stripe.com/docs/tax/tax-categories) to add to Products in order to allow specific tax calculations.
@@ -18139,17 +17839,16 @@ var init_TaxCodes = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/TaxIds.js
 var TaxIdResource;
 var init_TaxIds = __esm({
   "../node_modules/stripe/esm/resources/TaxIds.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     TaxIdResource = class extends StripeResource {
       static {
         __name(this, "TaxIdResource");
-      }
-      static {
-        __name2(this, "TaxIdResource");
       }
       /**
        * Deletes an existing account or customer tax_id object.
@@ -18180,17 +17879,16 @@ var init_TaxIds = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/TaxRates.js
 var TaxRateResource;
 var init_TaxRates = __esm({
   "../node_modules/stripe/esm/resources/TaxRates.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     TaxRateResource = class extends StripeResource {
       static {
         __name(this, "TaxRateResource");
-      }
-      static {
-        __name2(this, "TaxRateResource");
       }
       /**
        * Returns a list of your tax rates. Tax rates are returned sorted by creation date, with the most recently created tax rates appearing first.
@@ -18221,17 +17919,16 @@ var init_TaxRates = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Tokens.js
 var TokenResource2;
 var init_Tokens2 = __esm({
   "../node_modules/stripe/esm/resources/Tokens.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     TokenResource2 = class extends StripeResource {
       static {
-        __name(this, "TokenResource2");
-      }
-      static {
-        __name2(this, "TokenResource");
+        __name(this, "TokenResource");
       }
       /**
        * Retrieves the token with the given ID.
@@ -18249,17 +17946,16 @@ var init_Tokens2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Topups.js
 var TopupResource;
 var init_Topups = __esm({
   "../node_modules/stripe/esm/resources/Topups.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     TopupResource = class extends StripeResource {
       static {
         __name(this, "TopupResource");
-      }
-      static {
-        __name2(this, "TopupResource");
       }
       /**
        * Returns a list of top-ups.
@@ -18296,17 +17992,16 @@ var init_Topups = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Transfers.js
 var TransferResource;
 var init_Transfers = __esm({
   "../node_modules/stripe/esm/resources/Transfers.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     TransferResource = class extends StripeResource {
       static {
         __name(this, "TransferResource");
-      }
-      static {
-        __name2(this, "TransferResource");
       }
       /**
        * Returns a list of existing transfers sent to connected accounts. The transfers are returned in sorted order, with the most recently created transfers appearing first.
@@ -18371,17 +18066,16 @@ var init_Transfers = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/WebhookEndpoints.js
 var WebhookEndpointResource;
 var init_WebhookEndpoints = __esm({
   "../node_modules/stripe/esm/resources/WebhookEndpoints.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_StripeResource();
     WebhookEndpointResource = class extends StripeResource {
       static {
         __name(this, "WebhookEndpointResource");
-      }
-      static {
-        __name2(this, "WebhookEndpointResource");
       }
       /**
        * You can also delete webhook endpoints via the [webhook endpoint management](https://dashboard.stripe.com/account/webhooks) page of the Stripe dashboard.
@@ -18418,106 +18112,91 @@ var init_WebhookEndpoints = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources.js
 var resources_exports = {};
 __export(resources_exports, {
-  Account: /* @__PURE__ */ __name(() => AccountResource3, "Account"),
-  AccountLinks: /* @__PURE__ */ __name(() => AccountLinkResource2, "AccountLinks"),
-  AccountSessions: /* @__PURE__ */ __name(() => AccountSessionResource, "AccountSessions"),
-  Accounts: /* @__PURE__ */ __name(() => AccountResource3, "Accounts"),
-  ApplePayDomains: /* @__PURE__ */ __name(() => ApplePayDomainResource, "ApplePayDomains"),
-  ApplicationFees: /* @__PURE__ */ __name(() => ApplicationFeeResource, "ApplicationFees"),
-  Apps: /* @__PURE__ */ __name(() => Apps, "Apps"),
-  Balance: /* @__PURE__ */ __name(() => BalanceResource, "Balance"),
-  BalanceSettings: /* @__PURE__ */ __name(() => BalanceSettingResource, "BalanceSettings"),
-  BalanceTransactions: /* @__PURE__ */ __name(() => BalanceTransactionResource, "BalanceTransactions"),
-  Balances: /* @__PURE__ */ __name(() => BalanceResource, "Balances"),
-  Billing: /* @__PURE__ */ __name(() => Billing, "Billing"),
-  BillingPortal: /* @__PURE__ */ __name(() => BillingPortal, "BillingPortal"),
-  Charges: /* @__PURE__ */ __name(() => ChargeResource, "Charges"),
-  Checkout: /* @__PURE__ */ __name(() => Checkout, "Checkout"),
-  Climate: /* @__PURE__ */ __name(() => Climate, "Climate"),
-  ConfirmationTokens: /* @__PURE__ */ __name(() => ConfirmationTokenResource2, "ConfirmationTokens"),
-  CountrySpecs: /* @__PURE__ */ __name(() => CountrySpecResource, "CountrySpecs"),
-  Coupons: /* @__PURE__ */ __name(() => CouponResource, "Coupons"),
-  CreditNotes: /* @__PURE__ */ __name(() => CreditNoteResource, "CreditNotes"),
-  CustomerSessions: /* @__PURE__ */ __name(() => CustomerSessionResource, "CustomerSessions"),
-  Customers: /* @__PURE__ */ __name(() => CustomerResource2, "Customers"),
-  Disputes: /* @__PURE__ */ __name(() => DisputeResource2, "Disputes"),
-  Entitlements: /* @__PURE__ */ __name(() => Entitlements, "Entitlements"),
-  EphemeralKeys: /* @__PURE__ */ __name(() => EphemeralKeyResource, "EphemeralKeys"),
-  Events: /* @__PURE__ */ __name(() => EventResource2, "Events"),
-  ExchangeRates: /* @__PURE__ */ __name(() => ExchangeRateResource, "ExchangeRates"),
-  FileLinks: /* @__PURE__ */ __name(() => FileLinkResource, "FileLinks"),
-  Files: /* @__PURE__ */ __name(() => FileResource, "Files"),
-  FinancialConnections: /* @__PURE__ */ __name(() => FinancialConnections, "FinancialConnections"),
-  Forwarding: /* @__PURE__ */ __name(() => Forwarding, "Forwarding"),
-  Identity: /* @__PURE__ */ __name(() => Identity, "Identity"),
-  InvoiceItems: /* @__PURE__ */ __name(() => InvoiceItemResource, "InvoiceItems"),
-  InvoicePayments: /* @__PURE__ */ __name(() => InvoicePaymentResource, "InvoicePayments"),
-  InvoiceRenderingTemplates: /* @__PURE__ */ __name(() => InvoiceRenderingTemplateResource, "InvoiceRenderingTemplates"),
-  Invoices: /* @__PURE__ */ __name(() => InvoiceResource, "Invoices"),
-  Issuing: /* @__PURE__ */ __name(() => Issuing, "Issuing"),
-  Mandates: /* @__PURE__ */ __name(() => MandateResource, "Mandates"),
-  OAuthResource: /* @__PURE__ */ __name(() => OAuthResource, "OAuthResource"),
-  PaymentAttemptRecords: /* @__PURE__ */ __name(() => PaymentAttemptRecordResource, "PaymentAttemptRecords"),
-  PaymentIntents: /* @__PURE__ */ __name(() => PaymentIntentResource, "PaymentIntents"),
-  PaymentLinks: /* @__PURE__ */ __name(() => PaymentLinkResource, "PaymentLinks"),
-  PaymentMethodConfigurations: /* @__PURE__ */ __name(() => PaymentMethodConfigurationResource, "PaymentMethodConfigurations"),
-  PaymentMethodDomains: /* @__PURE__ */ __name(() => PaymentMethodDomainResource, "PaymentMethodDomains"),
-  PaymentMethods: /* @__PURE__ */ __name(() => PaymentMethodResource, "PaymentMethods"),
-  PaymentRecords: /* @__PURE__ */ __name(() => PaymentRecordResource, "PaymentRecords"),
-  Payouts: /* @__PURE__ */ __name(() => PayoutResource, "Payouts"),
-  Plans: /* @__PURE__ */ __name(() => PlanResource, "Plans"),
-  Prices: /* @__PURE__ */ __name(() => PriceResource, "Prices"),
-  Products: /* @__PURE__ */ __name(() => ProductResource2, "Products"),
-  PromotionCodes: /* @__PURE__ */ __name(() => PromotionCodeResource, "PromotionCodes"),
-  Quotes: /* @__PURE__ */ __name(() => QuoteResource, "Quotes"),
-  Radar: /* @__PURE__ */ __name(() => Radar, "Radar"),
-  Refunds: /* @__PURE__ */ __name(() => RefundResource2, "Refunds"),
-  Reporting: /* @__PURE__ */ __name(() => Reporting, "Reporting"),
-  Reviews: /* @__PURE__ */ __name(() => ReviewResource, "Reviews"),
-  SetupAttempts: /* @__PURE__ */ __name(() => SetupAttemptResource, "SetupAttempts"),
-  SetupIntents: /* @__PURE__ */ __name(() => SetupIntentResource, "SetupIntents"),
-  ShippingRates: /* @__PURE__ */ __name(() => ShippingRateResource, "ShippingRates"),
-  Sigma: /* @__PURE__ */ __name(() => Sigma, "Sigma"),
-  Sources: /* @__PURE__ */ __name(() => SourceResource, "Sources"),
-  SubscriptionItems: /* @__PURE__ */ __name(() => SubscriptionItemResource, "SubscriptionItems"),
-  SubscriptionSchedules: /* @__PURE__ */ __name(() => SubscriptionScheduleResource, "SubscriptionSchedules"),
-  Subscriptions: /* @__PURE__ */ __name(() => SubscriptionResource, "Subscriptions"),
-  Tax: /* @__PURE__ */ __name(() => Tax, "Tax"),
-  TaxCodes: /* @__PURE__ */ __name(() => TaxCodeResource, "TaxCodes"),
-  TaxIds: /* @__PURE__ */ __name(() => TaxIdResource, "TaxIds"),
-  TaxRates: /* @__PURE__ */ __name(() => TaxRateResource, "TaxRates"),
-  Terminal: /* @__PURE__ */ __name(() => Terminal, "Terminal"),
-  TestHelpers: /* @__PURE__ */ __name(() => TestHelpers, "TestHelpers"),
-  Tokens: /* @__PURE__ */ __name(() => TokenResource2, "Tokens"),
-  Topups: /* @__PURE__ */ __name(() => TopupResource, "Topups"),
-  Transfers: /* @__PURE__ */ __name(() => TransferResource, "Transfers"),
-  Treasury: /* @__PURE__ */ __name(() => Treasury, "Treasury"),
-  V2: /* @__PURE__ */ __name(() => V2, "V2"),
-  WebhookEndpoints: /* @__PURE__ */ __name(() => WebhookEndpointResource, "WebhookEndpoints")
+  Account: () => AccountResource3,
+  AccountLinks: () => AccountLinkResource2,
+  AccountSessions: () => AccountSessionResource,
+  Accounts: () => AccountResource3,
+  ApplePayDomains: () => ApplePayDomainResource,
+  ApplicationFees: () => ApplicationFeeResource,
+  Apps: () => Apps,
+  Balance: () => BalanceResource,
+  BalanceSettings: () => BalanceSettingResource,
+  BalanceTransactions: () => BalanceTransactionResource,
+  Balances: () => BalanceResource,
+  Billing: () => Billing,
+  BillingPortal: () => BillingPortal,
+  Charges: () => ChargeResource,
+  Checkout: () => Checkout,
+  Climate: () => Climate,
+  ConfirmationTokens: () => ConfirmationTokenResource2,
+  CountrySpecs: () => CountrySpecResource,
+  Coupons: () => CouponResource,
+  CreditNotes: () => CreditNoteResource,
+  CustomerSessions: () => CustomerSessionResource,
+  Customers: () => CustomerResource2,
+  Disputes: () => DisputeResource2,
+  Entitlements: () => Entitlements,
+  EphemeralKeys: () => EphemeralKeyResource,
+  Events: () => EventResource2,
+  ExchangeRates: () => ExchangeRateResource,
+  FileLinks: () => FileLinkResource,
+  Files: () => FileResource,
+  FinancialConnections: () => FinancialConnections,
+  Forwarding: () => Forwarding,
+  Identity: () => Identity,
+  InvoiceItems: () => InvoiceItemResource,
+  InvoicePayments: () => InvoicePaymentResource,
+  InvoiceRenderingTemplates: () => InvoiceRenderingTemplateResource,
+  Invoices: () => InvoiceResource,
+  Issuing: () => Issuing,
+  Mandates: () => MandateResource,
+  OAuthResource: () => OAuthResource,
+  PaymentAttemptRecords: () => PaymentAttemptRecordResource,
+  PaymentIntents: () => PaymentIntentResource,
+  PaymentLinks: () => PaymentLinkResource,
+  PaymentMethodConfigurations: () => PaymentMethodConfigurationResource,
+  PaymentMethodDomains: () => PaymentMethodDomainResource,
+  PaymentMethods: () => PaymentMethodResource,
+  PaymentRecords: () => PaymentRecordResource,
+  Payouts: () => PayoutResource,
+  Plans: () => PlanResource,
+  Prices: () => PriceResource,
+  Products: () => ProductResource2,
+  PromotionCodes: () => PromotionCodeResource,
+  Quotes: () => QuoteResource,
+  Radar: () => Radar,
+  Refunds: () => RefundResource2,
+  Reporting: () => Reporting,
+  Reviews: () => ReviewResource,
+  SetupAttempts: () => SetupAttemptResource,
+  SetupIntents: () => SetupIntentResource,
+  ShippingRates: () => ShippingRateResource,
+  Sigma: () => Sigma,
+  Sources: () => SourceResource,
+  SubscriptionItems: () => SubscriptionItemResource,
+  SubscriptionSchedules: () => SubscriptionScheduleResource,
+  Subscriptions: () => SubscriptionResource,
+  Tax: () => Tax,
+  TaxCodes: () => TaxCodeResource,
+  TaxIds: () => TaxIdResource,
+  TaxRates: () => TaxRateResource,
+  Terminal: () => Terminal,
+  TestHelpers: () => TestHelpers,
+  Tokens: () => TokenResource2,
+  Topups: () => TopupResource,
+  Transfers: () => TransferResource,
+  Treasury: () => Treasury,
+  V2: () => V2,
+  WebhookEndpoints: () => WebhookEndpointResource
 });
-var Apps;
-var Billing;
-var BillingPortal;
-var Checkout;
-var Climate;
-var Entitlements;
-var FinancialConnections;
-var Forwarding;
-var Identity;
-var Issuing;
-var Radar;
-var Reporting;
-var Sigma;
-var Tax;
-var Terminal;
-var TestHelpers;
-var Treasury;
-var V2;
+var Apps, Billing, BillingPortal, Checkout, Climate, Entitlements, FinancialConnections, Forwarding, Identity, Issuing, Radar, Reporting, Sigma, Tax, Terminal, TestHelpers, Treasury, V2;
 var init_resources = __esm({
   "../node_modules/stripe/esm/resources.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_ResourceNamespace();
     init_AccountLinks();
     init_AccountTokens();
@@ -18789,23 +18468,24 @@ var init_resources = __esm({
     });
   }
 });
+
+// ../node_modules/stripe/esm/shared.js
 var init_shared = __esm({
   "../node_modules/stripe/esm/shared.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_Decimal();
   }
 });
+
+// ../node_modules/stripe/esm/resources/Apps/index.js
 var Apps2;
 var init_Apps = __esm({
   "../node_modules/stripe/esm/resources/Apps/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_Secrets();
     Apps2 = class {
       static {
-        __name(this, "Apps2");
-      }
-      static {
-        __name2(this, "Apps");
+        __name(this, "Apps");
       }
       constructor(stripe) {
         this.stripe = stripe;
@@ -18814,10 +18494,12 @@ var init_Apps = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Billing/index.js
 var Billing2;
 var init_Billing = __esm({
   "../node_modules/stripe/esm/resources/Billing/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_Alerts();
     init_CreditBalanceSummary();
     init_CreditBalanceTransactions();
@@ -18827,10 +18509,7 @@ var init_Billing = __esm({
     init_MeterEventAdjustments();
     Billing2 = class {
       static {
-        __name(this, "Billing2");
-      }
-      static {
-        __name2(this, "Billing");
+        __name(this, "Billing");
       }
       constructor(stripe) {
         this.stripe = stripe;
@@ -18845,18 +18524,17 @@ var init_Billing = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/BillingPortal/index.js
 var BillingPortal2;
 var init_BillingPortal = __esm({
   "../node_modules/stripe/esm/resources/BillingPortal/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_Configurations();
     init_Sessions();
     BillingPortal2 = class {
       static {
-        __name(this, "BillingPortal2");
-      }
-      static {
-        __name2(this, "BillingPortal");
+        __name(this, "BillingPortal");
       }
       constructor(stripe) {
         this.stripe = stripe;
@@ -18866,17 +18544,16 @@ var init_BillingPortal = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Checkout/index.js
 var Checkout2;
 var init_Checkout = __esm({
   "../node_modules/stripe/esm/resources/Checkout/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_Sessions2();
     Checkout2 = class {
       static {
-        __name(this, "Checkout2");
-      }
-      static {
-        __name2(this, "Checkout");
+        __name(this, "Checkout");
       }
       constructor(stripe) {
         this.stripe = stripe;
@@ -18885,19 +18562,18 @@ var init_Checkout = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Climate/index.js
 var Climate2;
 var init_Climate = __esm({
   "../node_modules/stripe/esm/resources/Climate/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_Orders();
     init_Products();
     init_Suppliers();
     Climate2 = class {
       static {
-        __name(this, "Climate2");
-      }
-      static {
-        __name2(this, "Climate");
+        __name(this, "Climate");
       }
       constructor(stripe) {
         this.stripe = stripe;
@@ -18908,18 +18584,17 @@ var init_Climate = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Entitlements/index.js
 var Entitlements2;
 var init_Entitlements = __esm({
   "../node_modules/stripe/esm/resources/Entitlements/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_ActiveEntitlements();
     init_Features();
     Entitlements2 = class {
       static {
-        __name(this, "Entitlements2");
-      }
-      static {
-        __name2(this, "Entitlements");
+        __name(this, "Entitlements");
       }
       constructor(stripe) {
         this.stripe = stripe;
@@ -18929,19 +18604,18 @@ var init_Entitlements = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/FinancialConnections/index.js
 var FinancialConnections2;
 var init_FinancialConnections = __esm({
   "../node_modules/stripe/esm/resources/FinancialConnections/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_Accounts();
     init_Sessions3();
     init_Transactions();
     FinancialConnections2 = class {
       static {
-        __name(this, "FinancialConnections2");
-      }
-      static {
-        __name2(this, "FinancialConnections");
+        __name(this, "FinancialConnections");
       }
       constructor(stripe) {
         this.stripe = stripe;
@@ -18952,17 +18626,16 @@ var init_FinancialConnections = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Forwarding/index.js
 var Forwarding2;
 var init_Forwarding = __esm({
   "../node_modules/stripe/esm/resources/Forwarding/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_Requests();
     Forwarding2 = class {
       static {
-        __name(this, "Forwarding2");
-      }
-      static {
-        __name2(this, "Forwarding");
+        __name(this, "Forwarding");
       }
       constructor(stripe) {
         this.stripe = stripe;
@@ -18971,18 +18644,17 @@ var init_Forwarding = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Identity/index.js
 var Identity2;
 var init_Identity = __esm({
   "../node_modules/stripe/esm/resources/Identity/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_VerificationReports();
     init_VerificationSessions();
     Identity2 = class {
       static {
-        __name(this, "Identity2");
-      }
-      static {
-        __name2(this, "Identity");
+        __name(this, "Identity");
       }
       constructor(stripe) {
         this.stripe = stripe;
@@ -18992,10 +18664,12 @@ var init_Identity = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Issuing/index.js
 var Issuing2;
 var init_Issuing = __esm({
   "../node_modules/stripe/esm/resources/Issuing/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_Authorizations();
     init_Cards();
     init_Cardholders();
@@ -19006,10 +18680,7 @@ var init_Issuing = __esm({
     init_Transactions2();
     Issuing2 = class {
       static {
-        __name(this, "Issuing2");
-      }
-      static {
-        __name2(this, "Issuing");
+        __name(this, "Issuing");
       }
       constructor(stripe) {
         this.stripe = stripe;
@@ -19025,20 +18696,19 @@ var init_Issuing = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Radar/index.js
 var Radar2;
 var init_Radar = __esm({
   "../node_modules/stripe/esm/resources/Radar/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_EarlyFraudWarnings();
     init_PaymentEvaluations();
     init_ValueLists();
     init_ValueListItems();
     Radar2 = class {
       static {
-        __name(this, "Radar2");
-      }
-      static {
-        __name2(this, "Radar");
+        __name(this, "Radar");
       }
       constructor(stripe) {
         this.stripe = stripe;
@@ -19050,18 +18720,17 @@ var init_Radar = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Reporting/index.js
 var Reporting2;
 var init_Reporting = __esm({
   "../node_modules/stripe/esm/resources/Reporting/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_ReportRuns();
     init_ReportTypes();
     Reporting2 = class {
       static {
-        __name(this, "Reporting2");
-      }
-      static {
-        __name2(this, "Reporting");
+        __name(this, "Reporting");
       }
       constructor(stripe) {
         this.stripe = stripe;
@@ -19071,17 +18740,16 @@ var init_Reporting = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Sigma/index.js
 var Sigma2;
 var init_Sigma = __esm({
   "../node_modules/stripe/esm/resources/Sigma/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_ScheduledQueryRuns();
     Sigma2 = class {
       static {
-        __name(this, "Sigma2");
-      }
-      static {
-        __name2(this, "Sigma");
+        __name(this, "Sigma");
       }
       constructor(stripe) {
         this.stripe = stripe;
@@ -19090,10 +18758,12 @@ var init_Sigma = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Tax/index.js
 var Tax2;
 var init_Tax = __esm({
   "../node_modules/stripe/esm/resources/Tax/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_Associations();
     init_Calculations();
     init_Registrations();
@@ -19101,10 +18771,7 @@ var init_Tax = __esm({
     init_Transactions3();
     Tax2 = class {
       static {
-        __name(this, "Tax2");
-      }
-      static {
-        __name2(this, "Tax");
+        __name(this, "Tax");
       }
       constructor(stripe) {
         this.stripe = stripe;
@@ -19117,10 +18784,12 @@ var init_Tax = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Terminal/index.js
 var Terminal2;
 var init_Terminal = __esm({
   "../node_modules/stripe/esm/resources/Terminal/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_Configurations2();
     init_ConnectionTokens();
     init_Locations();
@@ -19128,10 +18797,7 @@ var init_Terminal = __esm({
     init_Readers();
     Terminal2 = class {
       static {
-        __name(this, "Terminal2");
-      }
-      static {
-        __name2(this, "Terminal");
+        __name(this, "Terminal");
       }
       constructor(stripe) {
         this.stripe = stripe;
@@ -19144,20 +18810,19 @@ var init_Terminal = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/TestHelpers/Issuing/index.js
 var Issuing3;
 var init_Issuing2 = __esm({
   "../node_modules/stripe/esm/resources/TestHelpers/Issuing/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_Authorizations2();
     init_Cards2();
     init_PersonalizationDesigns2();
     init_Transactions4();
     Issuing3 = class {
       static {
-        __name(this, "Issuing3");
-      }
-      static {
-        __name2(this, "Issuing");
+        __name(this, "Issuing");
       }
       constructor(stripe) {
         this.stripe = stripe;
@@ -19169,17 +18834,16 @@ var init_Issuing2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/TestHelpers/Terminal/index.js
 var Terminal3;
 var init_Terminal2 = __esm({
   "../node_modules/stripe/esm/resources/TestHelpers/Terminal/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_Readers2();
     Terminal3 = class {
       static {
-        __name(this, "Terminal3");
-      }
-      static {
-        __name2(this, "Terminal");
+        __name(this, "Terminal");
       }
       constructor(stripe) {
         this.stripe = stripe;
@@ -19188,10 +18852,12 @@ var init_Terminal2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/TestHelpers/Treasury/index.js
 var Treasury2;
 var init_Treasury = __esm({
   "../node_modules/stripe/esm/resources/TestHelpers/Treasury/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_InboundTransfers();
     init_OutboundPayments();
     init_OutboundTransfers();
@@ -19199,10 +18865,7 @@ var init_Treasury = __esm({
     init_ReceivedDebits();
     Treasury2 = class {
       static {
-        __name(this, "Treasury2");
-      }
-      static {
-        __name2(this, "Treasury");
+        __name(this, "Treasury");
       }
       constructor(stripe) {
         this.stripe = stripe;
@@ -19215,10 +18878,12 @@ var init_Treasury = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/TestHelpers/index.js
 var TestHelpers2;
 var init_TestHelpers = __esm({
   "../node_modules/stripe/esm/resources/TestHelpers/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_ConfirmationTokens();
     init_Customers();
     init_Refunds();
@@ -19228,10 +18893,7 @@ var init_TestHelpers = __esm({
     init_Treasury();
     TestHelpers2 = class {
       static {
-        __name(this, "TestHelpers2");
-      }
-      static {
-        __name2(this, "TestHelpers");
+        __name(this, "TestHelpers");
       }
       constructor(stripe) {
         this.stripe = stripe;
@@ -19246,10 +18908,12 @@ var init_TestHelpers = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Treasury/index.js
 var Treasury3;
 var init_Treasury2 = __esm({
   "../node_modules/stripe/esm/resources/Treasury/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_CreditReversals();
     init_DebitReversals();
     init_FinancialAccounts();
@@ -19262,10 +18926,7 @@ var init_Treasury2 = __esm({
     init_TransactionEntries();
     Treasury3 = class {
       static {
-        __name(this, "Treasury3");
-      }
-      static {
-        __name2(this, "Treasury");
+        __name(this, "Treasury");
       }
       constructor(stripe) {
         this.stripe = stripe;
@@ -19283,20 +18944,19 @@ var init_Treasury2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/V2/Billing/index.js
 var Billing3;
 var init_Billing2 = __esm({
   "../node_modules/stripe/esm/resources/V2/Billing/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_MeterEvents2();
     init_MeterEventAdjustments2();
     init_MeterEventSession();
     init_MeterEventStream();
     Billing3 = class {
       static {
-        __name(this, "Billing3");
-      }
-      static {
-        __name2(this, "Billing");
+        __name(this, "Billing");
       }
       constructor(stripe) {
         this.stripe = stripe;
@@ -19308,17 +18968,16 @@ var init_Billing2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/V2/Commerce/ProductCatalog/index.js
 var ProductCatalog;
 var init_ProductCatalog = __esm({
   "../node_modules/stripe/esm/resources/V2/Commerce/ProductCatalog/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_Imports();
     ProductCatalog = class {
       static {
         __name(this, "ProductCatalog");
-      }
-      static {
-        __name2(this, "ProductCatalog");
       }
       constructor(stripe) {
         this.stripe = stripe;
@@ -19327,17 +18986,16 @@ var init_ProductCatalog = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/V2/Commerce/index.js
 var Commerce;
 var init_Commerce = __esm({
   "../node_modules/stripe/esm/resources/V2/Commerce/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_ProductCatalog();
     Commerce = class {
       static {
         __name(this, "Commerce");
-      }
-      static {
-        __name2(this, "Commerce");
       }
       constructor(stripe) {
         this.stripe = stripe;
@@ -19346,10 +19004,12 @@ var init_Commerce = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/V2/Core/index.js
 var Core;
 var init_Core = __esm({
   "../node_modules/stripe/esm/resources/V2/Core/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_Accounts2();
     init_AccountLinks();
     init_AccountTokens();
@@ -19358,9 +19018,6 @@ var init_Core = __esm({
     Core = class {
       static {
         __name(this, "Core");
-      }
-      static {
-        __name2(this, "Core");
       }
       constructor(stripe) {
         this.stripe = stripe;
@@ -19373,19 +19030,18 @@ var init_Core = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/V2/index.js
 var V22;
 var init_V2 = __esm({
   "../node_modules/stripe/esm/resources/V2/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_Billing2();
     init_Commerce();
     init_Core();
     V22 = class {
       static {
-        __name(this, "V22");
-      }
-      static {
-        __name2(this, "V2");
+        __name(this, "V2");
       }
       constructor(stripe) {
         this.stripe = stripe;
@@ -19396,25 +19052,19 @@ var init_V2 = __esm({
     };
   }
 });
+
+// ../node_modules/stripe/esm/resources/Reserve/index.js
 var init_Reserve = __esm({
   "../node_modules/stripe/esm/resources/Reserve/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
   }
 });
-var DEFAULT_HOST;
-var DEFAULT_PORT;
-var DEFAULT_BASE_PATH;
-var DEFAULT_API_VERSION;
-var DEFAULT_TIMEOUT;
-var MAX_NETWORK_RETRY_DELAY_SEC;
-var INITIAL_NETWORK_RETRY_DELAY_SEC;
-var APP_INFO_PROPERTIES;
-var ALLOWED_CONFIG_PROPERTIES;
-var defaultRequestSenderFactory;
-var Stripe;
+
+// ../node_modules/stripe/esm/stripe.core.js
+var DEFAULT_HOST, DEFAULT_PORT, DEFAULT_BASE_PATH, DEFAULT_API_VERSION, DEFAULT_TIMEOUT, MAX_NETWORK_RETRY_DELAY_SEC, INITIAL_NETWORK_RETRY_DELAY_SEC, APP_INFO_PROPERTIES, ALLOWED_CONFIG_PROPERTIES, defaultRequestSenderFactory, Stripe;
 var init_stripe_core = __esm({
   "../node_modules/stripe/esm/stripe.core.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_Error();
     init_RequestSender();
     init_StripeResource();
@@ -19532,13 +19182,10 @@ var init_stripe_core = __esm({
       "stripeAccount",
       "stripeContext"
     ];
-    defaultRequestSenderFactory = /* @__PURE__ */ __name2((stripe) => new RequestSender(stripe, StripeResource.MAX_BUFFERED_REQUEST_METRICS), "defaultRequestSenderFactory");
+    defaultRequestSenderFactory = /* @__PURE__ */ __name((stripe) => new RequestSender(stripe, StripeResource.MAX_BUFFERED_REQUEST_METRICS), "defaultRequestSenderFactory");
     Stripe = class _Stripe {
       static {
-        __name(this, "_Stripe");
-      }
-      static {
-        __name2(this, "Stripe");
+        __name(this, "Stripe");
       }
       static initialize(platformFunctions, requestSenderFactory = defaultRequestSenderFactory) {
         _Stripe._platformFunctions = platformFunctions;
@@ -20016,10 +19663,12 @@ var init_stripe_core = __esm({
     Stripe._requestSenderFactory = defaultRequestSenderFactory;
   }
 });
+
+// ../node_modules/stripe/esm/stripe.esm.worker.js
 var stripe_esm_worker_default;
 var init_stripe_esm_worker = __esm({
   "../node_modules/stripe/esm/stripe.esm.worker.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_WebPlatformFunctions();
     init_Decimal();
     init_stripe_core();
@@ -20027,18 +19676,21 @@ var init_stripe_esm_worker = __esm({
     stripe_esm_worker_default = Stripe;
   }
 });
+
+// ../node_modules/@supabase/supabase-js/dist/tracingRegistry.mjs
 function getTraceContextExtractor() {
   return globalThis[EXTRACTOR_KEY];
 }
-__name(getTraceContextExtractor, "getTraceContextExtractor");
 var EXTRACTOR_KEY;
 var init_tracingRegistry = __esm({
   "../node_modules/@supabase/supabase-js/dist/tracingRegistry.mjs"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     EXTRACTOR_KEY = /* @__PURE__ */ Symbol.for("@supabase/supabase-js.traceContextExtractor");
-    __name2(getTraceContextExtractor, "getTraceContextExtractor");
+    __name(getTraceContextExtractor, "getTraceContextExtractor");
   }
 });
+
+// ../node_modules/tslib/tslib.es6.mjs
 function __rest(s, e) {
   var t = {};
   for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
@@ -20050,7 +19702,6 @@ function __rest(s, e) {
     }
   return t;
 }
-__name(__rest, "__rest");
 function __awaiter(thisArg, _arguments, P, generator) {
   function adopt(value) {
     return value instanceof P ? value : new P(function(resolve) {
@@ -20058,7 +19709,6 @@ function __awaiter(thisArg, _arguments, P, generator) {
     });
   }
   __name(adopt, "adopt");
-  __name2(adopt, "adopt");
   return new (P || (P = Promise))(function(resolve, reject) {
     function fulfilled(value) {
       try {
@@ -20068,7 +19718,6 @@ function __awaiter(thisArg, _arguments, P, generator) {
       }
     }
     __name(fulfilled, "fulfilled");
-    __name2(fulfilled, "fulfilled");
     function rejected(value) {
       try {
         step(generator["throw"](value));
@@ -20077,28 +19726,27 @@ function __awaiter(thisArg, _arguments, P, generator) {
       }
     }
     __name(rejected, "rejected");
-    __name2(rejected, "rejected");
     function step(result) {
       result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
     }
     __name(step, "step");
-    __name2(step, "step");
     step((generator = generator.apply(thisArg, _arguments || [])).next());
   });
 }
-__name(__awaiter, "__awaiter");
 var init_tslib_es6 = __esm({
   "../node_modules/tslib/tslib.es6.mjs"() {
-    init_functionsRoutes_0_6131355600780521();
-    __name2(__rest, "__rest");
-    __name2(__awaiter, "__awaiter");
+    init_functionsRoutes_0_7667722716287171();
+    __name(__rest, "__rest");
+    __name(__awaiter, "__awaiter");
   }
 });
+
+// ../node_modules/@supabase/functions-js/dist/module/helper.js
 var resolveFetch;
 var init_helper = __esm({
   "../node_modules/@supabase/functions-js/dist/module/helper.js"() {
-    init_functionsRoutes_0_6131355600780521();
-    resolveFetch = /* @__PURE__ */ __name2((customFetch) => {
+    init_functionsRoutes_0_7667722716287171();
+    resolveFetch = /* @__PURE__ */ __name((customFetch) => {
       if (customFetch) {
         return (...args) => customFetch(...args);
       }
@@ -20106,20 +19754,15 @@ var init_helper = __esm({
     }, "resolveFetch");
   }
 });
-var FunctionsError;
-var FunctionsFetchError;
-var FunctionsRelayError;
-var FunctionsHttpError;
-var FunctionRegion;
+
+// ../node_modules/@supabase/functions-js/dist/module/types.js
+var FunctionsError, FunctionsFetchError, FunctionsRelayError, FunctionsHttpError, FunctionRegion;
 var init_types = __esm({
   "../node_modules/@supabase/functions-js/dist/module/types.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     FunctionsError = class extends Error {
       static {
         __name(this, "FunctionsError");
-      }
-      static {
-        __name2(this, "FunctionsError");
       }
       constructor(message, name = "FunctionsError", context) {
         super(message);
@@ -20138,9 +19781,6 @@ var init_types = __esm({
       static {
         __name(this, "FunctionsFetchError");
       }
-      static {
-        __name2(this, "FunctionsFetchError");
-      }
       constructor(context) {
         super("Failed to send a request to the Edge Function", "FunctionsFetchError", context);
       }
@@ -20149,9 +19789,6 @@ var init_types = __esm({
       static {
         __name(this, "FunctionsRelayError");
       }
-      static {
-        __name2(this, "FunctionsRelayError");
-      }
       constructor(context) {
         super("Relay Error invoking the Edge Function", "FunctionsRelayError", context);
       }
@@ -20159,9 +19796,6 @@ var init_types = __esm({
     FunctionsHttpError = class extends FunctionsError {
       static {
         __name(this, "FunctionsHttpError");
-      }
-      static {
-        __name2(this, "FunctionsHttpError");
       }
       constructor(context) {
         super("Edge Function returned a non-2xx status code", "FunctionsHttpError", context);
@@ -20186,19 +19820,18 @@ var init_types = __esm({
     })(FunctionRegion || (FunctionRegion = {}));
   }
 });
+
+// ../node_modules/@supabase/functions-js/dist/module/FunctionsClient.js
 var FunctionsClient;
 var init_FunctionsClient = __esm({
   "../node_modules/@supabase/functions-js/dist/module/FunctionsClient.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_tslib_es6();
     init_helper();
     init_types();
     FunctionsClient = class {
       static {
         __name(this, "FunctionsClient");
-      }
-      static {
-        __name2(this, "FunctionsClient");
       }
       /**
        * Creates a new Functions client bound to an Edge Functions URL.
@@ -20416,7 +20049,7 @@ var init_FunctionsClient = __esm({
               timeoutId = setTimeout(() => timeoutController.abort(), timeout);
               if (signal) {
                 effectiveSignal = timeoutController.signal;
-                onAbort = /* @__PURE__ */ __name2(() => timeoutController.abort(), "onAbort");
+                onAbort = /* @__PURE__ */ __name(() => timeoutController.abort(), "onAbort");
                 signal.addEventListener("abort", onAbort);
               } else {
                 effectiveSignal = timeoutController.signal;
@@ -20474,12 +20107,16 @@ var init_FunctionsClient = __esm({
     };
   }
 });
+
+// ../node_modules/@supabase/functions-js/dist/module/index.js
 var init_module = __esm({
   "../node_modules/@supabase/functions-js/dist/module/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_FunctionsClient();
   }
 });
+
+// ../node_modules/@supabase/postgrest-js/dist/index.mjs
 function _typeof(o) {
   "@babel/helpers - typeof";
   return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
@@ -20488,7 +20125,6 @@ function _typeof(o) {
     return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
   }, _typeof(o);
 }
-__name(_typeof, "_typeof");
 function toPrimitive(t, r) {
   if ("object" != _typeof(t) || !t) return t;
   var e = t[Symbol.toPrimitive];
@@ -20499,12 +20135,10 @@ function toPrimitive(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
-__name(toPrimitive, "toPrimitive");
 function toPropertyKey(t) {
   var i = toPrimitive(t, "string");
   return "symbol" == _typeof(i) ? i : i + "";
 }
-__name(toPropertyKey, "toPropertyKey");
 function _defineProperty(e, r, t) {
   return (r = toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
     value: t,
@@ -20513,7 +20147,6 @@ function _defineProperty(e, r, t) {
     writable: true
   }) : e[r] = t, e;
 }
-__name(_defineProperty, "_defineProperty");
 function ownKeys(e, r) {
   var t = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
@@ -20524,7 +20157,6 @@ function ownKeys(e, r) {
   }
   return t;
 }
-__name(ownKeys, "ownKeys");
 function _objectSpread2(e) {
   for (var r = 1; r < arguments.length; r++) {
     var t = null != arguments[r] ? arguments[r] : {};
@@ -20536,7 +20168,6 @@ function _objectSpread2(e) {
   }
   return e;
 }
-__name(_objectSpread2, "_objectSpread2");
 function sleep(ms, signal) {
   return new Promise((resolve) => {
     if (signal === null || signal === void 0 ? void 0 : signal.aborted) {
@@ -20552,34 +20183,21 @@ function sleep(ms, signal) {
       resolve();
     }
     __name(onAbort, "onAbort");
-    __name2(onAbort, "onAbort");
     signal === null || signal === void 0 || signal.addEventListener("abort", onAbort);
   });
 }
-__name(sleep, "sleep");
 function shouldRetry(method, status, attemptCount, retryEnabled) {
   if (!retryEnabled || attemptCount >= DEFAULT_MAX_RETRIES) return false;
   if (!RETRYABLE_METHODS.includes(method)) return false;
   if (!RETRYABLE_STATUS_CODES.includes(status)) return false;
   return true;
 }
-__name(shouldRetry, "shouldRetry");
-var DEFAULT_MAX_RETRIES;
-var getRetryDelay;
-var RETRYABLE_STATUS_CODES;
-var RETRYABLE_METHODS;
-var PostgrestError;
-var PostgrestBuilder;
-var PostgrestTransformBuilder;
-var PostgrestReservedCharsRegexp;
-var PostgrestFilterBuilder;
-var PostgrestQueryBuilder;
-var PostgrestClient;
+var DEFAULT_MAX_RETRIES, getRetryDelay, RETRYABLE_STATUS_CODES, RETRYABLE_METHODS, PostgrestError, PostgrestBuilder, PostgrestTransformBuilder, PostgrestReservedCharsRegexp, PostgrestFilterBuilder, PostgrestQueryBuilder, PostgrestClient;
 var init_dist = __esm({
   "../node_modules/@supabase/postgrest-js/dist/index.mjs"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     DEFAULT_MAX_RETRIES = 3;
-    getRetryDelay = /* @__PURE__ */ __name2((attemptIndex) => Math.min(1e3 * 2 ** attemptIndex, 3e4), "getRetryDelay");
+    getRetryDelay = /* @__PURE__ */ __name((attemptIndex) => Math.min(1e3 * 2 ** attemptIndex, 3e4), "getRetryDelay");
     RETRYABLE_STATUS_CODES = [520, 503];
     RETRYABLE_METHODS = [
       "GET",
@@ -20589,9 +20207,6 @@ var init_dist = __esm({
     PostgrestError = class extends Error {
       static {
         __name(this, "PostgrestError");
-      }
-      static {
-        __name2(this, "PostgrestError");
       }
       /**
       * @example
@@ -20623,20 +20238,17 @@ var init_dist = __esm({
         };
       }
     };
-    __name2(_typeof, "_typeof");
-    __name2(toPrimitive, "toPrimitive");
-    __name2(toPropertyKey, "toPropertyKey");
-    __name2(_defineProperty, "_defineProperty");
-    __name2(ownKeys, "ownKeys");
-    __name2(_objectSpread2, "_objectSpread2");
-    __name2(sleep, "sleep");
-    __name2(shouldRetry, "shouldRetry");
+    __name(_typeof, "_typeof");
+    __name(toPrimitive, "toPrimitive");
+    __name(toPropertyKey, "toPropertyKey");
+    __name(_defineProperty, "_defineProperty");
+    __name(ownKeys, "ownKeys");
+    __name(_objectSpread2, "_objectSpread2");
+    __name(sleep, "sleep");
+    __name(shouldRetry, "shouldRetry");
     PostgrestBuilder = class {
       static {
         __name(this, "PostgrestBuilder");
-      }
-      static {
-        __name2(this, "PostgrestBuilder");
       }
       /**
       * Creates a builder configured for a specific PostgREST request.
@@ -20805,7 +20417,7 @@ var init_dist = __esm({
           else if (!currentAccept || currentAccept === "application/json") this.headers.set("Accept", "application/vnd.pgrst.array+json;nulls=stripped");
         }
         const _fetch = this.fetch;
-        const executeWithRetry = /* @__PURE__ */ __name2(async () => {
+        const executeWithRetry = /* @__PURE__ */ __name(async () => {
           let attemptCount = 0;
           while (true) {
             const headers = {};
@@ -21083,9 +20695,6 @@ ${cause.stack}`;
     PostgrestTransformBuilder = class extends PostgrestBuilder {
       static {
         __name(this, "PostgrestTransformBuilder");
-      }
-      static {
-        __name2(this, "PostgrestTransformBuilder");
       }
       throwOnError() {
         return super.throwOnError();
@@ -21925,9 +21534,6 @@ ${cause.stack}`;
       static {
         __name(this, "PostgrestFilterBuilder");
       }
-      static {
-        __name2(this, "PostgrestFilterBuilder");
-      }
       throwOnError() {
         return super.throwOnError();
       }
@@ -22451,9 +22057,6 @@ ${cause.stack}`;
     PostgrestQueryBuilder = class {
       static {
         __name(this, "PostgrestQueryBuilder");
-      }
-      static {
-        __name2(this, "PostgrestQueryBuilder");
       }
       /**
       * Creates a query builder scoped to a Postgres table or view.
@@ -24027,10 +23630,7 @@ ${cause.stack}`;
     };
     PostgrestClient = class PostgrestClient2 {
       static {
-        __name(this, "PostgrestClient2");
-      }
-      static {
-        __name2(this, "PostgrestClient");
+        __name(this, "PostgrestClient");
       }
       /**
       * Creates a PostgREST client.
@@ -24086,7 +23686,7 @@ ${cause.stack}`;
               clearTimeout(timeoutId);
               return originalFetch(input, init);
             }
-            const abortHandler = /* @__PURE__ */ __name2(() => {
+            const abortHandler = /* @__PURE__ */ __name(() => {
               clearTimeout(timeoutId);
               controller.abort();
             }, "abortHandler");
@@ -24299,7 +23899,7 @@ ${cause.stack}`;
         let method;
         const url = new URL(`${this.url}/rpc/${fn}`);
         let body;
-        const _isObject = /* @__PURE__ */ __name2((v) => v !== null && typeof v === "object" && (!Array.isArray(v) || v.some(_isObject)), "_isObject");
+        const _isObject = /* @__PURE__ */ __name((v) => v !== null && typeof v === "object" && (!Array.isArray(v) || v.some(_isObject)), "_isObject");
         const _hasObjectArg = head2 && Object.values(args).some(_isObject);
         if (_hasObjectArg) {
           method = "POST";
@@ -24330,17 +23930,15 @@ ${cause.stack}`;
     };
   }
 });
-var WebSocketFactory;
-var websocket_factory_default;
+
+// ../node_modules/@supabase/realtime-js/dist/module/lib/websocket-factory.js
+var WebSocketFactory, websocket_factory_default;
 var init_websocket_factory = __esm({
   "../node_modules/@supabase/realtime-js/dist/module/lib/websocket-factory.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     WebSocketFactory = class {
       static {
         __name(this, "WebSocketFactory");
-      }
-      static {
-        __name2(this, "WebSocketFactory");
       }
       /**
        * Static-only utility – prevent instantiation.
@@ -24367,7 +23965,7 @@ var init_websocket_factory = __esm({
             workaround: "Use Cloudflare Workers WebSocket API for server-side WebSocket handling, or deploy to a different runtime."
           };
         }
-        if (typeof globalThis !== "undefined" && gt2.EdgeRuntime || typeof navigator !== "undefined" && ((_a2 = "Cloudflare-Workers") === null || _a2 === void 0 ? void 0 : _a2.includes("Vercel-Edge"))) {
+        if (typeof globalThis !== "undefined" && gt2.EdgeRuntime || typeof navigator !== "undefined" && ((_a2 = navigator.userAgent) === null || _a2 === void 0 ? void 0 : _a2.includes("Vercel-Edge"))) {
           return {
             type: "unsupported",
             error: "Edge runtime detected (Vercel Edge/Netlify Edge). WebSockets are not supported in edge functions.",
@@ -24444,25 +24042,21 @@ Suggested solution: ${env2.workaround}`;
     websocket_factory_default = WebSocketFactory;
   }
 });
+
+// ../node_modules/@supabase/realtime-js/dist/module/lib/version.js
 var version;
 var init_version = __esm({
   "../node_modules/@supabase/realtime-js/dist/module/lib/version.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     version = "2.112.3";
   }
 });
-var DEFAULT_VERSION;
-var VSN_1_0_0;
-var VSN_2_0_0;
-var DEFAULT_VSN;
-var DEFAULT_TIMEOUT2;
-var MAX_PUSH_BUFFER_SIZE;
-var CHANNEL_STATES;
-var CHANNEL_EVENTS;
-var CONNECTION_STATE;
+
+// ../node_modules/@supabase/realtime-js/dist/module/lib/constants.js
+var DEFAULT_VERSION, VSN_1_0_0, VSN_2_0_0, DEFAULT_VSN, DEFAULT_TIMEOUT2, MAX_PUSH_BUFFER_SIZE, CHANNEL_STATES, CHANNEL_EVENTS, CONNECTION_STATE;
 var init_constants = __esm({
   "../node_modules/@supabase/realtime-js/dist/module/lib/constants.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_version();
     DEFAULT_VERSION = `realtime-js/${version}`;
     VSN_1_0_0 = "1.0.0";
@@ -24493,16 +24087,15 @@ var init_constants = __esm({
     };
   }
 });
+
+// ../node_modules/@supabase/realtime-js/dist/module/lib/serializer.js
 var Serializer;
 var init_serializer = __esm({
   "../node_modules/@supabase/realtime-js/dist/module/lib/serializer.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     Serializer = class {
       static {
         __name(this, "Serializer");
-      }
-      static {
-        __name2(this, "Serializer");
       }
       constructor(allowedMetadataKeys) {
         this.HEADER_LENGTH = 1;
@@ -24650,20 +24243,12 @@ var init_serializer = __esm({
     };
   }
 });
-var PostgresTypes;
-var convertChangeData;
-var convertColumn;
-var convertCell;
-var noop;
-var toBoolean;
-var toNumber;
-var toJson;
-var toArray;
-var toTimestampString;
-var httpEndpointURL;
+
+// ../node_modules/@supabase/realtime-js/dist/module/lib/transformers.js
+var PostgresTypes, convertChangeData, convertColumn, convertCell, noop, toBoolean, toNumber, toJson, toArray, toTimestampString, httpEndpointURL;
 var init_transformers = __esm({
   "../node_modules/@supabase/realtime-js/dist/module/lib/transformers.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     (function(PostgresTypes2) {
       PostgresTypes2["abstime"] = "abstime";
       PostgresTypes2["bool"] = "bool";
@@ -24690,7 +24275,7 @@ var init_transformers = __esm({
       PostgresTypes2["tsrange"] = "tsrange";
       PostgresTypes2["tstzrange"] = "tstzrange";
     })(PostgresTypes || (PostgresTypes = {}));
-    convertChangeData = /* @__PURE__ */ __name2((columns, record, options = {}) => {
+    convertChangeData = /* @__PURE__ */ __name((columns, record, options = {}) => {
       var _a2;
       const skipTypes = (_a2 = options.skipTypes) !== null && _a2 !== void 0 ? _a2 : [];
       if (!record) {
@@ -24701,7 +24286,7 @@ var init_transformers = __esm({
         return acc;
       }, {});
     }, "convertChangeData");
-    convertColumn = /* @__PURE__ */ __name2((columnName, columns, record, skipTypes) => {
+    convertColumn = /* @__PURE__ */ __name((columnName, columns, record, skipTypes) => {
       const column = columns.find((x) => x.name === columnName);
       const colType = column === null || column === void 0 ? void 0 : column.type;
       const value = record[columnName];
@@ -24710,7 +24295,7 @@ var init_transformers = __esm({
       }
       return noop(value);
     }, "convertColumn");
-    convertCell = /* @__PURE__ */ __name2((type, value) => {
+    convertCell = /* @__PURE__ */ __name((type, value) => {
       if (type.charAt(0) === "_") {
         const dataType = type.slice(1, type.length);
         return toArray(value, dataType);
@@ -24756,10 +24341,10 @@ var init_transformers = __esm({
           return noop(value);
       }
     }, "convertCell");
-    noop = /* @__PURE__ */ __name2((value) => {
+    noop = /* @__PURE__ */ __name((value) => {
       return value;
     }, "noop");
-    toBoolean = /* @__PURE__ */ __name2((value) => {
+    toBoolean = /* @__PURE__ */ __name((value) => {
       switch (value) {
         case "t":
           return true;
@@ -24769,7 +24354,7 @@ var init_transformers = __esm({
           return value;
       }
     }, "toBoolean");
-    toNumber = /* @__PURE__ */ __name2((value) => {
+    toNumber = /* @__PURE__ */ __name((value) => {
       if (typeof value === "string") {
         const parsedValue = parseFloat(value);
         if (!Number.isNaN(parsedValue)) {
@@ -24778,7 +24363,7 @@ var init_transformers = __esm({
       }
       return value;
     }, "toNumber");
-    toJson = /* @__PURE__ */ __name2((value) => {
+    toJson = /* @__PURE__ */ __name((value) => {
       if (typeof value === "string") {
         try {
           return JSON.parse(value);
@@ -24788,7 +24373,7 @@ var init_transformers = __esm({
       }
       return value;
     }, "toJson");
-    toArray = /* @__PURE__ */ __name2((value, type) => {
+    toArray = /* @__PURE__ */ __name((value, type) => {
       if (typeof value !== "string") {
         return value;
       }
@@ -24807,13 +24392,13 @@ var init_transformers = __esm({
       }
       return value;
     }, "toArray");
-    toTimestampString = /* @__PURE__ */ __name2((value) => {
+    toTimestampString = /* @__PURE__ */ __name((value) => {
       if (typeof value === "string") {
         return value.replace(" ", "T");
       }
       return value;
     }, "toTimestampString");
-    httpEndpointURL = /* @__PURE__ */ __name2((socketUrl) => {
+    httpEndpointURL = /* @__PURE__ */ __name((socketUrl) => {
       const wsUrl = new URL(socketUrl);
       wsUrl.protocol = wsUrl.protocol.replace(/^ws/i, "http");
       wsUrl.pathname = wsUrl.pathname.replace(/\/+$/, "").replace(/\/socket\/websocket$/i, "").replace(/\/socket$/i, "").replace(/\/websocket$/i, "");
@@ -24826,40 +24411,20 @@ var init_transformers = __esm({
     }, "httpEndpointURL");
   }
 });
-var closure;
-var globalSelf;
-var phxWindow;
-var global2;
-var DEFAULT_VSN2;
-var DEFAULT_TIMEOUT3;
-var WS_CLOSE_NORMAL;
-var MAX_LONGPOLL_BATCH_SIZE;
-var SOCKET_STATES;
-var CHANNEL_STATES2;
-var CHANNEL_EVENTS2;
-var TRANSPORTS;
-var XHR_STATES;
-var AUTH_TOKEN_PREFIX;
-var Push;
-var Timer;
-var Channel;
-var Ajax;
-var arrayBufferToBase64;
-var LongPoll;
-var Presence;
-var serializer_default;
-var Socket;
+
+// ../node_modules/@supabase/phoenix/priv/static/phoenix.mjs
+var closure, globalSelf, phxWindow, global2, DEFAULT_VSN2, DEFAULT_TIMEOUT3, WS_CLOSE_NORMAL, MAX_LONGPOLL_BATCH_SIZE, SOCKET_STATES, CHANNEL_STATES2, CHANNEL_EVENTS2, TRANSPORTS, XHR_STATES, AUTH_TOKEN_PREFIX, Push, Timer, Channel, Ajax, arrayBufferToBase64, LongPoll, Presence, serializer_default, Socket;
 var init_phoenix = __esm({
   "../node_modules/@supabase/phoenix/priv/static/phoenix.mjs"() {
-    init_functionsRoutes_0_6131355600780521();
-    closure = /* @__PURE__ */ __name2((value) => {
+    init_functionsRoutes_0_7667722716287171();
+    closure = /* @__PURE__ */ __name((value) => {
       if (typeof value === "function") {
         return (
           /** @type {() => T} */
           value
         );
       } else {
-        let closure2 = /* @__PURE__ */ __name2(function() {
+        let closure2 = /* @__PURE__ */ __name(function() {
           return value;
         }, "closure2");
         return closure2;
@@ -24903,9 +24468,6 @@ var init_phoenix = __esm({
     Push = class {
       static {
         __name(this, "Push");
-      }
-      static {
-        __name2(this, "Push");
       }
       /**
        * Initializes the Push
@@ -25025,9 +24587,6 @@ var init_phoenix = __esm({
       static {
         __name(this, "Timer");
       }
-      static {
-        __name2(this, "Timer");
-      }
       /**
       * @param {() => void} callback
       * @param {(tries: number) => number} timerCalc
@@ -25056,9 +24615,6 @@ var init_phoenix = __esm({
     Channel = class {
       static {
         __name(this, "Channel");
-      }
-      static {
-        __name2(this, "Channel");
       }
       /**
        * @param {string} topic
@@ -25280,7 +24836,7 @@ var init_phoenix = __esm({
         this.rejoinTimer.reset();
         this.joinPush.cancelTimeout();
         this.state = CHANNEL_STATES2.leaving;
-        let onClose = /* @__PURE__ */ __name2(() => {
+        let onClose = /* @__PURE__ */ __name(() => {
           if (this.socket.hasLogger()) this.socket.log("channel", `leave ${this.topic}`);
           this.trigger(CHANNEL_EVENTS2.close, "leave");
         }, "onClose");
@@ -25381,9 +24937,6 @@ var init_phoenix = __esm({
     Ajax = class {
       static {
         __name(this, "Ajax");
-      }
-      static {
-        __name2(this, "Ajax");
       }
       static request(method, endPoint, headers, body, timeout, ontimeout, callback) {
         if (global2.XDomainRequest) {
@@ -25488,7 +25041,7 @@ var init_phoenix = __esm({
         return `${url}${prefix}${this.serialize(params)}`;
       }
     };
-    arrayBufferToBase64 = /* @__PURE__ */ __name2((buffer) => {
+    arrayBufferToBase64 = /* @__PURE__ */ __name((buffer) => {
       let binary = "";
       let bytes = new Uint8Array(buffer);
       let len = bytes.byteLength;
@@ -25500,9 +25053,6 @@ var init_phoenix = __esm({
     LongPoll = class {
       static {
         __name(this, "LongPoll");
-      }
-      static {
-        __name2(this, "LongPoll");
       }
       constructor(endPoint, protocols) {
         if (protocols && protocols.length === 2 && protocols[1].startsWith(AUTH_TOKEN_PREFIX)) {
@@ -25646,7 +25196,7 @@ var init_phoenix = __esm({
       }
       ajax(method, headers, body, onCallerTimeout, callback) {
         let req;
-        let ontimeout = /* @__PURE__ */ __name2(() => {
+        let ontimeout = /* @__PURE__ */ __name(() => {
           this.reqs.delete(req);
           onCallerTimeout();
         }, "ontimeout");
@@ -25663,9 +25213,6 @@ var init_phoenix = __esm({
       static {
         __name(this, "_Presence");
       }
-      static {
-        __name2(this, "_Presence");
-      }
       /**
        * Initializes the Presence
        * @param {Channel} channel - The Channel
@@ -25679,11 +25226,11 @@ var init_phoenix = __esm({
         this.channel = channel;
         this.joinRef = null;
         this.caller = {
-          onJoin: /* @__PURE__ */ __name2(function() {
+          onJoin: /* @__PURE__ */ __name(function() {
           }, "onJoin"),
-          onLeave: /* @__PURE__ */ __name2(function() {
+          onLeave: /* @__PURE__ */ __name(function() {
           }, "onLeave"),
-          onSync: /* @__PURE__ */ __name2(function() {
+          onSync: /* @__PURE__ */ __name(function() {
           }, "onSync")
         };
         this.channel.on(events.state, (newState) => {
@@ -25801,11 +25348,11 @@ var init_phoenix = __esm({
         state = this.toNullProtoObj(state);
         let { joins, leaves } = this.clone(diff);
         if (!onJoin) {
-          onJoin = /* @__PURE__ */ __name2(function() {
+          onJoin = /* @__PURE__ */ __name(function() {
           }, "onJoin");
         }
         if (!onLeave) {
-          onLeave = /* @__PURE__ */ __name2(function() {
+          onLeave = /* @__PURE__ */ __name(function() {
           }, "onLeave");
         }
         this.map(joins, (key, newPresence) => {
@@ -25845,7 +25392,7 @@ var init_phoenix = __esm({
        */
       static list(presences, chooser) {
         if (!chooser) {
-          chooser = /* @__PURE__ */ __name2(function(key, pres) {
+          chooser = /* @__PURE__ */ __name(function(key, pres) {
             return pres;
           }, "chooser");
         }
@@ -26025,9 +25572,6 @@ var init_phoenix = __esm({
     Socket = class {
       static {
         __name(this, "Socket");
-      }
-      static {
-        __name2(this, "Socket");
       }
       /** Initializes the Socket *
        *
@@ -26365,7 +25909,7 @@ var init_phoenix = __esm({
         let primaryTransport = true;
         let openRef, errorRef;
         let fallbackTransportName = this.transportName(fallbackTransport);
-        let fallback = /* @__PURE__ */ __name2((reason) => {
+        let fallback = /* @__PURE__ */ __name((reason) => {
           this.log("transport", `falling back to ${fallbackTransportName}...`, reason);
           this.off([openRef, errorRef]);
           primaryTransport = false;
@@ -26703,6 +26247,8 @@ var init_phoenix = __esm({
     };
   }
 });
+
+// ../node_modules/@supabase/realtime-js/dist/module/phoenix/presenceAdapter.js
 function transformState(presences) {
   return presences.metas.map((presence) => {
     const descriptors = Object.getOwnPropertyDescriptors(presence);
@@ -26713,30 +26259,23 @@ function transformState(presences) {
     return transformedPresence;
   });
 }
-__name(transformState, "transformState");
 function cloneState(state) {
   return JSON.parse(JSON.stringify(state));
 }
-__name(cloneState, "cloneState");
 function phoenixPresenceOptions(opts) {
   return (opts === null || opts === void 0 ? void 0 : opts.events) && { events: opts.events };
 }
-__name(phoenixPresenceOptions, "phoenixPresenceOptions");
 function parseCurrentPresences(currentPresences) {
   return (currentPresences === null || currentPresences === void 0 ? void 0 : currentPresences.metas) ? transformState(currentPresences) : [];
 }
-__name(parseCurrentPresences, "parseCurrentPresences");
 var PresenceAdapter;
 var init_presenceAdapter = __esm({
   "../node_modules/@supabase/realtime-js/dist/module/phoenix/presenceAdapter.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_phoenix();
     PresenceAdapter = class _PresenceAdapter {
       static {
-        __name(this, "_PresenceAdapter");
-      }
-      static {
-        __name2(this, "PresenceAdapter");
+        __name(this, "PresenceAdapter");
       }
       constructor(channel, opts) {
         const phoenixOptions = phoenixPresenceOptions(opts);
@@ -26808,17 +26347,18 @@ var init_presenceAdapter = __esm({
         };
       }
     };
-    __name2(transformState, "transformState");
-    __name2(cloneState, "cloneState");
-    __name2(phoenixPresenceOptions, "phoenixPresenceOptions");
-    __name2(parseCurrentPresences, "parseCurrentPresences");
+    __name(transformState, "transformState");
+    __name(cloneState, "cloneState");
+    __name(phoenixPresenceOptions, "phoenixPresenceOptions");
+    __name(parseCurrentPresences, "parseCurrentPresences");
   }
 });
-var REALTIME_PRESENCE_LISTEN_EVENTS;
-var RealtimePresence;
+
+// ../node_modules/@supabase/realtime-js/dist/module/RealtimePresence.js
+var REALTIME_PRESENCE_LISTEN_EVENTS, RealtimePresence;
 var init_RealtimePresence = __esm({
   "../node_modules/@supabase/realtime-js/dist/module/RealtimePresence.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_presenceAdapter();
     (function(REALTIME_PRESENCE_LISTEN_EVENTS2) {
       REALTIME_PRESENCE_LISTEN_EVENTS2["SYNC"] = "sync";
@@ -26828,9 +26368,6 @@ var init_RealtimePresence = __esm({
     RealtimePresence = class {
       static {
         __name(this, "RealtimePresence");
-      }
-      static {
-        __name2(this, "RealtimePresence");
       }
       get state() {
         return this.presenceAdapter.state;
@@ -26859,6 +26396,8 @@ var init_RealtimePresence = __esm({
     };
   }
 });
+
+// ../node_modules/@supabase/realtime-js/dist/module/lib/normalizeChannelError.js
 function normalizeChannelError(reason) {
   if (reason instanceof Error) {
     return reason;
@@ -26876,13 +26415,14 @@ function normalizeChannelError(reason) {
   }
   return new Error("channel error: connection lost");
 }
-__name(normalizeChannelError, "normalizeChannelError");
 var init_normalizeChannelError = __esm({
   "../node_modules/@supabase/realtime-js/dist/module/lib/normalizeChannelError.js"() {
-    init_functionsRoutes_0_6131355600780521();
-    __name2(normalizeChannelError, "normalizeChannelError");
+    init_functionsRoutes_0_7667722716287171();
+    __name(normalizeChannelError, "normalizeChannelError");
   }
 });
+
+// ../node_modules/@supabase/realtime-js/dist/module/phoenix/channelAdapter.js
 function phoenixChannelParams(options) {
   return {
     config: Object.assign({
@@ -26892,18 +26432,14 @@ function phoenixChannelParams(options) {
     }, options.config)
   };
 }
-__name(phoenixChannelParams, "phoenixChannelParams");
 var ChannelAdapter;
 var init_channelAdapter = __esm({
   "../node_modules/@supabase/realtime-js/dist/module/phoenix/channelAdapter.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_constants();
     ChannelAdapter = class {
       static {
         __name(this, "ChannelAdapter");
-      }
-      static {
-        __name2(this, "ChannelAdapter");
       }
       constructor(socket, topic, params) {
         const phoenixParams = phoenixChannelParams(params);
@@ -26992,28 +26528,24 @@ var init_channelAdapter = __esm({
         return this.channel;
       }
     };
-    __name2(phoenixChannelParams, "phoenixChannelParams");
+    __name(phoenixChannelParams, "phoenixChannelParams");
   }
 });
-var PostgrestReservedCharsRegexp2;
-var needsQuoting;
-var quote;
-var serializeScalar;
-var serializeIsValue;
-var serialize;
-var RealtimePostgresFilterBuilder;
+
+// ../node_modules/@supabase/realtime-js/dist/module/RealtimePostgresFilterBuilder.js
+var PostgrestReservedCharsRegexp2, needsQuoting, quote, serializeScalar, serializeIsValue, serialize, RealtimePostgresFilterBuilder;
 var init_RealtimePostgresFilterBuilder = __esm({
   "../node_modules/@supabase/realtime-js/dist/module/RealtimePostgresFilterBuilder.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     PostgrestReservedCharsRegexp2 = /[,()"\\]/;
-    needsQuoting = /* @__PURE__ */ __name2((value) => PostgrestReservedCharsRegexp2.test(value) || value !== value.trim(), "needsQuoting");
-    quote = /* @__PURE__ */ __name2((value) => `"${value.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`, "quote");
-    serializeScalar = /* @__PURE__ */ __name2((value) => {
+    needsQuoting = /* @__PURE__ */ __name((value) => PostgrestReservedCharsRegexp2.test(value) || value !== value.trim(), "needsQuoting");
+    quote = /* @__PURE__ */ __name((value) => `"${value.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`, "quote");
+    serializeScalar = /* @__PURE__ */ __name((value) => {
       const serialized = value === null ? "null" : String(value);
       return needsQuoting(serialized) ? quote(serialized) : serialized;
     }, "serializeScalar");
-    serializeIsValue = /* @__PURE__ */ __name2((value) => value === null ? "null" : String(value), "serializeIsValue");
-    serialize = /* @__PURE__ */ __name2((operator, value) => {
+    serializeIsValue = /* @__PURE__ */ __name((value) => value === null ? "null" : String(value), "serializeIsValue");
+    serialize = /* @__PURE__ */ __name((operator, value) => {
       if (operator === "in") {
         const values = Array.isArray(value) ? value : [value];
         if (values.length === 0) {
@@ -27030,9 +26562,6 @@ var init_RealtimePostgresFilterBuilder = __esm({
     RealtimePostgresFilterBuilder = class {
       static {
         __name(this, "RealtimePostgresFilterBuilder");
-      }
-      static {
-        __name2(this, "RealtimePostgresFilterBuilder");
       }
       constructor() {
         this.filters = [];
@@ -27125,13 +26654,12 @@ var init_RealtimePostgresFilterBuilder = __esm({
     };
   }
 });
-var REALTIME_POSTGRES_CHANGES_LISTEN_EVENT;
-var REALTIME_LISTEN_TYPES;
-var REALTIME_SUBSCRIBE_STATES;
-var RealtimeChannel;
+
+// ../node_modules/@supabase/realtime-js/dist/module/RealtimeChannel.js
+var REALTIME_POSTGRES_CHANGES_LISTEN_EVENT, REALTIME_LISTEN_TYPES, REALTIME_SUBSCRIBE_STATES, RealtimeChannel;
 var init_RealtimeChannel = __esm({
   "../node_modules/@supabase/realtime-js/dist/module/RealtimeChannel.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_constants();
     init_RealtimePresence();
     init_transformers();
@@ -27160,10 +26688,7 @@ var init_RealtimeChannel = __esm({
     })(REALTIME_SUBSCRIBE_STATES || (REALTIME_SUBSCRIBE_STATES = {}));
     RealtimeChannel = class _RealtimeChannel {
       static {
-        __name(this, "_RealtimeChannel");
-      }
-      static {
-        __name2(this, "RealtimeChannel");
+        __name(this, "RealtimeChannel");
       }
       get state() {
         return this.channelAdapter.state;
@@ -27873,18 +27398,17 @@ var init_RealtimeChannel = __esm({
     };
   }
 });
+
+// ../node_modules/@supabase/realtime-js/dist/module/phoenix/socketAdapter.js
 var SocketAdapter;
 var init_socketAdapter = __esm({
   "../node_modules/@supabase/realtime-js/dist/module/phoenix/socketAdapter.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_phoenix();
     init_constants();
     SocketAdapter = class {
       static {
         __name(this, "SocketAdapter");
-      }
-      static {
-        __name2(this, "SocketAdapter");
       }
       constructor(endPoint, options) {
         this.socket = new Socket(endPoint, options);
@@ -27994,6 +27518,8 @@ var init_socketAdapter = __esm({
     };
   }
 });
+
+// ../node_modules/@supabase/realtime-js/dist/module/RealtimeClient.js
 function createMemorySessionStorage() {
   const store = /* @__PURE__ */ new Map();
   return {
@@ -28018,7 +27544,6 @@ function createMemorySessionStorage() {
     }
   };
 }
-__name(createMemorySessionStorage, "createMemorySessionStorage");
 function resolveSessionStorage() {
   try {
     if (typeof globalThis !== "undefined" && globalThis.sessionStorage) {
@@ -28028,15 +27553,10 @@ function resolveSessionStorage() {
   }
   return createMemorySessionStorage();
 }
-__name(resolveSessionStorage, "resolveSessionStorage");
-var CONNECTION_TIMEOUTS;
-var RECONNECT_INTERVALS;
-var DEFAULT_RECONNECT_FALLBACK;
-var WORKER_SCRIPT;
-var RealtimeClient;
+var CONNECTION_TIMEOUTS, RECONNECT_INTERVALS, DEFAULT_RECONNECT_FALLBACK, WORKER_SCRIPT, RealtimeClient;
 var init_RealtimeClient = __esm({
   "../node_modules/@supabase/realtime-js/dist/module/RealtimeClient.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_websocket_factory();
     init_constants();
     init_serializer();
@@ -28050,8 +27570,8 @@ var init_RealtimeClient = __esm({
     };
     RECONNECT_INTERVALS = [1e3, 2e3, 5e3, 1e4];
     DEFAULT_RECONNECT_FALLBACK = 1e4;
-    __name2(createMemorySessionStorage, "createMemorySessionStorage");
-    __name2(resolveSessionStorage, "resolveSessionStorage");
+    __name(createMemorySessionStorage, "createMemorySessionStorage");
+    __name(resolveSessionStorage, "resolveSessionStorage");
     WORKER_SCRIPT = `
   addEventListener("message", (e) => {
     if (e.data.event === "start") {
@@ -28061,9 +27581,6 @@ var init_RealtimeClient = __esm({
     RealtimeClient = class {
       static {
         __name(this, "RealtimeClient");
-      }
-      static {
-        __name2(this, "RealtimeClient");
       }
       get endPoint() {
         return this.socketAdapter.endPoint;
@@ -28631,10 +28148,10 @@ var init_RealtimeClient = __esm({
         const vsn = (_k = options === null || options === void 0 ? void 0 : options.vsn) !== null && _k !== void 0 ? _k : DEFAULT_VSN;
         switch (vsn) {
           case VSN_1_0_0:
-            defaultEncode = /* @__PURE__ */ __name2((payload, callback) => {
+            defaultEncode = /* @__PURE__ */ __name((payload, callback) => {
               return callback(JSON.stringify(payload));
             }, "defaultEncode");
-            defaultDecode = /* @__PURE__ */ __name2((payload, callback) => {
+            defaultDecode = /* @__PURE__ */ __name((payload, callback) => {
               return callback(JSON.parse(payload));
             }, "defaultDecode");
             break;
@@ -28672,15 +28189,19 @@ var init_RealtimeClient = __esm({
     };
   }
 });
+
+// ../node_modules/@supabase/realtime-js/dist/module/index.js
 var init_module2 = __esm({
   "../node_modules/@supabase/realtime-js/dist/module/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_RealtimeClient();
     init_RealtimeChannel();
     init_RealtimePresence();
     init_websocket_factory();
   }
 });
+
+// ../node_modules/iceberg-js/dist/index.mjs
 function buildUrl(baseUrl, path, query) {
   const url = new URL(path, baseUrl);
   if (query) {
@@ -28692,7 +28213,6 @@ function buildUrl(baseUrl, path, query) {
   }
   return url.toString();
 }
-__name(buildUrl, "buildUrl");
 async function buildAuthHeaders(auth) {
   if (!auth || auth.type === "none") {
     return {};
@@ -28708,7 +28228,6 @@ async function buildAuthHeaders(auth) {
   }
   return {};
 }
-__name(buildAuthHeaders, "buildAuthHeaders");
 function createFetchClient(options) {
   const fetchFn = options.fetchImpl ?? globalThis.fetch;
   return {
@@ -28750,28 +28269,19 @@ function createFetchClient(options) {
     }
   };
 }
-__name(createFetchClient, "createFetchClient");
 function namespaceToPath(namespace) {
   return namespace.join("");
 }
-__name(namespaceToPath, "namespaceToPath");
 function namespaceToPath2(namespace) {
   return namespace.join("");
 }
-__name(namespaceToPath2, "namespaceToPath2");
-var IcebergError;
-var NamespaceOperations;
-var TableOperations;
-var IcebergRestCatalog;
+var IcebergError, NamespaceOperations, TableOperations, IcebergRestCatalog;
 var init_dist2 = __esm({
   "../node_modules/iceberg-js/dist/index.mjs"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     IcebergError = class extends Error {
       static {
         __name(this, "IcebergError");
-      }
-      static {
-        __name2(this, "IcebergError");
       }
       constructor(message, opts) {
         super(message);
@@ -28801,16 +28311,13 @@ var init_dist2 = __esm({
         return this.status === 419;
       }
     };
-    __name2(buildUrl, "buildUrl");
-    __name2(buildAuthHeaders, "buildAuthHeaders");
-    __name2(createFetchClient, "createFetchClient");
-    __name2(namespaceToPath, "namespaceToPath");
+    __name(buildUrl, "buildUrl");
+    __name(buildAuthHeaders, "buildAuthHeaders");
+    __name(createFetchClient, "createFetchClient");
+    __name(namespaceToPath, "namespaceToPath");
     NamespaceOperations = class {
       static {
         __name(this, "NamespaceOperations");
-      }
-      static {
-        __name2(this, "NamespaceOperations");
       }
       constructor(client, prefix = "") {
         this.client = client;
@@ -28877,13 +28384,10 @@ var init_dist2 = __esm({
         }
       }
     };
-    __name2(namespaceToPath2, "namespaceToPath2");
+    __name(namespaceToPath2, "namespaceToPath2");
     TableOperations = class {
       static {
         __name(this, "TableOperations");
-      }
-      static {
-        __name2(this, "TableOperations");
       }
       constructor(client, prefix = "", accessDelegation) {
         this.client = client;
@@ -28973,9 +28477,6 @@ var init_dist2 = __esm({
     IcebergRestCatalog = class {
       static {
         __name(this, "IcebergRestCatalog");
-      }
-      static {
-        __name2(this, "IcebergRestCatalog");
       }
       /**
        * Creates a new Iceberg REST Catalog client.
@@ -29255,6 +28756,8 @@ var init_dist2 = __esm({
     };
   }
 });
+
+// ../node_modules/@supabase/storage-js/dist/index.mjs
 function _typeof2(o) {
   "@babel/helpers - typeof";
   return _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
@@ -29263,7 +28766,6 @@ function _typeof2(o) {
     return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
   }, _typeof2(o);
 }
-__name(_typeof2, "_typeof2");
 function toPrimitive2(t, r) {
   if ("object" != _typeof2(t) || !t) return t;
   var e = t[Symbol.toPrimitive];
@@ -29274,12 +28776,10 @@ function toPrimitive2(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
-__name(toPrimitive2, "toPrimitive2");
 function toPropertyKey2(t) {
   var i = toPrimitive2(t, "string");
   return "symbol" == _typeof2(i) ? i : i + "";
 }
-__name(toPropertyKey2, "toPropertyKey2");
 function _defineProperty2(e, r, t) {
   return (r = toPropertyKey2(r)) in e ? Object.defineProperty(e, r, {
     value: t,
@@ -29288,7 +28788,6 @@ function _defineProperty2(e, r, t) {
     writable: true
   }) : e[r] = t, e;
 }
-__name(_defineProperty2, "_defineProperty2");
 function ownKeys2(e, r) {
   var t = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
@@ -29299,7 +28798,6 @@ function ownKeys2(e, r) {
   }
   return t;
 }
-__name(ownKeys2, "ownKeys2");
 function _objectSpread22(e) {
   for (var r = 1; r < arguments.length; r++) {
     var t = null != arguments[r] ? arguments[r] : {};
@@ -29311,11 +28809,9 @@ function _objectSpread22(e) {
   }
   return e;
 }
-__name(_objectSpread22, "_objectSpread22");
 function isStorageError(error) {
   return typeof error === "object" && error !== null && "__isStorageError" in error;
 }
-__name(isStorageError, "isStorageError");
 function setHeader(headers, name, value) {
   const result = _objectSpread22({}, headers);
   const nameLower = name.toLowerCase();
@@ -29323,13 +28819,11 @@ function setHeader(headers, name, value) {
   result[nameLower] = value;
   return result;
 }
-__name(setHeader, "setHeader");
 function normalizeHeaders2(headers) {
   const result = {};
   for (const [key, value] of Object.entries(headers)) result[key.toLowerCase()] = value;
   return result;
 }
-__name(normalizeHeaders2, "normalizeHeaders2");
 async function _handleRequest(fetcher, method, url, options, parameters, body, namespace) {
   return new Promise((resolve, reject) => {
     fetcher(url, _getRequestParams(method, options, parameters, body)).then((result) => {
@@ -29344,80 +28838,39 @@ async function _handleRequest(fetcher, method, url, options, parameters, body, n
     }).then((data) => resolve(data)).catch((error) => handleError(error, reject, options, namespace));
   });
 }
-__name(_handleRequest, "_handleRequest");
 function createFetchApi(namespace = "storage") {
   return {
-    get: /* @__PURE__ */ __name2(async (fetcher, url, options, parameters) => {
+    get: /* @__PURE__ */ __name(async (fetcher, url, options, parameters) => {
       return _handleRequest(fetcher, "GET", url, options, parameters, void 0, namespace);
     }, "get"),
-    post: /* @__PURE__ */ __name2(async (fetcher, url, body, options, parameters) => {
+    post: /* @__PURE__ */ __name(async (fetcher, url, body, options, parameters) => {
       return _handleRequest(fetcher, "POST", url, options, parameters, body, namespace);
     }, "post"),
-    put: /* @__PURE__ */ __name2(async (fetcher, url, body, options, parameters) => {
+    put: /* @__PURE__ */ __name(async (fetcher, url, body, options, parameters) => {
       return _handleRequest(fetcher, "PUT", url, options, parameters, body, namespace);
     }, "put"),
-    head: /* @__PURE__ */ __name2(async (fetcher, url, options, parameters) => {
+    head: /* @__PURE__ */ __name(async (fetcher, url, options, parameters) => {
       return _handleRequest(fetcher, "HEAD", url, _objectSpread22(_objectSpread22({}, options), {}, { noResolveJson: true }), parameters, void 0, namespace);
     }, "head"),
-    remove: /* @__PURE__ */ __name2(async (fetcher, url, body, options, parameters) => {
+    remove: /* @__PURE__ */ __name(async (fetcher, url, body, options, parameters) => {
       return _handleRequest(fetcher, "DELETE", url, options, parameters, body, namespace);
     }, "remove")
   };
 }
-__name(createFetchApi, "createFetchApi");
-var StorageError;
-var StorageApiError;
-var StorageUnknownError;
-var resolveFetch2;
-var isPlainObject;
-var recursiveToCamel;
-var isValidBucketName;
-var encodeStoragePath;
-var _getErrorMessage;
-var handleError;
-var _getRequestParams;
-var defaultApi;
-var get;
-var post;
-var put;
-var head;
-var remove;
-var vectorsApi;
-var BaseApiClient;
-var _Symbol$toStringTag$1;
-var StreamDownloadBuilder;
-var _Symbol$toStringTag;
-var BlobDownloadBuilder;
-var DEFAULT_SEARCH_OPTIONS;
-var DEFAULT_FILE_OPTIONS;
-var StorageFileApi;
-var version2;
-var DEFAULT_HEADERS;
-var StorageBucketApi;
-var StorageAnalyticsClient;
-var VectorIndexApi;
-var VectorDataApi;
-var VectorBucketApi;
-var StorageVectorsClient;
-var VectorBucketScope;
-var VectorIndexScope;
-var StorageClient;
+var StorageError, StorageApiError, StorageUnknownError, resolveFetch2, isPlainObject, recursiveToCamel, isValidBucketName, encodeStoragePath, _getErrorMessage, handleError, _getRequestParams, defaultApi, get, post, put, head, remove, vectorsApi, BaseApiClient, _Symbol$toStringTag$1, StreamDownloadBuilder, _Symbol$toStringTag, BlobDownloadBuilder, DEFAULT_SEARCH_OPTIONS, DEFAULT_FILE_OPTIONS, StorageFileApi, version2, DEFAULT_HEADERS, StorageBucketApi, StorageAnalyticsClient, VectorIndexApi, VectorDataApi, VectorBucketApi, StorageVectorsClient, VectorBucketScope, VectorIndexScope, StorageClient;
 var init_dist3 = __esm({
   "../node_modules/@supabase/storage-js/dist/index.mjs"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_dist2();
-    __name2(_typeof2, "_typeof");
-    __name2(toPrimitive2, "toPrimitive");
-    __name2(toPropertyKey2, "toPropertyKey");
-    __name2(_defineProperty2, "_defineProperty");
-    __name2(ownKeys2, "ownKeys");
-    __name2(_objectSpread22, "_objectSpread2");
+    __name(_typeof2, "_typeof");
+    __name(toPrimitive2, "toPrimitive");
+    __name(toPropertyKey2, "toPropertyKey");
+    __name(_defineProperty2, "_defineProperty");
+    __name(ownKeys2, "ownKeys");
+    __name(_objectSpread22, "_objectSpread2");
     StorageError = class extends Error {
       static {
         __name(this, "StorageError");
-      }
-      static {
-        __name2(this, "StorageError");
       }
       constructor(message, namespace = "storage", status, statusCode) {
         super(message);
@@ -29436,13 +28889,10 @@ var init_dist3 = __esm({
         };
       }
     };
-    __name2(isStorageError, "isStorageError");
+    __name(isStorageError, "isStorageError");
     StorageApiError = class extends StorageError {
       static {
         __name(this, "StorageApiError");
-      }
-      static {
-        __name2(this, "StorageApiError");
       }
       constructor(message, status, statusCode, namespace = "storage", code) {
         super(message, namespace, status, statusCode);
@@ -29459,27 +28909,24 @@ var init_dist3 = __esm({
       static {
         __name(this, "StorageUnknownError");
       }
-      static {
-        __name2(this, "StorageUnknownError");
-      }
       constructor(message, originalError, namespace = "storage") {
         super(message, namespace);
         this.name = namespace === "vectors" ? "StorageVectorsUnknownError" : "StorageUnknownError";
         this.originalError = originalError;
       }
     };
-    __name2(setHeader, "setHeader");
-    __name2(normalizeHeaders2, "normalizeHeaders");
-    resolveFetch2 = /* @__PURE__ */ __name2((customFetch) => {
+    __name(setHeader, "setHeader");
+    __name(normalizeHeaders2, "normalizeHeaders");
+    resolveFetch2 = /* @__PURE__ */ __name((customFetch) => {
       if (customFetch) return (...args) => customFetch(...args);
       return (...args) => fetch(...args);
     }, "resolveFetch");
-    isPlainObject = /* @__PURE__ */ __name2((value) => {
+    isPlainObject = /* @__PURE__ */ __name((value) => {
       if (typeof value !== "object" || value === null) return false;
       const prototype = Object.getPrototypeOf(value);
       return (prototype === null || prototype === Object.prototype || Object.getPrototypeOf(prototype) === null) && !(Symbol.toStringTag in value) && !(Symbol.iterator in value);
     }, "isPlainObject");
-    recursiveToCamel = /* @__PURE__ */ __name2((item) => {
+    recursiveToCamel = /* @__PURE__ */ __name((item) => {
       if (Array.isArray(item)) return item.map((el) => recursiveToCamel(el));
       else if (typeof item === "function" || item !== Object(item)) return item;
       const result = {};
@@ -29489,15 +28936,15 @@ var init_dist3 = __esm({
       });
       return result;
     }, "recursiveToCamel");
-    isValidBucketName = /* @__PURE__ */ __name2((bucketName) => {
+    isValidBucketName = /* @__PURE__ */ __name((bucketName) => {
       if (!bucketName || typeof bucketName !== "string") return false;
       if (bucketName.length === 0 || bucketName.length > 100) return false;
       if (bucketName.trim() !== bucketName) return false;
       if (bucketName.includes("/") || bucketName.includes("\\")) return false;
       return /^[\w!.\*'() &$@=;:+,?-]+$/.test(bucketName);
     }, "isValidBucketName");
-    encodeStoragePath = /* @__PURE__ */ __name2((path) => path.split("/").map(encodeURIComponent).join("/"), "encodeStoragePath");
-    _getErrorMessage = /* @__PURE__ */ __name2((err) => {
+    encodeStoragePath = /* @__PURE__ */ __name((path) => path.split("/").map(encodeURIComponent).join("/"), "encodeStoragePath");
+    _getErrorMessage = /* @__PURE__ */ __name((err) => {
       if (typeof err === "object" && err !== null) {
         const e = err;
         if (typeof e.msg === "string") return e.msg;
@@ -29511,7 +28958,7 @@ var init_dist3 = __esm({
       }
       return JSON.stringify(err);
     }, "_getErrorMessage");
-    handleError = /* @__PURE__ */ __name2(async (error, reject, options, namespace) => {
+    handleError = /* @__PURE__ */ __name(async (error, reject, options, namespace) => {
       if (error !== null && typeof error === "object" && "json" in error && typeof error.json === "function") {
         const responseError = error;
         let status = parseInt(String(responseError.status), 10);
@@ -29525,7 +28972,7 @@ var init_dist3 = __esm({
         });
       } else reject(new StorageUnknownError(_getErrorMessage(error), error, namespace));
     }, "handleError");
-    _getRequestParams = /* @__PURE__ */ __name2((method, options, parameters, body) => {
+    _getRequestParams = /* @__PURE__ */ __name((method, options, parameters, body) => {
       const params = {
         method,
         headers: (options === null || options === void 0 ? void 0 : options.headers) || {}
@@ -29542,17 +28989,14 @@ var init_dist3 = __esm({
       if (options === null || options === void 0 ? void 0 : options.duplex) params.duplex = options.duplex;
       return _objectSpread22(_objectSpread22({}, params), parameters);
     }, "_getRequestParams");
-    __name2(_handleRequest, "_handleRequest");
-    __name2(createFetchApi, "createFetchApi");
+    __name(_handleRequest, "_handleRequest");
+    __name(createFetchApi, "createFetchApi");
     defaultApi = createFetchApi("storage");
     ({ get, post, put, head, remove } = defaultApi);
     vectorsApi = createFetchApi("vectors");
     BaseApiClient = class {
       static {
         __name(this, "BaseApiClient");
-      }
-      static {
-        __name2(this, "BaseApiClient");
       }
       /**
       * Creates a new BaseApiClient instance
@@ -29637,9 +29081,6 @@ var init_dist3 = __esm({
       static {
         __name(this, "StreamDownloadBuilder");
       }
-      static {
-        __name2(this, "StreamDownloadBuilder");
-      }
       constructor(downloadFn, shouldThrowOnError) {
         this.downloadFn = downloadFn;
         this.shouldThrowOnError = shouldThrowOnError;
@@ -29680,9 +29121,6 @@ var init_dist3 = __esm({
     BlobDownloadBuilder = class {
       static {
         __name(this, "BlobDownloadBuilder");
-      }
-      static {
-        __name2(this, "BlobDownloadBuilder");
       }
       constructor(downloadFn, shouldThrowOnError) {
         this.downloadFn = downloadFn;
@@ -29739,9 +29177,6 @@ var init_dist3 = __esm({
     StorageFileApi = class extends BaseApiClient {
       static {
         __name(this, "StorageFileApi");
-      }
-      static {
-        __name2(this, "StorageFileApi");
       }
       constructor(url, headers = {}, bucketId, fetch$1) {
         super(url, headers, fetch$1, "storage");
@@ -30336,7 +29771,7 @@ var init_dist3 = __esm({
         if ((options === null || options === void 0 ? void 0 : options.cacheNonce) != null) query.set("cacheNonce", String(options.cacheNonce));
         const queryString = query.toString();
         const _path = this._getFinalPath(path);
-        const downloadFn = /* @__PURE__ */ __name2(() => get(this.fetch, `${this.url}/${renderPath}/${_path}${queryString ? `?${queryString}` : ""}`, {
+        const downloadFn = /* @__PURE__ */ __name(() => get(this.fetch, `${this.url}/${renderPath}/${_path}${queryString ? `?${queryString}` : ""}`, {
           headers: this.headers,
           noResolveJson: true
         }, parameters), "downloadFn");
@@ -30755,9 +30190,6 @@ var init_dist3 = __esm({
       static {
         __name(this, "StorageBucketApi");
       }
-      static {
-        __name2(this, "StorageBucketApi");
-      }
       constructor(url, headers = {}, fetch$1, opts) {
         const baseUrl = new URL(url);
         if (opts === null || opts === void 0 ? void 0 : opts.useNewHostname) {
@@ -31106,9 +30538,6 @@ var init_dist3 = __esm({
       static {
         __name(this, "StorageAnalyticsClient");
       }
-      static {
-        __name2(this, "StorageAnalyticsClient");
-      }
       /**
       * @alpha
       *
@@ -31425,7 +30854,7 @@ var init_dist3 = __esm({
           catalogName: bucketName,
           auth: {
             type: "custom",
-            getHeaders: /* @__PURE__ */ __name2(async () => _this4.headers, "getHeaders")
+            getHeaders: /* @__PURE__ */ __name(async () => _this4.headers, "getHeaders")
           },
           fetch: this.fetch
         });
@@ -31453,9 +30882,6 @@ var init_dist3 = __esm({
     VectorIndexApi = class extends BaseApiClient {
       static {
         __name(this, "VectorIndexApi");
-      }
-      static {
-        __name2(this, "VectorIndexApi");
       }
       /** Creates a new VectorIndexApi instance */
       constructor(url, headers = {}, fetch$1) {
@@ -31501,9 +30927,6 @@ var init_dist3 = __esm({
     VectorDataApi = class extends BaseApiClient {
       static {
         __name(this, "VectorDataApi");
-      }
-      static {
-        __name2(this, "VectorDataApi");
       }
       /** Creates a new VectorDataApi instance */
       constructor(url, headers = {}, fetch$1) {
@@ -31559,9 +30982,6 @@ var init_dist3 = __esm({
       static {
         __name(this, "VectorBucketApi");
       }
-      static {
-        __name2(this, "VectorBucketApi");
-      }
       /** Creates a new VectorBucketApi instance */
       constructor(url, headers = {}, fetch$1) {
         const finalUrl = url.replace(/\/$/, "");
@@ -31600,9 +31020,6 @@ var init_dist3 = __esm({
     StorageVectorsClient = class extends VectorBucketApi {
       static {
         __name(this, "StorageVectorsClient");
-      }
-      static {
-        __name2(this, "StorageVectorsClient");
       }
       /**
       * @alpha
@@ -31680,7 +31097,7 @@ var init_dist3 = __esm({
       * ```
       */
       async createBucket(vectorBucketName) {
-        var _superprop_getCreateBucket = /* @__PURE__ */ __name2(() => super.createBucket, "_superprop_getCreateBucket"), _this = this;
+        var _superprop_getCreateBucket = /* @__PURE__ */ __name(() => super.createBucket, "_superprop_getCreateBucket"), _this = this;
         return _superprop_getCreateBucket().call(_this, vectorBucketName);
       }
       /**
@@ -31707,7 +31124,7 @@ var init_dist3 = __esm({
       * ```
       */
       async getBucket(vectorBucketName) {
-        var _superprop_getGetBucket = /* @__PURE__ */ __name2(() => super.getBucket, "_superprop_getGetBucket"), _this2 = this;
+        var _superprop_getGetBucket = /* @__PURE__ */ __name(() => super.getBucket, "_superprop_getGetBucket"), _this2 = this;
         return _superprop_getGetBucket().call(_this2, vectorBucketName);
       }
       /**
@@ -31736,7 +31153,7 @@ var init_dist3 = __esm({
       * ```
       */
       async listBuckets(options = {}) {
-        var _superprop_getListBuckets = /* @__PURE__ */ __name2(() => super.listBuckets, "_superprop_getListBuckets"), _this3 = this;
+        var _superprop_getListBuckets = /* @__PURE__ */ __name(() => super.listBuckets, "_superprop_getListBuckets"), _this3 = this;
         return _superprop_getListBuckets().call(_this3, options);
       }
       /**
@@ -31762,16 +31179,13 @@ var init_dist3 = __esm({
       * ```
       */
       async deleteBucket(vectorBucketName) {
-        var _superprop_getDeleteBucket = /* @__PURE__ */ __name2(() => super.deleteBucket, "_superprop_getDeleteBucket"), _this4 = this;
+        var _superprop_getDeleteBucket = /* @__PURE__ */ __name(() => super.deleteBucket, "_superprop_getDeleteBucket"), _this4 = this;
         return _superprop_getDeleteBucket().call(_this4, vectorBucketName);
       }
     };
     VectorBucketScope = class extends VectorIndexApi {
       static {
         __name(this, "VectorBucketScope");
-      }
-      static {
-        __name2(this, "VectorBucketScope");
       }
       /**
       * @alpha
@@ -31820,7 +31234,7 @@ var init_dist3 = __esm({
       * ```
       */
       async createIndex(options) {
-        var _superprop_getCreateIndex = /* @__PURE__ */ __name2(() => super.createIndex, "_superprop_getCreateIndex"), _this5 = this;
+        var _superprop_getCreateIndex = /* @__PURE__ */ __name(() => super.createIndex, "_superprop_getCreateIndex"), _this5 = this;
         return _superprop_getCreateIndex().call(_this5, _objectSpread22(_objectSpread22({}, options), {}, { vectorBucketName: _this5.vectorBucketName }));
       }
       /**
@@ -31844,7 +31258,7 @@ var init_dist3 = __esm({
       * ```
       */
       async listIndexes(options = {}) {
-        var _superprop_getListIndexes = /* @__PURE__ */ __name2(() => super.listIndexes, "_superprop_getListIndexes"), _this6 = this;
+        var _superprop_getListIndexes = /* @__PURE__ */ __name(() => super.listIndexes, "_superprop_getListIndexes"), _this6 = this;
         return _superprop_getListIndexes().call(_this6, _objectSpread22(_objectSpread22({}, options), {}, { vectorBucketName: _this6.vectorBucketName }));
       }
       /**
@@ -31869,7 +31283,7 @@ var init_dist3 = __esm({
       * ```
       */
       async getIndex(indexName) {
-        var _superprop_getGetIndex = /* @__PURE__ */ __name2(() => super.getIndex, "_superprop_getGetIndex"), _this7 = this;
+        var _superprop_getGetIndex = /* @__PURE__ */ __name(() => super.getIndex, "_superprop_getGetIndex"), _this7 = this;
         return _superprop_getGetIndex().call(_this7, _this7.vectorBucketName, indexName);
       }
       /**
@@ -31893,7 +31307,7 @@ var init_dist3 = __esm({
       * ```
       */
       async deleteIndex(indexName) {
-        var _superprop_getDeleteIndex = /* @__PURE__ */ __name2(() => super.deleteIndex, "_superprop_getDeleteIndex"), _this8 = this;
+        var _superprop_getDeleteIndex = /* @__PURE__ */ __name(() => super.deleteIndex, "_superprop_getDeleteIndex"), _this8 = this;
         return _superprop_getDeleteIndex().call(_this8, _this8.vectorBucketName, indexName);
       }
       /**
@@ -31935,9 +31349,6 @@ var init_dist3 = __esm({
     VectorIndexScope = class extends VectorDataApi {
       static {
         __name(this, "VectorIndexScope");
-      }
-      static {
-        __name2(this, "VectorIndexScope");
       }
       /**
       *
@@ -31988,7 +31399,7 @@ var init_dist3 = __esm({
       * ```
       */
       async putVectors(options) {
-        var _superprop_getPutVectors = /* @__PURE__ */ __name2(() => super.putVectors, "_superprop_getPutVectors"), _this9 = this;
+        var _superprop_getPutVectors = /* @__PURE__ */ __name(() => super.putVectors, "_superprop_getPutVectors"), _this9 = this;
         return _superprop_getPutVectors().call(_this9, _objectSpread22(_objectSpread22({}, options), {}, {
           vectorBucketName: _this9.vectorBucketName,
           indexName: _this9.indexName
@@ -32018,7 +31429,7 @@ var init_dist3 = __esm({
       * ```
       */
       async getVectors(options) {
-        var _superprop_getGetVectors = /* @__PURE__ */ __name2(() => super.getVectors, "_superprop_getGetVectors"), _this10 = this;
+        var _superprop_getGetVectors = /* @__PURE__ */ __name(() => super.getVectors, "_superprop_getGetVectors"), _this10 = this;
         return _superprop_getGetVectors().call(_this10, _objectSpread22(_objectSpread22({}, options), {}, {
           vectorBucketName: _this10.vectorBucketName,
           indexName: _this10.indexName
@@ -32048,7 +31459,7 @@ var init_dist3 = __esm({
       * ```
       */
       async listVectors(options = {}) {
-        var _superprop_getListVectors = /* @__PURE__ */ __name2(() => super.listVectors, "_superprop_getListVectors"), _this11 = this;
+        var _superprop_getListVectors = /* @__PURE__ */ __name(() => super.listVectors, "_superprop_getListVectors"), _this11 = this;
         return _superprop_getListVectors().call(_this11, _objectSpread22(_objectSpread22({}, options), {}, {
           vectorBucketName: _this11.vectorBucketName,
           indexName: _this11.indexName
@@ -32081,7 +31492,7 @@ var init_dist3 = __esm({
       * ```
       */
       async queryVectors(options) {
-        var _superprop_getQueryVectors = /* @__PURE__ */ __name2(() => super.queryVectors, "_superprop_getQueryVectors"), _this12 = this;
+        var _superprop_getQueryVectors = /* @__PURE__ */ __name(() => super.queryVectors, "_superprop_getQueryVectors"), _this12 = this;
         return _superprop_getQueryVectors().call(_this12, _objectSpread22(_objectSpread22({}, options), {}, {
           vectorBucketName: _this12.vectorBucketName,
           indexName: _this12.indexName
@@ -32110,7 +31521,7 @@ var init_dist3 = __esm({
       * ```
       */
       async deleteVectors(options) {
-        var _superprop_getDeleteVectors = /* @__PURE__ */ __name2(() => super.deleteVectors, "_superprop_getDeleteVectors"), _this13 = this;
+        var _superprop_getDeleteVectors = /* @__PURE__ */ __name(() => super.deleteVectors, "_superprop_getDeleteVectors"), _this13 = this;
         return _superprop_getDeleteVectors().call(_this13, _objectSpread22(_objectSpread22({}, options), {}, {
           vectorBucketName: _this13.vectorBucketName,
           indexName: _this13.indexName
@@ -32120,9 +31531,6 @@ var init_dist3 = __esm({
     StorageClient = class extends StorageBucketApi {
       static {
         __name(this, "StorageClient");
-      }
-      static {
-        __name2(this, "StorageClient");
       }
       /**
       * Creates a client for Storage buckets, files, analytics, and vectors.
@@ -32205,29 +31613,21 @@ var init_dist3 = __esm({
     };
   }
 });
+
+// ../node_modules/@supabase/auth-js/dist/module/lib/version.js
 var version3;
 var init_version2 = __esm({
   "../node_modules/@supabase/auth-js/dist/module/lib/version.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     version3 = "2.112.3";
   }
 });
-var AUTO_REFRESH_TICK_DURATION_MS;
-var AUTO_REFRESH_TICK_THRESHOLD;
-var EXPIRY_MARGIN_MS;
-var REFRESH_FAILURE_COOLDOWN_MS;
-var GOTRUE_URL;
-var STORAGE_KEY;
-var DEFAULT_HEADERS2;
-var API_VERSION_HEADER_NAME;
-var API_VERSIONS;
-var BASE64URL_REGEX;
-var PKCE_FLOW_ID_PARAM;
-var PKCE_MAX_CONCURRENT_FLOWS;
-var JWKS_TTL;
+
+// ../node_modules/@supabase/auth-js/dist/module/lib/constants.js
+var AUTO_REFRESH_TICK_DURATION_MS, AUTO_REFRESH_TICK_THRESHOLD, EXPIRY_MARGIN_MS, REFRESH_FAILURE_COOLDOWN_MS, GOTRUE_URL, STORAGE_KEY, DEFAULT_HEADERS2, API_VERSION_HEADER_NAME, API_VERSIONS, BASE64URL_REGEX, PKCE_FLOW_ID_PARAM, PKCE_MAX_CONCURRENT_FLOWS, JWKS_TTL;
 var init_constants2 = __esm({
   "../node_modules/@supabase/auth-js/dist/module/lib/constants.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_version2();
     AUTO_REFRESH_TICK_DURATION_MS = 30 * 1e3;
     AUTO_REFRESH_TICK_THRESHOLD = 3;
@@ -32249,53 +31649,33 @@ var init_constants2 = __esm({
     JWKS_TTL = 10 * 60 * 1e3;
   }
 });
+
+// ../node_modules/@supabase/auth-js/dist/module/lib/errors.js
 function isAuthError(error) {
   return typeof error === "object" && error !== null && "__isAuthError" in error;
 }
-__name(isAuthError, "isAuthError");
 function isAuthApiError(error) {
   return isAuthError(error) && error.name === "AuthApiError";
 }
-__name(isAuthApiError, "isAuthApiError");
 function isAuthSessionMissingError(error) {
   return isAuthError(error) && error.name === "AuthSessionMissingError";
 }
-__name(isAuthSessionMissingError, "isAuthSessionMissingError");
 function isAuthImplicitGrantRedirectError(error) {
   return isAuthError(error) && error.name === "AuthImplicitGrantRedirectError";
 }
-__name(isAuthImplicitGrantRedirectError, "isAuthImplicitGrantRedirectError");
 function isAuthRetryableFetchError(error) {
   return isAuthError(error) && error.name === "AuthRetryableFetchError";
 }
-__name(isAuthRetryableFetchError, "isAuthRetryableFetchError");
 function isAuthRefreshDiscardedError(error) {
   return isAuthError(error) && error.name === "AuthRefreshDiscardedError";
 }
-__name(isAuthRefreshDiscardedError, "isAuthRefreshDiscardedError");
-var AuthError;
-var AuthApiError;
-var AuthUnknownError;
-var CustomAuthError;
-var AuthSessionMissingError;
-var AuthInvalidTokenResponseError;
-var AuthInvalidCredentialsError;
-var AuthImplicitGrantRedirectError;
-var AuthPKCEGrantCodeExchangeError;
-var AuthPKCECodeVerifierMissingError;
-var AuthRetryableFetchError;
-var AuthRefreshDiscardedError;
-var AuthWeakPasswordError;
-var AuthInvalidJwtError;
+var AuthError, AuthApiError, AuthUnknownError, CustomAuthError, AuthSessionMissingError, AuthInvalidTokenResponseError, AuthInvalidCredentialsError, AuthImplicitGrantRedirectError, AuthPKCEGrantCodeExchangeError, AuthPKCECodeVerifierMissingError, AuthRetryableFetchError, AuthRefreshDiscardedError, AuthWeakPasswordError, AuthInvalidJwtError;
 var init_errors = __esm({
   "../node_modules/@supabase/auth-js/dist/module/lib/errors.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     AuthError = class extends Error {
       static {
         __name(this, "AuthError");
-      }
-      static {
-        __name2(this, "AuthError");
       }
       constructor(message, status, code) {
         super(message);
@@ -32313,13 +31693,10 @@ var init_errors = __esm({
         };
       }
     };
-    __name2(isAuthError, "isAuthError");
+    __name(isAuthError, "isAuthError");
     AuthApiError = class extends AuthError {
       static {
         __name(this, "AuthApiError");
-      }
-      static {
-        __name2(this, "AuthApiError");
       }
       constructor(message, status, code) {
         super(message, status, code);
@@ -32328,13 +31705,10 @@ var init_errors = __esm({
         this.code = code;
       }
     };
-    __name2(isAuthApiError, "isAuthApiError");
+    __name(isAuthApiError, "isAuthApiError");
     AuthUnknownError = class extends AuthError {
       static {
         __name(this, "AuthUnknownError");
-      }
-      static {
-        __name2(this, "AuthUnknownError");
       }
       constructor(message, originalError) {
         super(message);
@@ -32346,9 +31720,6 @@ var init_errors = __esm({
       static {
         __name(this, "CustomAuthError");
       }
-      static {
-        __name2(this, "CustomAuthError");
-      }
       constructor(message, name, status, code) {
         super(message, status, code);
         this.name = name;
@@ -32359,20 +31730,14 @@ var init_errors = __esm({
       static {
         __name(this, "AuthSessionMissingError");
       }
-      static {
-        __name2(this, "AuthSessionMissingError");
-      }
       constructor() {
         super("Auth session missing!", "AuthSessionMissingError", 400, void 0);
       }
     };
-    __name2(isAuthSessionMissingError, "isAuthSessionMissingError");
+    __name(isAuthSessionMissingError, "isAuthSessionMissingError");
     AuthInvalidTokenResponseError = class extends CustomAuthError {
       static {
         __name(this, "AuthInvalidTokenResponseError");
-      }
-      static {
-        __name2(this, "AuthInvalidTokenResponseError");
       }
       constructor() {
         super("Auth session or user missing", "AuthInvalidTokenResponseError", 500, void 0);
@@ -32382,9 +31747,6 @@ var init_errors = __esm({
       static {
         __name(this, "AuthInvalidCredentialsError");
       }
-      static {
-        __name2(this, "AuthInvalidCredentialsError");
-      }
       constructor(message) {
         super(message, "AuthInvalidCredentialsError", 400, void 0);
       }
@@ -32392,9 +31754,6 @@ var init_errors = __esm({
     AuthImplicitGrantRedirectError = class extends CustomAuthError {
       static {
         __name(this, "AuthImplicitGrantRedirectError");
-      }
-      static {
-        __name2(this, "AuthImplicitGrantRedirectError");
       }
       constructor(message, details = null) {
         super(message, "AuthImplicitGrantRedirectError", 500, void 0);
@@ -32405,13 +31764,10 @@ var init_errors = __esm({
         return Object.assign(Object.assign({}, super.toJSON()), { details: this.details });
       }
     };
-    __name2(isAuthImplicitGrantRedirectError, "isAuthImplicitGrantRedirectError");
+    __name(isAuthImplicitGrantRedirectError, "isAuthImplicitGrantRedirectError");
     AuthPKCEGrantCodeExchangeError = class extends CustomAuthError {
       static {
         __name(this, "AuthPKCEGrantCodeExchangeError");
-      }
-      static {
-        __name2(this, "AuthPKCEGrantCodeExchangeError");
       }
       constructor(message, details = null) {
         super(message, "AuthPKCEGrantCodeExchangeError", 500, void 0);
@@ -32426,9 +31782,6 @@ var init_errors = __esm({
       static {
         __name(this, "AuthPKCECodeVerifierMissingError");
       }
-      static {
-        __name2(this, "AuthPKCECodeVerifierMissingError");
-      }
       constructor() {
         super("PKCE code verifier not found in storage. This can happen if the auth flow was initiated in a different browser or device, or if the storage was cleared. For SSR frameworks (Next.js, SvelteKit, etc.), use @supabase/ssr on both the server and client to store the code verifier in cookies.", "AuthPKCECodeVerifierMissingError", 400, "pkce_code_verifier_not_found");
       }
@@ -32437,32 +31790,23 @@ var init_errors = __esm({
       static {
         __name(this, "AuthRetryableFetchError");
       }
-      static {
-        __name2(this, "AuthRetryableFetchError");
-      }
       constructor(message, status) {
         super(message, "AuthRetryableFetchError", status, void 0);
       }
     };
-    __name2(isAuthRetryableFetchError, "isAuthRetryableFetchError");
+    __name(isAuthRetryableFetchError, "isAuthRetryableFetchError");
     AuthRefreshDiscardedError = class extends CustomAuthError {
       static {
         __name(this, "AuthRefreshDiscardedError");
-      }
-      static {
-        __name2(this, "AuthRefreshDiscardedError");
       }
       constructor(message = "Refresh result discarded: session state changed mid-flight (e.g., concurrent signOut)") {
         super(message, "AuthRefreshDiscardedError", 409, void 0);
       }
     };
-    __name2(isAuthRefreshDiscardedError, "isAuthRefreshDiscardedError");
+    __name(isAuthRefreshDiscardedError, "isAuthRefreshDiscardedError");
     AuthWeakPasswordError = class extends CustomAuthError {
       static {
         __name(this, "AuthWeakPasswordError");
-      }
-      static {
-        __name2(this, "AuthWeakPasswordError");
       }
       constructor(message, status, reasons) {
         super(message, "AuthWeakPasswordError", status, "weak_password");
@@ -32476,15 +31820,14 @@ var init_errors = __esm({
       static {
         __name(this, "AuthInvalidJwtError");
       }
-      static {
-        __name2(this, "AuthInvalidJwtError");
-      }
       constructor(message) {
         super(message, "AuthInvalidJwtError", 400, "invalid_jwt");
       }
     };
   }
 });
+
+// ../node_modules/@supabase/auth-js/dist/module/lib/base64url.js
 function byteToBase64URL(byte, state, emit) {
   if (byte !== null) {
     state.queue = state.queue << 8 | byte;
@@ -32504,7 +31847,6 @@ function byteToBase64URL(byte, state, emit) {
     }
   }
 }
-__name(byteToBase64URL, "byteToBase64URL");
 function byteFromBase64URL(charCode, state, emit) {
   const bits = FROM_BASE64URL[charCode];
   if (bits > -1) {
@@ -32520,10 +31862,9 @@ function byteFromBase64URL(charCode, state, emit) {
     throw new Error(`Invalid Base64-URL character "${String.fromCharCode(charCode)}"`);
   }
 }
-__name(byteFromBase64URL, "byteFromBase64URL");
 function stringFromBase64URL(str) {
   const conv = [];
-  const utf8Emit = /* @__PURE__ */ __name2((codepoint) => {
+  const utf8Emit = /* @__PURE__ */ __name((codepoint) => {
     conv.push(String.fromCodePoint(codepoint));
   }, "utf8Emit");
   const utf8State = {
@@ -32531,7 +31872,7 @@ function stringFromBase64URL(str) {
     codepoint: 0
   };
   const b64State = { queue: 0, queuedBits: 0 };
-  const byteEmit = /* @__PURE__ */ __name2((byte) => {
+  const byteEmit = /* @__PURE__ */ __name((byte) => {
     stringFromUTF8(byte, utf8State, utf8Emit);
   }, "byteEmit");
   for (let i = 0; i < str.length; i += 1) {
@@ -32539,7 +31880,6 @@ function stringFromBase64URL(str) {
   }
   return conv.join("");
 }
-__name(stringFromBase64URL, "stringFromBase64URL");
 function codepointToUTF8(codepoint, emit) {
   if (codepoint <= 127) {
     emit(codepoint);
@@ -32562,7 +31902,6 @@ function codepointToUTF8(codepoint, emit) {
   }
   throw new Error(`Unrecognized Unicode codepoint: ${codepoint.toString(16)}`);
 }
-__name(codepointToUTF8, "codepointToUTF8");
 function stringToUTF8(str, emit) {
   for (let i = 0; i < str.length; i += 1) {
     let codepoint = str.charCodeAt(i);
@@ -32575,7 +31914,6 @@ function stringToUTF8(str, emit) {
     codepointToUTF8(codepoint, emit);
   }
 }
-__name(stringToUTF8, "stringToUTF8");
 function stringFromUTF8(byte, state, emit) {
   if (state.utf8seq === 0) {
     if (byte <= 127) {
@@ -32609,11 +31947,10 @@ function stringFromUTF8(byte, state, emit) {
     }
   }
 }
-__name(stringFromUTF8, "stringFromUTF8");
 function base64UrlToUint8Array(str) {
   const result = [];
   const state = { queue: 0, queuedBits: 0 };
-  const onByte = /* @__PURE__ */ __name2((byte) => {
+  const onByte = /* @__PURE__ */ __name((byte) => {
     result.push(byte);
   }, "onByte");
   for (let i = 0; i < str.length; i += 1) {
@@ -32621,30 +31958,25 @@ function base64UrlToUint8Array(str) {
   }
   return new Uint8Array(result);
 }
-__name(base64UrlToUint8Array, "base64UrlToUint8Array");
 function stringToUint8Array(str) {
   const result = [];
   stringToUTF8(str, (byte) => result.push(byte));
   return new Uint8Array(result);
 }
-__name(stringToUint8Array, "stringToUint8Array");
 function bytesToBase64URL(bytes) {
   const result = [];
   const state = { queue: 0, queuedBits: 0 };
-  const onChar = /* @__PURE__ */ __name2((char) => {
+  const onChar = /* @__PURE__ */ __name((char) => {
     result.push(char);
   }, "onChar");
   bytes.forEach((byte) => byteToBase64URL(byte, state, onChar));
   byteToBase64URL(null, state, onChar);
   return result.join("");
 }
-__name(bytesToBase64URL, "bytesToBase64URL");
-var TO_BASE64URL;
-var IGNORE_BASE64URL;
-var FROM_BASE64URL;
+var TO_BASE64URL, IGNORE_BASE64URL, FROM_BASE64URL;
 var init_base64url = __esm({
   "../node_modules/@supabase/auth-js/dist/module/lib/base64url.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     TO_BASE64URL = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_".split("");
     IGNORE_BASE64URL = " 	\n\r=".split("");
     FROM_BASE64URL = (() => {
@@ -32660,26 +31992,26 @@ var init_base64url = __esm({
       }
       return charMap;
     })();
-    __name2(byteToBase64URL, "byteToBase64URL");
-    __name2(byteFromBase64URL, "byteFromBase64URL");
-    __name2(stringFromBase64URL, "stringFromBase64URL");
-    __name2(codepointToUTF8, "codepointToUTF8");
-    __name2(stringToUTF8, "stringToUTF8");
-    __name2(stringFromUTF8, "stringFromUTF8");
-    __name2(base64UrlToUint8Array, "base64UrlToUint8Array");
-    __name2(stringToUint8Array, "stringToUint8Array");
-    __name2(bytesToBase64URL, "bytesToBase64URL");
+    __name(byteToBase64URL, "byteToBase64URL");
+    __name(byteFromBase64URL, "byteFromBase64URL");
+    __name(stringFromBase64URL, "stringFromBase64URL");
+    __name(codepointToUTF8, "codepointToUTF8");
+    __name(stringToUTF8, "stringToUTF8");
+    __name(stringFromUTF8, "stringFromUTF8");
+    __name(base64UrlToUint8Array, "base64UrlToUint8Array");
+    __name(stringToUint8Array, "stringToUint8Array");
+    __name(bytesToBase64URL, "bytesToBase64URL");
   }
 });
+
+// ../node_modules/@supabase/auth-js/dist/module/lib/helpers.js
 function expiresAt(expiresIn) {
   const timeNow = Math.round(Date.now() / 1e3);
   return timeNow + expiresIn;
 }
-__name(expiresAt, "expiresAt");
 function generateCallbackId() {
   return /* @__PURE__ */ Symbol("auth-callback");
 }
-__name(generateCallbackId, "generateCallbackId");
 function parseParametersFromURL(href) {
   const result = {};
   const url = new URL(href);
@@ -32697,7 +32029,6 @@ function parseParametersFromURL(href) {
   });
   return result;
 }
-__name(parseParametersFromURL, "parseParametersFromURL");
 function decodeJWT(token) {
   const parts = token.split(".");
   if (parts.length !== 3) {
@@ -32720,13 +32051,11 @@ function decodeJWT(token) {
   };
   return data;
 }
-__name(decodeJWT, "decodeJWT");
 async function sleep2(time) {
   return await new Promise((accept) => {
     setTimeout(() => accept(null), time);
   });
 }
-__name(sleep2, "sleep2");
 function retryable(fn, isRetryable) {
   const promise = new Promise((accept, reject) => {
     ;
@@ -32749,11 +32078,9 @@ function retryable(fn, isRetryable) {
   });
   return promise;
 }
-__name(retryable, "retryable");
 function dec2hex(dec) {
   return ("0" + dec.toString(16)).substr(-2);
 }
-__name(dec2hex, "dec2hex");
 function generatePKCEVerifier() {
   const verifierLength = 56;
   const array = new Uint32Array(verifierLength);
@@ -32769,7 +32096,6 @@ function generatePKCEVerifier() {
   crypto.getRandomValues(array);
   return Array.from(array, dec2hex).join("");
 }
-__name(generatePKCEVerifier, "generatePKCEVerifier");
 async function sha256(randomString) {
   const encoder = new TextEncoder();
   const encodedData = encoder.encode(randomString);
@@ -32777,7 +32103,6 @@ async function sha256(randomString) {
   const bytes = new Uint8Array(hash);
   return Array.from(bytes).map((c) => String.fromCharCode(c)).join("");
 }
-__name(sha256, "sha256");
 async function generatePKCEChallenge(verifier) {
   const hasCryptoSupport = typeof crypto !== "undefined" && typeof crypto.subtle !== "undefined" && typeof TextEncoder !== "undefined";
   if (!hasCryptoSupport) {
@@ -32787,11 +32112,9 @@ async function generatePKCEChallenge(verifier) {
   const hashed = await sha256(verifier);
   return btoa(hashed).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
-__name(generatePKCEChallenge, "generatePKCEChallenge");
 function validatePKCEFlowId(flowId) {
   return typeof flowId === "string" && PKCE_FLOW_ID_PATTERN.test(flowId) ? flowId : null;
 }
-__name(validatePKCEFlowId, "validatePKCEFlowId");
 function generatePKCEFlowId() {
   if (typeof crypto !== "undefined" && typeof crypto.getRandomValues === "function") {
     const bytes = new Uint8Array(16);
@@ -32804,12 +32127,10 @@ function generatePKCEFlowId() {
   }
   return flowId;
 }
-__name(generatePKCEFlowId, "generatePKCEFlowId");
 async function getPKCEFlowIndex(storage, storageKey) {
   const index = await getItemAsync(storage, pkceFlowIndexKey(storageKey));
   return Array.isArray(index) ? index.filter((id) => validatePKCEFlowId(id) !== null) : [];
 }
-__name(getPKCEFlowIndex, "getPKCEFlowIndex");
 async function storePKCEVerifier(storage, storageKey, flowId, verifier, onEvictFlow) {
   await setItemAsync(storage, pkceVerifierSlotKey(storageKey, flowId), verifier);
   const index = (await getPKCEFlowIndex(storage, storageKey)).filter((id) => id !== flowId);
@@ -32822,7 +32143,6 @@ async function storePKCEVerifier(storage, storageKey, flowId, verifier, onEvictF
   await setItemAsync(storage, pkceFlowIndexKey(storageKey), index);
   await setItemAsync(storage, `${storageKey}-code-verifier`, verifier);
 }
-__name(storePKCEVerifier, "storePKCEVerifier");
 async function retrievePKCEVerifier(storage, storageKey, flowId) {
   if (flowId) {
     const verifier2 = await getItemAsync(storage, pkceVerifierSlotKey(storageKey, flowId));
@@ -32831,7 +32151,6 @@ async function retrievePKCEVerifier(storage, storageKey, flowId) {
   const verifier = await getItemAsync(storage, `${storageKey}-code-verifier`);
   return { verifier: typeof verifier === "string" ? verifier : null, flowId: null };
 }
-__name(retrievePKCEVerifier, "retrievePKCEVerifier");
 async function removePKCEVerifier(storage, storageKey, flowId) {
   const legacyKey = `${storageKey}-code-verifier`;
   if (!flowId) {
@@ -32854,7 +32173,6 @@ async function removePKCEVerifier(storage, storageKey, flowId) {
     await removeItemAsync(storage, legacyKey);
   }
 }
-__name(removePKCEVerifier, "removePKCEVerifier");
 async function removeAllPKCEVerifiers(storage, storageKey) {
   const index = await getPKCEFlowIndex(storage, storageKey);
   for (const flowId of index) {
@@ -32863,7 +32181,6 @@ async function removeAllPKCEVerifiers(storage, storageKey) {
   await removeItemAsync(storage, pkceFlowIndexKey(storageKey));
   await removeItemAsync(storage, `${storageKey}-code-verifier`);
 }
-__name(removeAllPKCEVerifiers, "removeAllPKCEVerifiers");
 function appendFlowIdToRedirectTo(redirectTo, flowId) {
   const hashIndex = redirectTo.indexOf("#");
   let base = hashIndex === -1 ? redirectTo : redirectTo.slice(0, hashIndex);
@@ -32877,7 +32194,6 @@ function appendFlowIdToRedirectTo(redirectTo, flowId) {
   const separator = base.includes("?") ? "&" : "?";
   return `${base}${separator}${PKCE_FLOW_ID_PARAM}=${encodeURIComponent(flowId)}${fragment}`;
 }
-__name(appendFlowIdToRedirectTo, "appendFlowIdToRedirectTo");
 async function getCodeChallengeAndMethod(storage, storageKey, isPasswordRecovery = false, onEvictFlow) {
   const codeVerifier = generatePKCEVerifier();
   let storedCodeVerifier = codeVerifier;
@@ -32890,7 +32206,6 @@ async function getCodeChallengeAndMethod(storage, storageKey, isPasswordRecovery
   const codeChallengeMethod = codeVerifier === codeChallenge ? "plain" : "s256";
   return [codeChallenge, codeChallengeMethod, flowId];
 }
-__name(getCodeChallengeAndMethod, "getCodeChallengeAndMethod");
 function parseResponseAPIVersion(response) {
   const apiVersion = response.headers.get(API_VERSION_HEADER_NAME);
   if (!apiVersion) {
@@ -32906,7 +32221,6 @@ function parseResponseAPIVersion(response) {
     return null;
   }
 }
-__name(parseResponseAPIVersion, "parseResponseAPIVersion");
 function validateExp(exp) {
   if (!exp) {
     throw new Error("Missing exp claim");
@@ -32916,7 +32230,6 @@ function validateExp(exp) {
     throw new Error("JWT has expired");
   }
 }
-__name(validateExp, "validateExp");
 function getAlgorithm(alg) {
   switch (alg) {
     case "RS256":
@@ -32934,23 +32247,20 @@ function getAlgorithm(alg) {
       throw new Error("Invalid alg claim");
   }
 }
-__name(getAlgorithm, "getAlgorithm");
 function validateUUID(str) {
   if (!UUID_REGEX.test(str)) {
     throw new Error("@supabase/auth-js: Expected parameter to be UUID but is not");
   }
 }
-__name(validateUUID, "validateUUID");
 function assertPasskeyExperimentalEnabled(experimental) {
   if (!experimental.passkey) {
     throw new Error("@supabase/auth-js: the passkey API is experimental and disabled by default. Enable it by passing `auth: { experimental: { passkey: true } }` to createClient (or to the GoTrueClient constructor).");
   }
 }
-__name(assertPasskeyExperimentalEnabled, "assertPasskeyExperimentalEnabled");
 function userNotAvailableProxy() {
   const proxyTarget = {};
   return new Proxy(proxyTarget, {
-    get: /* @__PURE__ */ __name2((target, prop) => {
+    get: /* @__PURE__ */ __name((target, prop) => {
       if (prop === "__isUserNotAvailableProxy") {
         return true;
       }
@@ -32962,18 +32272,17 @@ function userNotAvailableProxy() {
       }
       throw new Error(`@supabase/auth-js: client was created with userStorage option and there was no user stored in the user storage. Accessing the "${prop}" property of the session object is not supported. Please use getUser() instead.`);
     }, "get"),
-    set: /* @__PURE__ */ __name2((_target, prop) => {
+    set: /* @__PURE__ */ __name((_target, prop) => {
       throw new Error(`@supabase/auth-js: client was created with userStorage option and there was no user stored in the user storage. Setting the "${prop}" property of the session object is not supported. Please use getUser() to fetch a user object you can manipulate.`);
     }, "set"),
-    deleteProperty: /* @__PURE__ */ __name2((_target, prop) => {
+    deleteProperty: /* @__PURE__ */ __name((_target, prop) => {
       throw new Error(`@supabase/auth-js: client was created with userStorage option and there was no user stored in the user storage. Deleting the "${prop}" property of the session object is not supported. Please use getUser() to fetch a user object you can manipulate.`);
     }, "deleteProperty")
   });
 }
-__name(userNotAvailableProxy, "userNotAvailableProxy");
 function insecureUserWarningProxy(user, suppressWarningRef) {
   return new Proxy(user, {
-    get: /* @__PURE__ */ __name2((target, prop, receiver) => {
+    get: /* @__PURE__ */ __name((target, prop, receiver) => {
       if (prop === "__isInsecureUserWarningProxy") {
         return true;
       }
@@ -32991,39 +32300,24 @@ function insecureUserWarningProxy(user, suppressWarningRef) {
     }, "get")
   });
 }
-__name(insecureUserWarningProxy, "insecureUserWarningProxy");
 function deepClone(obj) {
   return JSON.parse(JSON.stringify(obj));
 }
-__name(deepClone, "deepClone");
-var isBrowser;
-var localStorageWriteTests;
-var supportsLocalStorage;
-var resolveFetch3;
-var looksLikeFetchResponse;
-var setItemAsync;
-var getItemAsync;
-var removeItemAsync;
-var Deferred;
-var PKCE_FLOW_ID_PATTERN;
-var pkceVerifierSlotKey;
-var pkceFlowIndexKey;
-var API_VERSION_REGEX;
-var UUID_REGEX;
+var isBrowser, localStorageWriteTests, supportsLocalStorage, resolveFetch3, looksLikeFetchResponse, setItemAsync, getItemAsync, removeItemAsync, Deferred, PKCE_FLOW_ID_PATTERN, pkceVerifierSlotKey, pkceFlowIndexKey, API_VERSION_REGEX, UUID_REGEX;
 var init_helpers = __esm({
   "../node_modules/@supabase/auth-js/dist/module/lib/helpers.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_constants2();
     init_errors();
     init_base64url();
-    __name2(expiresAt, "expiresAt");
-    __name2(generateCallbackId, "generateCallbackId");
-    isBrowser = /* @__PURE__ */ __name2(() => typeof window !== "undefined" && typeof document !== "undefined", "isBrowser");
+    __name(expiresAt, "expiresAt");
+    __name(generateCallbackId, "generateCallbackId");
+    isBrowser = /* @__PURE__ */ __name(() => typeof window !== "undefined" && typeof document !== "undefined", "isBrowser");
     localStorageWriteTests = {
       tested: false,
       writable: false
     };
-    supportsLocalStorage = /* @__PURE__ */ __name2(() => {
+    supportsLocalStorage = /* @__PURE__ */ __name(() => {
       if (!isBrowser()) {
         return false;
       }
@@ -33049,20 +32343,20 @@ var init_helpers = __esm({
       }
       return localStorageWriteTests.writable;
     }, "supportsLocalStorage");
-    __name2(parseParametersFromURL, "parseParametersFromURL");
-    resolveFetch3 = /* @__PURE__ */ __name2((customFetch) => {
+    __name(parseParametersFromURL, "parseParametersFromURL");
+    resolveFetch3 = /* @__PURE__ */ __name((customFetch) => {
       if (customFetch) {
         return (...args) => customFetch(...args);
       }
       return (...args) => fetch(...args);
     }, "resolveFetch");
-    looksLikeFetchResponse = /* @__PURE__ */ __name2((maybeResponse) => {
+    looksLikeFetchResponse = /* @__PURE__ */ __name((maybeResponse) => {
       return typeof maybeResponse === "object" && maybeResponse !== null && "status" in maybeResponse && "ok" in maybeResponse && "json" in maybeResponse && typeof maybeResponse.json === "function";
     }, "looksLikeFetchResponse");
-    setItemAsync = /* @__PURE__ */ __name2(async (storage, key, data) => {
+    setItemAsync = /* @__PURE__ */ __name(async (storage, key, data) => {
       await storage.setItem(key, JSON.stringify(data));
     }, "setItemAsync");
-    getItemAsync = /* @__PURE__ */ __name2(async (storage, key) => {
+    getItemAsync = /* @__PURE__ */ __name(async (storage, key) => {
       const value = await storage.getItem(key);
       if (!value) {
         return null;
@@ -33073,15 +32367,12 @@ var init_helpers = __esm({
         return null;
       }
     }, "getItemAsync");
-    removeItemAsync = /* @__PURE__ */ __name2(async (storage, key) => {
+    removeItemAsync = /* @__PURE__ */ __name(async (storage, key) => {
       await storage.removeItem(key);
     }, "removeItemAsync");
     Deferred = class _Deferred {
       static {
-        __name(this, "_Deferred");
-      }
-      static {
-        __name2(this, "Deferred");
+        __name(this, "Deferred");
       }
       constructor() {
         ;
@@ -33093,37 +32384,39 @@ var init_helpers = __esm({
       }
     };
     Deferred.promiseConstructor = Promise;
-    __name2(decodeJWT, "decodeJWT");
-    __name2(sleep2, "sleep");
-    __name2(retryable, "retryable");
-    __name2(dec2hex, "dec2hex");
-    __name2(generatePKCEVerifier, "generatePKCEVerifier");
-    __name2(sha256, "sha256");
-    __name2(generatePKCEChallenge, "generatePKCEChallenge");
+    __name(decodeJWT, "decodeJWT");
+    __name(sleep2, "sleep");
+    __name(retryable, "retryable");
+    __name(dec2hex, "dec2hex");
+    __name(generatePKCEVerifier, "generatePKCEVerifier");
+    __name(sha256, "sha256");
+    __name(generatePKCEChallenge, "generatePKCEChallenge");
     PKCE_FLOW_ID_PATTERN = /^[a-zA-Z0-9_-]{8,64}$/;
-    __name2(validatePKCEFlowId, "validatePKCEFlowId");
-    __name2(generatePKCEFlowId, "generatePKCEFlowId");
-    pkceVerifierSlotKey = /* @__PURE__ */ __name2((storageKey, flowId) => `${storageKey}-flow-${flowId}-code-verifier`, "pkceVerifierSlotKey");
-    pkceFlowIndexKey = /* @__PURE__ */ __name2((storageKey) => `${storageKey}-flows-code-verifier`, "pkceFlowIndexKey");
-    __name2(getPKCEFlowIndex, "getPKCEFlowIndex");
-    __name2(storePKCEVerifier, "storePKCEVerifier");
-    __name2(retrievePKCEVerifier, "retrievePKCEVerifier");
-    __name2(removePKCEVerifier, "removePKCEVerifier");
-    __name2(removeAllPKCEVerifiers, "removeAllPKCEVerifiers");
-    __name2(appendFlowIdToRedirectTo, "appendFlowIdToRedirectTo");
-    __name2(getCodeChallengeAndMethod, "getCodeChallengeAndMethod");
+    __name(validatePKCEFlowId, "validatePKCEFlowId");
+    __name(generatePKCEFlowId, "generatePKCEFlowId");
+    pkceVerifierSlotKey = /* @__PURE__ */ __name((storageKey, flowId) => `${storageKey}-flow-${flowId}-code-verifier`, "pkceVerifierSlotKey");
+    pkceFlowIndexKey = /* @__PURE__ */ __name((storageKey) => `${storageKey}-flows-code-verifier`, "pkceFlowIndexKey");
+    __name(getPKCEFlowIndex, "getPKCEFlowIndex");
+    __name(storePKCEVerifier, "storePKCEVerifier");
+    __name(retrievePKCEVerifier, "retrievePKCEVerifier");
+    __name(removePKCEVerifier, "removePKCEVerifier");
+    __name(removeAllPKCEVerifiers, "removeAllPKCEVerifiers");
+    __name(appendFlowIdToRedirectTo, "appendFlowIdToRedirectTo");
+    __name(getCodeChallengeAndMethod, "getCodeChallengeAndMethod");
     API_VERSION_REGEX = /^2[0-9]{3}-(0[1-9]|1[0-2])-(0[1-9]|1[0-9]|2[0-9]|3[0-1])$/i;
-    __name2(parseResponseAPIVersion, "parseResponseAPIVersion");
-    __name2(validateExp, "validateExp");
-    __name2(getAlgorithm, "getAlgorithm");
+    __name(parseResponseAPIVersion, "parseResponseAPIVersion");
+    __name(validateExp, "validateExp");
+    __name(getAlgorithm, "getAlgorithm");
     UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-    __name2(validateUUID, "validateUUID");
-    __name2(assertPasskeyExperimentalEnabled, "assertPasskeyExperimentalEnabled");
-    __name2(userNotAvailableProxy, "userNotAvailableProxy");
-    __name2(insecureUserWarningProxy, "insecureUserWarningProxy");
-    __name2(deepClone, "deepClone");
+    __name(validateUUID, "validateUUID");
+    __name(assertPasskeyExperimentalEnabled, "assertPasskeyExperimentalEnabled");
+    __name(userNotAvailableProxy, "userNotAvailableProxy");
+    __name(insecureUserWarningProxy, "insecureUserWarningProxy");
+    __name(deepClone, "deepClone");
   }
 });
+
+// ../node_modules/@supabase/auth-js/dist/module/lib/fetch.js
 async function handleError2(error) {
   var _a2;
   if (!looksLikeFetchResponse(error)) {
@@ -33159,7 +32452,6 @@ async function handleError2(error) {
   }
   throw new AuthApiError(_getErrorMessage2(data), error.status || 500, errorCode);
 }
-__name(handleError2, "handleError2");
 async function _request(fetcher, method, url, options) {
   var _a2;
   const headers = Object.assign({}, options === null || options === void 0 ? void 0 : options.headers);
@@ -33180,7 +32472,6 @@ async function _request(fetcher, method, url, options) {
   }, {}, options === null || options === void 0 ? void 0 : options.body);
   return (options === null || options === void 0 ? void 0 : options.xform) ? options === null || options === void 0 ? void 0 : options.xform(data) : { data: Object.assign({}, data), error: null };
 }
-__name(_request, "_request");
 async function _handleRequest2(fetcher, method, url, options, parameters, body) {
   const requestParams = _getRequestParams2(method, options, parameters, body);
   let result;
@@ -33201,7 +32492,6 @@ async function _handleRequest2(fetcher, method, url, options, parameters, body) 
     await handleError2(e);
   }
 }
-__name(_handleRequest2, "_handleRequest2");
 function _sessionResponse(data) {
   var _a2;
   let session = null;
@@ -33214,7 +32504,6 @@ function _sessionResponse(data) {
   const user = (_a2 = data.user) !== null && _a2 !== void 0 ? _a2 : typeof (data === null || data === void 0 ? void 0 : data.id) === "string" ? data : null;
   return { data: { session, user }, error: null };
 }
-__name(_sessionResponse, "_sessionResponse");
 function _sessionResponsePassword(data) {
   const response = _sessionResponse(data);
   if (!response.error && data.weak_password && typeof data.weak_password === "object" && Array.isArray(data.weak_password.reasons) && data.weak_password.reasons.length && data.weak_password.message && typeof data.weak_password.message === "string" && data.weak_password.reasons.reduce((a, i) => a && typeof i === "string", true)) {
@@ -33222,17 +32511,14 @@ function _sessionResponsePassword(data) {
   }
   return response;
 }
-__name(_sessionResponsePassword, "_sessionResponsePassword");
 function _userResponse(data) {
   var _a2;
   const user = (_a2 = data.user) !== null && _a2 !== void 0 ? _a2 : data;
   return { data: { user }, error: null };
 }
-__name(_userResponse, "_userResponse");
 function _ssoResponse(data) {
   return { data, error: null };
 }
-__name(_ssoResponse, "_ssoResponse");
 function _generateLinkResponse(data) {
   const { action_link, email_otp, hashed_token, redirect_to, verification_type } = data, rest = __rest(data, ["action_link", "email_otp", "hashed_token", "redirect_to", "verification_type"]);
   const properties = {
@@ -33251,26 +32537,21 @@ function _generateLinkResponse(data) {
     error: null
   };
 }
-__name(_generateLinkResponse, "_generateLinkResponse");
 function _noResolveJsonResponse(data) {
   return data;
 }
-__name(_noResolveJsonResponse, "_noResolveJsonResponse");
 function hasSession(data) {
   return !!data.access_token && !!data.refresh_token && !!data.expires_in;
 }
-__name(hasSession, "hasSession");
-var _getErrorMessage2;
-var NETWORK_ERROR_CODES;
-var _getRequestParams2;
+var _getErrorMessage2, NETWORK_ERROR_CODES, _getRequestParams2;
 var init_fetch = __esm({
   "../node_modules/@supabase/auth-js/dist/module/lib/fetch.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_tslib_es6();
     init_constants2();
     init_helpers();
     init_errors();
-    _getErrorMessage2 = /* @__PURE__ */ __name2((err) => {
+    _getErrorMessage2 = /* @__PURE__ */ __name((err) => {
       if (typeof err === "object" && err !== null) {
         const e = err;
         if (typeof e.msg === "string")
@@ -33302,8 +32583,8 @@ var init_fetch = __esm({
       529,
       530
     ];
-    __name2(handleError2, "handleError");
-    _getRequestParams2 = /* @__PURE__ */ __name2((method, options, parameters, body) => {
+    __name(handleError2, "handleError");
+    _getRequestParams2 = /* @__PURE__ */ __name((method, options, parameters, body) => {
       const params = { method, headers: (options === null || options === void 0 ? void 0 : options.headers) || {} };
       if (method === "GET") {
         return params;
@@ -33312,28 +32593,32 @@ var init_fetch = __esm({
       params.body = JSON.stringify(body);
       return Object.assign(Object.assign({}, params), parameters);
     }, "_getRequestParams");
-    __name2(_request, "_request");
-    __name2(_handleRequest2, "_handleRequest");
-    __name2(_sessionResponse, "_sessionResponse");
-    __name2(_sessionResponsePassword, "_sessionResponsePassword");
-    __name2(_userResponse, "_userResponse");
-    __name2(_ssoResponse, "_ssoResponse");
-    __name2(_generateLinkResponse, "_generateLinkResponse");
-    __name2(_noResolveJsonResponse, "_noResolveJsonResponse");
-    __name2(hasSession, "hasSession");
+    __name(_request, "_request");
+    __name(_handleRequest2, "_handleRequest");
+    __name(_sessionResponse, "_sessionResponse");
+    __name(_sessionResponsePassword, "_sessionResponsePassword");
+    __name(_userResponse, "_userResponse");
+    __name(_ssoResponse, "_ssoResponse");
+    __name(_generateLinkResponse, "_generateLinkResponse");
+    __name(_noResolveJsonResponse, "_noResolveJsonResponse");
+    __name(hasSession, "hasSession");
   }
 });
+
+// ../node_modules/@supabase/auth-js/dist/module/lib/types.js
 var SIGN_OUT_SCOPES;
 var init_types2 = __esm({
   "../node_modules/@supabase/auth-js/dist/module/lib/types.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     SIGN_OUT_SCOPES = ["global", "local", "others"];
   }
 });
+
+// ../node_modules/@supabase/auth-js/dist/module/GoTrueAdminApi.js
 var GoTrueAdminApi;
 var init_GoTrueAdminApi = __esm({
   "../node_modules/@supabase/auth-js/dist/module/GoTrueAdminApi.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_tslib_es6();
     init_fetch();
     init_helpers();
@@ -33342,9 +32627,6 @@ var init_GoTrueAdminApi = __esm({
     GoTrueAdminApi = class {
       static {
         __name(this, "GoTrueAdminApi");
-      }
-      static {
-        __name2(this, "GoTrueAdminApi");
       }
       /**
        * Creates an admin API client that can be used to manage users and OAuth clients.
@@ -34085,7 +33367,7 @@ var init_GoTrueAdminApi = __esm({
         try {
           const { data, error } = await _request(this.fetch, "GET", `${this.url}/admin/users/${params.userId}/factors`, {
             headers: this.headers,
-            xform: /* @__PURE__ */ __name2((factors) => {
+            xform: /* @__PURE__ */ __name((factors) => {
               return { data: { factors }, error: null };
             }, "xform")
           });
@@ -34163,7 +33445,7 @@ var init_GoTrueAdminApi = __esm({
           return await _request(this.fetch, "POST", `${this.url}/admin/oauth/clients`, {
             body: params,
             headers: this.headers,
-            xform: /* @__PURE__ */ __name2((client) => {
+            xform: /* @__PURE__ */ __name((client) => {
               return { data: client, error: null };
             }, "xform")
           });
@@ -34184,7 +33466,7 @@ var init_GoTrueAdminApi = __esm({
         try {
           return await _request(this.fetch, "GET", `${this.url}/admin/oauth/clients/${clientId}`, {
             headers: this.headers,
-            xform: /* @__PURE__ */ __name2((client) => {
+            xform: /* @__PURE__ */ __name((client) => {
               return { data: client, error: null };
             }, "xform")
           });
@@ -34206,7 +33488,7 @@ var init_GoTrueAdminApi = __esm({
           return await _request(this.fetch, "PUT", `${this.url}/admin/oauth/clients/${clientId}`, {
             body: params,
             headers: this.headers,
-            xform: /* @__PURE__ */ __name2((client) => {
+            xform: /* @__PURE__ */ __name((client) => {
               return { data: client, error: null };
             }, "xform")
           });
@@ -34247,7 +33529,7 @@ var init_GoTrueAdminApi = __esm({
         try {
           return await _request(this.fetch, "POST", `${this.url}/admin/oauth/clients/${clientId}/regenerate_secret`, {
             headers: this.headers,
-            xform: /* @__PURE__ */ __name2((client) => {
+            xform: /* @__PURE__ */ __name((client) => {
               return { data: client, error: null };
             }, "xform")
           });
@@ -34272,7 +33554,7 @@ var init_GoTrueAdminApi = __esm({
           return await _request(this.fetch, "GET", `${this.url}/admin/custom-providers`, {
             headers: this.headers,
             query,
-            xform: /* @__PURE__ */ __name2((data) => {
+            xform: /* @__PURE__ */ __name((data) => {
               var _a2;
               return { data: { providers: (_a2 = data === null || data === void 0 ? void 0 : data.providers) !== null && _a2 !== void 0 ? _a2 : [] }, error: null };
             }, "xform")
@@ -34300,7 +33582,7 @@ var init_GoTrueAdminApi = __esm({
           return await _request(this.fetch, "POST", `${this.url}/admin/custom-providers`, {
             body: params,
             headers: this.headers,
-            xform: /* @__PURE__ */ __name2((provider) => {
+            xform: /* @__PURE__ */ __name((provider) => {
               return { data: provider, error: null };
             }, "xform")
           });
@@ -34320,7 +33602,7 @@ var init_GoTrueAdminApi = __esm({
         try {
           return await _request(this.fetch, "GET", `${this.url}/admin/custom-providers/${identifier}`, {
             headers: this.headers,
-            xform: /* @__PURE__ */ __name2((provider) => {
+            xform: /* @__PURE__ */ __name((provider) => {
               return { data: provider, error: null };
             }, "xform")
           });
@@ -34346,7 +33628,7 @@ var init_GoTrueAdminApi = __esm({
           return await _request(this.fetch, "PUT", `${this.url}/admin/custom-providers/${identifier}`, {
             body: params,
             headers: this.headers,
-            xform: /* @__PURE__ */ __name2((provider) => {
+            xform: /* @__PURE__ */ __name((provider) => {
               return { data: provider, error: null };
             }, "xform")
           });
@@ -34387,7 +33669,7 @@ var init_GoTrueAdminApi = __esm({
         assertPasskeyExperimentalEnabled(this.experimental);
         validateUUID(params.userId);
         try {
-          return await _request(this.fetch, "GET", `${this.url}/admin/users/${params.userId}/passkeys`, { headers: this.headers, xform: /* @__PURE__ */ __name2((data) => ({ data, error: null }), "xform") });
+          return await _request(this.fetch, "GET", `${this.url}/admin/users/${params.userId}/passkeys`, { headers: this.headers, xform: /* @__PURE__ */ __name((data) => ({ data, error: null }), "xform") });
         } catch (error) {
           if (isAuthError(error)) {
             return { data: null, error };
@@ -34419,31 +33701,33 @@ var init_GoTrueAdminApi = __esm({
     };
   }
 });
+
+// ../node_modules/@supabase/auth-js/dist/module/lib/local-storage.js
 function memoryLocalStorageAdapter(store = {}) {
   return {
-    getItem: /* @__PURE__ */ __name2((key) => {
+    getItem: /* @__PURE__ */ __name((key) => {
       return store[key] || null;
     }, "getItem"),
-    setItem: /* @__PURE__ */ __name2((key, value) => {
+    setItem: /* @__PURE__ */ __name((key, value) => {
       store[key] = value;
     }, "setItem"),
-    removeItem: /* @__PURE__ */ __name2((key) => {
+    removeItem: /* @__PURE__ */ __name((key) => {
       delete store[key];
     }, "removeItem")
   };
 }
-__name(memoryLocalStorageAdapter, "memoryLocalStorageAdapter");
 var init_local_storage = __esm({
   "../node_modules/@supabase/auth-js/dist/module/lib/local-storage.js"() {
-    init_functionsRoutes_0_6131355600780521();
-    __name2(memoryLocalStorageAdapter, "memoryLocalStorageAdapter");
+    init_functionsRoutes_0_7667722716287171();
+    __name(memoryLocalStorageAdapter, "memoryLocalStorageAdapter");
   }
 });
-var internals;
-var LockAcquireTimeoutError;
+
+// ../node_modules/@supabase/auth-js/dist/module/lib/locks.js
+var internals, LockAcquireTimeoutError;
 var init_locks = __esm({
   "../node_modules/@supabase/auth-js/dist/module/lib/locks.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_helpers();
     internals = {
       /**
@@ -34455,9 +33739,6 @@ var init_locks = __esm({
       static {
         __name(this, "LockAcquireTimeoutError");
       }
-      static {
-        __name2(this, "LockAcquireTimeoutError");
-      }
       constructor(message) {
         super(message);
         this.isAcquireTimeout = true;
@@ -34465,12 +33746,14 @@ var init_locks = __esm({
     };
   }
 });
+
+// ../node_modules/@supabase/auth-js/dist/module/lib/polyfills.js
 function polyfillGlobalThis() {
   if (typeof globalThis === "object")
     return;
   try {
     Object.defineProperty(Object.prototype, "__magic__", {
-      get: /* @__PURE__ */ __name2(function() {
+      get: /* @__PURE__ */ __name(function() {
         return this;
       }, "get"),
       configurable: true
@@ -34483,30 +33766,28 @@ function polyfillGlobalThis() {
     }
   }
 }
-__name(polyfillGlobalThis, "polyfillGlobalThis");
 var init_polyfills = __esm({
   "../node_modules/@supabase/auth-js/dist/module/lib/polyfills.js"() {
-    init_functionsRoutes_0_6131355600780521();
-    __name2(polyfillGlobalThis, "polyfillGlobalThis");
+    init_functionsRoutes_0_7667722716287171();
+    __name(polyfillGlobalThis, "polyfillGlobalThis");
   }
 });
+
+// ../node_modules/@supabase/auth-js/dist/module/lib/web3/ethereum.js
 function getAddress(address) {
   if (!/^0x[a-fA-F0-9]{40}$/.test(address)) {
     throw new Error(`@supabase/auth-js: Address "${address}" is invalid.`);
   }
   return address.toLowerCase();
 }
-__name(getAddress, "getAddress");
 function fromHex(hex) {
   return parseInt(hex, 16);
 }
-__name(fromHex, "fromHex");
 function toHex(value) {
   const bytes = new TextEncoder().encode(value);
   const hex = Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
   return "0x" + hex;
 }
-__name(toHex, "toHex");
 function createSiweMessage(parameters) {
   var _a2;
   const { chainId, domain, expirationTime, issuedAt = /* @__PURE__ */ new Date(), nonce, notBefore, requestId, resources, scheme, uri, version: version5 } = parameters;
@@ -34559,16 +33840,17 @@ Request ID: ${requestId}`;
   return `${prefix}
 ${suffix}`;
 }
-__name(createSiweMessage, "createSiweMessage");
 var init_ethereum = __esm({
   "../node_modules/@supabase/auth-js/dist/module/lib/web3/ethereum.js"() {
-    init_functionsRoutes_0_6131355600780521();
-    __name2(getAddress, "getAddress");
-    __name2(fromHex, "fromHex");
-    __name2(toHex, "toHex");
-    __name2(createSiweMessage, "createSiweMessage");
+    init_functionsRoutes_0_7667722716287171();
+    __name(getAddress, "getAddress");
+    __name(fromHex, "fromHex");
+    __name(toHex, "toHex");
+    __name(createSiweMessage, "createSiweMessage");
   }
 });
+
+// ../node_modules/@supabase/auth-js/dist/module/lib/webauthn.errors.js
 function identifyRegistrationError({ error, options }) {
   var _a2, _b, _c;
   const { publicKey } = options;
@@ -34668,7 +33950,6 @@ function identifyRegistrationError({ error, options }) {
     cause: error
   });
 }
-__name(identifyRegistrationError, "identifyRegistrationError");
 function identifyAuthenticationError({ error, options }) {
   const { publicKey } = options;
   if (!publicKey) {
@@ -34716,19 +33997,14 @@ function identifyAuthenticationError({ error, options }) {
     cause: error
   });
 }
-__name(identifyAuthenticationError, "identifyAuthenticationError");
-var WebAuthnError;
-var WebAuthnUnknownError;
+var WebAuthnError, WebAuthnUnknownError;
 var init_webauthn_errors = __esm({
   "../node_modules/@supabase/auth-js/dist/module/lib/webauthn.errors.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_webauthn();
     WebAuthnError = class extends Error {
       static {
         __name(this, "WebAuthnError");
-      }
-      static {
-        __name2(this, "WebAuthnError");
       }
       constructor({ message, code, cause, name }) {
         var _a2;
@@ -34749,9 +34025,6 @@ var init_webauthn_errors = __esm({
       static {
         __name(this, "WebAuthnUnknownError");
       }
-      static {
-        __name2(this, "WebAuthnUnknownError");
-      }
       constructor(message, originalError) {
         super({
           code: "ERROR_PASSTHROUGH_SEE_CAUSE_PROPERTY",
@@ -34762,10 +34035,12 @@ var init_webauthn_errors = __esm({
         this.originalError = originalError;
       }
     };
-    __name2(identifyRegistrationError, "identifyRegistrationError");
-    __name2(identifyAuthenticationError, "identifyAuthenticationError");
+    __name(identifyRegistrationError, "identifyRegistrationError");
+    __name(identifyAuthenticationError, "identifyAuthenticationError");
   }
 });
+
+// ../node_modules/@supabase/auth-js/dist/module/lib/webauthn.js
 function deserializeCredentialCreationOptions(options) {
   if (!options) {
     throw new Error("Credential creation options are required");
@@ -34800,7 +34075,6 @@ function deserializeCredentialCreationOptions(options) {
   }
   return result;
 }
-__name(deserializeCredentialCreationOptions, "deserializeCredentialCreationOptions");
 function deserializeCredentialRequestOptions(options) {
   if (!options) {
     throw new Error("Credential request options are required");
@@ -34828,7 +34102,6 @@ function deserializeCredentialRequestOptions(options) {
   }
   return result;
 }
-__name(deserializeCredentialRequestOptions, "deserializeCredentialRequestOptions");
 function serializeCredentialCreationResponse(credential) {
   var _a2;
   if ("toJSON" in credential && typeof credential.toJSON === "function") {
@@ -34848,7 +34121,6 @@ function serializeCredentialCreationResponse(credential) {
     authenticatorAttachment: (_a2 = credentialWithAttachment.authenticatorAttachment) !== null && _a2 !== void 0 ? _a2 : void 0
   };
 }
-__name(serializeCredentialCreationResponse, "serializeCredentialCreationResponse");
 function serializeCredentialRequestResponse(credential) {
   var _a2;
   if ("toJSON" in credential && typeof credential.toJSON === "function") {
@@ -34873,19 +34145,16 @@ function serializeCredentialRequestResponse(credential) {
     authenticatorAttachment: (_a2 = credentialWithAttachment.authenticatorAttachment) !== null && _a2 !== void 0 ? _a2 : void 0
   };
 }
-__name(serializeCredentialRequestResponse, "serializeCredentialRequestResponse");
 function isValidDomain(hostname) {
   return (
     // Consider localhost valid as well since it's okay wrt Secure Contexts
     hostname === "localhost" || /^([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}$/i.test(hostname)
   );
 }
-__name(isValidDomain, "isValidDomain");
 function browserSupportsWebAuthn() {
   var _a2, _b;
   return !!(isBrowser() && "PublicKeyCredential" in window && window.PublicKeyCredential && "credentials" in navigator && typeof ((_a2 = navigator === null || navigator === void 0 ? void 0 : navigator.credentials) === null || _a2 === void 0 ? void 0 : _a2.create) === "function" && typeof ((_b = navigator === null || navigator === void 0 ? void 0 : navigator.credentials) === null || _b === void 0 ? void 0 : _b.get) === "function");
 }
-__name(browserSupportsWebAuthn, "browserSupportsWebAuthn");
 async function createCredential(options) {
   try {
     const response = await navigator.credentials.create(
@@ -34915,7 +34184,6 @@ async function createCredential(options) {
     };
   }
 }
-__name(createCredential, "createCredential");
 async function getCredential(options) {
   try {
     const response = await navigator.credentials.get(
@@ -34945,10 +34213,9 @@ async function getCredential(options) {
     };
   }
 }
-__name(getCredential, "getCredential");
 function deepMerge(...sources) {
-  const isObject2 = /* @__PURE__ */ __name2((val) => val !== null && typeof val === "object" && !Array.isArray(val), "isObject");
-  const isArrayBufferLike = /* @__PURE__ */ __name2((val) => val instanceof ArrayBuffer || ArrayBuffer.isView(val), "isArrayBufferLike");
+  const isObject2 = /* @__PURE__ */ __name((val) => val !== null && typeof val === "object" && !Array.isArray(val), "isObject");
+  const isArrayBufferLike = /* @__PURE__ */ __name((val) => val instanceof ArrayBuffer || ArrayBuffer.isView(val), "isArrayBufferLike");
   const result = {};
   for (const source of sources) {
     if (!source)
@@ -34975,23 +34242,16 @@ function deepMerge(...sources) {
   }
   return result;
 }
-__name(deepMerge, "deepMerge");
 function mergeCredentialCreationOptions(baseOptions, overrides) {
   return deepMerge(DEFAULT_CREATION_OPTIONS, baseOptions, overrides || {});
 }
-__name(mergeCredentialCreationOptions, "mergeCredentialCreationOptions");
 function mergeCredentialRequestOptions(baseOptions, overrides) {
   return deepMerge(DEFAULT_REQUEST_OPTIONS, baseOptions, overrides || {});
 }
-__name(mergeCredentialRequestOptions, "mergeCredentialRequestOptions");
-var WebAuthnAbortService;
-var webAuthnAbortService;
-var DEFAULT_CREATION_OPTIONS;
-var DEFAULT_REQUEST_OPTIONS;
-var WebAuthnApi;
+var WebAuthnAbortService, webAuthnAbortService, DEFAULT_CREATION_OPTIONS, DEFAULT_REQUEST_OPTIONS, WebAuthnApi;
 var init_webauthn = __esm({
   "../node_modules/@supabase/auth-js/dist/module/lib/webauthn.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_tslib_es6();
     init_base64url();
     init_errors();
@@ -35000,9 +34260,6 @@ var init_webauthn = __esm({
     WebAuthnAbortService = class {
       static {
         __name(this, "WebAuthnAbortService");
-      }
-      static {
-        __name2(this, "WebAuthnAbortService");
       }
       /**
        * Create an abort signal for a new WebAuthn operation.
@@ -35037,14 +34294,14 @@ var init_webauthn = __esm({
       }
     };
     webAuthnAbortService = new WebAuthnAbortService();
-    __name2(deserializeCredentialCreationOptions, "deserializeCredentialCreationOptions");
-    __name2(deserializeCredentialRequestOptions, "deserializeCredentialRequestOptions");
-    __name2(serializeCredentialCreationResponse, "serializeCredentialCreationResponse");
-    __name2(serializeCredentialRequestResponse, "serializeCredentialRequestResponse");
-    __name2(isValidDomain, "isValidDomain");
-    __name2(browserSupportsWebAuthn, "browserSupportsWebAuthn");
-    __name2(createCredential, "createCredential");
-    __name2(getCredential, "getCredential");
+    __name(deserializeCredentialCreationOptions, "deserializeCredentialCreationOptions");
+    __name(deserializeCredentialRequestOptions, "deserializeCredentialRequestOptions");
+    __name(serializeCredentialCreationResponse, "serializeCredentialCreationResponse");
+    __name(serializeCredentialRequestResponse, "serializeCredentialRequestResponse");
+    __name(isValidDomain, "isValidDomain");
+    __name(browserSupportsWebAuthn, "browserSupportsWebAuthn");
+    __name(createCredential, "createCredential");
+    __name(getCredential, "getCredential");
     DEFAULT_CREATION_OPTIONS = {
       hints: ["security-key"],
       authenticatorSelection: {
@@ -35062,15 +34319,12 @@ var init_webauthn = __esm({
       hints: ["security-key"],
       attestation: "direct"
     };
-    __name2(deepMerge, "deepMerge");
-    __name2(mergeCredentialCreationOptions, "mergeCredentialCreationOptions");
-    __name2(mergeCredentialRequestOptions, "mergeCredentialRequestOptions");
+    __name(deepMerge, "deepMerge");
+    __name(mergeCredentialCreationOptions, "mergeCredentialCreationOptions");
+    __name(mergeCredentialRequestOptions, "mergeCredentialRequestOptions");
     WebAuthnApi = class {
       static {
         __name(this, "WebAuthnApi");
-      }
-      static {
-        __name2(this, "WebAuthnApi");
       }
       constructor(client) {
         this.client = client;
@@ -35336,13 +34590,12 @@ var init_webauthn = __esm({
     };
   }
 });
-var DEFAULT_OPTIONS;
-var GLOBAL_JWKS;
-var GoTrueClient;
-var GoTrueClient_default;
+
+// ../node_modules/@supabase/auth-js/dist/module/GoTrueClient.js
+var DEFAULT_OPTIONS, GLOBAL_JWKS, GoTrueClient, GoTrueClient_default;
 var init_GoTrueClient = __esm({
   "../node_modules/@supabase/auth-js/dist/module/GoTrueClient.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_GoTrueAdminApi();
     init_constants2();
     init_errors();
@@ -35375,10 +34628,7 @@ var init_GoTrueClient = __esm({
     GLOBAL_JWKS = {};
     GoTrueClient = class _GoTrueClient {
       static {
-        __name(this, "_GoTrueClient");
-      }
-      static {
-        __name2(this, "GoTrueClient");
+        __name(this, "GoTrueClient");
       }
       /**
        * The JWKS used for verifying asymmetric JWTs
@@ -38494,7 +37744,7 @@ var init_GoTrueClient = __esm({
       async _signOut({ scope } = { scope: "global" }) {
         return await this._useSession(async (result) => {
           var _a2;
-          const removeCurrentSession = /* @__PURE__ */ __name2(async () => {
+          const removeCurrentSession = /* @__PURE__ */ __name(async () => {
             await this._removeSession();
           }, "removeCurrentSession");
           const { data, error: sessionError } = result;
@@ -38701,7 +37951,7 @@ var init_GoTrueClient = __esm({
         const subscription = {
           id,
           callback,
-          unsubscribe: /* @__PURE__ */ __name2(() => {
+          unsubscribe: /* @__PURE__ */ __name(() => {
             this._debug("#unsubscribe()", "state change callback with id removed", id);
             this.stateChangeEmitters.delete(id);
           }, "unsubscribe")
@@ -39752,7 +39002,7 @@ var init_GoTrueClient = __esm({
         }
       }
       async _verify(params) {
-        const run = /* @__PURE__ */ __name2(async () => {
+        const run = /* @__PURE__ */ __name(async () => {
           try {
             return await this._useSession(async (result) => {
               var _a2;
@@ -39788,7 +39038,7 @@ var init_GoTrueClient = __esm({
         return run();
       }
       async _challenge(params) {
-        const run = /* @__PURE__ */ __name2(async () => {
+        const run = /* @__PURE__ */ __name(async () => {
           try {
             return await this._useSession(async (result) => {
               var _a2;
@@ -39950,7 +39200,7 @@ var init_GoTrueClient = __esm({
             return await _request(this.fetch, "GET", `${this.url}/oauth/authorizations/${authorizationId}`, {
               headers: this.headers,
               jwt: session.access_token,
-              xform: /* @__PURE__ */ __name2((data) => ({ data, error: null }), "xform")
+              xform: /* @__PURE__ */ __name((data) => ({ data, error: null }), "xform")
             });
           });
         } catch (error) {
@@ -39978,7 +39228,7 @@ var init_GoTrueClient = __esm({
               headers: this.headers,
               jwt: session.access_token,
               body: { action: "approve" },
-              xform: /* @__PURE__ */ __name2((data) => ({ data, error: null }), "xform")
+              xform: /* @__PURE__ */ __name((data) => ({ data, error: null }), "xform")
             });
             if (response.data && response.data.redirect_url) {
               if (isBrowser() && !(options === null || options === void 0 ? void 0 : options.skipBrowserRedirect)) {
@@ -40012,7 +39262,7 @@ var init_GoTrueClient = __esm({
               headers: this.headers,
               jwt: session.access_token,
               body: { action: "deny" },
-              xform: /* @__PURE__ */ __name2((data) => ({ data, error: null }), "xform")
+              xform: /* @__PURE__ */ __name((data) => ({ data, error: null }), "xform")
             });
             if (response.data && response.data.redirect_url) {
               if (isBrowser() && !(options === null || options === void 0 ? void 0 : options.skipBrowserRedirect)) {
@@ -40045,7 +39295,7 @@ var init_GoTrueClient = __esm({
             return await _request(this.fetch, "GET", `${this.url}/user/oauth/grants`, {
               headers: this.headers,
               jwt: session.access_token,
-              xform: /* @__PURE__ */ __name2((data) => ({ data, error: null }), "xform")
+              xform: /* @__PURE__ */ __name((data) => ({ data, error: null }), "xform")
             });
           });
         } catch (error) {
@@ -40470,7 +39720,7 @@ var init_GoTrueClient = __esm({
             const { data, error } = await _request(this.fetch, "GET", `${this.url}/passkeys`, {
               headers: this.headers,
               jwt: session.access_token,
-              xform: /* @__PURE__ */ __name2((data2) => ({ data: data2, error: null }), "xform")
+              xform: /* @__PURE__ */ __name((data2) => ({ data: data2, error: null }), "xform")
             });
             if (error) {
               return this._returnResult({ data: null, error });
@@ -40551,25 +39801,30 @@ var init_GoTrueClient = __esm({
     GoTrueClient_default = GoTrueClient;
   }
 });
+
+// ../node_modules/@supabase/auth-js/dist/module/AuthAdminApi.js
 var init_AuthAdminApi = __esm({
   "../node_modules/@supabase/auth-js/dist/module/AuthAdminApi.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_GoTrueAdminApi();
   }
 });
-var AuthClient;
-var AuthClient_default;
+
+// ../node_modules/@supabase/auth-js/dist/module/AuthClient.js
+var AuthClient, AuthClient_default;
 var init_AuthClient = __esm({
   "../node_modules/@supabase/auth-js/dist/module/AuthClient.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_GoTrueClient();
     AuthClient = GoTrueClient_default;
     AuthClient_default = AuthClient;
   }
 });
+
+// ../node_modules/@supabase/auth-js/dist/module/index.js
 var init_module3 = __esm({
   "../node_modules/@supabase/auth-js/dist/module/index.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_GoTrueAdminApi();
     init_GoTrueClient();
     init_AuthAdminApi();
@@ -40579,6 +39834,8 @@ var init_module3 = __esm({
     init_locks();
   }
 });
+
+// ../node_modules/@supabase/supabase-js/dist/index.mjs
 function parseTraceParent(traceparent) {
   if (!traceparent || typeof traceparent !== "string") return null;
   const parts = traceparent.split("-");
@@ -40596,7 +39853,6 @@ function parseTraceParent(traceparent) {
     isSampled: (parseInt(traceFlags, 16) & 1) === 1
   };
 }
-__name(parseTraceParent, "parseTraceParent");
 function shouldPropagateToTarget(targetUrl, targets) {
   if (!targetUrl || !targets || targets.length === 0) return false;
   let url;
@@ -40619,7 +39875,6 @@ function shouldPropagateToTarget(targetUrl, targets) {
   }
   return false;
 }
-__name(shouldPropagateToTarget, "shouldPropagateToTarget");
 function matchStringTarget(hostname, target) {
   if (target === hostname) return true;
   if (target.startsWith("*.")) {
@@ -40630,7 +39885,6 @@ function matchStringTarget(hostname, target) {
   }
   return false;
 }
-__name(matchStringTarget, "matchStringTarget");
 function getDefaultPropagationTargets(supabaseUrl) {
   const targets = [];
   try {
@@ -40642,7 +39896,6 @@ function getDefaultPropagationTargets(supabaseUrl) {
   targets.push("localhost", "127.0.0.1", "[::1]");
   return targets;
 }
-__name(getDefaultPropagationTargets, "getDefaultPropagationTargets");
 function _typeof3(o) {
   "@babel/helpers - typeof";
   return _typeof3 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
@@ -40651,7 +39904,6 @@ function _typeof3(o) {
     return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
   }, _typeof3(o);
 }
-__name(_typeof3, "_typeof3");
 function toPrimitive3(t, r) {
   if ("object" != _typeof3(t) || !t) return t;
   var e = t[Symbol.toPrimitive];
@@ -40662,12 +39914,10 @@ function toPrimitive3(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
-__name(toPrimitive3, "toPrimitive3");
 function toPropertyKey3(t) {
   var i = toPrimitive3(t, "string");
   return "symbol" == _typeof3(i) ? i : i + "";
 }
-__name(toPropertyKey3, "toPropertyKey3");
 function _defineProperty3(e, r, t) {
   return (r = toPropertyKey3(r)) in e ? Object.defineProperty(e, r, {
     value: t,
@@ -40676,7 +39926,6 @@ function _defineProperty3(e, r, t) {
     writable: true
   }) : e[r] = t, e;
 }
-__name(_defineProperty3, "_defineProperty3");
 function ownKeys3(e, r) {
   var t = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
@@ -40687,7 +39936,6 @@ function ownKeys3(e, r) {
   }
   return t;
 }
-__name(ownKeys3, "ownKeys3");
 function _objectSpread23(e) {
   for (var r = 1; r < arguments.length; r++) {
     var t = null != arguments[r] ? arguments[r] : {};
@@ -40699,7 +39947,6 @@ function _objectSpread23(e) {
   }
   return e;
 }
-__name(_objectSpread23, "_objectSpread23");
 function getTraceHeaders(input, targets, respectSampling) {
   const extractTraceContext = getTraceContextExtractor();
   if (!extractTraceContext) {
@@ -40726,15 +39973,12 @@ function getTraceHeaders(input, targets, respectSampling) {
   }
   return traceContext;
 }
-__name(getTraceHeaders, "getTraceHeaders");
 function normalizeTracePropagation(value) {
   return typeof value === "boolean" ? { enabled: value } : value;
 }
-__name(normalizeTracePropagation, "normalizeTracePropagation");
 function ensureTrailingSlash(url) {
   return url.endsWith("/") ? url : url + "/";
 }
-__name(ensureTrailingSlash, "ensureTrailingSlash");
 function applySettingDefaults(options, defaults) {
   var _DEFAULT_GLOBAL_OPTIO, _globalOptions$header, _ref, _tracePropagationOpti, _ref2, _tracePropagationOpti2;
   const { db: dbOptions, auth: authOptions, realtime: realtimeOptions, global: globalOptions } = options;
@@ -40751,13 +39995,12 @@ function applySettingDefaults(options, defaults) {
       enabled: (_ref = (_tracePropagationOpti = tracePropagationOptions === null || tracePropagationOptions === void 0 ? void 0 : tracePropagationOptions.enabled) !== null && _tracePropagationOpti !== void 0 ? _tracePropagationOpti : DEFAULT_TRACE_PROPAGATION_OPTIONS$1 === null || DEFAULT_TRACE_PROPAGATION_OPTIONS$1 === void 0 ? void 0 : DEFAULT_TRACE_PROPAGATION_OPTIONS$1.enabled) !== null && _ref !== void 0 ? _ref : false,
       respectSamplingDecision: (_ref2 = (_tracePropagationOpti2 = tracePropagationOptions === null || tracePropagationOptions === void 0 ? void 0 : tracePropagationOptions.respectSamplingDecision) !== null && _tracePropagationOpti2 !== void 0 ? _tracePropagationOpti2 : DEFAULT_TRACE_PROPAGATION_OPTIONS$1 === null || DEFAULT_TRACE_PROPAGATION_OPTIONS$1 === void 0 ? void 0 : DEFAULT_TRACE_PROPAGATION_OPTIONS$1.respectSamplingDecision) !== null && _ref2 !== void 0 ? _ref2 : true
     },
-    accessToken: /* @__PURE__ */ __name2(async () => "", "accessToken")
+    accessToken: /* @__PURE__ */ __name(async () => "", "accessToken")
   };
   if (options.accessToken) result.accessToken = options.accessToken;
   else delete result.accessToken;
   return result;
 }
-__name(applySettingDefaults, "applySettingDefaults");
 function validateSupabaseUrl(supabaseUrl) {
   const trimmedUrl = supabaseUrl === null || supabaseUrl === void 0 ? void 0 : supabaseUrl.trim();
   if (!trimmedUrl) throw new Error("supabaseUrl is required.");
@@ -40768,7 +40011,6 @@ function validateSupabaseUrl(supabaseUrl) {
     throw Error("Invalid supabaseUrl: Provided URL is malformed.");
   }
 }
-__name(validateSupabaseUrl, "validateSupabaseUrl");
 function shouldShowDeprecationWarning() {
   if (typeof window !== "undefined" || globalThis["Deno"] !== void 0) return false;
   const _process = globalThis["process"];
@@ -40779,34 +40021,10 @@ function shouldShowDeprecationWarning() {
   if (!versionMatch) return false;
   return parseInt(versionMatch[1], 10) <= 20;
 }
-__name(shouldShowDeprecationWarning, "shouldShowDeprecationWarning");
-var version4;
-var JS_ENV;
-var JS_RUNTIME_VERSION;
-var _Deno$version;
-var _process$version;
-var _runtimeMeta;
-var DEFAULT_HEADERS3;
-var DEFAULT_GLOBAL_OPTIONS;
-var DEFAULT_DB_OPTIONS;
-var DEFAULT_AUTH_OPTIONS;
-var DEFAULT_REALTIME_OPTIONS;
-var DEFAULT_TRACE_PROPAGATION_OPTIONS;
-var resolveFetch4;
-var resolveHeadersConstructor;
-var isNewApiKey;
-var TEMP_KEY_PREFIX;
-var warnedKeySubtypes;
-var checkApiKeyFormat;
-var fetchWithAuth;
-var warnedMissingTracingRuntime;
-var warnedNonW3CPropagator;
-var SupabaseAuthClient;
-var SupabaseClient;
-var createClient;
+var version4, JS_ENV, JS_RUNTIME_VERSION, _Deno$version, _process$version, _runtimeMeta, DEFAULT_HEADERS3, DEFAULT_GLOBAL_OPTIONS, DEFAULT_DB_OPTIONS, DEFAULT_AUTH_OPTIONS, DEFAULT_REALTIME_OPTIONS, DEFAULT_TRACE_PROPAGATION_OPTIONS, resolveFetch4, resolveHeadersConstructor, isNewApiKey, TEMP_KEY_PREFIX, warnedKeySubtypes, checkApiKeyFormat, fetchWithAuth, warnedMissingTracingRuntime, warnedNonW3CPropagator, SupabaseAuthClient, SupabaseClient, createClient;
 var init_dist4 = __esm({
   "../node_modules/@supabase/supabase-js/dist/index.mjs"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_tracingRegistry();
     init_module();
     init_dist();
@@ -40843,27 +40061,27 @@ var init_dist4 = __esm({
       enabled: false,
       respectSamplingDecision: true
     };
-    __name2(parseTraceParent, "parseTraceParent");
-    __name2(shouldPropagateToTarget, "shouldPropagateToTarget");
-    __name2(matchStringTarget, "matchStringTarget");
-    __name2(getDefaultPropagationTargets, "getDefaultPropagationTargets");
-    __name2(_typeof3, "_typeof");
-    __name2(toPrimitive3, "toPrimitive");
-    __name2(toPropertyKey3, "toPropertyKey");
-    __name2(_defineProperty3, "_defineProperty");
-    __name2(ownKeys3, "ownKeys");
-    __name2(_objectSpread23, "_objectSpread2");
-    resolveFetch4 = /* @__PURE__ */ __name2((customFetch) => {
+    __name(parseTraceParent, "parseTraceParent");
+    __name(shouldPropagateToTarget, "shouldPropagateToTarget");
+    __name(matchStringTarget, "matchStringTarget");
+    __name(getDefaultPropagationTargets, "getDefaultPropagationTargets");
+    __name(_typeof3, "_typeof");
+    __name(toPrimitive3, "toPrimitive");
+    __name(toPropertyKey3, "toPropertyKey");
+    __name(_defineProperty3, "_defineProperty");
+    __name(ownKeys3, "ownKeys");
+    __name(_objectSpread23, "_objectSpread2");
+    resolveFetch4 = /* @__PURE__ */ __name((customFetch) => {
       if (customFetch) return (...args) => customFetch(...args);
       return (...args) => fetch(...args);
     }, "resolveFetch");
-    resolveHeadersConstructor = /* @__PURE__ */ __name2(() => {
+    resolveHeadersConstructor = /* @__PURE__ */ __name(() => {
       return Headers;
     }, "resolveHeadersConstructor");
-    isNewApiKey = /* @__PURE__ */ __name2((key) => key.startsWith("sb_publishable_") || key.startsWith("sb_secret_"), "isNewApiKey");
+    isNewApiKey = /* @__PURE__ */ __name((key) => key.startsWith("sb_publishable_") || key.startsWith("sb_secret_"), "isNewApiKey");
     TEMP_KEY_PREFIX = "sb_temp_";
     warnedKeySubtypes = /* @__PURE__ */ new Set();
-    checkApiKeyFormat = /* @__PURE__ */ __name2((key) => {
+    checkApiKeyFormat = /* @__PURE__ */ __name((key) => {
       var _key$match$, _key$match;
       if (!key.startsWith("sb_") || isNewApiKey(key) || key.startsWith(TEMP_KEY_PREFIX)) return;
       const subtype = (_key$match$ = (_key$match = key.match(/^sb_[a-zA-Z0-9]+_/)) === null || _key$match === void 0 ? void 0 : _key$match[0]) !== null && _key$match$ !== void 0 ? _key$match$ : "unknown";
@@ -40871,7 +40089,7 @@ var init_dist4 = __esm({
       warnedKeySubtypes.add(subtype);
       console.warn("@supabase/supabase-js: Unrecognized Supabase API key format. The client will proceed and send this key as-is; if you see authentication errors you may need to upgrade @supabase/supabase-js to a version that recognizes this key type.");
     }, "checkApiKeyFormat");
-    fetchWithAuth = /* @__PURE__ */ __name2((supabaseKey, supabaseUrl, getAccessToken, customFetch, tracePropagationOptions, options) => {
+    fetchWithAuth = /* @__PURE__ */ __name((supabaseKey, supabaseUrl, getAccessToken, customFetch, tracePropagationOptions, options) => {
       const fetch$1 = resolveFetch4(customFetch);
       const HeadersConstructor = resolveHeadersConstructor();
       const traceEnabled = (tracePropagationOptions === null || tracePropagationOptions === void 0 ? void 0 : tracePropagationOptions.enabled) === true;
@@ -40899,17 +40117,14 @@ var init_dist4 = __esm({
     }, "fetchWithAuth");
     warnedMissingTracingRuntime = false;
     warnedNonW3CPropagator = false;
-    __name2(getTraceHeaders, "getTraceHeaders");
-    __name2(normalizeTracePropagation, "normalizeTracePropagation");
-    __name2(ensureTrailingSlash, "ensureTrailingSlash");
-    __name2(applySettingDefaults, "applySettingDefaults");
-    __name2(validateSupabaseUrl, "validateSupabaseUrl");
+    __name(getTraceHeaders, "getTraceHeaders");
+    __name(normalizeTracePropagation, "normalizeTracePropagation");
+    __name(ensureTrailingSlash, "ensureTrailingSlash");
+    __name(applySettingDefaults, "applySettingDefaults");
+    __name(validateSupabaseUrl, "validateSupabaseUrl");
     SupabaseAuthClient = class extends AuthClient_default {
       static {
         __name(this, "SupabaseAuthClient");
-      }
-      static {
-        __name2(this, "SupabaseAuthClient");
       }
       constructor(options) {
         super(options);
@@ -40918,9 +40133,6 @@ var init_dist4 = __esm({
     SupabaseClient = class {
       static {
         __name(this, "SupabaseClient");
-      }
-      static {
-        __name2(this, "SupabaseClient");
       }
       /**
       * Create a new client for use in the browser.
@@ -41165,7 +40377,7 @@ var init_dist4 = __esm({
           this.auth = this._initSupabaseAuthClient((_settings$auth = settings.auth) !== null && _settings$auth !== void 0 ? _settings$auth : {}, this.headers, settings.global.fetch);
         } else {
           this.accessToken = settings.accessToken;
-          this.auth = new Proxy({}, { get: /* @__PURE__ */ __name2((_, prop) => {
+          this.auth = new Proxy({}, { get: /* @__PURE__ */ __name((_, prop) => {
             throw new Error(`@supabase/supabase-js: Supabase Client is configured with the accessToken option, accessing supabase.auth.${String(prop)} is not possible`);
           }, "get") });
         }
@@ -41365,13 +40577,15 @@ var init_dist4 = __esm({
         }
       }
     };
-    createClient = /* @__PURE__ */ __name2((supabaseUrl, supabaseKey, options) => {
+    createClient = /* @__PURE__ */ __name((supabaseUrl, supabaseKey, options) => {
       return new SupabaseClient(supabaseUrl, supabaseKey, options);
     }, "createClient");
-    __name2(shouldShowDeprecationWarning, "shouldShowDeprecationWarning");
+    __name(shouldShowDeprecationWarning, "shouldShowDeprecationWarning");
     if (shouldShowDeprecationWarning()) console.warn("\u26A0\uFE0F  Node.js 20 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 22 or later. For more information, visit: https://github.com/orgs/supabase/discussions/45715");
   }
 });
+
+// api/create-portal.js
 async function onRequestPost({ request, env: env2 }) {
   try {
     const authHeader = request.headers.get("Authorization");
@@ -41417,15 +40631,16 @@ async function onRequestPost({ request, env: env2 }) {
     });
   }
 }
-__name(onRequestPost, "onRequestPost");
 var init_create_portal = __esm({
   "api/create-portal.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_stripe_esm_worker();
     init_dist4();
-    __name2(onRequestPost, "onRequestPost");
+    __name(onRequestPost, "onRequestPost");
   }
 });
+
+// api/delete-account.js
 async function onRequestPost2({ request, env: env2 }) {
   try {
     const authHeader = request.headers.get("Authorization");
@@ -41449,17 +40664,18 @@ async function onRequestPost2({ request, env: env2 }) {
     return new Response("Internal Server Error", { status: 500 });
   }
 }
-__name(onRequestPost2, "onRequestPost2");
 var init_delete_account = __esm({
   "api/delete-account.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_dist4();
-    __name2(onRequestPost2, "onRequestPost");
+    __name(onRequestPost2, "onRequestPost");
   }
 });
+
+// ../node_modules/retry/lib/retry_operation.js
 var require_retry_operation = __commonJS({
   "../node_modules/retry/lib/retry_operation.js"(exports, module) {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     function RetryOperation(timeouts, options) {
       if (typeof options === "boolean") {
         options = { forever: options };
@@ -41481,7 +40697,6 @@ var require_retry_operation = __commonJS({
       }
     }
     __name(RetryOperation, "RetryOperation");
-    __name2(RetryOperation, "RetryOperation");
     module.exports = RetryOperation;
     RetryOperation.prototype.reset = function() {
       this._attempts = 1;
@@ -41593,9 +40808,11 @@ var require_retry_operation = __commonJS({
     };
   }
 });
+
+// ../node_modules/retry/lib/retry.js
 var require_retry = __commonJS({
   "../node_modules/retry/lib/retry.js"(exports) {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     var RetryOperation = require_retry_operation();
     exports.operation = function(options) {
       var timeouts = exports.timeouts(options);
@@ -41656,7 +40873,7 @@ var require_retry = __commonJS({
       for (var i = 0; i < methods.length; i++) {
         var method = methods[i];
         var original = obj[method];
-        obj[method] = (/* @__PURE__ */ __name2(/* @__PURE__ */ __name(function retryWrapper(original2) {
+        obj[method] = (/* @__PURE__ */ __name(function retryWrapper(original2) {
           var op = exports.operation(options);
           var args = Array.prototype.slice.call(arguments, 1);
           var callback = args.pop();
@@ -41672,22 +40889,26 @@ var require_retry = __commonJS({
           op.attempt(function() {
             original2.apply(obj, args);
           });
-        }, "retryWrapper"), "retryWrapper")).bind(obj, original);
+        }, "retryWrapper")).bind(obj, original);
         obj[method].options = options;
       }
     };
   }
 });
+
+// ../node_modules/retry/index.js
 var require_retry2 = __commonJS({
   "../node_modules/retry/index.js"(exports, module) {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     module.exports = require_retry();
   }
 });
+
+// ../node_modules/p-retry/index.js
 var require_p_retry = __commonJS({
   "../node_modules/p-retry/index.js"(exports, module) {
     "use strict";
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     var retry2 = require_retry2();
     var networkErrorMsgs = [
       "Failed to fetch",
@@ -41703,9 +40924,6 @@ var require_p_retry = __commonJS({
       static {
         __name(this, "AbortError");
       }
-      static {
-        __name2(this, "AbortError");
-      }
       constructor(message) {
         super();
         if (message instanceof Error) {
@@ -41719,16 +40937,16 @@ var require_p_retry = __commonJS({
         this.message = message;
       }
     };
-    var decorateErrorWithCounts = /* @__PURE__ */ __name2((error, attemptNumber, options) => {
+    var decorateErrorWithCounts = /* @__PURE__ */ __name((error, attemptNumber, options) => {
       const retriesLeft = options.retries - (attemptNumber - 1);
       error.attemptNumber = attemptNumber;
       error.retriesLeft = retriesLeft;
       return error;
     }, "decorateErrorWithCounts");
-    var isNetworkError = /* @__PURE__ */ __name2((errorMessage) => networkErrorMsgs.includes(errorMessage), "isNetworkError");
-    var pRetry2 = /* @__PURE__ */ __name2((input, options) => new Promise((resolve, reject) => {
+    var isNetworkError = /* @__PURE__ */ __name((errorMessage) => networkErrorMsgs.includes(errorMessage), "isNetworkError");
+    var pRetry2 = /* @__PURE__ */ __name((input, options) => new Promise((resolve, reject) => {
       options = {
-        onFailedAttempt: /* @__PURE__ */ __name2(() => {
+        onFailedAttempt: /* @__PURE__ */ __name(() => {
         }, "onFailedAttempt"),
         retries: 10,
         ...options
@@ -41768,13 +40986,184 @@ var require_p_retry = __commonJS({
     module.exports.AbortError = AbortError;
   }
 });
+
+// ../node_modules/@google/genai/dist/web/index.mjs
+var web_exports = {};
+__export(web_exports, {
+  ActivityHandling: () => ActivityHandling,
+  AdapterSize: () => AdapterSize,
+  AggregationMetric: () => AggregationMetric,
+  ApiError: () => ApiError,
+  ApiSpec: () => ApiSpec,
+  AspectRatio: () => AspectRatio,
+  AudioResponseFormat: () => AudioResponseFormat,
+  AuthType: () => AuthType,
+  Batches: () => Batches,
+  Behavior: () => Behavior,
+  BlockedReason: () => BlockedReason,
+  Caches: () => Caches,
+  CancelTuningJobResponse: () => CancelTuningJobResponse,
+  Chat: () => Chat,
+  Chats: () => Chats,
+  ComputeTokensResponse: () => ComputeTokensResponse,
+  ContentReferenceImage: () => ContentReferenceImage,
+  ControlReferenceImage: () => ControlReferenceImage,
+  ControlReferenceType: () => ControlReferenceType,
+  CountTokensResponse: () => CountTokensResponse,
+  CreateFileResponse: () => CreateFileResponse,
+  DeleteCachedContentResponse: () => DeleteCachedContentResponse,
+  DeleteFileResponse: () => DeleteFileResponse,
+  DeleteModelResponse: () => DeleteModelResponse,
+  Delivery: () => Delivery,
+  DocumentState: () => DocumentState,
+  DynamicRetrievalConfigMode: () => DynamicRetrievalConfigMode,
+  EditImageResponse: () => EditImageResponse,
+  EditMode: () => EditMode,
+  EmbedContentResponse: () => EmbedContentResponse,
+  EmbeddingApiType: () => EmbeddingApiType,
+  EndSensitivity: () => EndSensitivity,
+  Environment: () => Environment,
+  EvaluateDatasetResponse: () => EvaluateDatasetResponse,
+  FeatureSelectionPreference: () => FeatureSelectionPreference,
+  FileSource: () => FileSource,
+  FileState: () => FileState,
+  Files: () => Files,
+  FinishReason: () => FinishReason,
+  FunctionCallingConfigMode: () => FunctionCallingConfigMode,
+  FunctionResponse: () => FunctionResponse,
+  FunctionResponseBlob: () => FunctionResponseBlob,
+  FunctionResponseFileData: () => FunctionResponseFileData,
+  FunctionResponsePart: () => FunctionResponsePart,
+  FunctionResponseScheduling: () => FunctionResponseScheduling,
+  GenerateContentResponse: () => GenerateContentResponse,
+  GenerateContentResponsePromptFeedback: () => GenerateContentResponsePromptFeedback,
+  GenerateContentResponseUsageMetadata: () => GenerateContentResponseUsageMetadata,
+  GenerateImagesResponse: () => GenerateImagesResponse,
+  GenerateVideosOperation: () => GenerateVideosOperation,
+  GenerateVideosResponse: () => GenerateVideosResponse,
+  GoogleGenAI: () => GoogleGenAI2,
+  HarmBlockMethod: () => HarmBlockMethod,
+  HarmBlockThreshold: () => HarmBlockThreshold,
+  HarmCategory: () => HarmCategory,
+  HarmProbability: () => HarmProbability,
+  HarmSeverity: () => HarmSeverity,
+  HttpElementLocation: () => HttpElementLocation,
+  HttpResponse: () => HttpResponse,
+  ImagePromptLanguage: () => ImagePromptLanguage,
+  ImageResizeMode: () => ImageResizeMode,
+  ImageResponseFormat: () => ImageResponseFormat,
+  ImageSize: () => ImageSize,
+  ImportFileOperation: () => ImportFileOperation,
+  ImportFileResponse: () => ImportFileResponse,
+  InlinedEmbedContentResponse: () => InlinedEmbedContentResponse,
+  InlinedResponse: () => InlinedResponse,
+  InteractionStatus: () => InteractionStatus,
+  JobState: () => JobState,
+  Language: () => Language,
+  ListBatchJobsResponse: () => ListBatchJobsResponse,
+  ListCachedContentsResponse: () => ListCachedContentsResponse,
+  ListDocumentsResponse: () => ListDocumentsResponse,
+  ListFileSearchStoresResponse: () => ListFileSearchStoresResponse,
+  ListFilesResponse: () => ListFilesResponse,
+  ListModelsResponse: () => ListModelsResponse,
+  ListTuningJobsResponse: () => ListTuningJobsResponse,
+  Live: () => Live,
+  LiveClientToolResponse: () => LiveClientToolResponse,
+  LiveMusicPlaybackControl: () => LiveMusicPlaybackControl,
+  LiveMusicServerMessage: () => LiveMusicServerMessage,
+  LiveSendToolResponseParameters: () => LiveSendToolResponseParameters,
+  LiveServerMessage: () => LiveServerMessage,
+  MaskReferenceImage: () => MaskReferenceImage,
+  MaskReferenceMode: () => MaskReferenceMode,
+  MatchOperation: () => MatchOperation,
+  MediaModality: () => MediaModality,
+  MediaResolution: () => MediaResolution,
+  Modality: () => Modality,
+  ModelStage: () => ModelStage,
+  Models: () => Models,
+  MusicGenerationMode: () => MusicGenerationMode,
+  Operations: () => Operations,
+  Outcome: () => Outcome,
+  PagedItem: () => PagedItem,
+  Pager: () => Pager,
+  PairwiseChoice: () => PairwiseChoice,
+  PartMediaResolutionLevel: () => PartMediaResolutionLevel,
+  PersonGeneration: () => PersonGeneration,
+  PhishBlockThreshold: () => PhishBlockThreshold,
+  ProminentPeople: () => ProminentPeople,
+  RawReferenceImage: () => RawReferenceImage,
+  RecontextImageResponse: () => RecontextImageResponse,
+  RegisterFilesResponse: () => RegisterFilesResponse,
+  ReinforcementTuningAutoraterScorerParsedResponseConversionScorer: () => ReinforcementTuningAutoraterScorerParsedResponseConversionScorer,
+  ReinforcementTuningParseResponseConfig: () => ReinforcementTuningParseResponseConfig,
+  ReinforcementTuningThinkingLevel: () => ReinforcementTuningThinkingLevel,
+  ReplayResponse: () => ReplayResponse,
+  ResourceScope: () => ResourceScope,
+  ResponseFormat: () => ResponseFormat,
+  ResponseParseType: () => ResponseParseType,
+  SafetyFilterLevel: () => SafetyFilterLevel,
+  SafetyPolicy: () => SafetyPolicy,
+  Scale: () => Scale,
+  SegmentImageResponse: () => SegmentImageResponse,
+  SegmentMode: () => SegmentMode,
+  ServiceTier: () => ServiceTier,
+  Session: () => Session,
+  SingleEmbedContentResponse: () => SingleEmbedContentResponse,
+  StartSensitivity: () => StartSensitivity,
+  StyleReferenceImage: () => StyleReferenceImage,
+  SubjectReferenceImage: () => SubjectReferenceImage,
+  SubjectReferenceType: () => SubjectReferenceType,
+  TextResponseFormat: () => TextResponseFormat,
+  ThinkingLevel: () => ThinkingLevel,
+  Tokens: () => Tokens,
+  ToolResponse: () => ToolResponse,
+  ToolType: () => ToolType,
+  TrafficType: () => TrafficType,
+  TuningJobState: () => TuningJobState,
+  TuningMethod: () => TuningMethod,
+  TuningMode: () => TuningMode,
+  TuningSpeed: () => TuningSpeed,
+  TuningTask: () => TuningTask,
+  TurnCompleteReason: () => TurnCompleteReason,
+  TurnCoverage: () => TurnCoverage,
+  Type: () => Type,
+  UploadToFileSearchStoreOperation: () => UploadToFileSearchStoreOperation,
+  UploadToFileSearchStoreResponse: () => UploadToFileSearchStoreResponse,
+  UploadToFileSearchStoreResumableResponse: () => UploadToFileSearchStoreResumableResponse,
+  UpscaleImageResponse: () => UpscaleImageResponse,
+  UrlRetrievalStatus: () => UrlRetrievalStatus,
+  VadSignalType: () => VadSignalType,
+  ValidateRewardResponse: () => ValidateRewardResponse,
+  VideoCompressionQuality: () => VideoCompressionQuality,
+  VideoGenerationMaskMode: () => VideoGenerationMaskMode,
+  VideoGenerationReferenceType: () => VideoGenerationReferenceType,
+  VideoOrientation: () => VideoOrientation,
+  VideoResponseFormat: () => VideoResponseFormat,
+  VoiceActivityType: () => VoiceActivityType,
+  createFunctionResponsePartFromBase64: () => createFunctionResponsePartFromBase64,
+  createFunctionResponsePartFromUri: () => createFunctionResponsePartFromUri,
+  createModelContent: () => createModelContent,
+  createPartFromBase64: () => createPartFromBase64,
+  createPartFromCodeExecutionResult: () => createPartFromCodeExecutionResult,
+  createPartFromExecutableCode: () => createPartFromExecutableCode,
+  createPartFromFunctionCall: () => createPartFromFunctionCall,
+  createPartFromFunctionResponse: () => createPartFromFunctionResponse,
+  createPartFromText: () => createPartFromText,
+  createPartFromUri: () => createPartFromUri,
+  createUserContent: () => createUserContent,
+  mcpToTool: () => mcpToTool,
+  setDefaultBaseUrls: () => setDefaultBaseUrls
+});
+function setDefaultBaseUrls(baseUrlParams) {
+  _defaultBaseGeminiUrl = baseUrlParams.geminiUrl;
+  _defaultBaseVertexUrl = baseUrlParams.vertexUrl;
+}
 function getDefaultBaseUrls() {
   return {
     geminiUrl: _defaultBaseGeminiUrl,
     vertexUrl: _defaultBaseVertexUrl
   };
 }
-__name(getDefaultBaseUrls, "getDefaultBaseUrls");
 function getBaseUrl(httpOptions, vertexai, vertexBaseUrlFromEnv, geminiBaseUrlFromEnv) {
   var _a2, _b;
   if (!(httpOptions === null || httpOptions === void 0 ? void 0 : httpOptions.baseUrl)) {
@@ -41787,7 +41176,6 @@ function getBaseUrl(httpOptions, vertexai, vertexBaseUrlFromEnv, geminiBaseUrlFr
   }
   return httpOptions.baseUrl;
 }
-__name(getBaseUrl, "getBaseUrl");
 function formatMap(templateString, valueMap) {
   const regex = /\{([^}]+)\}/g;
   return templateString.replace(regex, (match3, key) => {
@@ -41799,7 +41187,6 @@ function formatMap(templateString, valueMap) {
     }
   });
 }
-__name(formatMap, "formatMap");
 function setValueByPath(data, keys, value) {
   for (let i = 0; i < keys.length - 1; i++) {
     const key = keys[i];
@@ -41863,7 +41250,6 @@ function setValueByPath(data, keys, value) {
     }
   }
 }
-__name(setValueByPath, "setValueByPath");
 function getValueByPath(data, keys, defaultValue = void 0) {
   try {
     if (keys.length === 1 && keys[0] === "_self") {
@@ -41897,7 +41283,6 @@ function getValueByPath(data, keys, defaultValue = void 0) {
     throw error;
   }
 }
-__name(getValueByPath, "getValueByPath");
 function moveValueByPath(data, paths) {
   for (const [sourcePath, destPath] of Object.entries(paths)) {
     const sourceKeys = sourcePath.split(".");
@@ -41921,7 +41306,6 @@ function moveValueByPath(data, paths) {
     _moveValueRecursive(data, sourceKeys, destKeys, 0, excludeKeys);
   }
 }
-__name(moveValueByPath, "moveValueByPath");
 function _moveValueRecursive(data, sourceKeys, destKeys, keyIdx, excludeKeys) {
   if (keyIdx >= sourceKeys.length) {
     return;
@@ -41968,14 +41352,12 @@ function _moveValueRecursive(data, sourceKeys, destKeys, keyIdx, excludeKeys) {
     }
   }
 }
-__name(_moveValueRecursive, "_moveValueRecursive");
 function tBytes$1(fromBytes) {
   if (typeof fromBytes !== "string") {
     throw new Error("fromImageBytes must be a string");
   }
   return fromBytes;
 }
-__name(tBytes$1, "tBytes$1");
 function fetchPredictOperationParametersToVertex(fromObject) {
   const toObject = {};
   const fromOperationName = getValueByPath(fromObject, [
@@ -41990,7 +41372,6 @@ function fetchPredictOperationParametersToVertex(fromObject) {
   }
   return toObject;
 }
-__name(fetchPredictOperationParametersToVertex, "fetchPredictOperationParametersToVertex");
 function generateVideosOperationFromMldev$1(fromObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -42018,7 +41399,6 @@ function generateVideosOperationFromMldev$1(fromObject) {
   }
   return toObject;
 }
-__name(generateVideosOperationFromMldev$1, "generateVideosOperationFromMldev$1");
 function generateVideosOperationFromVertex$1(fromObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -42043,7 +41423,6 @@ function generateVideosOperationFromVertex$1(fromObject) {
   }
   return toObject;
 }
-__name(generateVideosOperationFromVertex$1, "generateVideosOperationFromVertex$1");
 function generateVideosResponseFromMldev$1(fromObject) {
   const toObject = {};
   const fromGeneratedVideos = getValueByPath(fromObject, [
@@ -42072,7 +41451,6 @@ function generateVideosResponseFromMldev$1(fromObject) {
   }
   return toObject;
 }
-__name(generateVideosResponseFromMldev$1, "generateVideosResponseFromMldev$1");
 function generateVideosResponseFromVertex$1(fromObject) {
   const toObject = {};
   const fromGeneratedVideos = getValueByPath(fromObject, ["videos"]);
@@ -42099,7 +41477,6 @@ function generateVideosResponseFromVertex$1(fromObject) {
   }
   return toObject;
 }
-__name(generateVideosResponseFromVertex$1, "generateVideosResponseFromVertex$1");
 function generatedVideoFromMldev$1(fromObject) {
   const toObject = {};
   const fromVideo = getValueByPath(fromObject, ["video"]);
@@ -42108,7 +41485,6 @@ function generatedVideoFromMldev$1(fromObject) {
   }
   return toObject;
 }
-__name(generatedVideoFromMldev$1, "generatedVideoFromMldev$1");
 function generatedVideoFromVertex$1(fromObject) {
   const toObject = {};
   const fromVideo = getValueByPath(fromObject, ["_self"]);
@@ -42117,7 +41493,6 @@ function generatedVideoFromVertex$1(fromObject) {
   }
   return toObject;
 }
-__name(generatedVideoFromVertex$1, "generatedVideoFromVertex$1");
 function getOperationParametersToMldev(fromObject) {
   const toObject = {};
   const fromOperationName = getValueByPath(fromObject, [
@@ -42128,7 +41503,6 @@ function getOperationParametersToMldev(fromObject) {
   }
   return toObject;
 }
-__name(getOperationParametersToMldev, "getOperationParametersToMldev");
 function getOperationParametersToVertex(fromObject) {
   const toObject = {};
   const fromOperationName = getValueByPath(fromObject, [
@@ -42139,7 +41513,6 @@ function getOperationParametersToVertex(fromObject) {
   }
   return toObject;
 }
-__name(getOperationParametersToVertex, "getOperationParametersToVertex");
 function importFileOperationFromMldev$1(fromObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -42164,7 +41537,6 @@ function importFileOperationFromMldev$1(fromObject) {
   }
   return toObject;
 }
-__name(importFileOperationFromMldev$1, "importFileOperationFromMldev$1");
 function importFileResponseFromMldev$1(fromObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -42183,7 +41555,6 @@ function importFileResponseFromMldev$1(fromObject) {
   }
   return toObject;
 }
-__name(importFileResponseFromMldev$1, "importFileResponseFromMldev$1");
 function uploadToFileSearchStoreOperationFromMldev(fromObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -42208,7 +41579,6 @@ function uploadToFileSearchStoreOperationFromMldev(fromObject) {
   }
   return toObject;
 }
-__name(uploadToFileSearchStoreOperationFromMldev, "uploadToFileSearchStoreOperationFromMldev");
 function uploadToFileSearchStoreResponseFromMldev(fromObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -42227,7 +41597,6 @@ function uploadToFileSearchStoreResponseFromMldev(fromObject) {
   }
   return toObject;
 }
-__name(uploadToFileSearchStoreResponseFromMldev, "uploadToFileSearchStoreResponseFromMldev");
 function videoFromMldev$1(fromObject) {
   const toObject = {};
   const fromUri = getValueByPath(fromObject, ["uri"]);
@@ -42244,7 +41613,6 @@ function videoFromMldev$1(fromObject) {
   }
   return toObject;
 }
-__name(videoFromMldev$1, "videoFromMldev$1");
 function videoFromVertex$1(fromObject) {
   const toObject = {};
   const fromUri = getValueByPath(fromObject, ["gcsUri"]);
@@ -42263,7 +41631,110 @@ function videoFromVertex$1(fromObject) {
   }
   return toObject;
 }
-__name(videoFromVertex$1, "videoFromVertex$1");
+function createFunctionResponsePartFromBase64(data, mimeType) {
+  return {
+    inlineData: {
+      data,
+      mimeType
+    }
+  };
+}
+function createFunctionResponsePartFromUri(uri, mimeType) {
+  return {
+    fileData: {
+      fileUri: uri,
+      mimeType
+    }
+  };
+}
+function createPartFromUri(uri, mimeType, mediaResolution) {
+  return Object.assign({ fileData: {
+    fileUri: uri,
+    mimeType
+  } }, mediaResolution && { mediaResolution: { level: mediaResolution } });
+}
+function createPartFromText(text) {
+  return {
+    text
+  };
+}
+function createPartFromFunctionCall(name, args) {
+  return {
+    functionCall: {
+      name,
+      args
+    }
+  };
+}
+function createPartFromFunctionResponse(id, name, response, parts = []) {
+  return {
+    functionResponse: Object.assign({ id, name, response }, parts.length > 0 && { parts })
+  };
+}
+function createPartFromBase64(data, mimeType, mediaResolution) {
+  return Object.assign({ inlineData: {
+    data,
+    mimeType
+  } }, mediaResolution && { mediaResolution: { level: mediaResolution } });
+}
+function createPartFromCodeExecutionResult(outcome, output) {
+  return {
+    codeExecutionResult: {
+      outcome,
+      output
+    }
+  };
+}
+function createPartFromExecutableCode(code, language) {
+  return {
+    executableCode: {
+      code,
+      language
+    }
+  };
+}
+function _isPart(obj) {
+  if (typeof obj === "object" && obj !== null) {
+    return "fileData" in obj || "text" in obj || "functionCall" in obj || "functionResponse" in obj || "inlineData" in obj || "videoMetadata" in obj || "codeExecutionResult" in obj || "executableCode" in obj;
+  }
+  return false;
+}
+function _toParts(partOrString) {
+  const parts = [];
+  if (typeof partOrString === "string") {
+    parts.push(createPartFromText(partOrString));
+  } else if (_isPart(partOrString)) {
+    parts.push(partOrString);
+  } else if (Array.isArray(partOrString)) {
+    if (partOrString.length === 0) {
+      throw new Error("partOrString cannot be an empty array");
+    }
+    for (const part of partOrString) {
+      if (typeof part === "string") {
+        parts.push(createPartFromText(part));
+      } else if (_isPart(part)) {
+        parts.push(part);
+      } else {
+        throw new Error("element in PartUnion must be a Part object or string");
+      }
+    }
+  } else {
+    throw new Error("partOrString must be a Part object, string, or array");
+  }
+  return parts;
+}
+function createUserContent(partOrString) {
+  return {
+    role: "user",
+    parts: _toParts(partOrString)
+  };
+}
+function createModelContent(partOrString) {
+  return {
+    role: "model",
+    parts: _toParts(partOrString)
+  };
+}
 function tModel(apiClient, model) {
   if (!model || typeof model !== "string") {
     throw new Error("model is required and must be a string");
@@ -42288,7 +41759,6 @@ function tModel(apiClient, model) {
     }
   }
 }
-__name(tModel, "tModel");
 function tCachesModel(apiClient, model) {
   const transformedModel = tModel(apiClient, model);
   if (!transformedModel) {
@@ -42302,7 +41772,6 @@ function tCachesModel(apiClient, model) {
     return transformedModel;
   }
 }
-__name(tCachesModel, "tCachesModel");
 function tBlobs(blobs) {
   if (Array.isArray(blobs)) {
     return blobs.map((blob) => tBlob(blob));
@@ -42310,14 +41779,12 @@ function tBlobs(blobs) {
     return [tBlob(blobs)];
   }
 }
-__name(tBlobs, "tBlobs");
 function tBlob(blob) {
   if (typeof blob === "object" && blob !== null) {
     return blob;
   }
   throw new Error(`Could not parse input as Blob. Unsupported blob type: ${typeof blob}`);
 }
-__name(tBlob, "tBlob");
 function tImageBlob(blob) {
   const transformedBlob = tBlob(blob);
   if (transformedBlob.mimeType && transformedBlob.mimeType.startsWith("image/")) {
@@ -42325,7 +41792,6 @@ function tImageBlob(blob) {
   }
   throw new Error(`Unsupported mime type: ${transformedBlob.mimeType}`);
 }
-__name(tImageBlob, "tImageBlob");
 function tAudioBlob(blob) {
   const transformedBlob = tBlob(blob);
   if (transformedBlob.mimeType && transformedBlob.mimeType.startsWith("audio/")) {
@@ -42333,7 +41799,6 @@ function tAudioBlob(blob) {
   }
   throw new Error(`Unsupported mime type: ${transformedBlob.mimeType}`);
 }
-__name(tAudioBlob, "tAudioBlob");
 function tPart(origin) {
   if (origin === null || origin === void 0) {
     throw new Error("PartUnion is required");
@@ -42346,7 +41811,6 @@ function tPart(origin) {
   }
   throw new Error(`Unsupported part type: ${typeof origin}`);
 }
-__name(tPart, "tPart");
 function tParts(origin) {
   if (origin === null || origin === void 0 || Array.isArray(origin) && origin.length === 0) {
     throw new Error("PartListUnion is required");
@@ -42356,19 +41820,15 @@ function tParts(origin) {
   }
   return [tPart(origin)];
 }
-__name(tParts, "tParts");
 function _isContent(origin) {
   return origin !== null && origin !== void 0 && typeof origin === "object" && "parts" in origin && Array.isArray(origin.parts);
 }
-__name(_isContent, "_isContent");
 function _isFunctionCallPart(origin) {
   return origin !== null && origin !== void 0 && typeof origin === "object" && "functionCall" in origin;
 }
-__name(_isFunctionCallPart, "_isFunctionCallPart");
 function _isFunctionResponsePart(origin) {
   return origin !== null && origin !== void 0 && typeof origin === "object" && "functionResponse" in origin;
 }
-__name(_isFunctionResponsePart, "_isFunctionResponsePart");
 function tContent(origin) {
   if (origin === null || origin === void 0) {
     throw new Error("ContentUnion is required");
@@ -42381,7 +41841,6 @@ function tContent(origin) {
     parts: tParts(origin)
   };
 }
-__name(tContent, "tContent");
 function tContentsForEmbed(apiClient, origin) {
   if (!origin) {
     return [];
@@ -42406,7 +41865,6 @@ function tContentsForEmbed(apiClient, origin) {
   }
   return [tContent(origin)];
 }
-__name(tContentsForEmbed, "tContentsForEmbed");
 function tContents(origin) {
   if (origin === null || origin === void 0 || Array.isArray(origin) && origin.length === 0) {
     throw new Error("contents are required");
@@ -42438,7 +41896,6 @@ function tContents(origin) {
   }
   return result;
 }
-__name(tContents, "tContents");
 function flattenTypeArrayToAnyOf(typeList, resultingSchema) {
   if (typeList.includes("null")) {
     resultingSchema["nullable"] = true;
@@ -42455,7 +41912,6 @@ function flattenTypeArrayToAnyOf(typeList, resultingSchema) {
     }
   }
 }
-__name(flattenTypeArrayToAnyOf, "flattenTypeArrayToAnyOf");
 function processJsonSchema(_jsonSchema) {
   const genAISchema = {};
   const schemaFieldNames = ["items"];
@@ -42516,15 +41972,12 @@ function processJsonSchema(_jsonSchema) {
   }
   return genAISchema;
 }
-__name(processJsonSchema, "processJsonSchema");
 function tSchema(schema) {
   return processJsonSchema(schema);
 }
-__name(tSchema, "tSchema");
 function tJsonSchema(schema) {
   return schema;
 }
-__name(tJsonSchema, "tJsonSchema");
 function tSpeechConfig(speechConfig) {
   if (typeof speechConfig === "object") {
     return speechConfig;
@@ -42540,14 +41993,12 @@ function tSpeechConfig(speechConfig) {
     throw new Error(`Unsupported speechConfig type: ${typeof speechConfig}`);
   }
 }
-__name(tSpeechConfig, "tSpeechConfig");
 function tLiveSpeechConfig(speechConfig) {
   if ("multiSpeakerVoiceConfig" in speechConfig) {
     throw new Error("multiSpeakerVoiceConfig is not supported in the live API.");
   }
   return speechConfig;
 }
-__name(tLiveSpeechConfig, "tLiveSpeechConfig");
 function tTool(tool) {
   if (tool.functionDeclarations) {
     for (const functionDeclaration of tool.functionDeclarations) {
@@ -42575,7 +42026,6 @@ function tTool(tool) {
   }
   return tool;
 }
-__name(tTool, "tTool");
 function tTools(tools) {
   if (tools === void 0 || tools === null) {
     throw new Error("tools is required");
@@ -42589,7 +42039,6 @@ function tTools(tools) {
   }
   return result;
 }
-__name(tTools, "tTools");
 function resourceName(client, resourceName2, resourcePrefix, splitsAfterPrefix = 1) {
   const shouldAppendPrefix = !resourceName2.startsWith(`${resourcePrefix}/`) && resourceName2.split("/").length === splitsAfterPrefix;
   if (client.isVertexAI()) {
@@ -42610,14 +42059,12 @@ function resourceName(client, resourceName2, resourcePrefix, splitsAfterPrefix =
   }
   return resourceName2;
 }
-__name(resourceName, "resourceName");
 function tCachedContentName(apiClient, name) {
   if (typeof name !== "string") {
     throw new Error("name must be a string");
   }
   return resourceName(apiClient, name, "cachedContents");
 }
-__name(tCachedContentName, "tCachedContentName");
 function tTuningJobStatus(status) {
   switch (status) {
     case "STATE_UNSPECIFIED":
@@ -42632,23 +42079,18 @@ function tTuningJobStatus(status) {
       return status;
   }
 }
-__name(tTuningJobStatus, "tTuningJobStatus");
 function tBytes(fromImageBytes) {
   return tBytes$1(fromImageBytes);
 }
-__name(tBytes, "tBytes");
 function _isFile(origin) {
   return origin !== null && origin !== void 0 && typeof origin === "object" && "name" in origin;
 }
-__name(_isFile, "_isFile");
 function isGeneratedVideo(origin) {
   return origin !== null && origin !== void 0 && typeof origin === "object" && "video" in origin;
 }
-__name(isGeneratedVideo, "isGeneratedVideo");
 function isVideo(origin) {
   return origin !== null && origin !== void 0 && typeof origin === "object" && "uri" in origin;
 }
-__name(isVideo, "isVideo");
 function tFileName(fromName) {
   var _a2;
   let name;
@@ -42685,7 +42127,6 @@ function tFileName(fromName) {
   }
   return name;
 }
-__name(tFileName, "tFileName");
 function tModelsUrl(apiClient, baseModels) {
   let res;
   if (apiClient.isVertexAI()) {
@@ -42695,7 +42136,6 @@ function tModelsUrl(apiClient, baseModels) {
   }
   return res;
 }
-__name(tModelsUrl, "tModelsUrl");
 function tExtractModels(response) {
   for (const key of ["models", "tunedModels", "publisherModels"]) {
     if (hasField(response, key)) {
@@ -42704,11 +42144,9 @@ function tExtractModels(response) {
   }
   return [];
 }
-__name(tExtractModels, "tExtractModels");
 function hasField(data, fieldName) {
   return data !== null && typeof data === "object" && fieldName in data;
 }
-__name(hasField, "hasField");
 function mcpToGeminiTool(mcpTool, config = {}) {
   const mcpToolSchema = mcpTool;
   const functionDeclaration = {
@@ -42729,7 +42167,6 @@ function mcpToGeminiTool(mcpTool, config = {}) {
   };
   return geminiTool;
 }
-__name(mcpToGeminiTool, "mcpToGeminiTool");
 function mcpToolsToGeminiTool(mcpTools, config = {}) {
   const functionDeclarations = [];
   const toolNames = /* @__PURE__ */ new Set();
@@ -42746,7 +42183,6 @@ function mcpToolsToGeminiTool(mcpTools, config = {}) {
   }
   return { functionDeclarations };
 }
-__name(mcpToolsToGeminiTool, "mcpToolsToGeminiTool");
 function tBatchJobSource(client, src) {
   let sourceObj;
   if (typeof src === "string") {
@@ -42795,7 +42231,6 @@ function tBatchJobSource(client, src) {
   }
   return sourceObj;
 }
-__name(tBatchJobSource, "tBatchJobSource");
 function tBatchJobDestination(dest) {
   if (typeof dest !== "string") {
     return dest;
@@ -42815,7 +42250,6 @@ function tBatchJobDestination(dest) {
     throw new Error(`Unsupported destination: ${destString}`);
   }
 }
-__name(tBatchJobDestination, "tBatchJobDestination");
 function tRecvBatchJobDestination(dest) {
   if (typeof dest !== "object" || dest === null) {
     return {};
@@ -42852,7 +42286,6 @@ function tRecvBatchJobDestination(dest) {
   }
   return dest;
 }
-__name(tRecvBatchJobDestination, "tRecvBatchJobDestination");
 function tBatchJobName(apiClient, name) {
   const nameString = name;
   if (!apiClient.isVertexAI()) {
@@ -42872,7 +42305,6 @@ function tBatchJobName(apiClient, name) {
     throw new Error(`Invalid batch job name: ${nameString}.`);
   }
 }
-__name(tBatchJobName, "tBatchJobName");
 function tJobState(state) {
   const stateString = state;
   if (stateString === "BATCH_STATE_UNSPECIFIED") {
@@ -42893,11 +42325,9 @@ function tJobState(state) {
     return stateString;
   }
 }
-__name(tJobState, "tJobState");
 function tIsVertexEmbedContentModel(model) {
   return model.includes("gemini") && model !== "gemini-embedding-001" || model.includes("maas");
 }
-__name(tIsVertexEmbedContentModel, "tIsVertexEmbedContentModel");
 function authConfigToMldev$4(fromObject) {
   const toObject = {};
   const fromApiKey = getValueByPath(fromObject, ["apiKey"]);
@@ -42924,7 +42354,6 @@ function authConfigToMldev$4(fromObject) {
   }
   return toObject;
 }
-__name(authConfigToMldev$4, "authConfigToMldev$4");
 function batchJobDestinationFromMldev(fromObject) {
   const toObject = {};
   const fromFileName = getValueByPath(fromObject, ["responsesFile"]);
@@ -42959,7 +42388,6 @@ function batchJobDestinationFromMldev(fromObject) {
   }
   return toObject;
 }
-__name(batchJobDestinationFromMldev, "batchJobDestinationFromMldev");
 function batchJobDestinationFromVertex(fromObject) {
   const toObject = {};
   const fromFormat = getValueByPath(fromObject, ["predictionsFormat"]);
@@ -42988,7 +42416,6 @@ function batchJobDestinationFromVertex(fromObject) {
   }
   return toObject;
 }
-__name(batchJobDestinationFromVertex, "batchJobDestinationFromVertex");
 function batchJobDestinationToVertex(fromObject) {
   const toObject = {};
   const fromFormat = getValueByPath(fromObject, ["format"]);
@@ -43020,7 +42447,6 @@ function batchJobDestinationToVertex(fromObject) {
   }
   return toObject;
 }
-__name(batchJobDestinationToVertex, "batchJobDestinationToVertex");
 function batchJobFromMldev(fromObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -43069,7 +42495,6 @@ function batchJobFromMldev(fromObject) {
   }
   return toObject;
 }
-__name(batchJobFromMldev, "batchJobFromMldev");
 function batchJobFromVertex(fromObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -43128,7 +42553,6 @@ function batchJobFromVertex(fromObject) {
   }
   return toObject;
 }
-__name(batchJobFromVertex, "batchJobFromVertex");
 function batchJobSourceFromVertex(fromObject) {
   const toObject = {};
   const fromFormat = getValueByPath(fromObject, ["instancesFormat"]);
@@ -43155,7 +42579,6 @@ function batchJobSourceFromVertex(fromObject) {
   }
   return toObject;
 }
-__name(batchJobSourceFromVertex, "batchJobSourceFromVertex");
 function batchJobSourceToMldev(apiClient, fromObject) {
   const toObject = {};
   if (getValueByPath(fromObject, ["format"]) !== void 0) {
@@ -43188,7 +42611,6 @@ function batchJobSourceToMldev(apiClient, fromObject) {
   }
   return toObject;
 }
-__name(batchJobSourceToMldev, "batchJobSourceToMldev");
 function batchJobSourceToVertex(fromObject) {
   const toObject = {};
   const fromFormat = getValueByPath(fromObject, ["format"]);
@@ -43217,7 +42639,6 @@ function batchJobSourceToVertex(fromObject) {
   }
   return toObject;
 }
-__name(batchJobSourceToVertex, "batchJobSourceToVertex");
 function blobToMldev$4(fromObject) {
   const toObject = {};
   const fromData = getValueByPath(fromObject, ["data"]);
@@ -43233,7 +42654,6 @@ function blobToMldev$4(fromObject) {
   }
   return toObject;
 }
-__name(blobToMldev$4, "blobToMldev$4");
 function cancelBatchJobParametersToMldev(apiClient, fromObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -43242,7 +42662,6 @@ function cancelBatchJobParametersToMldev(apiClient, fromObject) {
   }
   return toObject;
 }
-__name(cancelBatchJobParametersToMldev, "cancelBatchJobParametersToMldev");
 function cancelBatchJobParametersToVertex(apiClient, fromObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -43251,7 +42670,6 @@ function cancelBatchJobParametersToVertex(apiClient, fromObject) {
   }
   return toObject;
 }
-__name(cancelBatchJobParametersToVertex, "cancelBatchJobParametersToVertex");
 function candidateFromMldev$1(fromObject) {
   const toObject = {};
   const fromContent = getValueByPath(fromObject, ["content"]);
@@ -43312,7 +42730,6 @@ function candidateFromMldev$1(fromObject) {
   }
   return toObject;
 }
-__name(candidateFromMldev$1, "candidateFromMldev$1");
 function citationMetadataFromMldev$1(fromObject) {
   const toObject = {};
   const fromCitations = getValueByPath(fromObject, ["citationSources"]);
@@ -43327,7 +42744,6 @@ function citationMetadataFromMldev$1(fromObject) {
   }
   return toObject;
 }
-__name(citationMetadataFromMldev$1, "citationMetadataFromMldev$1");
 function contentToMldev$4(fromObject) {
   const toObject = {};
   const fromParts = getValueByPath(fromObject, ["parts"]);
@@ -43346,7 +42762,6 @@ function contentToMldev$4(fromObject) {
   }
   return toObject;
 }
-__name(contentToMldev$4, "contentToMldev$4");
 function createBatchJobConfigToMldev(fromObject, parentObject) {
   const toObject = {};
   const fromDisplayName = getValueByPath(fromObject, ["displayName"]);
@@ -43364,7 +42779,6 @@ function createBatchJobConfigToMldev(fromObject, parentObject) {
   }
   return toObject;
 }
-__name(createBatchJobConfigToMldev, "createBatchJobConfigToMldev");
 function createBatchJobConfigToVertex(fromObject, parentObject) {
   const toObject = {};
   const fromDisplayName = getValueByPath(fromObject, ["displayName"]);
@@ -43380,7 +42794,6 @@ function createBatchJobConfigToVertex(fromObject, parentObject) {
   }
   return toObject;
 }
-__name(createBatchJobConfigToVertex, "createBatchJobConfigToVertex");
 function createBatchJobParametersToMldev(apiClient, fromObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -43397,7 +42810,6 @@ function createBatchJobParametersToMldev(apiClient, fromObject) {
   }
   return toObject;
 }
-__name(createBatchJobParametersToMldev, "createBatchJobParametersToMldev");
 function createBatchJobParametersToVertex(apiClient, fromObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -43414,7 +42826,6 @@ function createBatchJobParametersToVertex(apiClient, fromObject) {
   }
   return toObject;
 }
-__name(createBatchJobParametersToVertex, "createBatchJobParametersToVertex");
 function createEmbeddingsBatchJobConfigToMldev(fromObject, parentObject) {
   const toObject = {};
   const fromDisplayName = getValueByPath(fromObject, ["displayName"]);
@@ -43423,7 +42834,6 @@ function createEmbeddingsBatchJobConfigToMldev(fromObject, parentObject) {
   }
   return toObject;
 }
-__name(createEmbeddingsBatchJobConfigToMldev, "createEmbeddingsBatchJobConfigToMldev");
 function createEmbeddingsBatchJobParametersToMldev(apiClient, fromObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -43440,7 +42850,6 @@ function createEmbeddingsBatchJobParametersToMldev(apiClient, fromObject) {
   }
   return toObject;
 }
-__name(createEmbeddingsBatchJobParametersToMldev, "createEmbeddingsBatchJobParametersToMldev");
 function deleteBatchJobParametersToMldev(apiClient, fromObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -43449,7 +42858,6 @@ function deleteBatchJobParametersToMldev(apiClient, fromObject) {
   }
   return toObject;
 }
-__name(deleteBatchJobParametersToMldev, "deleteBatchJobParametersToMldev");
 function deleteBatchJobParametersToVertex(apiClient, fromObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -43458,7 +42866,6 @@ function deleteBatchJobParametersToVertex(apiClient, fromObject) {
   }
   return toObject;
 }
-__name(deleteBatchJobParametersToVertex, "deleteBatchJobParametersToVertex");
 function deleteResourceJobFromMldev(fromObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -43481,7 +42888,6 @@ function deleteResourceJobFromMldev(fromObject) {
   }
   return toObject;
 }
-__name(deleteResourceJobFromMldev, "deleteResourceJobFromMldev");
 function deleteResourceJobFromVertex(fromObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -43504,7 +42910,6 @@ function deleteResourceJobFromVertex(fromObject) {
   }
   return toObject;
 }
-__name(deleteResourceJobFromVertex, "deleteResourceJobFromVertex");
 function embedContentBatchToMldev(apiClient, fromObject) {
   const toObject = {};
   const fromContents = getValueByPath(fromObject, ["contents"]);
@@ -43524,7 +42929,6 @@ function embedContentBatchToMldev(apiClient, fromObject) {
   }
   return toObject;
 }
-__name(embedContentBatchToMldev, "embedContentBatchToMldev");
 function embedContentConfigToMldev$1(fromObject, parentObject) {
   const toObject = {};
   const fromTaskType = getValueByPath(fromObject, ["taskType"]);
@@ -43555,7 +42959,6 @@ function embedContentConfigToMldev$1(fromObject, parentObject) {
   }
   return toObject;
 }
-__name(embedContentConfigToMldev$1, "embedContentConfigToMldev$1");
 function embeddingsBatchJobSourceToMldev(apiClient, fromObject) {
   const toObject = {};
   const fromFileName = getValueByPath(fromObject, ["fileName"]);
@@ -43570,7 +42973,6 @@ function embeddingsBatchJobSourceToMldev(apiClient, fromObject) {
   }
   return toObject;
 }
-__name(embeddingsBatchJobSourceToMldev, "embeddingsBatchJobSourceToMldev");
 function fileDataToMldev$4(fromObject) {
   const toObject = {};
   if (getValueByPath(fromObject, ["displayName"]) !== void 0) {
@@ -43586,7 +42988,6 @@ function fileDataToMldev$4(fromObject) {
   }
   return toObject;
 }
-__name(fileDataToMldev$4, "fileDataToMldev$4");
 function functionCallToMldev$4(fromObject) {
   const toObject = {};
   const fromArgs = getValueByPath(fromObject, ["args"]);
@@ -43609,7 +43010,6 @@ function functionCallToMldev$4(fromObject) {
   }
   return toObject;
 }
-__name(functionCallToMldev$4, "functionCallToMldev$4");
 function functionCallingConfigToMldev$2(fromObject) {
   const toObject = {};
   const fromAllowedFunctionNames = getValueByPath(fromObject, [
@@ -43627,7 +43027,6 @@ function functionCallingConfigToMldev$2(fromObject) {
   }
   return toObject;
 }
-__name(functionCallingConfigToMldev$2, "functionCallingConfigToMldev$2");
 function generateContentConfigToMldev$1(apiClient, fromObject, parentObject) {
   const toObject = {};
   const fromServiceTier = getValueByPath(fromObject, ["serviceTier"]);
@@ -43801,7 +43200,6 @@ function generateContentConfigToMldev$1(apiClient, fromObject, parentObject) {
   }
   return toObject;
 }
-__name(generateContentConfigToMldev$1, "generateContentConfigToMldev$1");
 function generateContentResponseFromMldev$1(fromObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -43846,7 +43244,6 @@ function generateContentResponseFromMldev$1(fromObject) {
   }
   return toObject;
 }
-__name(generateContentResponseFromMldev$1, "generateContentResponseFromMldev$1");
 function getBatchJobParametersToMldev(apiClient, fromObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -43855,7 +43252,6 @@ function getBatchJobParametersToMldev(apiClient, fromObject) {
   }
   return toObject;
 }
-__name(getBatchJobParametersToMldev, "getBatchJobParametersToMldev");
 function getBatchJobParametersToVertex(apiClient, fromObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -43864,7 +43260,6 @@ function getBatchJobParametersToVertex(apiClient, fromObject) {
   }
   return toObject;
 }
-__name(getBatchJobParametersToVertex, "getBatchJobParametersToVertex");
 function googleMapsToMldev$4(fromObject) {
   const toObject = {};
   const fromAuthConfig = getValueByPath(fromObject, ["authConfig"]);
@@ -43880,7 +43275,6 @@ function googleMapsToMldev$4(fromObject) {
   }
   return toObject;
 }
-__name(googleMapsToMldev$4, "googleMapsToMldev$4");
 function googleSearchToMldev$4(fromObject) {
   const toObject = {};
   if (getValueByPath(fromObject, ["blockingConfidence"]) !== void 0) {
@@ -43901,7 +43295,6 @@ function googleSearchToMldev$4(fromObject) {
   }
   return toObject;
 }
-__name(googleSearchToMldev$4, "googleSearchToMldev$4");
 function imageConfigToMldev$1(fromObject) {
   const toObject = {};
   const fromAspectRatio = getValueByPath(fromObject, ["aspectRatio"]);
@@ -43929,7 +43322,6 @@ function imageConfigToMldev$1(fromObject) {
   }
   return toObject;
 }
-__name(imageConfigToMldev$1, "imageConfigToMldev$1");
 function inlinedRequestToMldev(apiClient, fromObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -43956,7 +43348,6 @@ function inlinedRequestToMldev(apiClient, fromObject) {
   }
   return toObject;
 }
-__name(inlinedRequestToMldev, "inlinedRequestToMldev");
 function inlinedResponseFromMldev(fromObject) {
   const toObject = {};
   const fromResponse = getValueByPath(fromObject, ["response"]);
@@ -43973,7 +43364,6 @@ function inlinedResponseFromMldev(fromObject) {
   }
   return toObject;
 }
-__name(inlinedResponseFromMldev, "inlinedResponseFromMldev");
 function listBatchJobsConfigToMldev(fromObject, parentObject) {
   const toObject = {};
   const fromPageSize = getValueByPath(fromObject, ["pageSize"]);
@@ -43989,7 +43379,6 @@ function listBatchJobsConfigToMldev(fromObject, parentObject) {
   }
   return toObject;
 }
-__name(listBatchJobsConfigToMldev, "listBatchJobsConfigToMldev");
 function listBatchJobsConfigToVertex(fromObject, parentObject) {
   const toObject = {};
   const fromPageSize = getValueByPath(fromObject, ["pageSize"]);
@@ -44006,7 +43395,6 @@ function listBatchJobsConfigToVertex(fromObject, parentObject) {
   }
   return toObject;
 }
-__name(listBatchJobsConfigToVertex, "listBatchJobsConfigToVertex");
 function listBatchJobsParametersToMldev(fromObject) {
   const toObject = {};
   const fromConfig = getValueByPath(fromObject, ["config"]);
@@ -44015,7 +43403,6 @@ function listBatchJobsParametersToMldev(fromObject) {
   }
   return toObject;
 }
-__name(listBatchJobsParametersToMldev, "listBatchJobsParametersToMldev");
 function listBatchJobsParametersToVertex(fromObject) {
   const toObject = {};
   const fromConfig = getValueByPath(fromObject, ["config"]);
@@ -44024,7 +43411,6 @@ function listBatchJobsParametersToVertex(fromObject) {
   }
   return toObject;
 }
-__name(listBatchJobsParametersToVertex, "listBatchJobsParametersToVertex");
 function listBatchJobsResponseFromMldev(fromObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -44051,7 +43437,6 @@ function listBatchJobsResponseFromMldev(fromObject) {
   }
   return toObject;
 }
-__name(listBatchJobsResponseFromMldev, "listBatchJobsResponseFromMldev");
 function listBatchJobsResponseFromVertex(fromObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -44080,7 +43465,6 @@ function listBatchJobsResponseFromVertex(fromObject) {
   }
   return toObject;
 }
-__name(listBatchJobsResponseFromVertex, "listBatchJobsResponseFromVertex");
 function partToMldev$4(fromObject) {
   const toObject = {};
   const fromMediaResolution = getValueByPath(fromObject, [
@@ -44159,7 +43543,6 @@ function partToMldev$4(fromObject) {
   }
   return toObject;
 }
-__name(partToMldev$4, "partToMldev$4");
 function safetySettingToMldev$3(fromObject) {
   const toObject = {};
   const fromCategory = getValueByPath(fromObject, ["category"]);
@@ -44175,7 +43558,6 @@ function safetySettingToMldev$3(fromObject) {
   }
   return toObject;
 }
-__name(safetySettingToMldev$3, "safetySettingToMldev$3");
 function toolConfigToMldev$2(fromObject) {
   const toObject = {};
   const fromFunctionCallingConfig = getValueByPath(fromObject, [
@@ -44196,7 +43578,6 @@ function toolConfigToMldev$2(fromObject) {
   }
   return toObject;
 }
-__name(toolConfigToMldev$2, "toolConfigToMldev$2");
 function toolToMldev$4(fromObject) {
   const toObject = {};
   if (getValueByPath(fromObject, ["retrieval"]) !== void 0) {
@@ -44267,7 +43648,6 @@ function toolToMldev$4(fromObject) {
   }
   return toObject;
 }
-__name(toolToMldev$4, "toolToMldev$4");
 function vertexMultimodalDatasetDestinationFromVertex(fromObject) {
   const toObject = {};
   const fromBigqueryDestination = getValueByPath(fromObject, [
@@ -44283,7 +43663,6 @@ function vertexMultimodalDatasetDestinationFromVertex(fromObject) {
   }
   return toObject;
 }
-__name(vertexMultimodalDatasetDestinationFromVertex, "vertexMultimodalDatasetDestinationFromVertex");
 function vertexMultimodalDatasetDestinationToVertex(fromObject) {
   const toObject = {};
   const fromBigqueryDestination = getValueByPath(fromObject, [
@@ -44298,7 +43677,6 @@ function vertexMultimodalDatasetDestinationToVertex(fromObject) {
   }
   return toObject;
 }
-__name(vertexMultimodalDatasetDestinationToVertex, "vertexMultimodalDatasetDestinationToVertex");
 function authConfigToMldev$3(fromObject) {
   const toObject = {};
   const fromApiKey = getValueByPath(fromObject, ["apiKey"]);
@@ -44325,7 +43703,6 @@ function authConfigToMldev$3(fromObject) {
   }
   return toObject;
 }
-__name(authConfigToMldev$3, "authConfigToMldev$3");
 function blobToMldev$3(fromObject) {
   const toObject = {};
   const fromData = getValueByPath(fromObject, ["data"]);
@@ -44341,7 +43718,6 @@ function blobToMldev$3(fromObject) {
   }
   return toObject;
 }
-__name(blobToMldev$3, "blobToMldev$3");
 function computerUseToVertex$2(fromObject) {
   const toObject = {};
   const fromEnablePromptInjectionDetection = getValueByPath(fromObject, [
@@ -44365,7 +43741,6 @@ function computerUseToVertex$2(fromObject) {
   }
   return toObject;
 }
-__name(computerUseToVertex$2, "computerUseToVertex$2");
 function contentToMldev$3(fromObject) {
   const toObject = {};
   const fromParts = getValueByPath(fromObject, ["parts"]);
@@ -44384,7 +43759,6 @@ function contentToMldev$3(fromObject) {
   }
   return toObject;
 }
-__name(contentToMldev$3, "contentToMldev$3");
 function contentToVertex$3(fromObject) {
   const toObject = {};
   const fromParts = getValueByPath(fromObject, ["parts"]);
@@ -44403,7 +43777,6 @@ function contentToVertex$3(fromObject) {
   }
   return toObject;
 }
-__name(contentToVertex$3, "contentToVertex$3");
 function createCachedContentConfigToMldev(fromObject, parentObject) {
   const toObject = {};
   const fromTtl = getValueByPath(fromObject, ["ttl"]);
@@ -44453,7 +43826,6 @@ function createCachedContentConfigToMldev(fromObject, parentObject) {
   }
   return toObject;
 }
-__name(createCachedContentConfigToMldev, "createCachedContentConfigToMldev");
 function createCachedContentConfigToVertex(fromObject, parentObject) {
   const toObject = {};
   const fromTtl = getValueByPath(fromObject, ["ttl"]);
@@ -44504,7 +43876,6 @@ function createCachedContentConfigToVertex(fromObject, parentObject) {
   }
   return toObject;
 }
-__name(createCachedContentConfigToVertex, "createCachedContentConfigToVertex");
 function createCachedContentParametersToMldev(apiClient, fromObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -44517,7 +43888,6 @@ function createCachedContentParametersToMldev(apiClient, fromObject) {
   }
   return toObject;
 }
-__name(createCachedContentParametersToMldev, "createCachedContentParametersToMldev");
 function createCachedContentParametersToVertex(apiClient, fromObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -44530,7 +43900,6 @@ function createCachedContentParametersToVertex(apiClient, fromObject) {
   }
   return toObject;
 }
-__name(createCachedContentParametersToVertex, "createCachedContentParametersToVertex");
 function deleteCachedContentParametersToMldev(apiClient, fromObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -44539,7 +43908,6 @@ function deleteCachedContentParametersToMldev(apiClient, fromObject) {
   }
   return toObject;
 }
-__name(deleteCachedContentParametersToMldev, "deleteCachedContentParametersToMldev");
 function deleteCachedContentParametersToVertex(apiClient, fromObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -44548,7 +43916,6 @@ function deleteCachedContentParametersToVertex(apiClient, fromObject) {
   }
   return toObject;
 }
-__name(deleteCachedContentParametersToVertex, "deleteCachedContentParametersToVertex");
 function deleteCachedContentResponseFromMldev(fromObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -44559,7 +43926,6 @@ function deleteCachedContentResponseFromMldev(fromObject) {
   }
   return toObject;
 }
-__name(deleteCachedContentResponseFromMldev, "deleteCachedContentResponseFromMldev");
 function deleteCachedContentResponseFromVertex(fromObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -44570,7 +43936,6 @@ function deleteCachedContentResponseFromVertex(fromObject) {
   }
   return toObject;
 }
-__name(deleteCachedContentResponseFromVertex, "deleteCachedContentResponseFromVertex");
 function fileDataToMldev$3(fromObject) {
   const toObject = {};
   if (getValueByPath(fromObject, ["displayName"]) !== void 0) {
@@ -44586,7 +43951,6 @@ function fileDataToMldev$3(fromObject) {
   }
   return toObject;
 }
-__name(fileDataToMldev$3, "fileDataToMldev$3");
 function functionCallToMldev$3(fromObject) {
   const toObject = {};
   const fromArgs = getValueByPath(fromObject, ["args"]);
@@ -44609,7 +43973,6 @@ function functionCallToMldev$3(fromObject) {
   }
   return toObject;
 }
-__name(functionCallToMldev$3, "functionCallToMldev$3");
 function functionCallingConfigToMldev$1(fromObject) {
   const toObject = {};
   const fromAllowedFunctionNames = getValueByPath(fromObject, [
@@ -44627,7 +43990,6 @@ function functionCallingConfigToMldev$1(fromObject) {
   }
   return toObject;
 }
-__name(functionCallingConfigToMldev$1, "functionCallingConfigToMldev$1");
 function getCachedContentParametersToMldev(apiClient, fromObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -44636,7 +43998,6 @@ function getCachedContentParametersToMldev(apiClient, fromObject) {
   }
   return toObject;
 }
-__name(getCachedContentParametersToMldev, "getCachedContentParametersToMldev");
 function getCachedContentParametersToVertex(apiClient, fromObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -44645,7 +44006,6 @@ function getCachedContentParametersToVertex(apiClient, fromObject) {
   }
   return toObject;
 }
-__name(getCachedContentParametersToVertex, "getCachedContentParametersToVertex");
 function googleMapsToMldev$3(fromObject) {
   const toObject = {};
   const fromAuthConfig = getValueByPath(fromObject, ["authConfig"]);
@@ -44661,7 +44021,6 @@ function googleMapsToMldev$3(fromObject) {
   }
   return toObject;
 }
-__name(googleMapsToMldev$3, "googleMapsToMldev$3");
 function googleSearchToMldev$3(fromObject) {
   const toObject = {};
   if (getValueByPath(fromObject, ["blockingConfidence"]) !== void 0) {
@@ -44682,7 +44041,6 @@ function googleSearchToMldev$3(fromObject) {
   }
   return toObject;
 }
-__name(googleSearchToMldev$3, "googleSearchToMldev$3");
 function listCachedContentsConfigToMldev(fromObject, parentObject) {
   const toObject = {};
   const fromPageSize = getValueByPath(fromObject, ["pageSize"]);
@@ -44695,7 +44053,6 @@ function listCachedContentsConfigToMldev(fromObject, parentObject) {
   }
   return toObject;
 }
-__name(listCachedContentsConfigToMldev, "listCachedContentsConfigToMldev");
 function listCachedContentsConfigToVertex(fromObject, parentObject) {
   const toObject = {};
   const fromPageSize = getValueByPath(fromObject, ["pageSize"]);
@@ -44708,7 +44065,6 @@ function listCachedContentsConfigToVertex(fromObject, parentObject) {
   }
   return toObject;
 }
-__name(listCachedContentsConfigToVertex, "listCachedContentsConfigToVertex");
 function listCachedContentsParametersToMldev(fromObject) {
   const toObject = {};
   const fromConfig = getValueByPath(fromObject, ["config"]);
@@ -44717,7 +44073,6 @@ function listCachedContentsParametersToMldev(fromObject) {
   }
   return toObject;
 }
-__name(listCachedContentsParametersToMldev, "listCachedContentsParametersToMldev");
 function listCachedContentsParametersToVertex(fromObject) {
   const toObject = {};
   const fromConfig = getValueByPath(fromObject, ["config"]);
@@ -44726,7 +44081,6 @@ function listCachedContentsParametersToVertex(fromObject) {
   }
   return toObject;
 }
-__name(listCachedContentsParametersToVertex, "listCachedContentsParametersToVertex");
 function listCachedContentsResponseFromMldev(fromObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -44755,7 +44109,6 @@ function listCachedContentsResponseFromMldev(fromObject) {
   }
   return toObject;
 }
-__name(listCachedContentsResponseFromMldev, "listCachedContentsResponseFromMldev");
 function listCachedContentsResponseFromVertex(fromObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -44784,7 +44137,6 @@ function listCachedContentsResponseFromVertex(fromObject) {
   }
   return toObject;
 }
-__name(listCachedContentsResponseFromVertex, "listCachedContentsResponseFromVertex");
 function mcpServerToVertex$2(fromObject) {
   const toObject = {};
   if (getValueByPath(fromObject, ["name"]) !== void 0) {
@@ -44795,7 +44147,6 @@ function mcpServerToVertex$2(fromObject) {
   }
   return toObject;
 }
-__name(mcpServerToVertex$2, "mcpServerToVertex$2");
 function partToMldev$3(fromObject) {
   const toObject = {};
   const fromMediaResolution = getValueByPath(fromObject, [
@@ -44874,7 +44225,6 @@ function partToMldev$3(fromObject) {
   }
   return toObject;
 }
-__name(partToMldev$3, "partToMldev$3");
 function partToVertex$3(fromObject) {
   const toObject = {};
   const fromMediaResolution = getValueByPath(fromObject, [
@@ -44950,7 +44300,6 @@ function partToVertex$3(fromObject) {
   }
   return toObject;
 }
-__name(partToVertex$3, "partToVertex$3");
 function toolConfigToMldev$1(fromObject) {
   const toObject = {};
   const fromFunctionCallingConfig = getValueByPath(fromObject, [
@@ -44971,7 +44320,6 @@ function toolConfigToMldev$1(fromObject) {
   }
   return toObject;
 }
-__name(toolConfigToMldev$1, "toolConfigToMldev$1");
 function toolConfigToVertex$1(fromObject) {
   const toObject = {};
   const fromFunctionCallingConfig = getValueByPath(fromObject, [
@@ -44991,7 +44339,6 @@ function toolConfigToVertex$1(fromObject) {
   }
   return toObject;
 }
-__name(toolConfigToVertex$1, "toolConfigToVertex$1");
 function toolToMldev$3(fromObject) {
   const toObject = {};
   if (getValueByPath(fromObject, ["retrieval"]) !== void 0) {
@@ -45062,7 +44409,6 @@ function toolToMldev$3(fromObject) {
   }
   return toObject;
 }
-__name(toolToMldev$3, "toolToMldev$3");
 function toolToVertex$2(fromObject) {
   const toObject = {};
   const fromRetrieval = getValueByPath(fromObject, ["retrieval"]);
@@ -45140,7 +44486,6 @@ function toolToVertex$2(fromObject) {
   }
   return toObject;
 }
-__name(toolToVertex$2, "toolToVertex$2");
 function updateCachedContentConfigToMldev(fromObject, parentObject) {
   const toObject = {};
   const fromTtl = getValueByPath(fromObject, ["ttl"]);
@@ -45153,7 +44498,6 @@ function updateCachedContentConfigToMldev(fromObject, parentObject) {
   }
   return toObject;
 }
-__name(updateCachedContentConfigToMldev, "updateCachedContentConfigToMldev");
 function updateCachedContentConfigToVertex(fromObject, parentObject) {
   const toObject = {};
   const fromTtl = getValueByPath(fromObject, ["ttl"]);
@@ -45166,7 +44510,6 @@ function updateCachedContentConfigToVertex(fromObject, parentObject) {
   }
   return toObject;
 }
-__name(updateCachedContentConfigToVertex, "updateCachedContentConfigToVertex");
 function updateCachedContentParametersToMldev(apiClient, fromObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -45179,7 +44522,6 @@ function updateCachedContentParametersToMldev(apiClient, fromObject) {
   }
   return toObject;
 }
-__name(updateCachedContentParametersToMldev, "updateCachedContentParametersToMldev");
 function updateCachedContentParametersToVertex(apiClient, fromObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -45192,7 +44534,6 @@ function updateCachedContentParametersToVertex(apiClient, fromObject) {
   }
   return toObject;
 }
-__name(updateCachedContentParametersToVertex, "updateCachedContentParametersToVertex");
 function __rest2(s, e) {
   var t = {};
   for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
@@ -45204,23 +44545,20 @@ function __rest2(s, e) {
     }
   return t;
 }
-__name(__rest2, "__rest2");
 function __values(o) {
   var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
   if (m) return m.call(o);
   if (o && typeof o.length === "number") return {
-    next: /* @__PURE__ */ __name2(function() {
+    next: /* @__PURE__ */ __name(function() {
       if (o && i >= o.length) o = void 0;
       return { value: o && o[i++], done: !o };
     }, "next")
   };
   throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
 }
-__name(__values, "__values");
 function __await(v) {
   return this instanceof __await ? (this.v = v, this) : new __await(v);
 }
-__name(__await, "__await");
 function __asyncGenerator(thisArg, _arguments, generator) {
   if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
   var g = generator.apply(thisArg, _arguments || []), i, q = [];
@@ -45233,7 +44571,6 @@ function __asyncGenerator(thisArg, _arguments, generator) {
     };
   }
   __name(awaitReturn, "awaitReturn");
-  __name2(awaitReturn, "awaitReturn");
   function verb(n, f) {
     if (g[n]) {
       i[n] = function(v) {
@@ -45245,7 +44582,6 @@ function __asyncGenerator(thisArg, _arguments, generator) {
     }
   }
   __name(verb, "verb");
-  __name2(verb, "verb");
   function resume(n, v) {
     try {
       step(g[n](v));
@@ -45254,29 +44590,23 @@ function __asyncGenerator(thisArg, _arguments, generator) {
     }
   }
   __name(resume, "resume");
-  __name2(resume, "resume");
   function step(r) {
     r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r);
   }
   __name(step, "step");
-  __name2(step, "step");
   function fulfill(value) {
     resume("next", value);
   }
   __name(fulfill, "fulfill");
-  __name2(fulfill, "fulfill");
   function reject(value) {
     resume("throw", value);
   }
   __name(reject, "reject");
-  __name2(reject, "reject");
   function settle(f, v) {
     if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]);
   }
   __name(settle, "settle");
-  __name2(settle, "settle");
 }
-__name(__asyncGenerator, "__asyncGenerator");
 function __asyncValues(o) {
   if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
   var m = o[Symbol.asyncIterator], i;
@@ -45291,16 +44621,13 @@ function __asyncValues(o) {
     };
   }
   __name(verb, "verb");
-  __name2(verb, "verb");
   function settle(resolve, reject, d, v) {
     Promise.resolve(v).then(function(v2) {
       resolve({ value: v2, done: d });
     }, reject);
   }
   __name(settle, "settle");
-  __name2(settle, "settle");
 }
-__name(__asyncValues, "__asyncValues");
 function isValidResponse(response) {
   var _a2;
   if (response.candidates == void 0 || response.candidates.length === 0) {
@@ -45312,7 +44639,6 @@ function isValidResponse(response) {
   }
   return isValidContent(content);
 }
-__name(isValidResponse, "isValidResponse");
 function isValidContent(content) {
   if (content.parts === void 0 || content.parts.length === 0) {
     return false;
@@ -45324,7 +44650,6 @@ function isValidContent(content) {
   }
   return true;
 }
-__name(isValidContent, "isValidContent");
 function validateHistory(history) {
   if (history.length === 0) {
     return;
@@ -45335,7 +44660,6 @@ function validateHistory(history) {
     }
   }
 }
-__name(validateHistory, "validateHistory");
 function extractCuratedHistory(comprehensiveHistory) {
   if (comprehensiveHistory === void 0 || comprehensiveHistory.length === 0) {
     return [];
@@ -45366,7 +44690,6 @@ function extractCuratedHistory(comprehensiveHistory) {
   }
   return curatedHistory;
 }
-__name(extractCuratedHistory, "extractCuratedHistory");
 function createFileParametersToMldev(fromObject) {
   const toObject = {};
   const fromFile = getValueByPath(fromObject, ["file"]);
@@ -45375,7 +44698,6 @@ function createFileParametersToMldev(fromObject) {
   }
   return toObject;
 }
-__name(createFileParametersToMldev, "createFileParametersToMldev");
 function createFileResponseFromMldev(fromObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -45386,7 +44708,6 @@ function createFileResponseFromMldev(fromObject) {
   }
   return toObject;
 }
-__name(createFileResponseFromMldev, "createFileResponseFromMldev");
 function deleteFileParametersToMldev(fromObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -45395,7 +44716,6 @@ function deleteFileParametersToMldev(fromObject) {
   }
   return toObject;
 }
-__name(deleteFileParametersToMldev, "deleteFileParametersToMldev");
 function deleteFileResponseFromMldev(fromObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -45406,7 +44726,6 @@ function deleteFileResponseFromMldev(fromObject) {
   }
   return toObject;
 }
-__name(deleteFileResponseFromMldev, "deleteFileResponseFromMldev");
 function getFileParametersToMldev(fromObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -45415,7 +44734,6 @@ function getFileParametersToMldev(fromObject) {
   }
   return toObject;
 }
-__name(getFileParametersToMldev, "getFileParametersToMldev");
 function internalRegisterFilesParametersToMldev(fromObject) {
   const toObject = {};
   const fromUris = getValueByPath(fromObject, ["uris"]);
@@ -45424,7 +44742,6 @@ function internalRegisterFilesParametersToMldev(fromObject) {
   }
   return toObject;
 }
-__name(internalRegisterFilesParametersToMldev, "internalRegisterFilesParametersToMldev");
 function listFilesConfigToMldev(fromObject, parentObject) {
   const toObject = {};
   const fromPageSize = getValueByPath(fromObject, ["pageSize"]);
@@ -45437,7 +44754,6 @@ function listFilesConfigToMldev(fromObject, parentObject) {
   }
   return toObject;
 }
-__name(listFilesConfigToMldev, "listFilesConfigToMldev");
 function listFilesParametersToMldev(fromObject) {
   const toObject = {};
   const fromConfig = getValueByPath(fromObject, ["config"]);
@@ -45446,7 +44762,6 @@ function listFilesParametersToMldev(fromObject) {
   }
   return toObject;
 }
-__name(listFilesParametersToMldev, "listFilesParametersToMldev");
 function listFilesResponseFromMldev(fromObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -45473,7 +44788,6 @@ function listFilesResponseFromMldev(fromObject) {
   }
   return toObject;
 }
-__name(listFilesResponseFromMldev, "listFilesResponseFromMldev");
 function registerFilesResponseFromMldev(fromObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -45494,7 +44808,6 @@ function registerFilesResponseFromMldev(fromObject) {
   }
   return toObject;
 }
-__name(registerFilesResponseFromMldev, "registerFilesResponseFromMldev");
 function authConfigToMldev$2(fromObject) {
   const toObject = {};
   const fromApiKey = getValueByPath(fromObject, ["apiKey"]);
@@ -45521,7 +44834,6 @@ function authConfigToMldev$2(fromObject) {
   }
   return toObject;
 }
-__name(authConfigToMldev$2, "authConfigToMldev$2");
 function blobToMldev$2(fromObject) {
   const toObject = {};
   const fromData = getValueByPath(fromObject, ["data"]);
@@ -45537,7 +44849,6 @@ function blobToMldev$2(fromObject) {
   }
   return toObject;
 }
-__name(blobToMldev$2, "blobToMldev$2");
 function computerUseToVertex$1(fromObject) {
   const toObject = {};
   const fromEnablePromptInjectionDetection = getValueByPath(fromObject, [
@@ -45561,7 +44872,6 @@ function computerUseToVertex$1(fromObject) {
   }
   return toObject;
 }
-__name(computerUseToVertex$1, "computerUseToVertex$1");
 function contentToMldev$2(fromObject) {
   const toObject = {};
   const fromParts = getValueByPath(fromObject, ["parts"]);
@@ -45580,7 +44890,6 @@ function contentToMldev$2(fromObject) {
   }
   return toObject;
 }
-__name(contentToMldev$2, "contentToMldev$2");
 function contentToVertex$2(fromObject) {
   const toObject = {};
   const fromParts = getValueByPath(fromObject, ["parts"]);
@@ -45599,7 +44908,6 @@ function contentToVertex$2(fromObject) {
   }
   return toObject;
 }
-__name(contentToVertex$2, "contentToVertex$2");
 function fileDataToMldev$2(fromObject) {
   const toObject = {};
   if (getValueByPath(fromObject, ["displayName"]) !== void 0) {
@@ -45615,7 +44923,6 @@ function fileDataToMldev$2(fromObject) {
   }
   return toObject;
 }
-__name(fileDataToMldev$2, "fileDataToMldev$2");
 function functionCallToMldev$2(fromObject) {
   const toObject = {};
   const fromArgs = getValueByPath(fromObject, ["args"]);
@@ -45638,7 +44945,6 @@ function functionCallToMldev$2(fromObject) {
   }
   return toObject;
 }
-__name(functionCallToMldev$2, "functionCallToMldev$2");
 function generationConfigToVertex$1(fromObject) {
   const toObject = {};
   const fromModelSelectionConfig = getValueByPath(fromObject, [
@@ -45787,7 +45093,6 @@ function generationConfigToVertex$1(fromObject) {
   }
   return toObject;
 }
-__name(generationConfigToVertex$1, "generationConfigToVertex$1");
 function googleMapsToMldev$2(fromObject) {
   const toObject = {};
   const fromAuthConfig = getValueByPath(fromObject, ["authConfig"]);
@@ -45803,7 +45108,6 @@ function googleMapsToMldev$2(fromObject) {
   }
   return toObject;
 }
-__name(googleMapsToMldev$2, "googleMapsToMldev$2");
 function googleSearchToMldev$2(fromObject) {
   const toObject = {};
   if (getValueByPath(fromObject, ["blockingConfidence"]) !== void 0) {
@@ -45824,7 +45128,6 @@ function googleSearchToMldev$2(fromObject) {
   }
   return toObject;
 }
-__name(googleSearchToMldev$2, "googleSearchToMldev$2");
 function liveConnectConfigToMldev$1(fromObject, parentObject) {
   const toObject = {};
   const fromGenerationConfig = getValueByPath(fromObject, [
@@ -45960,7 +45263,6 @@ function liveConnectConfigToMldev$1(fromObject, parentObject) {
   }
   return toObject;
 }
-__name(liveConnectConfigToMldev$1, "liveConnectConfigToMldev$1");
 function liveConnectConfigToVertex(fromObject, parentObject) {
   const toObject = {};
   const fromGenerationConfig = getValueByPath(fromObject, [
@@ -46096,7 +45398,6 @@ function liveConnectConfigToVertex(fromObject, parentObject) {
   }
   return toObject;
 }
-__name(liveConnectConfigToVertex, "liveConnectConfigToVertex");
 function liveConnectParametersToMldev(apiClient, fromObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -46109,7 +45410,6 @@ function liveConnectParametersToMldev(apiClient, fromObject) {
   }
   return toObject;
 }
-__name(liveConnectParametersToMldev, "liveConnectParametersToMldev");
 function liveConnectParametersToVertex(apiClient, fromObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -46122,7 +45422,6 @@ function liveConnectParametersToVertex(apiClient, fromObject) {
   }
   return toObject;
 }
-__name(liveConnectParametersToVertex, "liveConnectParametersToVertex");
 function liveMusicSetConfigParametersToMldev(fromObject) {
   const toObject = {};
   const fromMusicGenerationConfig = getValueByPath(fromObject, [
@@ -46133,7 +45432,6 @@ function liveMusicSetConfigParametersToMldev(fromObject) {
   }
   return toObject;
 }
-__name(liveMusicSetConfigParametersToMldev, "liveMusicSetConfigParametersToMldev");
 function liveMusicSetWeightedPromptsParametersToMldev(fromObject) {
   const toObject = {};
   const fromWeightedPrompts = getValueByPath(fromObject, [
@@ -46150,7 +45448,6 @@ function liveMusicSetWeightedPromptsParametersToMldev(fromObject) {
   }
   return toObject;
 }
-__name(liveMusicSetWeightedPromptsParametersToMldev, "liveMusicSetWeightedPromptsParametersToMldev");
 function liveSendRealtimeInputParametersToMldev(fromObject) {
   const toObject = {};
   const fromMedia = getValueByPath(fromObject, ["media"]);
@@ -46193,7 +45490,6 @@ function liveSendRealtimeInputParametersToMldev(fromObject) {
   }
   return toObject;
 }
-__name(liveSendRealtimeInputParametersToMldev, "liveSendRealtimeInputParametersToMldev");
 function liveSendRealtimeInputParametersToVertex(fromObject) {
   const toObject = {};
   const fromMedia = getValueByPath(fromObject, ["media"]);
@@ -46236,7 +45532,6 @@ function liveSendRealtimeInputParametersToVertex(fromObject) {
   }
   return toObject;
 }
-__name(liveSendRealtimeInputParametersToVertex, "liveSendRealtimeInputParametersToVertex");
 function liveServerMessageFromVertex(fromObject) {
   const toObject = {};
   const fromSetupComplete = getValueByPath(fromObject, [
@@ -46291,7 +45586,6 @@ function liveServerMessageFromVertex(fromObject) {
   }
   return toObject;
 }
-__name(liveServerMessageFromVertex, "liveServerMessageFromVertex");
 function mcpServerToVertex$1(fromObject) {
   const toObject = {};
   if (getValueByPath(fromObject, ["name"]) !== void 0) {
@@ -46302,7 +45596,6 @@ function mcpServerToVertex$1(fromObject) {
   }
   return toObject;
 }
-__name(mcpServerToVertex$1, "mcpServerToVertex$1");
 function multiSpeakerVoiceConfigToVertex$1(fromObject) {
   const toObject = {};
   const fromSpeakerVoiceConfigs = getValueByPath(fromObject, [
@@ -46319,7 +45612,6 @@ function multiSpeakerVoiceConfigToVertex$1(fromObject) {
   }
   return toObject;
 }
-__name(multiSpeakerVoiceConfigToVertex$1, "multiSpeakerVoiceConfigToVertex$1");
 function partToMldev$2(fromObject) {
   const toObject = {};
   const fromMediaResolution = getValueByPath(fromObject, [
@@ -46398,7 +45690,6 @@ function partToMldev$2(fromObject) {
   }
   return toObject;
 }
-__name(partToMldev$2, "partToMldev$2");
 function partToVertex$2(fromObject) {
   const toObject = {};
   const fromMediaResolution = getValueByPath(fromObject, [
@@ -46474,7 +45765,6 @@ function partToVertex$2(fromObject) {
   }
   return toObject;
 }
-__name(partToVertex$2, "partToVertex$2");
 function replicatedVoiceConfigToVertex$1(fromObject) {
   const toObject = {};
   const fromMimeType = getValueByPath(fromObject, ["mimeType"]);
@@ -46495,7 +45785,6 @@ function replicatedVoiceConfigToVertex$1(fromObject) {
   }
   return toObject;
 }
-__name(replicatedVoiceConfigToVertex$1, "replicatedVoiceConfigToVertex$1");
 function safetySettingToMldev$2(fromObject) {
   const toObject = {};
   const fromCategory = getValueByPath(fromObject, ["category"]);
@@ -46511,7 +45800,6 @@ function safetySettingToMldev$2(fromObject) {
   }
   return toObject;
 }
-__name(safetySettingToMldev$2, "safetySettingToMldev$2");
 function sessionResumptionConfigToMldev$1(fromObject) {
   const toObject = {};
   const fromHandle = getValueByPath(fromObject, ["handle"]);
@@ -46523,7 +45811,6 @@ function sessionResumptionConfigToMldev$1(fromObject) {
   }
   return toObject;
 }
-__name(sessionResumptionConfigToMldev$1, "sessionResumptionConfigToMldev$1");
 function speakerVoiceConfigToVertex$1(fromObject) {
   const toObject = {};
   const fromSpeaker = getValueByPath(fromObject, ["speaker"]);
@@ -46536,7 +45823,6 @@ function speakerVoiceConfigToVertex$1(fromObject) {
   }
   return toObject;
 }
-__name(speakerVoiceConfigToVertex$1, "speakerVoiceConfigToVertex$1");
 function speechConfigToVertex$1(fromObject) {
   const toObject = {};
   const fromVoiceConfig = getValueByPath(fromObject, ["voiceConfig"]);
@@ -46555,7 +45841,6 @@ function speechConfigToVertex$1(fromObject) {
   }
   return toObject;
 }
-__name(speechConfigToVertex$1, "speechConfigToVertex$1");
 function toolToMldev$2(fromObject) {
   const toObject = {};
   if (getValueByPath(fromObject, ["retrieval"]) !== void 0) {
@@ -46626,7 +45911,6 @@ function toolToMldev$2(fromObject) {
   }
   return toObject;
 }
-__name(toolToMldev$2, "toolToMldev$2");
 function toolToVertex$1(fromObject) {
   const toObject = {};
   const fromRetrieval = getValueByPath(fromObject, ["retrieval"]);
@@ -46704,7 +45988,6 @@ function toolToVertex$1(fromObject) {
   }
   return toObject;
 }
-__name(toolToVertex$1, "toolToVertex$1");
 function usageMetadataFromVertex(fromObject) {
   const toObject = {};
   const fromResponseTokenCount = getValueByPath(fromObject, [
@@ -46797,7 +46080,6 @@ function usageMetadataFromVertex(fromObject) {
   }
   return toObject;
 }
-__name(usageMetadataFromVertex, "usageMetadataFromVertex");
 function voiceActivityFromVertex(fromObject) {
   const toObject = {};
   const fromVoiceActivityType = getValueByPath(fromObject, ["type"]);
@@ -46810,7 +46092,6 @@ function voiceActivityFromVertex(fromObject) {
   }
   return toObject;
 }
-__name(voiceActivityFromVertex, "voiceActivityFromVertex");
 function voiceConfigToVertex$1(fromObject) {
   const toObject = {};
   const fromReplicatedVoiceConfig = getValueByPath(fromObject, [
@@ -46827,7 +46108,6 @@ function voiceConfigToVertex$1(fromObject) {
   }
   return toObject;
 }
-__name(voiceConfigToVertex$1, "voiceConfigToVertex$1");
 function authConfigToMldev$1(fromObject, _rootObject) {
   const toObject = {};
   const fromApiKey = getValueByPath(fromObject, ["apiKey"]);
@@ -46854,7 +46134,6 @@ function authConfigToMldev$1(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(authConfigToMldev$1, "authConfigToMldev$1");
 function blobToMldev$1(fromObject, _rootObject) {
   const toObject = {};
   const fromData = getValueByPath(fromObject, ["data"]);
@@ -46870,7 +46149,6 @@ function blobToMldev$1(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(blobToMldev$1, "blobToMldev$1");
 function candidateFromMldev(fromObject, rootObject) {
   const toObject = {};
   const fromContent = getValueByPath(fromObject, ["content"]);
@@ -46931,7 +46209,6 @@ function candidateFromMldev(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(candidateFromMldev, "candidateFromMldev");
 function citationMetadataFromMldev(fromObject, _rootObject) {
   const toObject = {};
   const fromCitations = getValueByPath(fromObject, ["citationSources"]);
@@ -46946,7 +46223,6 @@ function citationMetadataFromMldev(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(citationMetadataFromMldev, "citationMetadataFromMldev");
 function computeTokensParametersToVertex(apiClient, fromObject, rootObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -46965,7 +46241,6 @@ function computeTokensParametersToVertex(apiClient, fromObject, rootObject) {
   }
   return toObject;
 }
-__name(computeTokensParametersToVertex, "computeTokensParametersToVertex");
 function computeTokensResponseFromVertex(fromObject, _rootObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -46986,7 +46261,6 @@ function computeTokensResponseFromVertex(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(computeTokensResponseFromVertex, "computeTokensResponseFromVertex");
 function computerUseToVertex(fromObject, _rootObject) {
   const toObject = {};
   const fromEnablePromptInjectionDetection = getValueByPath(fromObject, [
@@ -47010,7 +46284,6 @@ function computerUseToVertex(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(computerUseToVertex, "computerUseToVertex");
 function contentEmbeddingFromVertex(fromObject, rootObject) {
   const toObject = {};
   const fromValues = getValueByPath(fromObject, ["values"]);
@@ -47023,7 +46296,6 @@ function contentEmbeddingFromVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(contentEmbeddingFromVertex, "contentEmbeddingFromVertex");
 function contentEmbeddingStatisticsFromVertex(fromObject, _rootObject) {
   const toObject = {};
   const fromTruncated = getValueByPath(fromObject, ["truncated"]);
@@ -47048,7 +46320,6 @@ function contentEmbeddingStatisticsFromVertex(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(contentEmbeddingStatisticsFromVertex, "contentEmbeddingStatisticsFromVertex");
 function contentToMldev$1(fromObject, rootObject) {
   const toObject = {};
   const fromParts = getValueByPath(fromObject, ["parts"]);
@@ -47067,7 +46338,6 @@ function contentToMldev$1(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(contentToMldev$1, "contentToMldev$1");
 function contentToVertex$1(fromObject, rootObject) {
   const toObject = {};
   const fromParts = getValueByPath(fromObject, ["parts"]);
@@ -47086,7 +46356,6 @@ function contentToVertex$1(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(contentToVertex$1, "contentToVertex$1");
 function controlReferenceConfigToVertex(fromObject, _rootObject) {
   const toObject = {};
   const fromControlType = getValueByPath(fromObject, ["controlType"]);
@@ -47101,7 +46370,6 @@ function controlReferenceConfigToVertex(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(controlReferenceConfigToVertex, "controlReferenceConfigToVertex");
 function countTokensConfigToMldev(fromObject, _rootObject) {
   const toObject = {};
   if (getValueByPath(fromObject, ["systemInstruction"]) !== void 0) {
@@ -47115,7 +46383,6 @@ function countTokensConfigToMldev(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(countTokensConfigToMldev, "countTokensConfigToMldev");
 function countTokensConfigToVertex(fromObject, parentObject, rootObject) {
   const toObject = {};
   const fromSystemInstruction = getValueByPath(fromObject, [
@@ -47142,7 +46409,6 @@ function countTokensConfigToVertex(fromObject, parentObject, rootObject) {
   }
   return toObject;
 }
-__name(countTokensConfigToVertex, "countTokensConfigToVertex");
 function countTokensParametersToMldev(apiClient, fromObject, rootObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -47165,7 +46431,6 @@ function countTokensParametersToMldev(apiClient, fromObject, rootObject) {
   }
   return toObject;
 }
-__name(countTokensParametersToMldev, "countTokensParametersToMldev");
 function countTokensParametersToVertex(apiClient, fromObject, rootObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -47188,7 +46453,6 @@ function countTokensParametersToVertex(apiClient, fromObject, rootObject) {
   }
   return toObject;
 }
-__name(countTokensParametersToVertex, "countTokensParametersToVertex");
 function countTokensResponseFromMldev(fromObject, _rootObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -47209,7 +46473,6 @@ function countTokensResponseFromMldev(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(countTokensResponseFromMldev, "countTokensResponseFromMldev");
 function countTokensResponseFromVertex(fromObject, _rootObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -47224,7 +46487,6 @@ function countTokensResponseFromVertex(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(countTokensResponseFromVertex, "countTokensResponseFromVertex");
 function deleteModelParametersToMldev(apiClient, fromObject, _rootObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -47233,7 +46495,6 @@ function deleteModelParametersToMldev(apiClient, fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(deleteModelParametersToMldev, "deleteModelParametersToMldev");
 function deleteModelParametersToVertex(apiClient, fromObject, _rootObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -47242,7 +46503,6 @@ function deleteModelParametersToVertex(apiClient, fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(deleteModelParametersToVertex, "deleteModelParametersToVertex");
 function deleteModelResponseFromMldev(fromObject, _rootObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -47253,7 +46513,6 @@ function deleteModelResponseFromMldev(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(deleteModelResponseFromMldev, "deleteModelResponseFromMldev");
 function deleteModelResponseFromVertex(fromObject, _rootObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -47264,7 +46523,6 @@ function deleteModelResponseFromVertex(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(deleteModelResponseFromVertex, "deleteModelResponseFromVertex");
 function editImageConfigToVertex(fromObject, parentObject, _rootObject) {
   const toObject = {};
   const fromOutputGcsUri = getValueByPath(fromObject, ["outputGcsUri"]);
@@ -47355,7 +46613,6 @@ function editImageConfigToVertex(fromObject, parentObject, _rootObject) {
   }
   return toObject;
 }
-__name(editImageConfigToVertex, "editImageConfigToVertex");
 function editImageParametersInternalToVertex(apiClient, fromObject, rootObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -47384,7 +46641,6 @@ function editImageParametersInternalToVertex(apiClient, fromObject, rootObject) 
   }
   return toObject;
 }
-__name(editImageParametersInternalToVertex, "editImageParametersInternalToVertex");
 function editImageResponseFromVertex(fromObject, rootObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -47407,7 +46663,6 @@ function editImageResponseFromVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(editImageResponseFromVertex, "editImageResponseFromVertex");
 function embedContentConfigToMldev(fromObject, parentObject, _rootObject) {
   const toObject = {};
   const fromTaskType = getValueByPath(fromObject, ["taskType"]);
@@ -47438,7 +46693,6 @@ function embedContentConfigToMldev(fromObject, parentObject, _rootObject) {
   }
   return toObject;
 }
-__name(embedContentConfigToMldev, "embedContentConfigToMldev");
 function embedContentConfigToVertex(fromObject, parentObject, rootObject) {
   const toObject = {};
   let discriminatorTaskType = getValueByPath(rootObject, [
@@ -47557,7 +46811,6 @@ function embedContentConfigToVertex(fromObject, parentObject, rootObject) {
   }
   return toObject;
 }
-__name(embedContentConfigToVertex, "embedContentConfigToVertex");
 function embedContentParametersPrivateToMldev(apiClient, fromObject, rootObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -47588,7 +46841,6 @@ function embedContentParametersPrivateToMldev(apiClient, fromObject, rootObject)
   }
   return toObject;
 }
-__name(embedContentParametersPrivateToMldev, "embedContentParametersPrivateToMldev");
 function embedContentParametersPrivateToVertex(apiClient, fromObject, rootObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -47631,7 +46883,6 @@ function embedContentParametersPrivateToVertex(apiClient, fromObject, rootObject
   }
   return toObject;
 }
-__name(embedContentParametersPrivateToVertex, "embedContentParametersPrivateToVertex");
 function embedContentResponseFromMldev(fromObject, _rootObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -47656,7 +46907,6 @@ function embedContentResponseFromMldev(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(embedContentResponseFromMldev, "embedContentResponseFromMldev");
 function embedContentResponseFromVertex(fromObject, rootObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -47703,7 +46953,6 @@ function embedContentResponseFromVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(embedContentResponseFromVertex, "embedContentResponseFromVertex");
 function endpointFromVertex(fromObject, _rootObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["endpoint"]);
@@ -47718,7 +46967,6 @@ function endpointFromVertex(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(endpointFromVertex, "endpointFromVertex");
 function fileDataToMldev$1(fromObject, _rootObject) {
   const toObject = {};
   if (getValueByPath(fromObject, ["displayName"]) !== void 0) {
@@ -47734,7 +46982,6 @@ function fileDataToMldev$1(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(fileDataToMldev$1, "fileDataToMldev$1");
 function functionCallToMldev$1(fromObject, _rootObject) {
   const toObject = {};
   const fromArgs = getValueByPath(fromObject, ["args"]);
@@ -47757,7 +47004,6 @@ function functionCallToMldev$1(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(functionCallToMldev$1, "functionCallToMldev$1");
 function functionCallingConfigToMldev(fromObject, _rootObject) {
   const toObject = {};
   const fromAllowedFunctionNames = getValueByPath(fromObject, [
@@ -47775,7 +47021,6 @@ function functionCallingConfigToMldev(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(functionCallingConfigToMldev, "functionCallingConfigToMldev");
 function generateContentConfigToMldev(apiClient, fromObject, parentObject, rootObject) {
   const toObject = {};
   const fromServiceTier = getValueByPath(fromObject, ["serviceTier"]);
@@ -47949,7 +47194,6 @@ function generateContentConfigToMldev(apiClient, fromObject, parentObject, rootO
   }
   return toObject;
 }
-__name(generateContentConfigToMldev, "generateContentConfigToMldev");
 function generateContentConfigToVertex(apiClient, fromObject, parentObject, rootObject) {
   const toObject = {};
   const fromServiceTier = getValueByPath(fromObject, ["serviceTier"]);
@@ -48133,7 +47377,6 @@ function generateContentConfigToVertex(apiClient, fromObject, parentObject, root
   }
   return toObject;
 }
-__name(generateContentConfigToVertex, "generateContentConfigToVertex");
 function generateContentParametersToMldev(apiClient, fromObject, rootObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -48156,7 +47399,6 @@ function generateContentParametersToMldev(apiClient, fromObject, rootObject) {
   }
   return toObject;
 }
-__name(generateContentParametersToMldev, "generateContentParametersToMldev");
 function generateContentParametersToVertex(apiClient, fromObject, rootObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -48179,7 +47421,6 @@ function generateContentParametersToVertex(apiClient, fromObject, rootObject) {
   }
   return toObject;
 }
-__name(generateContentParametersToVertex, "generateContentParametersToVertex");
 function generateContentResponseFromMldev(fromObject, rootObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -48224,7 +47465,6 @@ function generateContentResponseFromMldev(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(generateContentResponseFromMldev, "generateContentResponseFromMldev");
 function generateContentResponseFromVertex(fromObject, _rootObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -48269,7 +47509,6 @@ function generateContentResponseFromVertex(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(generateContentResponseFromVertex, "generateContentResponseFromVertex");
 function generateImagesConfigToMldev(fromObject, parentObject, _rootObject) {
   const toObject = {};
   if (getValueByPath(fromObject, ["outputGcsUri"]) !== void 0) {
@@ -48352,7 +47591,6 @@ function generateImagesConfigToMldev(fromObject, parentObject, _rootObject) {
   }
   return toObject;
 }
-__name(generateImagesConfigToMldev, "generateImagesConfigToMldev");
 function generateImagesConfigToVertex(fromObject, parentObject, _rootObject) {
   const toObject = {};
   const fromOutputGcsUri = getValueByPath(fromObject, ["outputGcsUri"]);
@@ -48445,7 +47683,6 @@ function generateImagesConfigToVertex(fromObject, parentObject, _rootObject) {
   }
   return toObject;
 }
-__name(generateImagesConfigToVertex, "generateImagesConfigToVertex");
 function generateImagesParametersToMldev(apiClient, fromObject, rootObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -48462,7 +47699,6 @@ function generateImagesParametersToMldev(apiClient, fromObject, rootObject) {
   }
   return toObject;
 }
-__name(generateImagesParametersToMldev, "generateImagesParametersToMldev");
 function generateImagesParametersToVertex(apiClient, fromObject, rootObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -48479,7 +47715,6 @@ function generateImagesParametersToVertex(apiClient, fromObject, rootObject) {
   }
   return toObject;
 }
-__name(generateImagesParametersToVertex, "generateImagesParametersToVertex");
 function generateImagesResponseFromMldev(fromObject, rootObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -48508,7 +47743,6 @@ function generateImagesResponseFromMldev(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(generateImagesResponseFromMldev, "generateImagesResponseFromMldev");
 function generateImagesResponseFromVertex(fromObject, rootObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -48537,7 +47771,6 @@ function generateImagesResponseFromVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(generateImagesResponseFromVertex, "generateImagesResponseFromVertex");
 function generateVideosConfigToMldev(fromObject, parentObject, rootObject) {
   const toObject = {};
   const fromNumberOfVideos = getValueByPath(fromObject, [
@@ -48629,7 +47862,6 @@ function generateVideosConfigToMldev(fromObject, parentObject, rootObject) {
   }
   return toObject;
 }
-__name(generateVideosConfigToMldev, "generateVideosConfigToMldev");
 function generateVideosConfigToVertex(fromObject, parentObject, rootObject) {
   const toObject = {};
   const fromNumberOfVideos = getValueByPath(fromObject, [
@@ -48731,7 +47963,6 @@ function generateVideosConfigToVertex(fromObject, parentObject, rootObject) {
   }
   return toObject;
 }
-__name(generateVideosConfigToVertex, "generateVideosConfigToVertex");
 function generateVideosOperationFromMldev(fromObject, rootObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -48759,7 +47990,6 @@ function generateVideosOperationFromMldev(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(generateVideosOperationFromMldev, "generateVideosOperationFromMldev");
 function generateVideosOperationFromVertex(fromObject, rootObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -48784,7 +48014,6 @@ function generateVideosOperationFromVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(generateVideosOperationFromVertex, "generateVideosOperationFromVertex");
 function generateVideosParametersToMldev(apiClient, fromObject, rootObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -48813,7 +48042,6 @@ function generateVideosParametersToMldev(apiClient, fromObject, rootObject) {
   }
   return toObject;
 }
-__name(generateVideosParametersToMldev, "generateVideosParametersToMldev");
 function generateVideosParametersToVertex(apiClient, fromObject, rootObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -48842,7 +48070,6 @@ function generateVideosParametersToVertex(apiClient, fromObject, rootObject) {
   }
   return toObject;
 }
-__name(generateVideosParametersToVertex, "generateVideosParametersToVertex");
 function generateVideosResponseFromMldev(fromObject, rootObject) {
   const toObject = {};
   const fromGeneratedVideos = getValueByPath(fromObject, [
@@ -48871,7 +48098,6 @@ function generateVideosResponseFromMldev(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(generateVideosResponseFromMldev, "generateVideosResponseFromMldev");
 function generateVideosResponseFromVertex(fromObject, rootObject) {
   const toObject = {};
   const fromGeneratedVideos = getValueByPath(fromObject, ["videos"]);
@@ -48898,7 +48124,6 @@ function generateVideosResponseFromVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(generateVideosResponseFromVertex, "generateVideosResponseFromVertex");
 function generateVideosSourceToMldev(fromObject, parentObject, rootObject) {
   const toObject = {};
   const fromPrompt = getValueByPath(fromObject, ["prompt"]);
@@ -48915,7 +48140,6 @@ function generateVideosSourceToMldev(fromObject, parentObject, rootObject) {
   }
   return toObject;
 }
-__name(generateVideosSourceToMldev, "generateVideosSourceToMldev");
 function generateVideosSourceToVertex(fromObject, parentObject, rootObject) {
   const toObject = {};
   const fromPrompt = getValueByPath(fromObject, ["prompt"]);
@@ -48932,7 +48156,6 @@ function generateVideosSourceToVertex(fromObject, parentObject, rootObject) {
   }
   return toObject;
 }
-__name(generateVideosSourceToVertex, "generateVideosSourceToVertex");
 function generatedImageFromMldev(fromObject, rootObject) {
   const toObject = {};
   const fromImage = getValueByPath(fromObject, ["_self"]);
@@ -48951,7 +48174,6 @@ function generatedImageFromMldev(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(generatedImageFromMldev, "generatedImageFromMldev");
 function generatedImageFromVertex(fromObject, rootObject) {
   const toObject = {};
   const fromImage = getValueByPath(fromObject, ["_self"]);
@@ -48974,7 +48196,6 @@ function generatedImageFromVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(generatedImageFromVertex, "generatedImageFromVertex");
 function generatedImageMaskFromVertex(fromObject, rootObject) {
   const toObject = {};
   const fromMask = getValueByPath(fromObject, ["_self"]);
@@ -48993,7 +48214,6 @@ function generatedImageMaskFromVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(generatedImageMaskFromVertex, "generatedImageMaskFromVertex");
 function generatedVideoFromMldev(fromObject, rootObject) {
   const toObject = {};
   const fromVideo = getValueByPath(fromObject, ["video"]);
@@ -49002,7 +48222,6 @@ function generatedVideoFromMldev(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(generatedVideoFromMldev, "generatedVideoFromMldev");
 function generatedVideoFromVertex(fromObject, rootObject) {
   const toObject = {};
   const fromVideo = getValueByPath(fromObject, ["_self"]);
@@ -49011,7 +48230,6 @@ function generatedVideoFromVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(generatedVideoFromVertex, "generatedVideoFromVertex");
 function generationConfigToVertex(fromObject, rootObject) {
   const toObject = {};
   const fromModelSelectionConfig = getValueByPath(fromObject, [
@@ -49160,7 +48378,6 @@ function generationConfigToVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(generationConfigToVertex, "generationConfigToVertex");
 function getModelParametersToMldev(apiClient, fromObject, _rootObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -49169,7 +48386,6 @@ function getModelParametersToMldev(apiClient, fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(getModelParametersToMldev, "getModelParametersToMldev");
 function getModelParametersToVertex(apiClient, fromObject, _rootObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -49178,7 +48394,6 @@ function getModelParametersToVertex(apiClient, fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(getModelParametersToVertex, "getModelParametersToVertex");
 function googleMapsToMldev$1(fromObject, rootObject) {
   const toObject = {};
   const fromAuthConfig = getValueByPath(fromObject, ["authConfig"]);
@@ -49194,7 +48409,6 @@ function googleMapsToMldev$1(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(googleMapsToMldev$1, "googleMapsToMldev$1");
 function googleSearchToMldev$1(fromObject, _rootObject) {
   const toObject = {};
   if (getValueByPath(fromObject, ["blockingConfidence"]) !== void 0) {
@@ -49215,7 +48429,6 @@ function googleSearchToMldev$1(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(googleSearchToMldev$1, "googleSearchToMldev$1");
 function imageConfigToMldev(fromObject, _rootObject) {
   const toObject = {};
   const fromAspectRatio = getValueByPath(fromObject, ["aspectRatio"]);
@@ -49243,7 +48456,6 @@ function imageConfigToMldev(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(imageConfigToMldev, "imageConfigToMldev");
 function imageConfigToVertex(fromObject, _rootObject) {
   const toObject = {};
   const fromAspectRatio = getValueByPath(fromObject, ["aspectRatio"]);
@@ -49286,7 +48498,6 @@ function imageConfigToVertex(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(imageConfigToVertex, "imageConfigToVertex");
 function imageFromMldev(fromObject, _rootObject) {
   const toObject = {};
   const fromImageBytes = getValueByPath(fromObject, [
@@ -49301,7 +48512,6 @@ function imageFromMldev(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(imageFromMldev, "imageFromMldev");
 function imageFromVertex(fromObject, _rootObject) {
   const toObject = {};
   const fromGcsUri = getValueByPath(fromObject, ["gcsUri"]);
@@ -49320,7 +48530,6 @@ function imageFromVertex(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(imageFromVertex, "imageFromVertex");
 function imageToMldev(fromObject, _rootObject) {
   const toObject = {};
   if (getValueByPath(fromObject, ["gcsUri"]) !== void 0) {
@@ -49336,7 +48545,6 @@ function imageToMldev(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(imageToMldev, "imageToMldev");
 function imageToVertex(fromObject, _rootObject) {
   const toObject = {};
   const fromGcsUri = getValueByPath(fromObject, ["gcsUri"]);
@@ -49353,7 +48561,6 @@ function imageToVertex(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(imageToVertex, "imageToVertex");
 function listModelsConfigToMldev(apiClient, fromObject, parentObject, _rootObject) {
   const toObject = {};
   const fromPageSize = getValueByPath(fromObject, ["pageSize"]);
@@ -49374,7 +48581,6 @@ function listModelsConfigToMldev(apiClient, fromObject, parentObject, _rootObjec
   }
   return toObject;
 }
-__name(listModelsConfigToMldev, "listModelsConfigToMldev");
 function listModelsConfigToVertex(apiClient, fromObject, parentObject, _rootObject) {
   const toObject = {};
   const fromPageSize = getValueByPath(fromObject, ["pageSize"]);
@@ -49395,7 +48601,6 @@ function listModelsConfigToVertex(apiClient, fromObject, parentObject, _rootObje
   }
   return toObject;
 }
-__name(listModelsConfigToVertex, "listModelsConfigToVertex");
 function listModelsParametersToMldev(apiClient, fromObject, rootObject) {
   const toObject = {};
   const fromConfig = getValueByPath(fromObject, ["config"]);
@@ -49404,7 +48609,6 @@ function listModelsParametersToMldev(apiClient, fromObject, rootObject) {
   }
   return toObject;
 }
-__name(listModelsParametersToMldev, "listModelsParametersToMldev");
 function listModelsParametersToVertex(apiClient, fromObject, rootObject) {
   const toObject = {};
   const fromConfig = getValueByPath(fromObject, ["config"]);
@@ -49413,7 +48617,6 @@ function listModelsParametersToVertex(apiClient, fromObject, rootObject) {
   }
   return toObject;
 }
-__name(listModelsParametersToVertex, "listModelsParametersToVertex");
 function listModelsResponseFromMldev(fromObject, rootObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -49440,7 +48643,6 @@ function listModelsResponseFromMldev(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(listModelsResponseFromMldev, "listModelsResponseFromMldev");
 function listModelsResponseFromVertex(fromObject, rootObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -49467,7 +48669,6 @@ function listModelsResponseFromVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(listModelsResponseFromVertex, "listModelsResponseFromVertex");
 function maskReferenceConfigToVertex(fromObject, _rootObject) {
   const toObject = {};
   const fromMaskMode = getValueByPath(fromObject, ["maskMode"]);
@@ -49486,7 +48687,6 @@ function maskReferenceConfigToVertex(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(maskReferenceConfigToVertex, "maskReferenceConfigToVertex");
 function mcpServerToVertex(fromObject, _rootObject) {
   const toObject = {};
   if (getValueByPath(fromObject, ["name"]) !== void 0) {
@@ -49497,7 +48697,6 @@ function mcpServerToVertex(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(mcpServerToVertex, "mcpServerToVertex");
 function modelFromMldev(fromObject, rootObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -49562,7 +48761,6 @@ function modelFromMldev(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(modelFromMldev, "modelFromMldev");
 function modelFromVertex(fromObject, rootObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -49617,7 +48815,6 @@ function modelFromVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(modelFromVertex, "modelFromVertex");
 function multiSpeakerVoiceConfigToVertex(fromObject, rootObject) {
   const toObject = {};
   const fromSpeakerVoiceConfigs = getValueByPath(fromObject, [
@@ -49634,7 +48831,6 @@ function multiSpeakerVoiceConfigToVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(multiSpeakerVoiceConfigToVertex, "multiSpeakerVoiceConfigToVertex");
 function partToMldev$1(fromObject, rootObject) {
   const toObject = {};
   const fromMediaResolution = getValueByPath(fromObject, [
@@ -49713,7 +48909,6 @@ function partToMldev$1(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(partToMldev$1, "partToMldev$1");
 function partToVertex$1(fromObject, _rootObject) {
   const toObject = {};
   const fromMediaResolution = getValueByPath(fromObject, [
@@ -49789,7 +48984,6 @@ function partToVertex$1(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(partToVertex$1, "partToVertex$1");
 function productImageToVertex(fromObject, rootObject) {
   const toObject = {};
   const fromProductImage = getValueByPath(fromObject, ["productImage"]);
@@ -49798,7 +48992,6 @@ function productImageToVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(productImageToVertex, "productImageToVertex");
 function recontextImageConfigToVertex(fromObject, parentObject, _rootObject) {
   const toObject = {};
   const fromNumberOfImages = getValueByPath(fromObject, [
@@ -49859,7 +49052,6 @@ function recontextImageConfigToVertex(fromObject, parentObject, _rootObject) {
   }
   return toObject;
 }
-__name(recontextImageConfigToVertex, "recontextImageConfigToVertex");
 function recontextImageParametersToVertex(apiClient, fromObject, rootObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -49876,7 +49068,6 @@ function recontextImageParametersToVertex(apiClient, fromObject, rootObject) {
   }
   return toObject;
 }
-__name(recontextImageParametersToVertex, "recontextImageParametersToVertex");
 function recontextImageResponseFromVertex(fromObject, rootObject) {
   const toObject = {};
   const fromGeneratedImages = getValueByPath(fromObject, [
@@ -49893,7 +49084,6 @@ function recontextImageResponseFromVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(recontextImageResponseFromVertex, "recontextImageResponseFromVertex");
 function recontextImageSourceToVertex(fromObject, parentObject, rootObject) {
   const toObject = {};
   const fromPrompt = getValueByPath(fromObject, ["prompt"]);
@@ -49918,7 +49108,6 @@ function recontextImageSourceToVertex(fromObject, parentObject, rootObject) {
   }
   return toObject;
 }
-__name(recontextImageSourceToVertex, "recontextImageSourceToVertex");
 function referenceImageAPIInternalToVertex(fromObject, rootObject) {
   const toObject = {};
   const fromReferenceImage = getValueByPath(fromObject, [
@@ -49963,7 +49152,6 @@ function referenceImageAPIInternalToVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(referenceImageAPIInternalToVertex, "referenceImageAPIInternalToVertex");
 function replicatedVoiceConfigToVertex(fromObject, _rootObject) {
   const toObject = {};
   const fromMimeType = getValueByPath(fromObject, ["mimeType"]);
@@ -49984,7 +49172,6 @@ function replicatedVoiceConfigToVertex(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(replicatedVoiceConfigToVertex, "replicatedVoiceConfigToVertex");
 function safetyAttributesFromMldev(fromObject, _rootObject) {
   const toObject = {};
   const fromCategories = getValueByPath(fromObject, [
@@ -50007,7 +49194,6 @@ function safetyAttributesFromMldev(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(safetyAttributesFromMldev, "safetyAttributesFromMldev");
 function safetyAttributesFromVertex(fromObject, _rootObject) {
   const toObject = {};
   const fromCategories = getValueByPath(fromObject, [
@@ -50030,7 +49216,6 @@ function safetyAttributesFromVertex(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(safetyAttributesFromVertex, "safetyAttributesFromVertex");
 function safetySettingToMldev$1(fromObject, _rootObject) {
   const toObject = {};
   const fromCategory = getValueByPath(fromObject, ["category"]);
@@ -50046,7 +49231,6 @@ function safetySettingToMldev$1(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(safetySettingToMldev$1, "safetySettingToMldev$1");
 function scribbleImageToVertex(fromObject, rootObject) {
   const toObject = {};
   const fromImage = getValueByPath(fromObject, ["image"]);
@@ -50055,7 +49239,6 @@ function scribbleImageToVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(scribbleImageToVertex, "scribbleImageToVertex");
 function segmentImageConfigToVertex(fromObject, parentObject, _rootObject) {
   const toObject = {};
   const fromMode = getValueByPath(fromObject, ["mode"]);
@@ -50090,7 +49273,6 @@ function segmentImageConfigToVertex(fromObject, parentObject, _rootObject) {
   }
   return toObject;
 }
-__name(segmentImageConfigToVertex, "segmentImageConfigToVertex");
 function segmentImageParametersToVertex(apiClient, fromObject, rootObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -50107,7 +49289,6 @@ function segmentImageParametersToVertex(apiClient, fromObject, rootObject) {
   }
   return toObject;
 }
-__name(segmentImageParametersToVertex, "segmentImageParametersToVertex");
 function segmentImageResponseFromVertex(fromObject, rootObject) {
   const toObject = {};
   const fromGeneratedMasks = getValueByPath(fromObject, ["predictions"]);
@@ -50122,7 +49303,6 @@ function segmentImageResponseFromVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(segmentImageResponseFromVertex, "segmentImageResponseFromVertex");
 function segmentImageSourceToVertex(fromObject, parentObject, rootObject) {
   const toObject = {};
   const fromPrompt = getValueByPath(fromObject, ["prompt"]);
@@ -50141,7 +49321,6 @@ function segmentImageSourceToVertex(fromObject, parentObject, rootObject) {
   }
   return toObject;
 }
-__name(segmentImageSourceToVertex, "segmentImageSourceToVertex");
 function speakerVoiceConfigToVertex(fromObject, rootObject) {
   const toObject = {};
   const fromSpeaker = getValueByPath(fromObject, ["speaker"]);
@@ -50154,7 +49333,6 @@ function speakerVoiceConfigToVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(speakerVoiceConfigToVertex, "speakerVoiceConfigToVertex");
 function speechConfigToVertex(fromObject, rootObject) {
   const toObject = {};
   const fromVoiceConfig = getValueByPath(fromObject, ["voiceConfig"]);
@@ -50173,7 +49351,6 @@ function speechConfigToVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(speechConfigToVertex, "speechConfigToVertex");
 function toolConfigToMldev(fromObject, rootObject) {
   const toObject = {};
   const fromFunctionCallingConfig = getValueByPath(fromObject, [
@@ -50194,7 +49371,6 @@ function toolConfigToMldev(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(toolConfigToMldev, "toolConfigToMldev");
 function toolConfigToVertex(fromObject, _rootObject) {
   const toObject = {};
   const fromFunctionCallingConfig = getValueByPath(fromObject, [
@@ -50214,7 +49390,6 @@ function toolConfigToVertex(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(toolConfigToVertex, "toolConfigToVertex");
 function toolToMldev$1(fromObject, rootObject) {
   const toObject = {};
   if (getValueByPath(fromObject, ["retrieval"]) !== void 0) {
@@ -50285,7 +49460,6 @@ function toolToMldev$1(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(toolToMldev$1, "toolToMldev$1");
 function toolToVertex(fromObject, rootObject) {
   const toObject = {};
   const fromRetrieval = getValueByPath(fromObject, ["retrieval"]);
@@ -50363,7 +49537,6 @@ function toolToVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(toolToVertex, "toolToVertex");
 function tunedModelInfoFromMldev(fromObject, _rootObject) {
   const toObject = {};
   const fromBaseModel = getValueByPath(fromObject, ["baseModel"]);
@@ -50380,7 +49553,6 @@ function tunedModelInfoFromMldev(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(tunedModelInfoFromMldev, "tunedModelInfoFromMldev");
 function tunedModelInfoFromVertex(fromObject, _rootObject) {
   const toObject = {};
   const fromBaseModel = getValueByPath(fromObject, [
@@ -50400,7 +49572,6 @@ function tunedModelInfoFromVertex(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(tunedModelInfoFromVertex, "tunedModelInfoFromVertex");
 function updateModelConfigToMldev(fromObject, parentObject, _rootObject) {
   const toObject = {};
   const fromDisplayName = getValueByPath(fromObject, ["displayName"]);
@@ -50419,7 +49590,6 @@ function updateModelConfigToMldev(fromObject, parentObject, _rootObject) {
   }
   return toObject;
 }
-__name(updateModelConfigToMldev, "updateModelConfigToMldev");
 function updateModelConfigToVertex(fromObject, parentObject, _rootObject) {
   const toObject = {};
   const fromDisplayName = getValueByPath(fromObject, ["displayName"]);
@@ -50438,7 +49608,6 @@ function updateModelConfigToVertex(fromObject, parentObject, _rootObject) {
   }
   return toObject;
 }
-__name(updateModelConfigToVertex, "updateModelConfigToVertex");
 function updateModelParametersToMldev(apiClient, fromObject, rootObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -50451,7 +49620,6 @@ function updateModelParametersToMldev(apiClient, fromObject, rootObject) {
   }
   return toObject;
 }
-__name(updateModelParametersToMldev, "updateModelParametersToMldev");
 function updateModelParametersToVertex(apiClient, fromObject, rootObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -50464,7 +49632,6 @@ function updateModelParametersToVertex(apiClient, fromObject, rootObject) {
   }
   return toObject;
 }
-__name(updateModelParametersToVertex, "updateModelParametersToVertex");
 function upscaleImageAPIConfigInternalToVertex(fromObject, parentObject, _rootObject) {
   const toObject = {};
   const fromOutputGcsUri = getValueByPath(fromObject, ["outputGcsUri"]);
@@ -50529,7 +49696,6 @@ function upscaleImageAPIConfigInternalToVertex(fromObject, parentObject, _rootOb
   }
   return toObject;
 }
-__name(upscaleImageAPIConfigInternalToVertex, "upscaleImageAPIConfigInternalToVertex");
 function upscaleImageAPIParametersInternalToVertex(apiClient, fromObject, rootObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -50552,7 +49718,6 @@ function upscaleImageAPIParametersInternalToVertex(apiClient, fromObject, rootOb
   }
   return toObject;
 }
-__name(upscaleImageAPIParametersInternalToVertex, "upscaleImageAPIParametersInternalToVertex");
 function upscaleImageResponseFromVertex(fromObject, rootObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -50575,7 +49740,6 @@ function upscaleImageResponseFromVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(upscaleImageResponseFromVertex, "upscaleImageResponseFromVertex");
 function videoFromMldev(fromObject, _rootObject) {
   const toObject = {};
   const fromUri = getValueByPath(fromObject, ["uri"]);
@@ -50592,7 +49756,6 @@ function videoFromMldev(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(videoFromMldev, "videoFromMldev");
 function videoFromVertex(fromObject, _rootObject) {
   const toObject = {};
   const fromUri = getValueByPath(fromObject, ["gcsUri"]);
@@ -50611,7 +49774,6 @@ function videoFromVertex(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(videoFromVertex, "videoFromVertex");
 function videoGenerationMaskToVertex(fromObject, rootObject) {
   const toObject = {};
   const fromImage = getValueByPath(fromObject, ["image"]);
@@ -50624,7 +49786,6 @@ function videoGenerationMaskToVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(videoGenerationMaskToVertex, "videoGenerationMaskToVertex");
 function videoGenerationReferenceImageToMldev(fromObject, rootObject) {
   const toObject = {};
   const fromImage = getValueByPath(fromObject, ["image"]);
@@ -50639,7 +49800,6 @@ function videoGenerationReferenceImageToMldev(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(videoGenerationReferenceImageToMldev, "videoGenerationReferenceImageToMldev");
 function videoGenerationReferenceImageToVertex(fromObject, rootObject) {
   const toObject = {};
   const fromImage = getValueByPath(fromObject, ["image"]);
@@ -50654,7 +49814,6 @@ function videoGenerationReferenceImageToVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(videoGenerationReferenceImageToVertex, "videoGenerationReferenceImageToVertex");
 function videoToMldev(fromObject, _rootObject) {
   const toObject = {};
   const fromUri = getValueByPath(fromObject, ["uri"]);
@@ -50671,7 +49830,6 @@ function videoToMldev(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(videoToMldev, "videoToMldev");
 function videoToVertex(fromObject, _rootObject) {
   const toObject = {};
   const fromUri = getValueByPath(fromObject, ["uri"]);
@@ -50688,7 +49846,6 @@ function videoToVertex(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(videoToVertex, "videoToVertex");
 function voiceConfigToVertex(fromObject, rootObject) {
   const toObject = {};
   const fromReplicatedVoiceConfig = getValueByPath(fromObject, [
@@ -50705,7 +49862,6 @@ function voiceConfigToVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(voiceConfigToVertex, "voiceConfigToVertex");
 function createFileSearchStoreConfigToMldev(apiClient, fromObject, parentObject) {
   const toObject = {};
   const fromDisplayName = getValueByPath(fromObject, ["displayName"]);
@@ -50720,7 +49876,6 @@ function createFileSearchStoreConfigToMldev(apiClient, fromObject, parentObject)
   }
   return toObject;
 }
-__name(createFileSearchStoreConfigToMldev, "createFileSearchStoreConfigToMldev");
 function createFileSearchStoreParametersToMldev(apiClient, fromObject) {
   const toObject = {};
   const fromConfig = getValueByPath(fromObject, ["config"]);
@@ -50729,7 +49884,6 @@ function createFileSearchStoreParametersToMldev(apiClient, fromObject) {
   }
   return toObject;
 }
-__name(createFileSearchStoreParametersToMldev, "createFileSearchStoreParametersToMldev");
 function deleteFileSearchStoreConfigToMldev(fromObject, parentObject) {
   const toObject = {};
   const fromForce = getValueByPath(fromObject, ["force"]);
@@ -50738,7 +49892,6 @@ function deleteFileSearchStoreConfigToMldev(fromObject, parentObject) {
   }
   return toObject;
 }
-__name(deleteFileSearchStoreConfigToMldev, "deleteFileSearchStoreConfigToMldev");
 function deleteFileSearchStoreParametersToMldev(fromObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -50751,7 +49904,6 @@ function deleteFileSearchStoreParametersToMldev(fromObject) {
   }
   return toObject;
 }
-__name(deleteFileSearchStoreParametersToMldev, "deleteFileSearchStoreParametersToMldev");
 function getFileSearchStoreParametersToMldev(fromObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -50760,7 +49912,6 @@ function getFileSearchStoreParametersToMldev(fromObject) {
   }
   return toObject;
 }
-__name(getFileSearchStoreParametersToMldev, "getFileSearchStoreParametersToMldev");
 function importFileConfigToMldev(fromObject, parentObject) {
   const toObject = {};
   const fromCustomMetadata = getValueByPath(fromObject, [
@@ -50783,7 +49934,6 @@ function importFileConfigToMldev(fromObject, parentObject) {
   }
   return toObject;
 }
-__name(importFileConfigToMldev, "importFileConfigToMldev");
 function importFileOperationFromMldev(fromObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -50808,7 +49958,6 @@ function importFileOperationFromMldev(fromObject) {
   }
   return toObject;
 }
-__name(importFileOperationFromMldev, "importFileOperationFromMldev");
 function importFileParametersToMldev(fromObject) {
   const toObject = {};
   const fromFileSearchStoreName = getValueByPath(fromObject, [
@@ -50827,7 +49976,6 @@ function importFileParametersToMldev(fromObject) {
   }
   return toObject;
 }
-__name(importFileParametersToMldev, "importFileParametersToMldev");
 function importFileResponseFromMldev(fromObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -50846,7 +49994,6 @@ function importFileResponseFromMldev(fromObject) {
   }
   return toObject;
 }
-__name(importFileResponseFromMldev, "importFileResponseFromMldev");
 function listFileSearchStoresConfigToMldev(fromObject, parentObject) {
   const toObject = {};
   const fromPageSize = getValueByPath(fromObject, ["pageSize"]);
@@ -50859,7 +50006,6 @@ function listFileSearchStoresConfigToMldev(fromObject, parentObject) {
   }
   return toObject;
 }
-__name(listFileSearchStoresConfigToMldev, "listFileSearchStoresConfigToMldev");
 function listFileSearchStoresParametersToMldev(fromObject) {
   const toObject = {};
   const fromConfig = getValueByPath(fromObject, ["config"]);
@@ -50868,7 +50014,6 @@ function listFileSearchStoresParametersToMldev(fromObject) {
   }
   return toObject;
 }
-__name(listFileSearchStoresParametersToMldev, "listFileSearchStoresParametersToMldev");
 function listFileSearchStoresResponseFromMldev(fromObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -50897,7 +50042,6 @@ function listFileSearchStoresResponseFromMldev(fromObject) {
   }
   return toObject;
 }
-__name(listFileSearchStoresResponseFromMldev, "listFileSearchStoresResponseFromMldev");
 function uploadToFileSearchStoreConfigToMldev(fromObject, parentObject) {
   const toObject = {};
   const fromMimeType = getValueByPath(fromObject, ["mimeType"]);
@@ -50928,7 +50072,6 @@ function uploadToFileSearchStoreConfigToMldev(fromObject, parentObject) {
   }
   return toObject;
 }
-__name(uploadToFileSearchStoreConfigToMldev, "uploadToFileSearchStoreConfigToMldev");
 function uploadToFileSearchStoreParametersToMldev(fromObject) {
   const toObject = {};
   const fromFileSearchStoreName = getValueByPath(fromObject, [
@@ -50943,7 +50086,6 @@ function uploadToFileSearchStoreParametersToMldev(fromObject) {
   }
   return toObject;
 }
-__name(uploadToFileSearchStoreParametersToMldev, "uploadToFileSearchStoreParametersToMldev");
 function uploadToFileSearchStoreResumableResponseFromMldev(fromObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -50954,7 +50096,6 @@ function uploadToFileSearchStoreResumableResponseFromMldev(fromObject) {
   }
   return toObject;
 }
-__name(uploadToFileSearchStoreResumableResponseFromMldev, "uploadToFileSearchStoreResumableResponseFromMldev");
 function raiseUndiciTimeouts(timeout) {
   const dispatcherSymbol = /* @__PURE__ */ Symbol.for("undici.globalDispatcher.1");
   const globalDispatcher = globalThis[dispatcherSymbol];
@@ -50971,9 +50112,8 @@ function raiseUndiciTimeouts(timeout) {
     }
   }
 }
-__name(raiseUndiciTimeouts, "raiseUndiciTimeouts");
 function createAttemptSignal(timeout, callerSignal) {
-  const noop2 = /* @__PURE__ */ __name2(() => {
+  const noop2 = /* @__PURE__ */ __name(() => {
   }, "noop");
   if (!(timeout && timeout > 0) && !callerSignal) {
     return { signal: void 0, dispose: noop2 };
@@ -50986,7 +50126,7 @@ function createAttemptSignal(timeout, callerSignal) {
       timeoutHandle.unref();
     }
   }
-  const onCallerAbort = /* @__PURE__ */ __name2(() => controller.abort(), "onCallerAbort");
+  const onCallerAbort = /* @__PURE__ */ __name(() => controller.abort(), "onCallerAbort");
   if (callerSignal) {
     if (callerSignal.aborted) {
       controller.abort();
@@ -50996,7 +50136,7 @@ function createAttemptSignal(timeout, callerSignal) {
   }
   return {
     signal: controller.signal,
-    dispose: /* @__PURE__ */ __name2(() => {
+    dispose: /* @__PURE__ */ __name(() => {
       if (timeoutHandle !== void 0) {
         clearTimeout(timeoutHandle);
       }
@@ -51004,7 +50144,6 @@ function createAttemptSignal(timeout, callerSignal) {
     }, "dispose")
   };
 }
-__name(createAttemptSignal, "createAttemptSignal");
 async function throwErrorIfNotOK(response) {
   var _a2;
   if (response === void 0) {
@@ -51035,7 +50174,6 @@ async function throwErrorIfNotOK(response) {
     throw new Error(errorMessage);
   }
 }
-__name(throwErrorIfNotOK, "throwErrorIfNotOK");
 function includeExtraBodyToRequestInit(requestInit, extraBody) {
   if (!extraBody || Object.keys(extraBody).length === 0) {
     return;
@@ -51077,12 +50215,10 @@ function includeExtraBodyToRequestInit(requestInit, extraBody) {
     }
     return output;
   }
-  __name(deepMerge2, "deepMerge2");
-  __name2(deepMerge2, "deepMerge");
+  __name(deepMerge2, "deepMerge");
   const mergedBody = deepMerge2(currentBodyObject, extraBody);
   requestInit.body = JSON.stringify(mergedBody);
 }
-__name(includeExtraBodyToRequestInit, "includeExtraBodyToRequestInit");
 function hasMcpToolUsage(tools) {
   for (const tool of tools) {
     if (isMcpCallableTool(tool)) {
@@ -51094,19 +50230,16 @@ function hasMcpToolUsage(tools) {
   }
   return hasMcpToolUsageFromMcpToTool;
 }
-__name(hasMcpToolUsage, "hasMcpToolUsage");
 function setMcpUsageHeader(headers) {
   var _a2;
   const existingHeader = (_a2 = headers[GOOGLE_API_CLIENT_HEADER]) !== null && _a2 !== void 0 ? _a2 : "";
   headers[GOOGLE_API_CLIENT_HEADER] = (existingHeader + ` ${MCP_LABEL}`).trimStart();
 }
-__name(setMcpUsageHeader, "setMcpUsageHeader");
 function isMcpCallableTool(object) {
   return object !== null && typeof object === "object" && object instanceof McpCallableTool;
 }
-__name(isMcpCallableTool, "isMcpCallableTool");
 function listAllTools(mcpClient_1) {
-  return __asyncGenerator(this, arguments, /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function* listAllTools_1(mcpClient, maxTools = 100) {
+  return __asyncGenerator(this, arguments, /* @__PURE__ */ __name(function* listAllTools_1(mcpClient, maxTools = 100) {
     let cursor = void 0;
     let numTools = 0;
     while (numTools < maxTools) {
@@ -51120,9 +50253,22 @@ function listAllTools(mcpClient_1) {
       }
       cursor = t.nextCursor;
     }
-  }, "listAllTools_1"), "listAllTools_1"));
+  }, "listAllTools_1"));
 }
-__name(listAllTools, "listAllTools");
+function isMcpClient(client) {
+  return client !== null && typeof client === "object" && "listTools" in client && typeof client.listTools === "function";
+}
+function mcpToTool(...args) {
+  hasMcpToolUsageFromMcpToTool = true;
+  if (args.length === 0) {
+    throw new Error("No MCP clients provided");
+  }
+  const maybeConfig = args[args.length - 1];
+  if (isMcpClient(maybeConfig)) {
+    return McpCallableTool.create(args, {});
+  }
+  return McpCallableTool.create(args.slice(0, args.length - 1), maybeConfig);
+}
 async function handleWebSocketMessage$1(apiClient, onmessage, event) {
   const serverMessage = new LiveMusicServerMessage();
   let data;
@@ -51134,7 +50280,6 @@ async function handleWebSocketMessage$1(apiClient, onmessage, event) {
   Object.assign(serverMessage, data);
   onmessage(serverMessage);
 }
-__name(handleWebSocketMessage$1, "handleWebSocketMessage$1");
 function headersToMap$1(headers) {
   const headerMap = {};
   headers.forEach((value, key) => {
@@ -51142,7 +50287,6 @@ function headersToMap$1(headers) {
   });
   return headerMap;
 }
-__name(headersToMap$1, "headersToMap$1");
 function mapToHeaders$1(map) {
   const headers = new Headers();
   for (const [key, value] of Object.entries(map)) {
@@ -51150,7 +50294,6 @@ function mapToHeaders$1(map) {
   }
   return headers;
 }
-__name(mapToHeaders$1, "mapToHeaders$1");
 async function handleWebSocketMessage(apiClient, onmessage, event) {
   const serverMessage = new LiveServerMessage();
   let jsonData;
@@ -51171,7 +50314,6 @@ async function handleWebSocketMessage(apiClient, onmessage, event) {
   }
   onmessage(serverMessage);
 }
-__name(handleWebSocketMessage, "handleWebSocketMessage");
 function headersToMap(headers) {
   const headerMap = {};
   headers.forEach((value, key) => {
@@ -51179,7 +50321,6 @@ function headersToMap(headers) {
   });
   return headerMap;
 }
-__name(headersToMap, "headersToMap");
 function mapToHeaders(map) {
   const headers = new Headers();
   for (const [key, value] of Object.entries(map)) {
@@ -51187,7 +50328,6 @@ function mapToHeaders(map) {
   }
   return headers;
 }
-__name(mapToHeaders, "mapToHeaders");
 function shouldDisableAfc(config) {
   var _a2, _b, _c;
   if ((_a2 = config === null || config === void 0 ? void 0 : config.automaticFunctionCalling) === null || _a2 === void 0 ? void 0 : _a2.disable) {
@@ -51210,16 +50350,13 @@ function shouldDisableAfc(config) {
   }
   return false;
 }
-__name(shouldDisableAfc, "shouldDisableAfc");
 function isCallableTool(tool) {
   return "callTool" in tool && typeof tool.callTool === "function";
 }
-__name(isCallableTool, "isCallableTool");
 function hasCallableTools(params) {
   var _a2, _b, _c;
   return (_c = (_b = (_a2 = params.config) === null || _a2 === void 0 ? void 0 : _a2.tools) === null || _b === void 0 ? void 0 : _b.some((tool) => isCallableTool(tool))) !== null && _c !== void 0 ? _c : false;
 }
-__name(hasCallableTools, "hasCallableTools");
 function findAfcIncompatibleToolIndexes(params) {
   var _a2;
   const afcIncompatibleToolIndexes = [];
@@ -51237,12 +50374,10 @@ function findAfcIncompatibleToolIndexes(params) {
   });
   return afcIncompatibleToolIndexes;
 }
-__name(findAfcIncompatibleToolIndexes, "findAfcIncompatibleToolIndexes");
 function shouldAppendAfcHistory(config) {
   var _a2;
   return !((_a2 = config === null || config === void 0 ? void 0 : config.automaticFunctionCalling) === null || _a2 === void 0 ? void 0 : _a2.ignoreCallHistory);
 }
-__name(shouldAppendAfcHistory, "shouldAppendAfcHistory");
 function authConfigToMldev(fromObject) {
   const toObject = {};
   const fromApiKey = getValueByPath(fromObject, ["apiKey"]);
@@ -51269,7 +50404,6 @@ function authConfigToMldev(fromObject) {
   }
   return toObject;
 }
-__name(authConfigToMldev, "authConfigToMldev");
 function blobToMldev(fromObject) {
   const toObject = {};
   const fromData = getValueByPath(fromObject, ["data"]);
@@ -51285,7 +50419,6 @@ function blobToMldev(fromObject) {
   }
   return toObject;
 }
-__name(blobToMldev, "blobToMldev");
 function contentToMldev(fromObject) {
   const toObject = {};
   const fromParts = getValueByPath(fromObject, ["parts"]);
@@ -51304,7 +50437,6 @@ function contentToMldev(fromObject) {
   }
   return toObject;
 }
-__name(contentToMldev, "contentToMldev");
 function createAuthTokenConfigToMldev(apiClient, fromObject, parentObject) {
   const toObject = {};
   const fromExpireTime = getValueByPath(fromObject, ["expireTime"]);
@@ -51335,7 +50467,6 @@ function createAuthTokenConfigToMldev(apiClient, fromObject, parentObject) {
   }
   return toObject;
 }
-__name(createAuthTokenConfigToMldev, "createAuthTokenConfigToMldev");
 function createAuthTokenParametersToMldev(apiClient, fromObject) {
   const toObject = {};
   const fromConfig = getValueByPath(fromObject, ["config"]);
@@ -51344,7 +50475,6 @@ function createAuthTokenParametersToMldev(apiClient, fromObject) {
   }
   return toObject;
 }
-__name(createAuthTokenParametersToMldev, "createAuthTokenParametersToMldev");
 function fileDataToMldev(fromObject) {
   const toObject = {};
   if (getValueByPath(fromObject, ["displayName"]) !== void 0) {
@@ -51360,7 +50490,6 @@ function fileDataToMldev(fromObject) {
   }
   return toObject;
 }
-__name(fileDataToMldev, "fileDataToMldev");
 function functionCallToMldev(fromObject) {
   const toObject = {};
   const fromArgs = getValueByPath(fromObject, ["args"]);
@@ -51383,7 +50512,6 @@ function functionCallToMldev(fromObject) {
   }
   return toObject;
 }
-__name(functionCallToMldev, "functionCallToMldev");
 function googleMapsToMldev(fromObject) {
   const toObject = {};
   const fromAuthConfig = getValueByPath(fromObject, ["authConfig"]);
@@ -51399,7 +50527,6 @@ function googleMapsToMldev(fromObject) {
   }
   return toObject;
 }
-__name(googleMapsToMldev, "googleMapsToMldev");
 function googleSearchToMldev(fromObject) {
   const toObject = {};
   if (getValueByPath(fromObject, ["blockingConfidence"]) !== void 0) {
@@ -51420,7 +50547,6 @@ function googleSearchToMldev(fromObject) {
   }
   return toObject;
 }
-__name(googleSearchToMldev, "googleSearchToMldev");
 function liveConnectConfigToMldev(fromObject, parentObject) {
   const toObject = {};
   const fromGenerationConfig = getValueByPath(fromObject, [
@@ -51556,7 +50682,6 @@ function liveConnectConfigToMldev(fromObject, parentObject) {
   }
   return toObject;
 }
-__name(liveConnectConfigToMldev, "liveConnectConfigToMldev");
 function liveConnectConstraintsToMldev(apiClient, fromObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["model"]);
@@ -51569,7 +50694,6 @@ function liveConnectConstraintsToMldev(apiClient, fromObject) {
   }
   return toObject;
 }
-__name(liveConnectConstraintsToMldev, "liveConnectConstraintsToMldev");
 function partToMldev(fromObject) {
   const toObject = {};
   const fromMediaResolution = getValueByPath(fromObject, [
@@ -51648,7 +50772,6 @@ function partToMldev(fromObject) {
   }
   return toObject;
 }
-__name(partToMldev, "partToMldev");
 function safetySettingToMldev(fromObject) {
   const toObject = {};
   const fromCategory = getValueByPath(fromObject, ["category"]);
@@ -51664,7 +50787,6 @@ function safetySettingToMldev(fromObject) {
   }
   return toObject;
 }
-__name(safetySettingToMldev, "safetySettingToMldev");
 function sessionResumptionConfigToMldev(fromObject) {
   const toObject = {};
   const fromHandle = getValueByPath(fromObject, ["handle"]);
@@ -51676,7 +50798,6 @@ function sessionResumptionConfigToMldev(fromObject) {
   }
   return toObject;
 }
-__name(sessionResumptionConfigToMldev, "sessionResumptionConfigToMldev");
 function toolToMldev(fromObject) {
   const toObject = {};
   if (getValueByPath(fromObject, ["retrieval"]) !== void 0) {
@@ -51747,7 +50868,6 @@ function toolToMldev(fromObject) {
   }
   return toObject;
 }
-__name(toolToMldev, "toolToMldev");
 function getFieldMasks(setup) {
   const fields = [];
   for (const key in setup) {
@@ -51763,7 +50883,6 @@ function getFieldMasks(setup) {
   }
   return fields.join(",");
 }
-__name(getFieldMasks, "getFieldMasks");
 function convertBidiSetupToTokenSetup(requestDict, config) {
   let setupForMaskGeneration = null;
   const bidiGenerateContentSetupValue = requestDict["bidiGenerateContentSetup"];
@@ -51830,7 +50949,6 @@ function convertBidiSetupToTokenSetup(requestDict, config) {
   }
   return requestDict;
 }
-__name(convertBidiSetupToTokenSetup, "convertBidiSetupToTokenSetup");
 function deleteDocumentConfigToMldev(fromObject, parentObject) {
   const toObject = {};
   const fromForce = getValueByPath(fromObject, ["force"]);
@@ -51839,7 +50957,6 @@ function deleteDocumentConfigToMldev(fromObject, parentObject) {
   }
   return toObject;
 }
-__name(deleteDocumentConfigToMldev, "deleteDocumentConfigToMldev");
 function deleteDocumentParametersToMldev(fromObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -51852,7 +50969,6 @@ function deleteDocumentParametersToMldev(fromObject) {
   }
   return toObject;
 }
-__name(deleteDocumentParametersToMldev, "deleteDocumentParametersToMldev");
 function getDocumentParametersToMldev(fromObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -51861,7 +50977,6 @@ function getDocumentParametersToMldev(fromObject) {
   }
   return toObject;
 }
-__name(getDocumentParametersToMldev, "getDocumentParametersToMldev");
 function listDocumentsConfigToMldev(fromObject, parentObject) {
   const toObject = {};
   const fromPageSize = getValueByPath(fromObject, ["pageSize"]);
@@ -51874,7 +50989,6 @@ function listDocumentsConfigToMldev(fromObject, parentObject) {
   }
   return toObject;
 }
-__name(listDocumentsConfigToMldev, "listDocumentsConfigToMldev");
 function listDocumentsParametersToMldev(fromObject) {
   const toObject = {};
   const fromParent = getValueByPath(fromObject, ["parent"]);
@@ -51887,7 +51001,6 @@ function listDocumentsParametersToMldev(fromObject) {
   }
   return toObject;
 }
-__name(listDocumentsParametersToMldev, "listDocumentsParametersToMldev");
 function listDocumentsResponseFromMldev(fromObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -51914,14 +51027,12 @@ function listDocumentsResponseFromMldev(fromObject) {
   }
   return toObject;
 }
-__name(listDocumentsResponseFromMldev, "listDocumentsResponseFromMldev");
 function isDeno() {
   if ("Deno" in globalThis) {
     return true;
   }
   return false;
 }
-__name(isDeno, "isDeno");
 function env() {
   var _a2, _b, _c, _d, _e, _f;
   if (envMemo) {
@@ -51937,7 +51048,6 @@ function env() {
   envMemo = envObject;
   return envMemo;
 }
-__name(env, "env");
 function fillGlobals(options) {
   var _a2, _b;
   const clone = Object.assign({}, options);
@@ -51950,7 +51060,6 @@ function fillGlobals(options) {
   }
   return clone;
 }
-__name(fillGlobals, "fillGlobals");
 function decodeSDKLevelAPIVersionPath(url) {
   const [, apiVersion, ...rest] = url.pathname.split("/");
   if (!apiVersion) {
@@ -51964,7 +51073,6 @@ function decodeSDKLevelAPIVersionPath(url) {
   nextURL.pathname = `/${decodedAPIVersion}/${rest.join("/")}`;
   return nextURL;
 }
-__name(decodeSDKLevelAPIVersionPath, "decodeSDKLevelAPIVersionPath");
 async function resolveSecurity$1(securitySource, requestURL) {
   if (isSecurityResolver(securitySource)) {
     return securitySource.resolveGoogleGenAISecurity(requestURL);
@@ -51975,7 +51083,6 @@ async function resolveSecurity$1(securitySource, requestURL) {
   }
   return withEnvSecurity(void 0);
 }
-__name(resolveSecurity$1, "resolveSecurity$1");
 function getStaticDefaultHeaders(securitySource) {
   var _a2, _b;
   if (isSecurityResolver(securitySource)) {
@@ -51986,14 +51093,12 @@ function getStaticDefaultHeaders(securitySource) {
   }
   return void 0;
 }
-__name(getStaticDefaultHeaders, "getStaticDefaultHeaders");
 function withEnvSecurity(security) {
   var _a2, _b;
   const envVars = env();
   const nextSecurity = Object.assign(Object.assign({}, security), { api_key: (_a2 = security === null || security === void 0 ? void 0 : security.api_key) !== null && _a2 !== void 0 ? _a2 : envVars.GOOGLE_GENAI_API_KEY, access_token: (_b = security === null || security === void 0 ? void 0 : security.access_token) !== null && _b !== void 0 ? _b : envVars.GOOGLE_GENAI_ACCESS_TOKEN });
   return hasSecurityValue(nextSecurity) ? nextSecurity : void 0;
 }
-__name(withEnvSecurity, "withEnvSecurity");
 function securityFromHeaders(headers) {
   var _a2, _b;
   const defaultHeaders = {};
@@ -52010,7 +51115,6 @@ function securityFromHeaders(headers) {
   };
   return hasSecurityValue(security) ? security : void 0;
 }
-__name(securityFromHeaders, "securityFromHeaders");
 function applyDefaultHeaders(target, source) {
   if (!source) {
     return;
@@ -52021,13 +51125,11 @@ function applyDefaultHeaders(target, source) {
     }
   }
 }
-__name(applyDefaultHeaders, "applyDefaultHeaders");
 function applyUserProject(hookCtx, headers) {
   if (hookCtx.options.user_project !== void 0 && headers.get("x-goog-user-project") === null) {
     headers.set("x-goog-user-project", hookCtx.options.user_project);
   }
 }
-__name(applyUserProject, "applyUserProject");
 function applyAuth(headers, security) {
   if (!security) {
     return;
@@ -52040,27 +51142,21 @@ function applyAuth(headers, security) {
     headers.set("Authorization", bearer(security.access_token));
   }
 }
-__name(applyAuth, "applyAuth");
 function hasAuthHeaders(headers) {
   return headers.get("authorization") !== null || headers.get("x-goog-api-key") !== null;
 }
-__name(hasAuthHeaders, "hasAuthHeaders");
 function bearer(token) {
   return token.slice(0, 7).toLowerCase() === "bearer " ? token : `Bearer ${token}`;
 }
-__name(bearer, "bearer");
 function isSecurity(value) {
   return typeof value === "object" && value !== null;
 }
-__name(isSecurity, "isSecurity");
 function isSecurityResolver(value) {
   return typeof value === "object" && value !== null && "resolveGoogleGenAISecurity" in value && typeof value.resolveGoogleGenAISecurity === "function";
 }
-__name(isSecurityResolver, "isSecurityResolver");
 function hasSecurityValue(security) {
   return security.api_key !== void 0 || security.access_token !== void 0 || security.default_headers !== void 0;
 }
-__name(hasSecurityValue, "hasSecurityValue");
 function wrapSDKError(error) {
   if (isCompatAPIErrorInstance(error)) {
     return error;
@@ -52073,7 +51169,6 @@ function wrapSDKError(error) {
   }
   return error;
 }
-__name(wrapSDKError, "wrapSDKError");
 function wrapAPIError(error) {
   const errorPayload = getErrorPayload(error);
   const wrapped = APIError.generate(error.statusCode, errorPayload, error.message, error.headers);
@@ -52084,7 +51179,6 @@ function wrapAPIError(error) {
   defineReadonly(wrapped, "cause", error);
   return wrapped;
 }
-__name(wrapAPIError, "wrapAPIError");
 function wrapHTTPClientError(error) {
   if (error instanceof RequestTimeoutError) {
     return new APIConnectionTimeoutError({ message: error.message });
@@ -52097,7 +51191,6 @@ function wrapHTTPClientError(error) {
   }
   return new APIConnectionError({ message: error.message, cause: error });
 }
-__name(wrapHTTPClientError, "wrapHTTPClientError");
 function getErrorPayload(error) {
   const data = getObjectProperty(error, "data$");
   if (data && typeof data === "object") {
@@ -52113,11 +51206,9 @@ function getErrorPayload(error) {
   const dataError = getObjectProperty(error, "error");
   return dataError && typeof dataError === "object" ? dataError : void 0;
 }
-__name(getErrorPayload, "getErrorPayload");
 function getObjectProperty(value, key) {
   return value && typeof value === "object" ? value[key] : void 0;
 }
-__name(getObjectProperty, "getObjectProperty");
 function stringifyErrorBody(error) {
   if (!error)
     return "";
@@ -52127,15 +51218,12 @@ function stringifyErrorBody(error) {
     return String(error);
   }
 }
-__name(stringifyErrorBody, "stringifyErrorBody");
 function isPlainObject$2(value) {
   return value !== null && typeof value === "object" && !Array.isArray(value);
 }
-__name(isPlainObject$2, "isPlainObject$2");
 function isCompatAPIErrorInstance(value) {
   return typeof value === "object" && value !== null ? APIError.prototype.isPrototypeOf(value) : false;
 }
-__name(isCompatAPIErrorInstance, "isCompatAPIErrorInstance");
 function defineReadonly(target, key, value) {
   Object.defineProperty(target, key, {
     configurable: true,
@@ -52144,36 +51232,29 @@ function defineReadonly(target, key, value) {
     writable: false
   });
 }
-__name(defineReadonly, "defineReadonly");
 function initHooks(hooks) {
   const googleGenAIAuthHook = new GoogleGenAIAuthHook();
   hooks.registerBeforeCreateRequestHook(googleGenAIAuthHook);
   hooks.registerBeforeRequestHook(googleGenAIAuthHook);
 }
-__name(initHooks, "initHooks");
 function OK(value) {
   return { ok: true, value };
 }
-__name(OK, "OK");
 function ERR(error) {
   return { ok: false, error };
 }
-__name(ERR, "ERR");
 function bytesToBase64(u8arr) {
   return btoa(String.fromCodePoint(...u8arr));
 }
-__name(bytesToBase64, "bytesToBase64");
 function stringToBytes(str) {
   return new TextEncoder().encode(str);
 }
-__name(stringToBytes, "stringToBytes");
 function stringToBase64(str) {
   return bytesToBase64(stringToBytes(str));
 }
-__name(stringToBase64, "stringToBase64");
 function pathToFunc(pathPattern, options) {
   const paramRE = /\{([a-zA-Z0-9_][a-zA-Z0-9_-]*?)\}/g;
-  return /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function buildURLPath(params = {}) {
+  return /* @__PURE__ */ __name(function buildURLPath(params = {}) {
     return pathPattern.replace(paramRE, function(_, placeholder) {
       if (!hasOwn.call(params, placeholder)) {
         throw new Error(`Parameter '${placeholder}' is required`);
@@ -52184,9 +51265,8 @@ function pathToFunc(pathPattern, options) {
       }
       return `${value}`;
     }).replace(/^\/+/, "");
-  }, "buildURLPath"), "buildURLPath");
+  }, "buildURLPath");
 }
-__name(pathToFunc, "pathToFunc");
 function serverURLFromOptions(options) {
   var _a2;
   let serverURL = options.server_url;
@@ -52201,7 +51281,6 @@ function serverURLFromOptions(options) {
   const u = pathToFunc(serverURL)(params);
   return new URL(u);
 }
-__name(serverURLFromOptions, "serverURLFromOptions");
 function combineSignals(...signals) {
   const filtered = [];
   for (const signal of signals) {
@@ -52220,7 +51299,6 @@ function combineSignals(...signals) {
       return abortSignalAny(filtered);
   }
 }
-__name(combineSignals, "combineSignals");
 function abortSignalAny(signals) {
   const controller = new AbortController();
   const result = controller.signal;
@@ -52240,7 +51318,6 @@ function abortSignalAny(signals) {
     clean();
   }
   __name(abort, "abort");
-  __name2(abort, "abort");
   const signalRefs = [];
   function clean() {
     for (const signalRef of signalRefs) {
@@ -52251,14 +51328,12 @@ function abortSignalAny(signals) {
     }
   }
   __name(clean, "clean");
-  __name2(clean, "clean");
   for (const signal of signals) {
     signalRefs.push(new WeakRef(signal));
     signal.addEventListener("abort", abort);
   }
   return result;
 }
-__name(abortSignalAny, "abortSignalAny");
 function compactMap(values) {
   const out = {};
   for (const [k, v] of Object.entries(values)) {
@@ -52268,7 +51343,6 @@ function compactMap(values) {
   }
   return out;
 }
-__name(compactMap, "compactMap");
 function isPlainObject$1(value) {
   if (value === null || typeof value !== "object")
     return false;
@@ -52283,7 +51357,6 @@ function isPlainObject$1(value) {
     return false;
   }
 }
-__name(isPlainObject$1, "isPlainObject$1");
 function formEncoder(sep) {
   return (key, value, options) => {
     let out = "";
@@ -52291,10 +51364,10 @@ function formEncoder(sep) {
     if (pairs.every(([_, v]) => v == null)) {
       return;
     }
-    const encodeString = /* @__PURE__ */ __name2((v) => {
+    const encodeString = /* @__PURE__ */ __name((v) => {
       return (options === null || options === void 0 ? void 0 : options.charEncoding) === "percent" ? encodeURIComponent(v) : v;
     }, "encodeString");
-    const encodeValue = /* @__PURE__ */ __name2((v) => encodeString(serializeValue(v)), "encodeValue");
+    const encodeValue = /* @__PURE__ */ __name((v) => encodeString(serializeValue(v)), "encodeValue");
     const encodedSep = encodeString(sep);
     pairs.forEach(([pk, pv]) => {
       var _a2, _b;
@@ -52323,18 +51396,16 @@ function formEncoder(sep) {
     return out.slice(1);
   };
 }
-__name(formEncoder, "formEncoder");
 function encodeJSON(key, value, options) {
   if (typeof value === "undefined") {
     return;
   }
-  const encodeString = /* @__PURE__ */ __name2((v) => {
+  const encodeString = /* @__PURE__ */ __name((v) => {
     return (options === null || options === void 0 ? void 0 : options.charEncoding) === "percent" ? encodeURIComponent(v) : v;
   }, "encodeString");
   const encVal = encodeString(JSON.stringify(value, jsonReplacer));
   return (options === null || options === void 0 ? void 0 : options.explode) ? encVal : `${encodeString(key)}=${encVal}`;
 }
-__name(encodeJSON, "encodeJSON");
 function explode(key, value) {
   if (Array.isArray(value)) {
     return value.map((v) => [key, v]);
@@ -52345,7 +51416,6 @@ function explode(key, value) {
     return [[key, value]];
   }
 }
-__name(explode, "explode");
 function serializeValue(value) {
   if (value == null) {
     return "";
@@ -52358,7 +51428,6 @@ function serializeValue(value) {
   }
   return `${value}`;
 }
-__name(serializeValue, "serializeValue");
 function jsonReplacer(_, value) {
   if (value instanceof Uint8Array) {
     return bytesToBase64(value);
@@ -52366,7 +51435,6 @@ function jsonReplacer(_, value) {
     return value;
   }
 }
-__name(jsonReplacer, "jsonReplacer");
 function mapDefined(inp, mapper) {
   const res = inp.reduce((acc, v) => {
     if (v == null) {
@@ -52381,7 +51449,6 @@ function mapDefined(inp, mapper) {
   }, []);
   return res.length ? res : null;
 }
-__name(mapDefined, "mapDefined");
 function mapDefinedEntries(inp, mapper) {
   const acc = [];
   for (const [k, v] of inp) {
@@ -52396,13 +51463,11 @@ function mapDefinedEntries(inp, mapper) {
   }
   return acc.length ? acc : null;
 }
-__name(mapDefinedEntries, "mapDefinedEntries");
 function queryJoin(...args) {
   return args.filter(Boolean).join("&");
 }
-__name(queryJoin, "queryJoin");
 function queryEncoder(f) {
-  const bulkEncode = /* @__PURE__ */ __name2(function(values, options) {
+  const bulkEncode = /* @__PURE__ */ __name(function(values, options) {
     var _a2, _b, _c;
     const opts = Object.assign(Object.assign({}, options), { explode: (_a2 = options === null || options === void 0 ? void 0 : options.explode) !== null && _a2 !== void 0 ? _a2 : true, charEncoding: (_b = options === null || options === void 0 ? void 0 : options.charEncoding) !== null && _b !== void 0 ? _b : "percent" });
     const allowEmptySet = new Set((_c = options === null || options === void 0 ? void 0 : options.allowEmptyValue) !== null && _c !== void 0 ? _c : []);
@@ -52418,7 +51483,6 @@ function queryEncoder(f) {
   }, "bulkEncode");
   return bulkEncode;
 }
-__name(queryEncoder, "queryEncoder");
 function matchContentType(response, pattern) {
   var _a2;
   if (pattern === "*") {
@@ -52451,7 +51515,6 @@ function matchContentType(response, pattern) {
   }
   return true;
 }
-__name(matchContentType, "matchContentType");
 function matchStatusCode(response, codes) {
   const actual = `${response.status}`;
   const expectedCodes = Array.isArray(codes) ? codes : [codes];
@@ -52477,11 +51540,9 @@ function matchStatusCode(response, codes) {
     return actualFamily === expectFamily;
   });
 }
-__name(matchStatusCode, "matchStatusCode");
 function matchResponse(response, code, contentTypePattern) {
   return matchStatusCode(response, code) && matchContentType(response, contentTypePattern);
 }
-__name(matchResponse, "matchResponse");
 function isConnectionError(err) {
   if (typeof err !== "object" || err == null) {
     return false;
@@ -52492,7 +51553,6 @@ function isConnectionError(err) {
   const isGenericErr = "code" in err && typeof err.code === "string" && err.code.toLowerCase() === "econnreset";
   return isBrowserErr || isNodeErr || isGenericErr || isBunErr;
 }
-__name(isConnectionError, "isConnectionError");
 function isTimeoutError(err) {
   if (typeof err !== "object" || err == null) {
     return false;
@@ -52502,7 +51562,6 @@ function isTimeoutError(err) {
   const isGenericErr = "code" in err && typeof err.code === "string" && err.code.toLowerCase() === "econnaborted";
   return isNative || isLegacyNative || isGenericErr;
 }
-__name(isTimeoutError, "isTimeoutError");
 function isAbortError(err) {
   if (typeof err !== "object" || err == null) {
     return false;
@@ -52512,7 +51571,6 @@ function isAbortError(err) {
   const isGenericErr = "code" in err && typeof err.code === "string" && err.code.toLowerCase() === "econnaborted";
   return isNative || isLegacyNative || isGenericErr;
 }
-__name(isAbortError, "isAbortError");
 async function retry(fetchFn, options) {
   var _a2;
   switch (options.config.strategy) {
@@ -52530,7 +51588,6 @@ async function retry(fetchFn, options) {
       return await fetchFn(0);
   }
 }
-__name(retry, "retry");
 function wrapFetcher(fn, options) {
   return async (attempt) => {
     try {
@@ -52550,7 +51607,6 @@ function wrapFetcher(fn, options) {
     }
   };
 }
-__name(wrapFetcher, "wrapFetcher");
 function isRetryableResponse(res, statusCodes) {
   const actual = `${res.status}`;
   return statusCodes.some((code) => {
@@ -52568,7 +51624,6 @@ function isRetryableResponse(res, statusCodes) {
     return actualFamily === expectFamily;
   });
 }
-__name(isRetryableResponse, "isRetryableResponse");
 async function retryBackoff(fn, strategy) {
   const { maxElapsedTime, initialInterval, exponent, maxInterval } = strategy;
   const start = Date.now();
@@ -52601,7 +51656,6 @@ async function retryBackoff(fn, strategy) {
     }
   }
 }
-__name(retryBackoff, "retryBackoff");
 async function retryAttemptCountBackoff(fn, strategy, config) {
   let attempt = 0;
   while (true) {
@@ -52630,7 +51684,6 @@ async function retryAttemptCountBackoff(fn, strategy, config) {
     }
   }
 }
-__name(retryAttemptCountBackoff, "retryAttemptCountBackoff");
 function retryIntervalFromResponse(res) {
   const retryAfterMsVal = res.headers.get("retry-after-ms");
   if (retryAfterMsVal) {
@@ -52654,11 +51707,9 @@ function retryIntervalFromResponse(res) {
   }
   return 0;
 }
-__name(retryIntervalFromResponse, "retryIntervalFromResponse");
 async function delay(delay2) {
   return new Promise((resolve) => setTimeout(resolve, delay2));
 }
-__name(delay, "delay");
 async function logRequest(logger, req) {
   if (!logger) {
     return;
@@ -52694,7 +51745,6 @@ async function logRequest(logger, req) {
   logger.groupEnd();
   logger.groupEnd();
 }
-__name(logRequest, "logRequest");
 async function logResponse(logger, res, req) {
   if (!logger) {
     return;
@@ -52735,7 +51785,6 @@ async function logResponse(logger, res, req) {
   logger.groupEnd();
   logger.groupEnd();
 }
-__name(logResponse, "logResponse");
 function tryParseJson(s) {
   try {
     return JSON.parse(s);
@@ -52743,7 +51792,6 @@ function tryParseJson(s) {
     return s;
   }
 }
-__name(tryParseJson, "tryParseJson");
 function wrapEventStreamResponse(body, opts = {}) {
   var _a2, _b;
   const flattened = opts.flattened === true;
@@ -52762,7 +51810,6 @@ function wrapEventStreamResponse(body, opts = {}) {
     };
   }, { dataRequired: (_b = opts.dataRequired) !== null && _b !== void 0 ? _b : true });
 }
-__name(wrapEventStreamResponse, "wrapEventStreamResponse");
 function findBoundary(buf, len, from) {
   for (let i = from; i < len; i++) {
     if (buf[i] !== CR && buf[i] !== LF)
@@ -52783,7 +51830,6 @@ function findBoundary(buf, len, from) {
   }
   return null;
 }
-__name(findBoundary, "findBoundary");
 function parseMessage(chunk, parse2, state, dataRequired) {
   const text = new TextDecoder().decode(chunk);
   const lines = text.split(/\r\n|\r|\n/);
@@ -52820,29 +51866,23 @@ function parseMessage(chunk, parse2, state, dataRequired) {
     return;
   return parse2(ret);
 }
-__name(parseMessage, "parseMessage");
 function jsonErr(codes, errorClass, options) {
   return Object.assign(Object.assign({}, options), { err: true, enc: "json", codes, errorClass });
 }
-__name(jsonErr, "jsonErr");
 function json(codes, options) {
   return Object.assign(Object.assign({}, options), { enc: "json", codes });
 }
-__name(json, "json");
 function sse(codes, sse2, options) {
   return Object.assign(Object.assign(Object.assign({}, options), { enc: "sse", codes }), sse2 ? { sse: sse2 } : {});
 }
-__name(sse, "sse");
 function nil(codes, options) {
   return Object.assign(Object.assign({}, options), { enc: "nil", codes });
 }
-__name(nil, "nil");
 function fail(codes) {
   return { enc: "fail", codes };
 }
-__name(fail, "fail");
 function match(...matchers) {
-  return /* @__PURE__ */ __name2(/* @__PURE__ */ __name(async function matchFunc(response, request, options) {
+  return /* @__PURE__ */ __name(async function matchFunc(response, request, options) {
     let raw;
     let matcher;
     for (const match3 of matchers) {
@@ -52939,9 +51979,8 @@ function match(...matchers) {
       return [{ ok: false, error: errValue }, raw];
     }
     return [{ ok: true, value: data }, raw];
-  }, "matchFunc"), "matchFunc");
+  }, "matchFunc");
 }
-__name(match, "match");
 function unpackHeaders(headers) {
   const out = {};
   for (const [k, v] of headers.entries()) {
@@ -52949,7 +51988,6 @@ function unpackHeaders(headers) {
   }
   return out;
 }
-__name(unpackHeaders, "unpackHeaders");
 function resolveSecurity(...options) {
   const state = {
     basic: {},
@@ -53023,14 +52061,12 @@ function resolveSecurity(...options) {
   });
   return state;
 }
-__name(resolveSecurity, "resolveSecurity");
 function applyBasic(state, spec) {
   if (spec.value == null) {
     return;
   }
   state.basic = spec.value;
 }
-__name(applyBasic, "applyBasic");
 function applyBearer(state, spec) {
   if (typeof spec.value !== "string" || !spec.value) {
     return;
@@ -53043,7 +52079,6 @@ function applyBearer(state, spec) {
     state.headers[spec.fieldName] = value;
   }
 }
-__name(applyBearer, "applyBearer");
 function resolveGlobalSecurity(security, allowedFields) {
   var _a2, _b;
   let inputs = [
@@ -53067,14 +52102,12 @@ function resolveGlobalSecurity(security, allowedFields) {
   ];
   return resolveSecurity(...inputs);
 }
-__name(resolveGlobalSecurity, "resolveGlobalSecurity");
 async function extractSecurity(sec) {
   if (sec == null) {
     return;
   }
   return typeof sec === "function" ? sec() : sec;
 }
-__name(extractSecurity, "extractSecurity");
 function unwrapAsAPIPromise(p) {
   const inner = p.$inspect();
   const data = inner.then(([r, call]) => {
@@ -53096,11 +52129,9 @@ function unwrapAsAPIPromise(p) {
   });
   return new APIPromise(data, callSource);
 }
-__name(unwrapAsAPIPromise, "unwrapAsAPIPromise");
 function agentsCreate(client, body, api_version, options) {
   return new APIPromise($do$p(client, body, api_version, options));
 }
-__name(agentsCreate, "agentsCreate");
 async function $do$p(client, body, api_version, options) {
   var _a2, _b, _c;
   const input = {
@@ -53155,7 +52186,7 @@ async function $do$p(client, body, api_version, options) {
   const req = requestRes.value;
   const doResult = await client._do(req, {
     context,
-    isErrorStatusCode: /* @__PURE__ */ __name2((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
+    isErrorStatusCode: /* @__PURE__ */ __name((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
     retryConfig: context.retry_config,
     retryCodes: context.retry_codes
   });
@@ -53169,11 +52200,9 @@ async function $do$p(client, body, api_version, options) {
   }
   return [result, { status: "complete", request: req, response }];
 }
-__name($do$p, "$do$p");
 function agentsDelete(client, id, api_version, options) {
   return new APIPromise($do$o(client, id, api_version, options));
 }
-__name(agentsDelete, "agentsDelete");
 async function $do$o(client, id, api_version, options) {
   var _a2, _b, _c;
   const input = {
@@ -53231,7 +52260,7 @@ async function $do$o(client, id, api_version, options) {
   const req = requestRes.value;
   const doResult = await client._do(req, {
     context,
-    isErrorStatusCode: /* @__PURE__ */ __name2((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
+    isErrorStatusCode: /* @__PURE__ */ __name((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
     retryConfig: context.retry_config,
     retryCodes: context.retry_codes
   });
@@ -53245,11 +52274,9 @@ async function $do$o(client, id, api_version, options) {
   }
   return [result, { status: "complete", request: req, response }];
 }
-__name($do$o, "$do$o");
 function agentsGet(client, id, api_version, options) {
   return new APIPromise($do$n(client, id, api_version, options));
 }
-__name(agentsGet, "agentsGet");
 async function $do$n(client, id, api_version, options) {
   var _a2, _b, _c;
   const input = {
@@ -53307,7 +52334,7 @@ async function $do$n(client, id, api_version, options) {
   const req = requestRes.value;
   const doResult = await client._do(req, {
     context,
-    isErrorStatusCode: /* @__PURE__ */ __name2((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
+    isErrorStatusCode: /* @__PURE__ */ __name((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
     retryConfig: context.retry_config,
     retryCodes: context.retry_codes
   });
@@ -53321,11 +52348,9 @@ async function $do$n(client, id, api_version, options) {
   }
   return [result, { status: "complete", request: req, response }];
 }
-__name($do$n, "$do$n");
 function agentsList(client, api_version, page_size, page_token, parent, options) {
   return new APIPromise($do$m(client, api_version, page_size, page_token, parent, options));
 }
-__name(agentsList, "agentsList");
 async function $do$m(client, api_version, page_size, page_token, parent, options) {
   var _a2, _b, _c;
   const input = {
@@ -53387,7 +52412,7 @@ async function $do$m(client, api_version, page_size, page_token, parent, options
   const req = requestRes.value;
   const doResult = await client._do(req, {
     context,
-    isErrorStatusCode: /* @__PURE__ */ __name2((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
+    isErrorStatusCode: /* @__PURE__ */ __name((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
     retryConfig: context.retry_config,
     retryCodes: context.retry_codes
   });
@@ -53401,11 +52426,9 @@ async function $do$m(client, api_version, page_size, page_token, parent, options
   }
   return [result, { status: "complete", request: req, response }];
 }
-__name($do$m, "$do$m");
 function environmentsCreateEnvironment(client, body, api_version, options) {
   return new APIPromise($do$l(client, body, api_version, options));
 }
-__name(environmentsCreateEnvironment, "environmentsCreateEnvironment");
 async function $do$l(client, body, api_version, options) {
   var _a2, _b, _c;
   const input = {
@@ -53460,7 +52483,7 @@ async function $do$l(client, body, api_version, options) {
   const req = requestRes.value;
   const doResult = await client._do(req, {
     context,
-    isErrorStatusCode: /* @__PURE__ */ __name2((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
+    isErrorStatusCode: /* @__PURE__ */ __name((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
     retryConfig: context.retry_config,
     retryCodes: context.retry_codes
   });
@@ -53474,11 +52497,9 @@ async function $do$l(client, body, api_version, options) {
   }
   return [result, { status: "complete", request: req, response }];
 }
-__name($do$l, "$do$l");
 function environmentsDeleteEnvironment(client, id, api_version, options) {
   return new APIPromise($do$k(client, id, api_version, options));
 }
-__name(environmentsDeleteEnvironment, "environmentsDeleteEnvironment");
 async function $do$k(client, id, api_version, options) {
   var _a2, _b, _c;
   const input = {
@@ -53536,7 +52557,7 @@ async function $do$k(client, id, api_version, options) {
   const req = requestRes.value;
   const doResult = await client._do(req, {
     context,
-    isErrorStatusCode: /* @__PURE__ */ __name2((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
+    isErrorStatusCode: /* @__PURE__ */ __name((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
     retryConfig: context.retry_config,
     retryCodes: context.retry_codes
   });
@@ -53550,11 +52571,9 @@ async function $do$k(client, id, api_version, options) {
   }
   return [result, { status: "complete", request: req, response }];
 }
-__name($do$k, "$do$k");
 function environmentsGetEnvironment(client, id, api_version, options) {
   return new APIPromise($do$j(client, id, api_version, options));
 }
-__name(environmentsGetEnvironment, "environmentsGetEnvironment");
 async function $do$j(client, id, api_version, options) {
   var _a2, _b, _c;
   const input = {
@@ -53612,7 +52631,7 @@ async function $do$j(client, id, api_version, options) {
   const req = requestRes.value;
   const doResult = await client._do(req, {
     context,
-    isErrorStatusCode: /* @__PURE__ */ __name2((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
+    isErrorStatusCode: /* @__PURE__ */ __name((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
     retryConfig: context.retry_config,
     retryCodes: context.retry_codes
   });
@@ -53626,11 +52645,9 @@ async function $do$j(client, id, api_version, options) {
   }
   return [result, { status: "complete", request: req, response }];
 }
-__name($do$j, "$do$j");
 function environmentsListEnvironments(client, api_version, page_size, page_token, options) {
   return new APIPromise($do$i(client, api_version, page_size, page_token, options));
 }
-__name(environmentsListEnvironments, "environmentsListEnvironments");
 async function $do$i(client, api_version, page_size, page_token, options) {
   var _a2, _b, _c;
   const input = {
@@ -53690,7 +52707,7 @@ async function $do$i(client, api_version, page_size, page_token, options) {
   const req = requestRes.value;
   const doResult = await client._do(req, {
     context,
-    isErrorStatusCode: /* @__PURE__ */ __name2((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
+    isErrorStatusCode: /* @__PURE__ */ __name((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
     retryConfig: context.retry_config,
     retryCodes: context.retry_codes
   });
@@ -53704,11 +52721,9 @@ async function $do$i(client, api_version, page_size, page_token, options) {
   }
   return [result, { status: "complete", request: req, response }];
 }
-__name($do$i, "$do$i");
 function interactionsCancel(client, id, api_version, options) {
   return new APIPromise($do$h(client, id, api_version, options));
 }
-__name(interactionsCancel, "interactionsCancel");
 async function $do$h(client, id, api_version, options) {
   var _a2, _b, _c;
   const input = {
@@ -53766,7 +52781,7 @@ async function $do$h(client, id, api_version, options) {
   const req = requestRes.value;
   const doResult = await client._do(req, {
     context,
-    isErrorStatusCode: /* @__PURE__ */ __name2((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
+    isErrorStatusCode: /* @__PURE__ */ __name((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
     retryConfig: context.retry_config,
     retryCodes: context.retry_codes
   });
@@ -53783,11 +52798,9 @@ async function $do$h(client, id, api_version, options) {
   }
   return [result, { status: "complete", request: req, response }];
 }
-__name($do$h, "$do$h");
 function interactionsCreate(client, body, api_version, options) {
   return new APIPromise($do$g(client, body, api_version, options));
 }
-__name(interactionsCreate, "interactionsCreate");
 async function $do$g(client, body, api_version, options) {
   var _a2, _b, _c, _d;
   const input = {
@@ -53842,7 +52855,7 @@ async function $do$g(client, body, api_version, options) {
   const req = requestRes.value;
   const doResult = await client._do(req, {
     context,
-    isErrorStatusCode: /* @__PURE__ */ __name2((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
+    isErrorStatusCode: /* @__PURE__ */ __name((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
     retryConfig: context.retry_config,
     retryCodes: context.retry_codes
   });
@@ -53862,11 +52875,9 @@ async function $do$g(client, body, api_version, options) {
   }
   return [result, { status: "complete", request: req, response }];
 }
-__name($do$g, "$do$g");
 function interactionsDelete(client, id, api_version, options) {
   return new APIPromise($do$f(client, id, api_version, options));
 }
-__name(interactionsDelete, "interactionsDelete");
 async function $do$f(client, id, api_version, options) {
   var _a2, _b, _c;
   const input = {
@@ -53924,7 +52935,7 @@ async function $do$f(client, id, api_version, options) {
   const req = requestRes.value;
   const doResult = await client._do(req, {
     context,
-    isErrorStatusCode: /* @__PURE__ */ __name2((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
+    isErrorStatusCode: /* @__PURE__ */ __name((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
     retryConfig: context.retry_config,
     retryCodes: context.retry_codes
   });
@@ -53941,11 +52952,9 @@ async function $do$f(client, id, api_version, options) {
   }
   return [result, { status: "complete", request: req, response }];
 }
-__name($do$f, "$do$f");
 function interactionsGet(client, id, stream, last_event_id, include_input, api_version, options) {
   return new APIPromise($do$e(client, id, stream, last_event_id, include_input, api_version, options));
 }
-__name(interactionsGet, "interactionsGet");
 async function $do$e(client, id, stream, last_event_id, include_input, api_version, options) {
   var _a2, _b, _c;
   const input = {
@@ -54012,7 +53021,7 @@ async function $do$e(client, id, stream, last_event_id, include_input, api_versi
   const req = requestRes.value;
   const doResult = await client._do(req, {
     context,
-    isErrorStatusCode: /* @__PURE__ */ __name2((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
+    isErrorStatusCode: /* @__PURE__ */ __name((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
     retryConfig: context.retry_config,
     retryCodes: context.retry_codes
   });
@@ -54032,11 +53041,9 @@ async function $do$e(client, id, stream, last_event_id, include_input, api_versi
   }
   return [result, { status: "complete", request: req, response }];
 }
-__name($do$e, "$do$e");
 function triggersCreate(client, body, api_version, options) {
   return new APIPromise($do$d(client, body, api_version, options));
 }
-__name(triggersCreate, "triggersCreate");
 async function $do$d(client, body, api_version, options) {
   var _a2, _b, _c;
   const input = {
@@ -54091,7 +53098,7 @@ async function $do$d(client, body, api_version, options) {
   const req = requestRes.value;
   const doResult = await client._do(req, {
     context,
-    isErrorStatusCode: /* @__PURE__ */ __name2((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
+    isErrorStatusCode: /* @__PURE__ */ __name((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
     retryConfig: context.retry_config,
     retryCodes: context.retry_codes
   });
@@ -54105,11 +53112,9 @@ async function $do$d(client, body, api_version, options) {
   }
   return [result, { status: "complete", request: req, response }];
 }
-__name($do$d, "$do$d");
 function triggersDelete(client, id, api_version, options) {
   return new APIPromise($do$c(client, id, api_version, options));
 }
-__name(triggersDelete, "triggersDelete");
 async function $do$c(client, id, api_version, options) {
   var _a2, _b, _c;
   const input = {
@@ -54167,7 +53172,7 @@ async function $do$c(client, id, api_version, options) {
   const req = requestRes.value;
   const doResult = await client._do(req, {
     context,
-    isErrorStatusCode: /* @__PURE__ */ __name2((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
+    isErrorStatusCode: /* @__PURE__ */ __name((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
     retryConfig: context.retry_config,
     retryCodes: context.retry_codes
   });
@@ -54181,11 +53186,9 @@ async function $do$c(client, id, api_version, options) {
   }
   return [result, { status: "complete", request: req, response }];
 }
-__name($do$c, "$do$c");
 function triggersGet(client, id, api_version, options) {
   return new APIPromise($do$b(client, id, api_version, options));
 }
-__name(triggersGet, "triggersGet");
 async function $do$b(client, id, api_version, options) {
   var _a2, _b, _c;
   const input = {
@@ -54243,7 +53246,7 @@ async function $do$b(client, id, api_version, options) {
   const req = requestRes.value;
   const doResult = await client._do(req, {
     context,
-    isErrorStatusCode: /* @__PURE__ */ __name2((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
+    isErrorStatusCode: /* @__PURE__ */ __name((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
     retryConfig: context.retry_config,
     retryCodes: context.retry_codes
   });
@@ -54257,11 +53260,9 @@ async function $do$b(client, id, api_version, options) {
   }
   return [result, { status: "complete", request: req, response }];
 }
-__name($do$b, "$do$b");
 function triggersListExecutions(client, trigger_id, api_version, page_size, page_token, options) {
   return new APIPromise($do$a(client, trigger_id, api_version, page_size, page_token, options));
 }
-__name(triggersListExecutions, "triggersListExecutions");
 async function $do$a(client, trigger_id, api_version, page_size, page_token, options) {
   var _a2, _b, _c;
   const input = {
@@ -54326,7 +53327,7 @@ async function $do$a(client, trigger_id, api_version, page_size, page_token, opt
   const req = requestRes.value;
   const doResult = await client._do(req, {
     context,
-    isErrorStatusCode: /* @__PURE__ */ __name2((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
+    isErrorStatusCode: /* @__PURE__ */ __name((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
     retryConfig: context.retry_config,
     retryCodes: context.retry_codes
   });
@@ -54340,11 +53341,9 @@ async function $do$a(client, trigger_id, api_version, page_size, page_token, opt
   }
   return [result, { status: "complete", request: req, response }];
 }
-__name($do$a, "$do$a");
 function triggersList(client, api_version, filter, page_size, page_token, options) {
   return new APIPromise($do$9(client, api_version, filter, page_size, page_token, options));
 }
-__name(triggersList, "triggersList");
 async function $do$9(client, api_version, filter, page_size, page_token, options) {
   var _a2, _b, _c;
   const input = {
@@ -54406,7 +53405,7 @@ async function $do$9(client, api_version, filter, page_size, page_token, options
   const req = requestRes.value;
   const doResult = await client._do(req, {
     context,
-    isErrorStatusCode: /* @__PURE__ */ __name2((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
+    isErrorStatusCode: /* @__PURE__ */ __name((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
     retryConfig: context.retry_config,
     retryCodes: context.retry_codes
   });
@@ -54420,11 +53419,9 @@ async function $do$9(client, api_version, filter, page_size, page_token, options
   }
   return [result, { status: "complete", request: req, response }];
 }
-__name($do$9, "$do$9");
 function triggersRun(client, trigger_id, api_version, options) {
   return new APIPromise($do$8(client, trigger_id, api_version, options));
 }
-__name(triggersRun, "triggersRun");
 async function $do$8(client, trigger_id, api_version, options) {
   var _a2, _b, _c;
   const input = {
@@ -54482,7 +53479,7 @@ async function $do$8(client, trigger_id, api_version, options) {
   const req = requestRes.value;
   const doResult = await client._do(req, {
     context,
-    isErrorStatusCode: /* @__PURE__ */ __name2((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
+    isErrorStatusCode: /* @__PURE__ */ __name((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
     retryConfig: context.retry_config,
     retryCodes: context.retry_codes
   });
@@ -54496,11 +53493,9 @@ async function $do$8(client, trigger_id, api_version, options) {
   }
   return [result, { status: "complete", request: req, response }];
 }
-__name($do$8, "$do$8");
 function triggersUpdate(client, id, body, api_version, options) {
   return new APIPromise($do$7(client, id, body, api_version, options));
 }
-__name(triggersUpdate, "triggersUpdate");
 async function $do$7(client, id, body, api_version, options) {
   var _a2, _b, _c;
   const input = {
@@ -54560,7 +53555,7 @@ async function $do$7(client, id, body, api_version, options) {
   const req = requestRes.value;
   const doResult = await client._do(req, {
     context,
-    isErrorStatusCode: /* @__PURE__ */ __name2((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
+    isErrorStatusCode: /* @__PURE__ */ __name((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
     retryConfig: context.retry_config,
     retryCodes: context.retry_codes
   });
@@ -54574,11 +53569,9 @@ async function $do$7(client, id, body, api_version, options) {
   }
   return [result, { status: "complete", request: req, response }];
 }
-__name($do$7, "$do$7");
 function webhooksCreate(client, body, api_version, options) {
   return new APIPromise($do$6(client, body, api_version, options));
 }
-__name(webhooksCreate, "webhooksCreate");
 async function $do$6(client, body, api_version, options) {
   var _a2, _b, _c;
   const input = {
@@ -54633,7 +53626,7 @@ async function $do$6(client, body, api_version, options) {
   const req = requestRes.value;
   const doResult = await client._do(req, {
     context,
-    isErrorStatusCode: /* @__PURE__ */ __name2((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
+    isErrorStatusCode: /* @__PURE__ */ __name((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
     retryConfig: context.retry_config,
     retryCodes: context.retry_codes
   });
@@ -54647,11 +53640,9 @@ async function $do$6(client, body, api_version, options) {
   }
   return [result, { status: "complete", request: req, response }];
 }
-__name($do$6, "$do$6");
 function webhooksDelete(client, id, api_version, options) {
   return new APIPromise($do$5(client, id, api_version, options));
 }
-__name(webhooksDelete, "webhooksDelete");
 async function $do$5(client, id, api_version, options) {
   var _a2, _b, _c;
   const input = {
@@ -54709,7 +53700,7 @@ async function $do$5(client, id, api_version, options) {
   const req = requestRes.value;
   const doResult = await client._do(req, {
     context,
-    isErrorStatusCode: /* @__PURE__ */ __name2((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
+    isErrorStatusCode: /* @__PURE__ */ __name((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
     retryConfig: context.retry_config,
     retryCodes: context.retry_codes
   });
@@ -54723,11 +53714,9 @@ async function $do$5(client, id, api_version, options) {
   }
   return [result, { status: "complete", request: req, response }];
 }
-__name($do$5, "$do$5");
 function webhooksGet(client, id, api_version, options) {
   return new APIPromise($do$4(client, id, api_version, options));
 }
-__name(webhooksGet, "webhooksGet");
 async function $do$4(client, id, api_version, options) {
   var _a2, _b, _c;
   const input = {
@@ -54785,7 +53774,7 @@ async function $do$4(client, id, api_version, options) {
   const req = requestRes.value;
   const doResult = await client._do(req, {
     context,
-    isErrorStatusCode: /* @__PURE__ */ __name2((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
+    isErrorStatusCode: /* @__PURE__ */ __name((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
     retryConfig: context.retry_config,
     retryCodes: context.retry_codes
   });
@@ -54799,11 +53788,9 @@ async function $do$4(client, id, api_version, options) {
   }
   return [result, { status: "complete", request: req, response }];
 }
-__name($do$4, "$do$4");
 function webhooksList(client, api_version, page_size, page_token, options) {
   return new APIPromise($do$3(client, api_version, page_size, page_token, options));
 }
-__name(webhooksList, "webhooksList");
 async function $do$3(client, api_version, page_size, page_token, options) {
   var _a2, _b, _c;
   const input = {
@@ -54863,7 +53850,7 @@ async function $do$3(client, api_version, page_size, page_token, options) {
   const req = requestRes.value;
   const doResult = await client._do(req, {
     context,
-    isErrorStatusCode: /* @__PURE__ */ __name2((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
+    isErrorStatusCode: /* @__PURE__ */ __name((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
     retryConfig: context.retry_config,
     retryCodes: context.retry_codes
   });
@@ -54877,11 +53864,9 @@ async function $do$3(client, api_version, page_size, page_token, options) {
   }
   return [result, { status: "complete", request: req, response }];
 }
-__name($do$3, "$do$3");
 function webhooksPing(client, id, api_version, body, options) {
   return new APIPromise($do$2(client, id, api_version, body, options));
 }
-__name(webhooksPing, "webhooksPing");
 async function $do$2(client, id, api_version, body, options) {
   var _a2, _b, _c;
   const input = {
@@ -54941,7 +53926,7 @@ async function $do$2(client, id, api_version, body, options) {
   const req = requestRes.value;
   const doResult = await client._do(req, {
     context,
-    isErrorStatusCode: /* @__PURE__ */ __name2((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
+    isErrorStatusCode: /* @__PURE__ */ __name((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
     retryConfig: context.retry_config,
     retryCodes: context.retry_codes
   });
@@ -54955,11 +53940,9 @@ async function $do$2(client, id, api_version, body, options) {
   }
   return [result, { status: "complete", request: req, response }];
 }
-__name($do$2, "$do$2");
 function webhooksRotateSigningSecret(client, id, api_version, body, options) {
   return new APIPromise($do$1(client, id, api_version, body, options));
 }
-__name(webhooksRotateSigningSecret, "webhooksRotateSigningSecret");
 async function $do$1(client, id, api_version, body, options) {
   var _a2, _b, _c;
   const input = {
@@ -55019,7 +54002,7 @@ async function $do$1(client, id, api_version, body, options) {
   const req = requestRes.value;
   const doResult = await client._do(req, {
     context,
-    isErrorStatusCode: /* @__PURE__ */ __name2((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
+    isErrorStatusCode: /* @__PURE__ */ __name((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
     retryConfig: context.retry_config,
     retryCodes: context.retry_codes
   });
@@ -55033,11 +54016,9 @@ async function $do$1(client, id, api_version, body, options) {
   }
   return [result, { status: "complete", request: req, response }];
 }
-__name($do$1, "$do$1");
 function webhooksUpdate(client, id, api_version, update_mask, body, options) {
   return new APIPromise($do(client, id, api_version, update_mask, body, options));
 }
-__name(webhooksUpdate, "webhooksUpdate");
 async function $do(client, id, api_version, update_mask, body, options) {
   var _a2, _b, _c;
   const input = {
@@ -55102,7 +54083,7 @@ async function $do(client, id, api_version, update_mask, body, options) {
   const req = requestRes.value;
   const doResult = await client._do(req, {
     context,
-    isErrorStatusCode: /* @__PURE__ */ __name2((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
+    isErrorStatusCode: /* @__PURE__ */ __name((statusCode) => matchStatusCode({ status: statusCode }, ["4XX", "5XX"]), "isErrorStatusCode"),
     retryConfig: context.retry_config,
     retryCodes: context.retry_codes
   });
@@ -55116,7 +54097,6 @@ async function $do(client, id, api_version, update_mask, body, options) {
   }
   return [result, { status: "complete", request: req, response }];
 }
-__name($do, "$do");
 function getGoogleGenAIServerURL(parentClient) {
   const serverURL = parentClient.getBaseUrl();
   if (!serverURL) {
@@ -55124,7 +54104,6 @@ function getGoogleGenAIServerURL(parentClient) {
   }
   return serverURL.replace(/\/+$/, "");
 }
-__name(getGoogleGenAIServerURL, "getGoogleGenAIServerURL");
 function getGoogleGenAIAPIVersion(parentClient) {
   const apiVersion = trimSlashes(parentClient.getApiVersion());
   const project = parentClient.getProject();
@@ -55134,20 +54113,17 @@ function getGoogleGenAIAPIVersion(parentClient) {
   }
   return apiVersion;
 }
-__name(getGoogleGenAIAPIVersion, "getGoogleGenAIAPIVersion");
 function buildGoogleGenAIClient(parentClient, options = {}) {
   var _a2, _b, _c, _d, _e;
   const sdk = new GoogleGenAI$1(Object.assign(Object.assign({}, options), { api_version: (_a2 = options.api_version) !== null && _a2 !== void 0 ? _a2 : getGoogleGenAIAPIVersion(parentClient), security: (_b = options.security) !== null && _b !== void 0 ? _b : new GoogleGenAISecurityProvider({
     defaultHeaders: Object.assign(Object.assign({}, (_c = parentClient.getDefaultHeaders) === null || _c === void 0 ? void 0 : _c.call(parentClient)), (_d = parentClient.getHeaders) === null || _d === void 0 ? void 0 : _d.call(parentClient)),
-    getAuthHeaders: /* @__PURE__ */ __name2((url) => parentClient.getAuthHeaders(url), "getAuthHeaders")
+    getAuthHeaders: /* @__PURE__ */ __name((url) => parentClient.getAuthHeaders(url), "getAuthHeaders")
   }), server_url: (_e = options.server_url) !== null && _e !== void 0 ? _e : getGoogleGenAIServerURL(parentClient) }));
   return sdk;
 }
-__name(buildGoogleGenAIClient, "buildGoogleGenAIClient");
 function trimSlashes(value) {
   return value.replace(/^\/+|\/+$/g, "");
 }
-__name(trimSlashes, "trimSlashes");
 function toGoogleGenAIRequestOptions(options, streaming = false) {
   var _a2, _b, _c, _d;
   if (!options && !streaming) {
@@ -55191,13 +54167,11 @@ function toGoogleGenAIRequestOptions(options, streaming = false) {
   }
   return nextOptions;
 }
-__name(toGoogleGenAIRequestOptions, "toGoogleGenAIRequestOptions");
 function warnIgnoredOption(name, value) {
   if (value !== void 0 && value !== null) {
     console.warn(`GoogleGenAI.interactions: request option ${name} is not supported by the Google GenAI interactions bridge and will be ignored.`);
   }
 }
-__name(warnIgnoredOption, "warnIgnoredOption");
 async function unwrapWithSdkHttpResponse(promise) {
   const [result, call] = await promise.$inspect();
   if (!result.ok) {
@@ -55205,7 +54179,6 @@ async function unwrapWithSdkHttpResponse(promise) {
   }
   return attachSdkHttpResponse(result.value, call);
 }
-__name(unwrapWithSdkHttpResponse, "unwrapWithSdkHttpResponse");
 async function wrapSDKCall(operation) {
   try {
     return await operation();
@@ -55213,7 +54186,6 @@ async function wrapSDKCall(operation) {
     throw wrapSDKError(error);
   }
 }
-__name(wrapSDKCall, "wrapSDKCall");
 function wrapStreamErrors(stream) {
   const asyncIterable = stream;
   return new Proxy(stream, {
@@ -55222,7 +54194,7 @@ function wrapStreamErrors(stream) {
         const value = Reflect.get(target, property, target);
         return typeof value === "function" ? value.bind(target) : value;
       }
-      return /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function wrappedAsyncIterator() {
+      return /* @__PURE__ */ __name(function wrappedAsyncIterator() {
         const iterator = asyncIterable[Symbol.asyncIterator]();
         return {
           async next(...args) {
@@ -55256,18 +54228,16 @@ function wrapStreamErrors(stream) {
             return this;
           }
         };
-      }, "wrappedAsyncIterator"), "wrappedAsyncIterator");
+      }, "wrappedAsyncIterator");
     }
   });
 }
-__name(wrapStreamErrors, "wrapStreamErrors");
 function attachSdkHttpResponse(value, call) {
   if (!isPlainObject2(value) || call.status !== "complete") {
     return value;
   }
   return Object.assign(Object.assign({}, value), { sdkHttpResponse: createSdkHttpResponse(call.response, value) });
 }
-__name(attachSdkHttpResponse, "attachSdkHttpResponse");
 function createSdkHttpResponse(response, parsedBody) {
   const headers = {};
   for (const [key, value] of response.headers.entries()) {
@@ -55276,10 +54246,9 @@ function createSdkHttpResponse(response, parsedBody) {
   return {
     headers,
     responseInternal: response,
-    json: /* @__PURE__ */ __name2(async () => parsedBody, "json")
+    json: /* @__PURE__ */ __name(async () => parsedBody, "json")
   };
 }
-__name(createSdkHttpResponse, "createSdkHttpResponse");
 function addOutputPropertiesIfInteraction(value) {
   const interaction = normalizeInteractionShape(value);
   if (!interaction) {
@@ -55287,7 +54256,6 @@ function addOutputPropertiesIfInteraction(value) {
   }
   return addOutputProperties(interaction);
 }
-__name(addOutputPropertiesIfInteraction, "addOutputPropertiesIfInteraction");
 function normalizeInteractionShape(value) {
   if (!isPlainObject2(value)) {
     return void 0;
@@ -55304,16 +54272,13 @@ function normalizeInteractionShape(value) {
   }
   return Object.assign(Object.assign({}, value), { steps: [] });
 }
-__name(normalizeInteractionShape, "normalizeInteractionShape");
 function isLegacyLyriaInteraction(value) {
   const model = value["model"];
   return typeof model === "string" && LEGACY_LYRIA_MODELS.has(model);
 }
-__name(isLegacyLyriaInteraction, "isLegacyLyriaInteraction");
 function isPlainObject2(value) {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
-__name(isPlainObject2, "isPlainObject2");
 function addOutputProperties(interaction) {
   var _a2, _b;
   const normalized = normalizeInteractionDates(interaction);
@@ -55368,15 +54333,12 @@ function addOutputProperties(interaction) {
   const output_text = textParts.reverse().join("");
   return Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({}, normalized), output_text && { output_text }), output_image ? { output_image } : {}), output_audio ? { output_audio } : {}), output_video ? { output_video } : {});
 }
-__name(addOutputProperties, "addOutputProperties");
 function normalizeInteractionDates(interaction) {
   return Object.assign(Object.assign({}, interaction), { created: normalizeDateLike(interaction["created"]), updated: normalizeDateLike(interaction["updated"]) });
 }
-__name(normalizeInteractionDates, "normalizeInteractionDates");
 function normalizeDateLike(value) {
   return value instanceof Date ? value.toISOString() : value;
 }
-__name(normalizeDateLike, "normalizeDateLike");
 function cancelTuningJobParametersToMldev(fromObject, _rootObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -55385,7 +54347,6 @@ function cancelTuningJobParametersToMldev(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(cancelTuningJobParametersToMldev, "cancelTuningJobParametersToMldev");
 function cancelTuningJobParametersToVertex(fromObject, _rootObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -55394,7 +54355,6 @@ function cancelTuningJobParametersToVertex(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(cancelTuningJobParametersToVertex, "cancelTuningJobParametersToVertex");
 function cancelTuningJobResponseFromMldev(fromObject, _rootObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -55405,7 +54365,6 @@ function cancelTuningJobResponseFromMldev(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(cancelTuningJobResponseFromMldev, "cancelTuningJobResponseFromMldev");
 function cancelTuningJobResponseFromVertex(fromObject, _rootObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -55416,7 +54375,6 @@ function cancelTuningJobResponseFromVertex(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(cancelTuningJobResponseFromVertex, "cancelTuningJobResponseFromVertex");
 function contentToVertex(fromObject, rootObject) {
   const toObject = {};
   const fromParts = getValueByPath(fromObject, ["parts"]);
@@ -55435,7 +54393,6 @@ function contentToVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(contentToVertex, "contentToVertex");
 function createTuningJobConfigToMldev(fromObject, parentObject, _rootObject) {
   const toObject = {};
   if (getValueByPath(fromObject, ["validationDataset"]) !== void 0) {
@@ -55530,7 +54487,6 @@ function createTuningJobConfigToMldev(fromObject, parentObject, _rootObject) {
   }
   return toObject;
 }
-__name(createTuningJobConfigToMldev, "createTuningJobConfigToMldev");
 function createTuningJobConfigToVertex(fromObject, parentObject, rootObject) {
   const toObject = {};
   let discriminatorValidationDataset = getValueByPath(rootObject, [
@@ -55858,7 +54814,6 @@ function createTuningJobConfigToVertex(fromObject, parentObject, rootObject) {
   }
   return toObject;
 }
-__name(createTuningJobConfigToVertex, "createTuningJobConfigToVertex");
 function createTuningJobParametersPrivateToMldev(fromObject, rootObject) {
   const toObject = {};
   const fromBaseModel = getValueByPath(fromObject, ["baseModel"]);
@@ -55883,7 +54838,6 @@ function createTuningJobParametersPrivateToMldev(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(createTuningJobParametersPrivateToMldev, "createTuningJobParametersPrivateToMldev");
 function createTuningJobParametersPrivateToVertex(fromObject, rootObject) {
   const toObject = {};
   const fromBaseModel = getValueByPath(fromObject, ["baseModel"]);
@@ -55908,7 +54862,6 @@ function createTuningJobParametersPrivateToVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(createTuningJobParametersPrivateToVertex, "createTuningJobParametersPrivateToVertex");
 function distillationHyperParametersFromVertex(fromObject, rootObject) {
   const toObject = {};
   const fromEpochCount = getValueByPath(fromObject, ["epochCount"]);
@@ -55941,7 +54894,6 @@ function distillationHyperParametersFromVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(distillationHyperParametersFromVertex, "distillationHyperParametersFromVertex");
 function distillationSamplingSpecFromVertex(fromObject, rootObject) {
   const toObject = {};
   const fromPromptDatasetUri = getValueByPath(fromObject, [
@@ -55976,7 +54928,6 @@ function distillationSamplingSpecFromVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(distillationSamplingSpecFromVertex, "distillationSamplingSpecFromVertex");
 function distillationSpecFromVertex(fromObject, rootObject) {
   const toObject = {};
   const fromBaseTeacherModel = getValueByPath(fromObject, [
@@ -56031,7 +54982,6 @@ function distillationSpecFromVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(distillationSpecFromVertex, "distillationSpecFromVertex");
 function generationConfigFromVertex(fromObject, _rootObject) {
   const toObject = {};
   const fromModelSelectionConfig = getValueByPath(fromObject, [
@@ -56174,7 +55124,6 @@ function generationConfigFromVertex(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(generationConfigFromVertex, "generationConfigFromVertex");
 function getTuningJobParametersToMldev(fromObject, _rootObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -56183,7 +55132,6 @@ function getTuningJobParametersToMldev(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(getTuningJobParametersToMldev, "getTuningJobParametersToMldev");
 function getTuningJobParametersToVertex(fromObject, _rootObject) {
   const toObject = {};
   const fromName = getValueByPath(fromObject, ["name"]);
@@ -56192,7 +55140,6 @@ function getTuningJobParametersToVertex(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(getTuningJobParametersToVertex, "getTuningJobParametersToVertex");
 function listTuningJobsConfigToVertex(fromObject, parentObject, _rootObject) {
   const toObject = {};
   const fromPageSize = getValueByPath(fromObject, ["pageSize"]);
@@ -56209,7 +55156,6 @@ function listTuningJobsConfigToVertex(fromObject, parentObject, _rootObject) {
   }
   return toObject;
 }
-__name(listTuningJobsConfigToVertex, "listTuningJobsConfigToVertex");
 function listTuningJobsParametersToVertex(fromObject, rootObject) {
   const toObject = {};
   const fromConfig = getValueByPath(fromObject, ["config"]);
@@ -56218,7 +55164,6 @@ function listTuningJobsParametersToVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(listTuningJobsParametersToVertex, "listTuningJobsParametersToVertex");
 function listTuningJobsResponseFromVertex(fromObject, rootObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -56245,7 +55190,6 @@ function listTuningJobsResponseFromVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(listTuningJobsResponseFromVertex, "listTuningJobsResponseFromVertex");
 function partToVertex(fromObject, _rootObject) {
   const toObject = {};
   const fromMediaResolution = getValueByPath(fromObject, [
@@ -56321,7 +55265,6 @@ function partToVertex(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(partToVertex, "partToVertex");
 function reinforcementTuningExampleToVertex(fromObject, rootObject) {
   const toObject = {};
   const fromReferences = getValueByPath(fromObject, ["references"]);
@@ -56346,7 +55289,6 @@ function reinforcementTuningExampleToVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(reinforcementTuningExampleToVertex, "reinforcementTuningExampleToVertex");
 function tunedModelFromMldev(fromObject, _rootObject) {
   const toObject = {};
   const fromModel = getValueByPath(fromObject, ["name"]);
@@ -56359,7 +55301,6 @@ function tunedModelFromMldev(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(tunedModelFromMldev, "tunedModelFromMldev");
 function tuningDatasetToMldev(fromObject, _rootObject) {
   const toObject = {};
   if (getValueByPath(fromObject, ["gcsUri"]) !== void 0) {
@@ -56380,7 +55321,6 @@ function tuningDatasetToMldev(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(tuningDatasetToMldev, "tuningDatasetToMldev");
 function tuningDatasetToVertex(fromObject, parentObject, rootObject) {
   const toObject = {};
   let discriminatorGcsUri = getValueByPath(rootObject, [
@@ -56452,7 +55392,6 @@ function tuningDatasetToVertex(fromObject, parentObject, rootObject) {
   }
   return toObject;
 }
-__name(tuningDatasetToVertex, "tuningDatasetToVertex");
 function tuningJobFromMldev(fromObject, rootObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -56505,7 +55444,6 @@ function tuningJobFromMldev(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(tuningJobFromMldev, "tuningJobFromMldev");
 function tuningJobFromVertex(fromObject, rootObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -56686,7 +55624,6 @@ function tuningJobFromVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(tuningJobFromVertex, "tuningJobFromVertex");
 function tuningOperationFromMldev(fromObject, _rootObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -56713,7 +55650,6 @@ function tuningOperationFromMldev(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(tuningOperationFromMldev, "tuningOperationFromMldev");
 function tuningValidationDatasetToVertex(fromObject, _rootObject) {
   const toObject = {};
   const fromGcsUri = getValueByPath(fromObject, ["gcsUri"]);
@@ -56728,7 +55664,6 @@ function tuningValidationDatasetToVertex(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(tuningValidationDatasetToVertex, "tuningValidationDatasetToVertex");
 function validateRewardParametersToVertex(fromObject, rootObject) {
   const toObject = {};
   const fromParent = getValueByPath(fromObject, ["parent"]);
@@ -56759,7 +55694,6 @@ function validateRewardParametersToVertex(fromObject, rootObject) {
   }
   return toObject;
 }
-__name(validateRewardParametersToVertex, "validateRewardParametersToVertex");
 function validateRewardResponseFromVertex(fromObject, _rootObject) {
   const toObject = {};
   const fromSdkHttpResponse = getValueByPath(fromObject, [
@@ -56786,7 +55720,6 @@ function validateRewardResponseFromVertex(fromObject, _rootObject) {
   }
   return toObject;
 }
-__name(validateRewardResponseFromVertex, "validateRewardResponseFromVertex");
 async function uploadBlob(file, uploadUrl, apiClient, httpOptions) {
   var _a2;
   const response = await uploadBlobInternal(file, uploadUrl, apiClient, httpOptions);
@@ -56796,7 +55729,6 @@ async function uploadBlob(file, uploadUrl, apiClient, httpOptions) {
   }
   return responseJson["file"];
 }
-__name(uploadBlob, "uploadBlob");
 async function uploadBlobToFileSearchStore(file, uploadUrl, apiClient, httpOptions) {
   var _a2;
   const response = await uploadBlobInternal(file, uploadUrl, apiClient, httpOptions);
@@ -56809,7 +55741,6 @@ async function uploadBlobToFileSearchStore(file, uploadUrl, apiClient, httpOptio
   Object.assign(typedResp, resp);
   return typedResp;
 }
-__name(uploadBlobToFileSearchStore, "uploadBlobToFileSearchStore");
 async function uploadBlobInternal(file, uploadUrl, apiClient, httpOptions) {
   var _a2, _b, _c;
   let finalUrl = uploadUrl;
@@ -56860,292 +55791,49 @@ async function uploadBlobInternal(file, uploadUrl, apiClient, httpOptions) {
   }
   return response;
 }
-__name(uploadBlobInternal, "uploadBlobInternal");
 async function getBlobStat(file) {
   const fileStat = { size: file.size, type: file.type };
   return fileStat;
 }
-__name(getBlobStat, "getBlobStat");
 function sleep3(ms) {
   return new Promise((resolvePromise) => setTimeout(resolvePromise, ms));
 }
-__name(sleep3, "sleep3");
-var import_p_retry;
-var _defaultBaseGeminiUrl;
-var _defaultBaseVertexUrl;
-var BaseModule;
-var Outcome;
-var Language;
-var FunctionResponseScheduling;
-var Type;
-var AuthType;
-var HttpElementLocation;
-var ApiSpec;
-var Environment;
-var SafetyPolicy;
-var PhishBlockThreshold;
-var Behavior;
-var DynamicRetrievalConfigMode;
-var ThinkingLevel;
-var PersonGeneration;
-var ProminentPeople;
-var HarmCategory;
-var HarmBlockMethod;
-var HarmBlockThreshold;
-var FunctionCallingConfigMode;
-var FinishReason;
-var HarmProbability;
-var HarmSeverity;
-var UrlRetrievalStatus;
-var BlockedReason;
-var TrafficType;
-var MediaModality;
-var ModelStage;
-var MediaResolution;
-var Modality;
-var Delivery;
-var AspectRatio;
-var ImageSize;
-var TuningMode;
-var AdapterSize;
-var ResponseParseType;
-var MatchOperation;
-var ReinforcementTuningThinkingLevel;
-var JobState;
-var TuningJobState;
-var AggregationMetric;
-var PairwiseChoice;
-var VideoOrientation;
-var TuningSpeed;
-var TuningTask;
-var DocumentState;
-var ServiceTier;
-var PartMediaResolutionLevel;
-var ToolType;
-var ResourceScope;
-var FeatureSelectionPreference;
-var EmbeddingApiType;
-var SafetyFilterLevel;
-var ImagePromptLanguage;
-var MaskReferenceMode;
-var ControlReferenceType;
-var SubjectReferenceType;
-var EditMode;
-var SegmentMode;
-var VideoGenerationReferenceType;
-var VideoGenerationMaskMode;
-var VideoCompressionQuality;
-var ImageResizeMode;
-var TuningMethod;
-var FileState;
-var FileSource;
-var TurnCompleteReason;
-var InteractionStatus;
-var VadSignalType;
-var VoiceActivityType;
-var StartSensitivity;
-var EndSensitivity;
-var ActivityHandling;
-var TurnCoverage;
-var Scale;
-var MusicGenerationMode;
-var LiveMusicPlaybackControl;
-var HttpResponse;
-var GenerateContentResponse;
-var EmbedContentResponse;
-var GenerateImagesResponse;
-var EditImageResponse;
-var UpscaleImageResponse;
-var RecontextImageResponse;
-var SegmentImageResponse;
-var ListModelsResponse;
-var DeleteModelResponse;
-var CountTokensResponse;
-var ComputeTokensResponse;
-var GenerateVideosOperation;
-var ListTuningJobsResponse;
-var CancelTuningJobResponse;
-var ValidateRewardResponse;
-var DeleteCachedContentResponse;
-var ListCachedContentsResponse;
-var ListDocumentsResponse;
-var ListFileSearchStoresResponse;
-var UploadToFileSearchStoreResumableResponse;
-var ImportFileOperation;
-var ListFilesResponse;
-var CreateFileResponse;
-var DeleteFileResponse;
-var RegisterFilesResponse;
-var ListBatchJobsResponse;
-var LiveServerMessage;
-var LiveMusicServerMessage;
-var UploadToFileSearchStoreOperation;
-var PagedItem;
-var Pager;
-var Batches;
-var Caches;
-var Chats;
-var Chat;
-var ApiError;
-var Files;
-var CONTENT_TYPE_HEADER;
-var SERVER_TIMEOUT_HEADER;
-var USER_AGENT_HEADER;
-var GOOGLE_API_CLIENT_HEADER;
-var SDK_VERSION;
-var LIBRARY_LABEL;
-var VERTEX_AI_API_DEFAULT_VERSION;
-var GOOGLE_AI_API_DEFAULT_VERSION;
-var MULTI_REGIONAL_LOCATIONS;
-var DEFAULT_RETRY_ATTEMPTS;
-var DEFAULT_RETRY_INITIAL_DELAY;
-var DEFAULT_RETRY_MAX_DELAY;
-var DEFAULT_RETRY_EXP_BASE;
-var DEFAULT_RETRY_JITTER;
-var DEFAULT_RETRY_HTTP_STATUS_CODES;
-var ApiClient;
-var MCP_LABEL;
-var hasMcpToolUsageFromMcpToTool;
-var McpCallableTool;
-var LiveMusic;
-var LiveMusicSession;
-var FUNCTION_RESPONSE_REQUIRES_ID;
-var Live;
-var defaultLiveSendClientContentParamerters;
-var Session;
-var DEFAULT_MAX_REMOTE_CALLS;
-var Models;
-var Operations;
-var Tokens;
-var Documents;
-var FileSearchStores;
-var envMemo;
-var GoogleGenAISecurityProvider;
-var GoogleGenAIAuthHook;
-var HTTPClientError;
-var UnexpectedClientError;
-var InvalidRequestError;
-var RequestAbortedError;
-var RequestTimeoutError;
-var ConnectionError;
-var GoogleGenAiError;
-var GeminiNextGenAPIClientError;
-var APIError;
-var APIUserAbortError;
-var APIConnectionError;
-var APIConnectionTimeoutError;
-var BadRequestError;
-var AuthenticationError;
-var PermissionDeniedError;
-var NotFoundError;
-var ConflictError;
-var UnprocessableEntityError;
-var RateLimitError2;
-var InternalServerError;
-var SDKHooks;
-var hasOwn;
-var ServerList;
-var SDK_METADATA;
-var encodeForm;
-var encodeSimple;
-var encodeFormQuery;
-var DEFAULT_FETCHER;
-var HTTPClient;
-var mediaParamSeparator;
-var codeRangeRE$1;
-var defaultBackoff;
-var PermanentError;
-var TemporaryError;
-var codeRangeRE;
-var gt;
-var webWorkerLike;
-var isBrowserLike;
-var ClientSDK;
-var jsonLikeContentTypeRE;
-var jsonlLikeContentTypeRE;
-var GoogleGenAiDefaultError;
-var Stream;
-var CR;
-var LF;
-var BOUNDARIES;
-var MAX_BOUNDARY_LEN;
-var DEFAULT_CONTENT_TYPES;
-var headerValRE;
-var SecurityErrorCode;
-var SecurityError;
-var _a;
-var APIPromise;
-var Agents;
-var Environments;
-var CancelInteractionByIdServerError;
-var CancelInteractionByIdClientError;
-var CreateInteractionServerError;
-var CreateInteractionClientError;
-var DeleteInteractionServerError;
-var DeleteInteractionClientError;
-var GetInteractionByIdServerError;
-var GetInteractionByIdClientError;
-var Interactions;
-var Triggers;
-var Webhooks;
-var GoogleGenAI$1;
-var LEGACY_LYRIA_MODELS;
-var GeminiNextGenInteractions;
-var GeminiNextGenAgents;
-var GeminiNextGenWebhooks;
-var GeminiNextGenTriggers;
-var GeminiNextGenEnvironments;
-var Tunings;
-var BrowserDownloader;
-var MAX_CHUNK_SIZE;
-var MAX_RETRY_COUNT;
-var INITIAL_RETRY_DELAY_MS;
-var DELAY_MULTIPLIER;
-var X_GOOG_UPLOAD_STATUS_HEADER_FIELD;
-var BrowserUploader;
-var BrowserWebSocketFactory;
-var BrowserWebSocket;
-var GOOGLE_API_KEY_HEADER;
-var WebAuth;
-var LANGUAGE_LABEL_PREFIX;
-var GoogleGenAI2;
+var import_p_retry, _defaultBaseGeminiUrl, _defaultBaseVertexUrl, BaseModule, Outcome, Language, FunctionResponseScheduling, Type, AuthType, HttpElementLocation, ApiSpec, Environment, SafetyPolicy, PhishBlockThreshold, Behavior, DynamicRetrievalConfigMode, ThinkingLevel, PersonGeneration, ProminentPeople, HarmCategory, HarmBlockMethod, HarmBlockThreshold, FunctionCallingConfigMode, FinishReason, HarmProbability, HarmSeverity, UrlRetrievalStatus, BlockedReason, TrafficType, MediaModality, ModelStage, MediaResolution, Modality, Delivery, AspectRatio, ImageSize, TuningMode, AdapterSize, ResponseParseType, MatchOperation, ReinforcementTuningThinkingLevel, JobState, TuningJobState, AggregationMetric, PairwiseChoice, VideoOrientation, TuningSpeed, TuningTask, DocumentState, ServiceTier, PartMediaResolutionLevel, ToolType, ResourceScope, FeatureSelectionPreference, EmbeddingApiType, SafetyFilterLevel, ImagePromptLanguage, MaskReferenceMode, ControlReferenceType, SubjectReferenceType, EditMode, SegmentMode, VideoGenerationReferenceType, VideoGenerationMaskMode, VideoCompressionQuality, ImageResizeMode, TuningMethod, FileState, FileSource, TurnCompleteReason, InteractionStatus, VadSignalType, VoiceActivityType, StartSensitivity, EndSensitivity, ActivityHandling, TurnCoverage, Scale, MusicGenerationMode, LiveMusicPlaybackControl, ToolResponse, FunctionResponseFileData, FunctionResponseBlob, FunctionResponsePart, FunctionResponse, HttpResponse, GenerateContentResponsePromptFeedback, GenerateContentResponseUsageMetadata, GenerateContentResponse, EmbedContentResponse, GenerateImagesResponse, EditImageResponse, UpscaleImageResponse, RecontextImageResponse, SegmentImageResponse, ListModelsResponse, DeleteModelResponse, AudioResponseFormat, ImageResponseFormat, TextResponseFormat, VideoResponseFormat, ResponseFormat, CountTokensResponse, ComputeTokensResponse, GenerateVideosResponse, GenerateVideosOperation, ReinforcementTuningParseResponseConfig, ReinforcementTuningAutoraterScorerParsedResponseConversionScorer, EvaluateDatasetResponse, ListTuningJobsResponse, CancelTuningJobResponse, ValidateRewardResponse, DeleteCachedContentResponse, ListCachedContentsResponse, ListDocumentsResponse, ListFileSearchStoresResponse, UploadToFileSearchStoreResumableResponse, ImportFileResponse, ImportFileOperation, ListFilesResponse, CreateFileResponse, DeleteFileResponse, RegisterFilesResponse, InlinedResponse, SingleEmbedContentResponse, InlinedEmbedContentResponse, ListBatchJobsResponse, ReplayResponse, RawReferenceImage, MaskReferenceImage, ControlReferenceImage, StyleReferenceImage, SubjectReferenceImage, ContentReferenceImage, LiveServerMessage, LiveClientToolResponse, LiveSendToolResponseParameters, LiveMusicServerMessage, UploadToFileSearchStoreResponse, UploadToFileSearchStoreOperation, PagedItem, Pager, Batches, Caches, Chats, Chat, ApiError, Files, CONTENT_TYPE_HEADER, SERVER_TIMEOUT_HEADER, USER_AGENT_HEADER, GOOGLE_API_CLIENT_HEADER, SDK_VERSION, LIBRARY_LABEL, VERTEX_AI_API_DEFAULT_VERSION, GOOGLE_AI_API_DEFAULT_VERSION, MULTI_REGIONAL_LOCATIONS, DEFAULT_RETRY_ATTEMPTS, DEFAULT_RETRY_INITIAL_DELAY, DEFAULT_RETRY_MAX_DELAY, DEFAULT_RETRY_EXP_BASE, DEFAULT_RETRY_JITTER, DEFAULT_RETRY_HTTP_STATUS_CODES, ApiClient, MCP_LABEL, hasMcpToolUsageFromMcpToTool, McpCallableTool, LiveMusic, LiveMusicSession, FUNCTION_RESPONSE_REQUIRES_ID, Live, defaultLiveSendClientContentParamerters, Session, DEFAULT_MAX_REMOTE_CALLS, Models, Operations, Tokens, Documents, FileSearchStores, envMemo, GoogleGenAISecurityProvider, GoogleGenAIAuthHook, HTTPClientError, UnexpectedClientError, InvalidRequestError, RequestAbortedError, RequestTimeoutError, ConnectionError, GoogleGenAiError, GeminiNextGenAPIClientError, APIError, APIUserAbortError, APIConnectionError, APIConnectionTimeoutError, BadRequestError, AuthenticationError, PermissionDeniedError, NotFoundError, ConflictError, UnprocessableEntityError, RateLimitError2, InternalServerError, SDKHooks, hasOwn, ServerList, SDK_METADATA, encodeForm, encodeSimple, encodeFormQuery, DEFAULT_FETCHER, HTTPClient, mediaParamSeparator, codeRangeRE$1, defaultBackoff, PermanentError, TemporaryError, codeRangeRE, gt, webWorkerLike, isBrowserLike, ClientSDK, jsonLikeContentTypeRE, jsonlLikeContentTypeRE, GoogleGenAiDefaultError, Stream, CR, LF, BOUNDARIES, MAX_BOUNDARY_LEN, DEFAULT_CONTENT_TYPES, headerValRE, SecurityErrorCode, SecurityError, _a, APIPromise, Agents, Environments, CancelInteractionByIdServerError, CancelInteractionByIdClientError, CreateInteractionServerError, CreateInteractionClientError, DeleteInteractionServerError, DeleteInteractionClientError, GetInteractionByIdServerError, GetInteractionByIdClientError, Interactions, Triggers, Webhooks, GoogleGenAI$1, LEGACY_LYRIA_MODELS, GeminiNextGenInteractions, GeminiNextGenAgents, GeminiNextGenWebhooks, GeminiNextGenTriggers, GeminiNextGenEnvironments, Tunings, BrowserDownloader, MAX_CHUNK_SIZE, MAX_RETRY_COUNT, INITIAL_RETRY_DELAY_MS, DELAY_MULTIPLIER, X_GOOG_UPLOAD_STATUS_HEADER_FIELD, BrowserUploader, BrowserWebSocketFactory, BrowserWebSocket, GOOGLE_API_KEY_HEADER, WebAuth, LANGUAGE_LABEL_PREFIX, GoogleGenAI2;
 var init_web = __esm({
   "../node_modules/@google/genai/dist/web/index.mjs"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     import_p_retry = __toESM(require_p_retry(), 1);
     _defaultBaseGeminiUrl = void 0;
     _defaultBaseVertexUrl = void 0;
-    __name2(getDefaultBaseUrls, "getDefaultBaseUrls");
-    __name2(getBaseUrl, "getBaseUrl");
+    __name(setDefaultBaseUrls, "setDefaultBaseUrls");
+    __name(getDefaultBaseUrls, "getDefaultBaseUrls");
+    __name(getBaseUrl, "getBaseUrl");
     BaseModule = class {
       static {
         __name(this, "BaseModule");
       }
-      static {
-        __name2(this, "BaseModule");
-      }
     };
-    __name2(formatMap, "formatMap");
-    __name2(setValueByPath, "setValueByPath");
-    __name2(getValueByPath, "getValueByPath");
-    __name2(moveValueByPath, "moveValueByPath");
-    __name2(_moveValueRecursive, "_moveValueRecursive");
-    __name2(tBytes$1, "tBytes$1");
-    __name2(fetchPredictOperationParametersToVertex, "fetchPredictOperationParametersToVertex");
-    __name2(generateVideosOperationFromMldev$1, "generateVideosOperationFromMldev$1");
-    __name2(generateVideosOperationFromVertex$1, "generateVideosOperationFromVertex$1");
-    __name2(generateVideosResponseFromMldev$1, "generateVideosResponseFromMldev$1");
-    __name2(generateVideosResponseFromVertex$1, "generateVideosResponseFromVertex$1");
-    __name2(generatedVideoFromMldev$1, "generatedVideoFromMldev$1");
-    __name2(generatedVideoFromVertex$1, "generatedVideoFromVertex$1");
-    __name2(getOperationParametersToMldev, "getOperationParametersToMldev");
-    __name2(getOperationParametersToVertex, "getOperationParametersToVertex");
-    __name2(importFileOperationFromMldev$1, "importFileOperationFromMldev$1");
-    __name2(importFileResponseFromMldev$1, "importFileResponseFromMldev$1");
-    __name2(uploadToFileSearchStoreOperationFromMldev, "uploadToFileSearchStoreOperationFromMldev");
-    __name2(uploadToFileSearchStoreResponseFromMldev, "uploadToFileSearchStoreResponseFromMldev");
-    __name2(videoFromMldev$1, "videoFromMldev$1");
-    __name2(videoFromVertex$1, "videoFromVertex$1");
+    __name(formatMap, "formatMap");
+    __name(setValueByPath, "setValueByPath");
+    __name(getValueByPath, "getValueByPath");
+    __name(moveValueByPath, "moveValueByPath");
+    __name(_moveValueRecursive, "_moveValueRecursive");
+    __name(tBytes$1, "tBytes$1");
+    __name(fetchPredictOperationParametersToVertex, "fetchPredictOperationParametersToVertex");
+    __name(generateVideosOperationFromMldev$1, "generateVideosOperationFromMldev$1");
+    __name(generateVideosOperationFromVertex$1, "generateVideosOperationFromVertex$1");
+    __name(generateVideosResponseFromMldev$1, "generateVideosResponseFromMldev$1");
+    __name(generateVideosResponseFromVertex$1, "generateVideosResponseFromVertex$1");
+    __name(generatedVideoFromMldev$1, "generatedVideoFromMldev$1");
+    __name(generatedVideoFromVertex$1, "generatedVideoFromVertex$1");
+    __name(getOperationParametersToMldev, "getOperationParametersToMldev");
+    __name(getOperationParametersToVertex, "getOperationParametersToVertex");
+    __name(importFileOperationFromMldev$1, "importFileOperationFromMldev$1");
+    __name(importFileResponseFromMldev$1, "importFileResponseFromMldev$1");
+    __name(uploadToFileSearchStoreOperationFromMldev, "uploadToFileSearchStoreOperationFromMldev");
+    __name(uploadToFileSearchStoreResponseFromMldev, "uploadToFileSearchStoreResponseFromMldev");
+    __name(videoFromMldev$1, "videoFromMldev$1");
+    __name(videoFromVertex$1, "videoFromVertex$1");
     (function(Outcome2) {
       Outcome2["OUTCOME_UNSPECIFIED"] = "OUTCOME_UNSPECIFIED";
       Outcome2["OUTCOME_OK"] = "OUTCOME_OK";
@@ -57706,12 +56394,47 @@ var init_web = __esm({
       LiveMusicPlaybackControl2["STOP"] = "STOP";
       LiveMusicPlaybackControl2["RESET_CONTEXT"] = "RESET_CONTEXT";
     })(LiveMusicPlaybackControl || (LiveMusicPlaybackControl = {}));
+    ToolResponse = class {
+      static {
+        __name(this, "ToolResponse");
+      }
+    };
+    FunctionResponseFileData = class {
+      static {
+        __name(this, "FunctionResponseFileData");
+      }
+    };
+    FunctionResponseBlob = class {
+      static {
+        __name(this, "FunctionResponseBlob");
+      }
+    };
+    FunctionResponsePart = class {
+      static {
+        __name(this, "FunctionResponsePart");
+      }
+    };
+    __name(createFunctionResponsePartFromBase64, "createFunctionResponsePartFromBase64");
+    __name(createFunctionResponsePartFromUri, "createFunctionResponsePartFromUri");
+    FunctionResponse = class {
+      static {
+        __name(this, "FunctionResponse");
+      }
+    };
+    __name(createPartFromUri, "createPartFromUri");
+    __name(createPartFromText, "createPartFromText");
+    __name(createPartFromFunctionCall, "createPartFromFunctionCall");
+    __name(createPartFromFunctionResponse, "createPartFromFunctionResponse");
+    __name(createPartFromBase64, "createPartFromBase64");
+    __name(createPartFromCodeExecutionResult, "createPartFromCodeExecutionResult");
+    __name(createPartFromExecutableCode, "createPartFromExecutableCode");
+    __name(_isPart, "_isPart");
+    __name(_toParts, "_toParts");
+    __name(createUserContent, "createUserContent");
+    __name(createModelContent, "createModelContent");
     HttpResponse = class {
       static {
         __name(this, "HttpResponse");
-      }
-      static {
-        __name2(this, "HttpResponse");
       }
       constructor(response) {
         const headers = {};
@@ -57725,12 +56448,19 @@ var init_web = __esm({
         return this.responseInternal.json();
       }
     };
+    GenerateContentResponsePromptFeedback = class {
+      static {
+        __name(this, "GenerateContentResponsePromptFeedback");
+      }
+    };
+    GenerateContentResponseUsageMetadata = class {
+      static {
+        __name(this, "GenerateContentResponseUsageMetadata");
+      }
+    };
     GenerateContentResponse = class {
       static {
         __name(this, "GenerateContentResponse");
-      }
-      static {
-        __name2(this, "GenerateContentResponse");
       }
       /**
        * Returns the concatenation of all text parts from the first candidate in the response.
@@ -57956,88 +56686,85 @@ var init_web = __esm({
       static {
         __name(this, "EmbedContentResponse");
       }
-      static {
-        __name2(this, "EmbedContentResponse");
-      }
     };
     GenerateImagesResponse = class {
       static {
         __name(this, "GenerateImagesResponse");
-      }
-      static {
-        __name2(this, "GenerateImagesResponse");
       }
     };
     EditImageResponse = class {
       static {
         __name(this, "EditImageResponse");
       }
-      static {
-        __name2(this, "EditImageResponse");
-      }
     };
     UpscaleImageResponse = class {
       static {
         __name(this, "UpscaleImageResponse");
-      }
-      static {
-        __name2(this, "UpscaleImageResponse");
       }
     };
     RecontextImageResponse = class {
       static {
         __name(this, "RecontextImageResponse");
       }
-      static {
-        __name2(this, "RecontextImageResponse");
-      }
     };
     SegmentImageResponse = class {
       static {
         __name(this, "SegmentImageResponse");
-      }
-      static {
-        __name2(this, "SegmentImageResponse");
       }
     };
     ListModelsResponse = class {
       static {
         __name(this, "ListModelsResponse");
       }
-      static {
-        __name2(this, "ListModelsResponse");
-      }
     };
     DeleteModelResponse = class {
       static {
         __name(this, "DeleteModelResponse");
       }
+    };
+    AudioResponseFormat = class {
       static {
-        __name2(this, "DeleteModelResponse");
+        __name(this, "AudioResponseFormat");
+      }
+    };
+    ImageResponseFormat = class {
+      static {
+        __name(this, "ImageResponseFormat");
+      }
+    };
+    TextResponseFormat = class {
+      static {
+        __name(this, "TextResponseFormat");
+      }
+    };
+    VideoResponseFormat = class {
+      static {
+        __name(this, "VideoResponseFormat");
+      }
+    };
+    ResponseFormat = class {
+      static {
+        __name(this, "ResponseFormat");
       }
     };
     CountTokensResponse = class {
       static {
         __name(this, "CountTokensResponse");
       }
-      static {
-        __name2(this, "CountTokensResponse");
-      }
     };
     ComputeTokensResponse = class {
       static {
         __name(this, "ComputeTokensResponse");
       }
+    };
+    GenerateVideosResponse = class {
       static {
-        __name2(this, "ComputeTokensResponse");
+        __name(this, "GenerateVideosResponse");
       }
     };
     GenerateVideosOperation = class _GenerateVideosOperation {
       static {
-        __name(this, "_GenerateVideosOperation");
-      }
-      static {
-        __name2(this, "GenerateVideosOperation");
+        __name(this, "GenerateVideosOperation");
       }
       /**
        * Instantiates an Operation of the same type as the one being called with the fields set from the API response.
@@ -58055,76 +56782,69 @@ var init_web = __esm({
         return operation;
       }
     };
+    ReinforcementTuningParseResponseConfig = class {
+      static {
+        __name(this, "ReinforcementTuningParseResponseConfig");
+      }
+    };
+    ReinforcementTuningAutoraterScorerParsedResponseConversionScorer = class {
+      static {
+        __name(this, "ReinforcementTuningAutoraterScorerParsedResponseConversionScorer");
+      }
+    };
+    EvaluateDatasetResponse = class {
+      static {
+        __name(this, "EvaluateDatasetResponse");
+      }
+    };
     ListTuningJobsResponse = class {
       static {
         __name(this, "ListTuningJobsResponse");
-      }
-      static {
-        __name2(this, "ListTuningJobsResponse");
       }
     };
     CancelTuningJobResponse = class {
       static {
         __name(this, "CancelTuningJobResponse");
       }
-      static {
-        __name2(this, "CancelTuningJobResponse");
-      }
     };
     ValidateRewardResponse = class {
       static {
         __name(this, "ValidateRewardResponse");
-      }
-      static {
-        __name2(this, "ValidateRewardResponse");
       }
     };
     DeleteCachedContentResponse = class {
       static {
         __name(this, "DeleteCachedContentResponse");
       }
-      static {
-        __name2(this, "DeleteCachedContentResponse");
-      }
     };
     ListCachedContentsResponse = class {
       static {
         __name(this, "ListCachedContentsResponse");
-      }
-      static {
-        __name2(this, "ListCachedContentsResponse");
       }
     };
     ListDocumentsResponse = class {
       static {
         __name(this, "ListDocumentsResponse");
       }
-      static {
-        __name2(this, "ListDocumentsResponse");
-      }
     };
     ListFileSearchStoresResponse = class {
       static {
         __name(this, "ListFileSearchStoresResponse");
-      }
-      static {
-        __name2(this, "ListFileSearchStoresResponse");
       }
     };
     UploadToFileSearchStoreResumableResponse = class {
       static {
         __name(this, "UploadToFileSearchStoreResumableResponse");
       }
+    };
+    ImportFileResponse = class {
       static {
-        __name2(this, "UploadToFileSearchStoreResumableResponse");
+        __name(this, "ImportFileResponse");
       }
     };
     ImportFileOperation = class _ImportFileOperation {
       static {
-        __name(this, "_ImportFileOperation");
-      }
-      static {
-        __name2(this, "ImportFileOperation");
+        __name(this, "ImportFileOperation");
       }
       /**
        * Instantiates an Operation of the same type as the one being called with the fields set from the API response.
@@ -58141,48 +56861,138 @@ var init_web = __esm({
       static {
         __name(this, "ListFilesResponse");
       }
-      static {
-        __name2(this, "ListFilesResponse");
-      }
     };
     CreateFileResponse = class {
       static {
         __name(this, "CreateFileResponse");
-      }
-      static {
-        __name2(this, "CreateFileResponse");
       }
     };
     DeleteFileResponse = class {
       static {
         __name(this, "DeleteFileResponse");
       }
-      static {
-        __name2(this, "DeleteFileResponse");
-      }
     };
     RegisterFilesResponse = class {
       static {
         __name(this, "RegisterFilesResponse");
       }
+    };
+    InlinedResponse = class {
       static {
-        __name2(this, "RegisterFilesResponse");
+        __name(this, "InlinedResponse");
+      }
+    };
+    SingleEmbedContentResponse = class {
+      static {
+        __name(this, "SingleEmbedContentResponse");
+      }
+    };
+    InlinedEmbedContentResponse = class {
+      static {
+        __name(this, "InlinedEmbedContentResponse");
       }
     };
     ListBatchJobsResponse = class {
       static {
         __name(this, "ListBatchJobsResponse");
       }
+    };
+    ReplayResponse = class {
       static {
-        __name2(this, "ListBatchJobsResponse");
+        __name(this, "ReplayResponse");
+      }
+    };
+    RawReferenceImage = class {
+      static {
+        __name(this, "RawReferenceImage");
+      }
+      /** Internal method to convert to ReferenceImageAPIInternal. */
+      toReferenceImageAPI() {
+        const referenceImageAPI = {
+          referenceType: "REFERENCE_TYPE_RAW",
+          referenceImage: this.referenceImage,
+          referenceId: this.referenceId
+        };
+        return referenceImageAPI;
+      }
+    };
+    MaskReferenceImage = class {
+      static {
+        __name(this, "MaskReferenceImage");
+      }
+      /** Internal method to convert to ReferenceImageAPIInternal. */
+      toReferenceImageAPI() {
+        const referenceImageAPI = {
+          referenceType: "REFERENCE_TYPE_MASK",
+          referenceImage: this.referenceImage,
+          referenceId: this.referenceId,
+          maskImageConfig: this.config
+        };
+        return referenceImageAPI;
+      }
+    };
+    ControlReferenceImage = class {
+      static {
+        __name(this, "ControlReferenceImage");
+      }
+      /** Internal method to convert to ReferenceImageAPIInternal. */
+      toReferenceImageAPI() {
+        const referenceImageAPI = {
+          referenceType: "REFERENCE_TYPE_CONTROL",
+          referenceImage: this.referenceImage,
+          referenceId: this.referenceId,
+          controlImageConfig: this.config
+        };
+        return referenceImageAPI;
+      }
+    };
+    StyleReferenceImage = class {
+      static {
+        __name(this, "StyleReferenceImage");
+      }
+      /** Internal method to convert to ReferenceImageAPIInternal. */
+      toReferenceImageAPI() {
+        const referenceImageAPI = {
+          referenceType: "REFERENCE_TYPE_STYLE",
+          referenceImage: this.referenceImage,
+          referenceId: this.referenceId,
+          styleImageConfig: this.config
+        };
+        return referenceImageAPI;
+      }
+    };
+    SubjectReferenceImage = class {
+      static {
+        __name(this, "SubjectReferenceImage");
+      }
+      /* Internal method to convert to ReferenceImageAPIInternal. */
+      toReferenceImageAPI() {
+        const referenceImageAPI = {
+          referenceType: "REFERENCE_TYPE_SUBJECT",
+          referenceImage: this.referenceImage,
+          referenceId: this.referenceId,
+          subjectImageConfig: this.config
+        };
+        return referenceImageAPI;
+      }
+    };
+    ContentReferenceImage = class {
+      static {
+        __name(this, "ContentReferenceImage");
+      }
+      /** Internal method to convert to ReferenceImageAPIInternal. */
+      toReferenceImageAPI() {
+        const referenceImageAPI = {
+          referenceType: "REFERENCE_TYPE_CONTENT",
+          referenceImage: this.referenceImage,
+          referenceId: this.referenceId
+        };
+        return referenceImageAPI;
       }
     };
     LiveServerMessage = class {
       static {
         __name(this, "LiveServerMessage");
-      }
-      static {
-        __name2(this, "LiveServerMessage");
       }
       /**
        * Returns the concatenation of all text parts from the server content if present.
@@ -58243,12 +57053,22 @@ var init_web = __esm({
         return data.length > 0 ? btoa(data) : void 0;
       }
     };
+    LiveClientToolResponse = class {
+      static {
+        __name(this, "LiveClientToolResponse");
+      }
+    };
+    LiveSendToolResponseParameters = class {
+      static {
+        __name(this, "LiveSendToolResponseParameters");
+      }
+      constructor() {
+        this.functionResponses = [];
+      }
+    };
     LiveMusicServerMessage = class {
       static {
         __name(this, "LiveMusicServerMessage");
-      }
-      static {
-        __name2(this, "LiveMusicServerMessage");
       }
       /**
        * Returns the first audio chunk from the server content, if present.
@@ -58263,12 +57083,14 @@ var init_web = __esm({
         return void 0;
       }
     };
+    UploadToFileSearchStoreResponse = class {
+      static {
+        __name(this, "UploadToFileSearchStoreResponse");
+      }
+    };
     UploadToFileSearchStoreOperation = class _UploadToFileSearchStoreOperation {
       static {
-        __name(this, "_UploadToFileSearchStoreOperation");
-      }
-      static {
-        __name2(this, "UploadToFileSearchStoreOperation");
+        __name(this, "UploadToFileSearchStoreOperation");
       }
       /**
        * Instantiates an Operation of the same type as the one being called with the fields set from the API response.
@@ -58281,99 +57103,99 @@ var init_web = __esm({
         return operation;
       }
     };
-    __name2(tModel, "tModel");
-    __name2(tCachesModel, "tCachesModel");
-    __name2(tBlobs, "tBlobs");
-    __name2(tBlob, "tBlob");
-    __name2(tImageBlob, "tImageBlob");
-    __name2(tAudioBlob, "tAudioBlob");
-    __name2(tPart, "tPart");
-    __name2(tParts, "tParts");
-    __name2(_isContent, "_isContent");
-    __name2(_isFunctionCallPart, "_isFunctionCallPart");
-    __name2(_isFunctionResponsePart, "_isFunctionResponsePart");
-    __name2(tContent, "tContent");
-    __name2(tContentsForEmbed, "tContentsForEmbed");
-    __name2(tContents, "tContents");
-    __name2(flattenTypeArrayToAnyOf, "flattenTypeArrayToAnyOf");
-    __name2(processJsonSchema, "processJsonSchema");
-    __name2(tSchema, "tSchema");
-    __name2(tJsonSchema, "tJsonSchema");
-    __name2(tSpeechConfig, "tSpeechConfig");
-    __name2(tLiveSpeechConfig, "tLiveSpeechConfig");
-    __name2(tTool, "tTool");
-    __name2(tTools, "tTools");
-    __name2(resourceName, "resourceName");
-    __name2(tCachedContentName, "tCachedContentName");
-    __name2(tTuningJobStatus, "tTuningJobStatus");
-    __name2(tBytes, "tBytes");
-    __name2(_isFile, "_isFile");
-    __name2(isGeneratedVideo, "isGeneratedVideo");
-    __name2(isVideo, "isVideo");
-    __name2(tFileName, "tFileName");
-    __name2(tModelsUrl, "tModelsUrl");
-    __name2(tExtractModels, "tExtractModels");
-    __name2(hasField, "hasField");
-    __name2(mcpToGeminiTool, "mcpToGeminiTool");
-    __name2(mcpToolsToGeminiTool, "mcpToolsToGeminiTool");
-    __name2(tBatchJobSource, "tBatchJobSource");
-    __name2(tBatchJobDestination, "tBatchJobDestination");
-    __name2(tRecvBatchJobDestination, "tRecvBatchJobDestination");
-    __name2(tBatchJobName, "tBatchJobName");
-    __name2(tJobState, "tJobState");
-    __name2(tIsVertexEmbedContentModel, "tIsVertexEmbedContentModel");
-    __name2(authConfigToMldev$4, "authConfigToMldev$4");
-    __name2(batchJobDestinationFromMldev, "batchJobDestinationFromMldev");
-    __name2(batchJobDestinationFromVertex, "batchJobDestinationFromVertex");
-    __name2(batchJobDestinationToVertex, "batchJobDestinationToVertex");
-    __name2(batchJobFromMldev, "batchJobFromMldev");
-    __name2(batchJobFromVertex, "batchJobFromVertex");
-    __name2(batchJobSourceFromVertex, "batchJobSourceFromVertex");
-    __name2(batchJobSourceToMldev, "batchJobSourceToMldev");
-    __name2(batchJobSourceToVertex, "batchJobSourceToVertex");
-    __name2(blobToMldev$4, "blobToMldev$4");
-    __name2(cancelBatchJobParametersToMldev, "cancelBatchJobParametersToMldev");
-    __name2(cancelBatchJobParametersToVertex, "cancelBatchJobParametersToVertex");
-    __name2(candidateFromMldev$1, "candidateFromMldev$1");
-    __name2(citationMetadataFromMldev$1, "citationMetadataFromMldev$1");
-    __name2(contentToMldev$4, "contentToMldev$4");
-    __name2(createBatchJobConfigToMldev, "createBatchJobConfigToMldev");
-    __name2(createBatchJobConfigToVertex, "createBatchJobConfigToVertex");
-    __name2(createBatchJobParametersToMldev, "createBatchJobParametersToMldev");
-    __name2(createBatchJobParametersToVertex, "createBatchJobParametersToVertex");
-    __name2(createEmbeddingsBatchJobConfigToMldev, "createEmbeddingsBatchJobConfigToMldev");
-    __name2(createEmbeddingsBatchJobParametersToMldev, "createEmbeddingsBatchJobParametersToMldev");
-    __name2(deleteBatchJobParametersToMldev, "deleteBatchJobParametersToMldev");
-    __name2(deleteBatchJobParametersToVertex, "deleteBatchJobParametersToVertex");
-    __name2(deleteResourceJobFromMldev, "deleteResourceJobFromMldev");
-    __name2(deleteResourceJobFromVertex, "deleteResourceJobFromVertex");
-    __name2(embedContentBatchToMldev, "embedContentBatchToMldev");
-    __name2(embedContentConfigToMldev$1, "embedContentConfigToMldev$1");
-    __name2(embeddingsBatchJobSourceToMldev, "embeddingsBatchJobSourceToMldev");
-    __name2(fileDataToMldev$4, "fileDataToMldev$4");
-    __name2(functionCallToMldev$4, "functionCallToMldev$4");
-    __name2(functionCallingConfigToMldev$2, "functionCallingConfigToMldev$2");
-    __name2(generateContentConfigToMldev$1, "generateContentConfigToMldev$1");
-    __name2(generateContentResponseFromMldev$1, "generateContentResponseFromMldev$1");
-    __name2(getBatchJobParametersToMldev, "getBatchJobParametersToMldev");
-    __name2(getBatchJobParametersToVertex, "getBatchJobParametersToVertex");
-    __name2(googleMapsToMldev$4, "googleMapsToMldev$4");
-    __name2(googleSearchToMldev$4, "googleSearchToMldev$4");
-    __name2(imageConfigToMldev$1, "imageConfigToMldev$1");
-    __name2(inlinedRequestToMldev, "inlinedRequestToMldev");
-    __name2(inlinedResponseFromMldev, "inlinedResponseFromMldev");
-    __name2(listBatchJobsConfigToMldev, "listBatchJobsConfigToMldev");
-    __name2(listBatchJobsConfigToVertex, "listBatchJobsConfigToVertex");
-    __name2(listBatchJobsParametersToMldev, "listBatchJobsParametersToMldev");
-    __name2(listBatchJobsParametersToVertex, "listBatchJobsParametersToVertex");
-    __name2(listBatchJobsResponseFromMldev, "listBatchJobsResponseFromMldev");
-    __name2(listBatchJobsResponseFromVertex, "listBatchJobsResponseFromVertex");
-    __name2(partToMldev$4, "partToMldev$4");
-    __name2(safetySettingToMldev$3, "safetySettingToMldev$3");
-    __name2(toolConfigToMldev$2, "toolConfigToMldev$2");
-    __name2(toolToMldev$4, "toolToMldev$4");
-    __name2(vertexMultimodalDatasetDestinationFromVertex, "vertexMultimodalDatasetDestinationFromVertex");
-    __name2(vertexMultimodalDatasetDestinationToVertex, "vertexMultimodalDatasetDestinationToVertex");
+    __name(tModel, "tModel");
+    __name(tCachesModel, "tCachesModel");
+    __name(tBlobs, "tBlobs");
+    __name(tBlob, "tBlob");
+    __name(tImageBlob, "tImageBlob");
+    __name(tAudioBlob, "tAudioBlob");
+    __name(tPart, "tPart");
+    __name(tParts, "tParts");
+    __name(_isContent, "_isContent");
+    __name(_isFunctionCallPart, "_isFunctionCallPart");
+    __name(_isFunctionResponsePart, "_isFunctionResponsePart");
+    __name(tContent, "tContent");
+    __name(tContentsForEmbed, "tContentsForEmbed");
+    __name(tContents, "tContents");
+    __name(flattenTypeArrayToAnyOf, "flattenTypeArrayToAnyOf");
+    __name(processJsonSchema, "processJsonSchema");
+    __name(tSchema, "tSchema");
+    __name(tJsonSchema, "tJsonSchema");
+    __name(tSpeechConfig, "tSpeechConfig");
+    __name(tLiveSpeechConfig, "tLiveSpeechConfig");
+    __name(tTool, "tTool");
+    __name(tTools, "tTools");
+    __name(resourceName, "resourceName");
+    __name(tCachedContentName, "tCachedContentName");
+    __name(tTuningJobStatus, "tTuningJobStatus");
+    __name(tBytes, "tBytes");
+    __name(_isFile, "_isFile");
+    __name(isGeneratedVideo, "isGeneratedVideo");
+    __name(isVideo, "isVideo");
+    __name(tFileName, "tFileName");
+    __name(tModelsUrl, "tModelsUrl");
+    __name(tExtractModels, "tExtractModels");
+    __name(hasField, "hasField");
+    __name(mcpToGeminiTool, "mcpToGeminiTool");
+    __name(mcpToolsToGeminiTool, "mcpToolsToGeminiTool");
+    __name(tBatchJobSource, "tBatchJobSource");
+    __name(tBatchJobDestination, "tBatchJobDestination");
+    __name(tRecvBatchJobDestination, "tRecvBatchJobDestination");
+    __name(tBatchJobName, "tBatchJobName");
+    __name(tJobState, "tJobState");
+    __name(tIsVertexEmbedContentModel, "tIsVertexEmbedContentModel");
+    __name(authConfigToMldev$4, "authConfigToMldev$4");
+    __name(batchJobDestinationFromMldev, "batchJobDestinationFromMldev");
+    __name(batchJobDestinationFromVertex, "batchJobDestinationFromVertex");
+    __name(batchJobDestinationToVertex, "batchJobDestinationToVertex");
+    __name(batchJobFromMldev, "batchJobFromMldev");
+    __name(batchJobFromVertex, "batchJobFromVertex");
+    __name(batchJobSourceFromVertex, "batchJobSourceFromVertex");
+    __name(batchJobSourceToMldev, "batchJobSourceToMldev");
+    __name(batchJobSourceToVertex, "batchJobSourceToVertex");
+    __name(blobToMldev$4, "blobToMldev$4");
+    __name(cancelBatchJobParametersToMldev, "cancelBatchJobParametersToMldev");
+    __name(cancelBatchJobParametersToVertex, "cancelBatchJobParametersToVertex");
+    __name(candidateFromMldev$1, "candidateFromMldev$1");
+    __name(citationMetadataFromMldev$1, "citationMetadataFromMldev$1");
+    __name(contentToMldev$4, "contentToMldev$4");
+    __name(createBatchJobConfigToMldev, "createBatchJobConfigToMldev");
+    __name(createBatchJobConfigToVertex, "createBatchJobConfigToVertex");
+    __name(createBatchJobParametersToMldev, "createBatchJobParametersToMldev");
+    __name(createBatchJobParametersToVertex, "createBatchJobParametersToVertex");
+    __name(createEmbeddingsBatchJobConfigToMldev, "createEmbeddingsBatchJobConfigToMldev");
+    __name(createEmbeddingsBatchJobParametersToMldev, "createEmbeddingsBatchJobParametersToMldev");
+    __name(deleteBatchJobParametersToMldev, "deleteBatchJobParametersToMldev");
+    __name(deleteBatchJobParametersToVertex, "deleteBatchJobParametersToVertex");
+    __name(deleteResourceJobFromMldev, "deleteResourceJobFromMldev");
+    __name(deleteResourceJobFromVertex, "deleteResourceJobFromVertex");
+    __name(embedContentBatchToMldev, "embedContentBatchToMldev");
+    __name(embedContentConfigToMldev$1, "embedContentConfigToMldev$1");
+    __name(embeddingsBatchJobSourceToMldev, "embeddingsBatchJobSourceToMldev");
+    __name(fileDataToMldev$4, "fileDataToMldev$4");
+    __name(functionCallToMldev$4, "functionCallToMldev$4");
+    __name(functionCallingConfigToMldev$2, "functionCallingConfigToMldev$2");
+    __name(generateContentConfigToMldev$1, "generateContentConfigToMldev$1");
+    __name(generateContentResponseFromMldev$1, "generateContentResponseFromMldev$1");
+    __name(getBatchJobParametersToMldev, "getBatchJobParametersToMldev");
+    __name(getBatchJobParametersToVertex, "getBatchJobParametersToVertex");
+    __name(googleMapsToMldev$4, "googleMapsToMldev$4");
+    __name(googleSearchToMldev$4, "googleSearchToMldev$4");
+    __name(imageConfigToMldev$1, "imageConfigToMldev$1");
+    __name(inlinedRequestToMldev, "inlinedRequestToMldev");
+    __name(inlinedResponseFromMldev, "inlinedResponseFromMldev");
+    __name(listBatchJobsConfigToMldev, "listBatchJobsConfigToMldev");
+    __name(listBatchJobsConfigToVertex, "listBatchJobsConfigToVertex");
+    __name(listBatchJobsParametersToMldev, "listBatchJobsParametersToMldev");
+    __name(listBatchJobsParametersToVertex, "listBatchJobsParametersToVertex");
+    __name(listBatchJobsResponseFromMldev, "listBatchJobsResponseFromMldev");
+    __name(listBatchJobsResponseFromVertex, "listBatchJobsResponseFromVertex");
+    __name(partToMldev$4, "partToMldev$4");
+    __name(safetySettingToMldev$3, "safetySettingToMldev$3");
+    __name(toolConfigToMldev$2, "toolConfigToMldev$2");
+    __name(toolToMldev$4, "toolToMldev$4");
+    __name(vertexMultimodalDatasetDestinationFromVertex, "vertexMultimodalDatasetDestinationFromVertex");
+    __name(vertexMultimodalDatasetDestinationToVertex, "vertexMultimodalDatasetDestinationToVertex");
     (function(PagedItem2) {
       PagedItem2["PAGED_ITEM_BATCH_JOBS"] = "batchJobs";
       PagedItem2["PAGED_ITEM_MODELS"] = "models";
@@ -58387,9 +57209,6 @@ var init_web = __esm({
     Pager = class {
       static {
         __name(this, "Pager");
-      }
-      static {
-        __name2(this, "Pager");
       }
       constructor(name, request, response, params) {
         this.pageInternal = [];
@@ -58493,7 +57312,7 @@ var init_web = __esm({
        */
       [Symbol.asyncIterator]() {
         return {
-          next: /* @__PURE__ */ __name2(async () => {
+          next: /* @__PURE__ */ __name(async () => {
             if (this.idxInternal >= this.pageLength) {
               if (this.hasNextPage()) {
                 await this.nextPage();
@@ -58505,7 +57324,7 @@ var init_web = __esm({
             this.idxInternal += 1;
             return { value: item, done: false };
           }, "next"),
-          return: /* @__PURE__ */ __name2(async () => {
+          return: /* @__PURE__ */ __name(async () => {
             return { value: void 0, done: true };
           }, "return")
         };
@@ -58553,9 +57372,6 @@ var init_web = __esm({
     Batches = class extends BaseModule {
       static {
         __name(this, "Batches");
-      }
-      static {
-        __name2(this, "Batches");
       }
       constructor(apiClient) {
         super();
@@ -58979,49 +57795,46 @@ var init_web = __esm({
         }
       }
     };
-    __name2(authConfigToMldev$3, "authConfigToMldev$3");
-    __name2(blobToMldev$3, "blobToMldev$3");
-    __name2(computerUseToVertex$2, "computerUseToVertex$2");
-    __name2(contentToMldev$3, "contentToMldev$3");
-    __name2(contentToVertex$3, "contentToVertex$3");
-    __name2(createCachedContentConfigToMldev, "createCachedContentConfigToMldev");
-    __name2(createCachedContentConfigToVertex, "createCachedContentConfigToVertex");
-    __name2(createCachedContentParametersToMldev, "createCachedContentParametersToMldev");
-    __name2(createCachedContentParametersToVertex, "createCachedContentParametersToVertex");
-    __name2(deleteCachedContentParametersToMldev, "deleteCachedContentParametersToMldev");
-    __name2(deleteCachedContentParametersToVertex, "deleteCachedContentParametersToVertex");
-    __name2(deleteCachedContentResponseFromMldev, "deleteCachedContentResponseFromMldev");
-    __name2(deleteCachedContentResponseFromVertex, "deleteCachedContentResponseFromVertex");
-    __name2(fileDataToMldev$3, "fileDataToMldev$3");
-    __name2(functionCallToMldev$3, "functionCallToMldev$3");
-    __name2(functionCallingConfigToMldev$1, "functionCallingConfigToMldev$1");
-    __name2(getCachedContentParametersToMldev, "getCachedContentParametersToMldev");
-    __name2(getCachedContentParametersToVertex, "getCachedContentParametersToVertex");
-    __name2(googleMapsToMldev$3, "googleMapsToMldev$3");
-    __name2(googleSearchToMldev$3, "googleSearchToMldev$3");
-    __name2(listCachedContentsConfigToMldev, "listCachedContentsConfigToMldev");
-    __name2(listCachedContentsConfigToVertex, "listCachedContentsConfigToVertex");
-    __name2(listCachedContentsParametersToMldev, "listCachedContentsParametersToMldev");
-    __name2(listCachedContentsParametersToVertex, "listCachedContentsParametersToVertex");
-    __name2(listCachedContentsResponseFromMldev, "listCachedContentsResponseFromMldev");
-    __name2(listCachedContentsResponseFromVertex, "listCachedContentsResponseFromVertex");
-    __name2(mcpServerToVertex$2, "mcpServerToVertex$2");
-    __name2(partToMldev$3, "partToMldev$3");
-    __name2(partToVertex$3, "partToVertex$3");
-    __name2(toolConfigToMldev$1, "toolConfigToMldev$1");
-    __name2(toolConfigToVertex$1, "toolConfigToVertex$1");
-    __name2(toolToMldev$3, "toolToMldev$3");
-    __name2(toolToVertex$2, "toolToVertex$2");
-    __name2(updateCachedContentConfigToMldev, "updateCachedContentConfigToMldev");
-    __name2(updateCachedContentConfigToVertex, "updateCachedContentConfigToVertex");
-    __name2(updateCachedContentParametersToMldev, "updateCachedContentParametersToMldev");
-    __name2(updateCachedContentParametersToVertex, "updateCachedContentParametersToVertex");
+    __name(authConfigToMldev$3, "authConfigToMldev$3");
+    __name(blobToMldev$3, "blobToMldev$3");
+    __name(computerUseToVertex$2, "computerUseToVertex$2");
+    __name(contentToMldev$3, "contentToMldev$3");
+    __name(contentToVertex$3, "contentToVertex$3");
+    __name(createCachedContentConfigToMldev, "createCachedContentConfigToMldev");
+    __name(createCachedContentConfigToVertex, "createCachedContentConfigToVertex");
+    __name(createCachedContentParametersToMldev, "createCachedContentParametersToMldev");
+    __name(createCachedContentParametersToVertex, "createCachedContentParametersToVertex");
+    __name(deleteCachedContentParametersToMldev, "deleteCachedContentParametersToMldev");
+    __name(deleteCachedContentParametersToVertex, "deleteCachedContentParametersToVertex");
+    __name(deleteCachedContentResponseFromMldev, "deleteCachedContentResponseFromMldev");
+    __name(deleteCachedContentResponseFromVertex, "deleteCachedContentResponseFromVertex");
+    __name(fileDataToMldev$3, "fileDataToMldev$3");
+    __name(functionCallToMldev$3, "functionCallToMldev$3");
+    __name(functionCallingConfigToMldev$1, "functionCallingConfigToMldev$1");
+    __name(getCachedContentParametersToMldev, "getCachedContentParametersToMldev");
+    __name(getCachedContentParametersToVertex, "getCachedContentParametersToVertex");
+    __name(googleMapsToMldev$3, "googleMapsToMldev$3");
+    __name(googleSearchToMldev$3, "googleSearchToMldev$3");
+    __name(listCachedContentsConfigToMldev, "listCachedContentsConfigToMldev");
+    __name(listCachedContentsConfigToVertex, "listCachedContentsConfigToVertex");
+    __name(listCachedContentsParametersToMldev, "listCachedContentsParametersToMldev");
+    __name(listCachedContentsParametersToVertex, "listCachedContentsParametersToVertex");
+    __name(listCachedContentsResponseFromMldev, "listCachedContentsResponseFromMldev");
+    __name(listCachedContentsResponseFromVertex, "listCachedContentsResponseFromVertex");
+    __name(mcpServerToVertex$2, "mcpServerToVertex$2");
+    __name(partToMldev$3, "partToMldev$3");
+    __name(partToVertex$3, "partToVertex$3");
+    __name(toolConfigToMldev$1, "toolConfigToMldev$1");
+    __name(toolConfigToVertex$1, "toolConfigToVertex$1");
+    __name(toolToMldev$3, "toolToMldev$3");
+    __name(toolToVertex$2, "toolToVertex$2");
+    __name(updateCachedContentConfigToMldev, "updateCachedContentConfigToMldev");
+    __name(updateCachedContentConfigToVertex, "updateCachedContentConfigToVertex");
+    __name(updateCachedContentParametersToMldev, "updateCachedContentParametersToMldev");
+    __name(updateCachedContentParametersToVertex, "updateCachedContentParametersToVertex");
     Caches = class extends BaseModule {
       static {
         __name(this, "Caches");
-      }
-      static {
-        __name2(this, "Caches");
       }
       constructor(apiClient) {
         super();
@@ -59354,21 +58167,18 @@ var init_web = __esm({
         }
       }
     };
-    __name2(__rest2, "__rest");
-    __name2(__values, "__values");
-    __name2(__await, "__await");
-    __name2(__asyncGenerator, "__asyncGenerator");
-    __name2(__asyncValues, "__asyncValues");
-    __name2(isValidResponse, "isValidResponse");
-    __name2(isValidContent, "isValidContent");
-    __name2(validateHistory, "validateHistory");
-    __name2(extractCuratedHistory, "extractCuratedHistory");
+    __name(__rest2, "__rest");
+    __name(__values, "__values");
+    __name(__await, "__await");
+    __name(__asyncGenerator, "__asyncGenerator");
+    __name(__asyncValues, "__asyncValues");
+    __name(isValidResponse, "isValidResponse");
+    __name(isValidContent, "isValidContent");
+    __name(validateHistory, "validateHistory");
+    __name(extractCuratedHistory, "extractCuratedHistory");
     Chats = class {
       static {
         __name(this, "Chats");
-      }
-      static {
-        __name2(this, "Chats");
       }
       constructor(modelsModule, apiClient) {
         this.modelsModule = modelsModule;
@@ -59411,9 +58221,6 @@ var init_web = __esm({
     Chat = class {
       static {
         __name(this, "Chat");
-      }
-      static {
-        __name2(this, "Chat");
       }
       constructor(apiClient, modelsModule, model, config = {}, history = []) {
         this.apiClient = apiClient;
@@ -59536,7 +58343,7 @@ var init_web = __esm({
         return structuredClone(history);
       }
       processStreamResponse(streamResponse, inputContent) {
-        return __asyncGenerator(this, arguments, /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function* processStreamResponse_1() {
+        return __asyncGenerator(this, arguments, /* @__PURE__ */ __name(function* processStreamResponse_1() {
           var _a2, e_1, _b, _c;
           var _d, _e;
           const outputContent = [];
@@ -59563,7 +58370,7 @@ var init_web = __esm({
             }
           }
           this.recordHistory(inputContent, outputContent);
-        }, "processStreamResponse_1"), "processStreamResponse_1"));
+        }, "processStreamResponse_1"));
       }
       recordHistory(userInput, modelOutput, automaticFunctionCallingHistory) {
         let outputContents = [];
@@ -59585,10 +58392,7 @@ var init_web = __esm({
     };
     ApiError = class _ApiError extends Error {
       static {
-        __name(this, "_ApiError");
-      }
-      static {
-        __name2(this, "ApiError");
+        __name(this, "ApiError");
       }
       constructor(options) {
         super(options.message);
@@ -59597,22 +58401,19 @@ var init_web = __esm({
         Object.setPrototypeOf(this, _ApiError.prototype);
       }
     };
-    __name2(createFileParametersToMldev, "createFileParametersToMldev");
-    __name2(createFileResponseFromMldev, "createFileResponseFromMldev");
-    __name2(deleteFileParametersToMldev, "deleteFileParametersToMldev");
-    __name2(deleteFileResponseFromMldev, "deleteFileResponseFromMldev");
-    __name2(getFileParametersToMldev, "getFileParametersToMldev");
-    __name2(internalRegisterFilesParametersToMldev, "internalRegisterFilesParametersToMldev");
-    __name2(listFilesConfigToMldev, "listFilesConfigToMldev");
-    __name2(listFilesParametersToMldev, "listFilesParametersToMldev");
-    __name2(listFilesResponseFromMldev, "listFilesResponseFromMldev");
-    __name2(registerFilesResponseFromMldev, "registerFilesResponseFromMldev");
+    __name(createFileParametersToMldev, "createFileParametersToMldev");
+    __name(createFileResponseFromMldev, "createFileResponseFromMldev");
+    __name(deleteFileParametersToMldev, "deleteFileParametersToMldev");
+    __name(deleteFileResponseFromMldev, "deleteFileResponseFromMldev");
+    __name(getFileParametersToMldev, "getFileParametersToMldev");
+    __name(internalRegisterFilesParametersToMldev, "internalRegisterFilesParametersToMldev");
+    __name(listFilesConfigToMldev, "listFilesConfigToMldev");
+    __name(listFilesParametersToMldev, "listFilesParametersToMldev");
+    __name(listFilesResponseFromMldev, "listFilesResponseFromMldev");
+    __name(registerFilesResponseFromMldev, "registerFilesResponseFromMldev");
     Files = class extends BaseModule {
       static {
         __name(this, "Files");
-      }
-      static {
-        __name2(this, "Files");
       }
       constructor(apiClient) {
         super();
@@ -59894,178 +58695,178 @@ var init_web = __esm({
         }
       }
     };
-    __name2(authConfigToMldev$2, "authConfigToMldev$2");
-    __name2(blobToMldev$2, "blobToMldev$2");
-    __name2(computerUseToVertex$1, "computerUseToVertex$1");
-    __name2(contentToMldev$2, "contentToMldev$2");
-    __name2(contentToVertex$2, "contentToVertex$2");
-    __name2(fileDataToMldev$2, "fileDataToMldev$2");
-    __name2(functionCallToMldev$2, "functionCallToMldev$2");
-    __name2(generationConfigToVertex$1, "generationConfigToVertex$1");
-    __name2(googleMapsToMldev$2, "googleMapsToMldev$2");
-    __name2(googleSearchToMldev$2, "googleSearchToMldev$2");
-    __name2(liveConnectConfigToMldev$1, "liveConnectConfigToMldev$1");
-    __name2(liveConnectConfigToVertex, "liveConnectConfigToVertex");
-    __name2(liveConnectParametersToMldev, "liveConnectParametersToMldev");
-    __name2(liveConnectParametersToVertex, "liveConnectParametersToVertex");
-    __name2(liveMusicSetConfigParametersToMldev, "liveMusicSetConfigParametersToMldev");
-    __name2(liveMusicSetWeightedPromptsParametersToMldev, "liveMusicSetWeightedPromptsParametersToMldev");
-    __name2(liveSendRealtimeInputParametersToMldev, "liveSendRealtimeInputParametersToMldev");
-    __name2(liveSendRealtimeInputParametersToVertex, "liveSendRealtimeInputParametersToVertex");
-    __name2(liveServerMessageFromVertex, "liveServerMessageFromVertex");
-    __name2(mcpServerToVertex$1, "mcpServerToVertex$1");
-    __name2(multiSpeakerVoiceConfigToVertex$1, "multiSpeakerVoiceConfigToVertex$1");
-    __name2(partToMldev$2, "partToMldev$2");
-    __name2(partToVertex$2, "partToVertex$2");
-    __name2(replicatedVoiceConfigToVertex$1, "replicatedVoiceConfigToVertex$1");
-    __name2(safetySettingToMldev$2, "safetySettingToMldev$2");
-    __name2(sessionResumptionConfigToMldev$1, "sessionResumptionConfigToMldev$1");
-    __name2(speakerVoiceConfigToVertex$1, "speakerVoiceConfigToVertex$1");
-    __name2(speechConfigToVertex$1, "speechConfigToVertex$1");
-    __name2(toolToMldev$2, "toolToMldev$2");
-    __name2(toolToVertex$1, "toolToVertex$1");
-    __name2(usageMetadataFromVertex, "usageMetadataFromVertex");
-    __name2(voiceActivityFromVertex, "voiceActivityFromVertex");
-    __name2(voiceConfigToVertex$1, "voiceConfigToVertex$1");
-    __name2(authConfigToMldev$1, "authConfigToMldev$1");
-    __name2(blobToMldev$1, "blobToMldev$1");
-    __name2(candidateFromMldev, "candidateFromMldev");
-    __name2(citationMetadataFromMldev, "citationMetadataFromMldev");
-    __name2(computeTokensParametersToVertex, "computeTokensParametersToVertex");
-    __name2(computeTokensResponseFromVertex, "computeTokensResponseFromVertex");
-    __name2(computerUseToVertex, "computerUseToVertex");
-    __name2(contentEmbeddingFromVertex, "contentEmbeddingFromVertex");
-    __name2(contentEmbeddingStatisticsFromVertex, "contentEmbeddingStatisticsFromVertex");
-    __name2(contentToMldev$1, "contentToMldev$1");
-    __name2(contentToVertex$1, "contentToVertex$1");
-    __name2(controlReferenceConfigToVertex, "controlReferenceConfigToVertex");
-    __name2(countTokensConfigToMldev, "countTokensConfigToMldev");
-    __name2(countTokensConfigToVertex, "countTokensConfigToVertex");
-    __name2(countTokensParametersToMldev, "countTokensParametersToMldev");
-    __name2(countTokensParametersToVertex, "countTokensParametersToVertex");
-    __name2(countTokensResponseFromMldev, "countTokensResponseFromMldev");
-    __name2(countTokensResponseFromVertex, "countTokensResponseFromVertex");
-    __name2(deleteModelParametersToMldev, "deleteModelParametersToMldev");
-    __name2(deleteModelParametersToVertex, "deleteModelParametersToVertex");
-    __name2(deleteModelResponseFromMldev, "deleteModelResponseFromMldev");
-    __name2(deleteModelResponseFromVertex, "deleteModelResponseFromVertex");
-    __name2(editImageConfigToVertex, "editImageConfigToVertex");
-    __name2(editImageParametersInternalToVertex, "editImageParametersInternalToVertex");
-    __name2(editImageResponseFromVertex, "editImageResponseFromVertex");
-    __name2(embedContentConfigToMldev, "embedContentConfigToMldev");
-    __name2(embedContentConfigToVertex, "embedContentConfigToVertex");
-    __name2(embedContentParametersPrivateToMldev, "embedContentParametersPrivateToMldev");
-    __name2(embedContentParametersPrivateToVertex, "embedContentParametersPrivateToVertex");
-    __name2(embedContentResponseFromMldev, "embedContentResponseFromMldev");
-    __name2(embedContentResponseFromVertex, "embedContentResponseFromVertex");
-    __name2(endpointFromVertex, "endpointFromVertex");
-    __name2(fileDataToMldev$1, "fileDataToMldev$1");
-    __name2(functionCallToMldev$1, "functionCallToMldev$1");
-    __name2(functionCallingConfigToMldev, "functionCallingConfigToMldev");
-    __name2(generateContentConfigToMldev, "generateContentConfigToMldev");
-    __name2(generateContentConfigToVertex, "generateContentConfigToVertex");
-    __name2(generateContentParametersToMldev, "generateContentParametersToMldev");
-    __name2(generateContentParametersToVertex, "generateContentParametersToVertex");
-    __name2(generateContentResponseFromMldev, "generateContentResponseFromMldev");
-    __name2(generateContentResponseFromVertex, "generateContentResponseFromVertex");
-    __name2(generateImagesConfigToMldev, "generateImagesConfigToMldev");
-    __name2(generateImagesConfigToVertex, "generateImagesConfigToVertex");
-    __name2(generateImagesParametersToMldev, "generateImagesParametersToMldev");
-    __name2(generateImagesParametersToVertex, "generateImagesParametersToVertex");
-    __name2(generateImagesResponseFromMldev, "generateImagesResponseFromMldev");
-    __name2(generateImagesResponseFromVertex, "generateImagesResponseFromVertex");
-    __name2(generateVideosConfigToMldev, "generateVideosConfigToMldev");
-    __name2(generateVideosConfigToVertex, "generateVideosConfigToVertex");
-    __name2(generateVideosOperationFromMldev, "generateVideosOperationFromMldev");
-    __name2(generateVideosOperationFromVertex, "generateVideosOperationFromVertex");
-    __name2(generateVideosParametersToMldev, "generateVideosParametersToMldev");
-    __name2(generateVideosParametersToVertex, "generateVideosParametersToVertex");
-    __name2(generateVideosResponseFromMldev, "generateVideosResponseFromMldev");
-    __name2(generateVideosResponseFromVertex, "generateVideosResponseFromVertex");
-    __name2(generateVideosSourceToMldev, "generateVideosSourceToMldev");
-    __name2(generateVideosSourceToVertex, "generateVideosSourceToVertex");
-    __name2(generatedImageFromMldev, "generatedImageFromMldev");
-    __name2(generatedImageFromVertex, "generatedImageFromVertex");
-    __name2(generatedImageMaskFromVertex, "generatedImageMaskFromVertex");
-    __name2(generatedVideoFromMldev, "generatedVideoFromMldev");
-    __name2(generatedVideoFromVertex, "generatedVideoFromVertex");
-    __name2(generationConfigToVertex, "generationConfigToVertex");
-    __name2(getModelParametersToMldev, "getModelParametersToMldev");
-    __name2(getModelParametersToVertex, "getModelParametersToVertex");
-    __name2(googleMapsToMldev$1, "googleMapsToMldev$1");
-    __name2(googleSearchToMldev$1, "googleSearchToMldev$1");
-    __name2(imageConfigToMldev, "imageConfigToMldev");
-    __name2(imageConfigToVertex, "imageConfigToVertex");
-    __name2(imageFromMldev, "imageFromMldev");
-    __name2(imageFromVertex, "imageFromVertex");
-    __name2(imageToMldev, "imageToMldev");
-    __name2(imageToVertex, "imageToVertex");
-    __name2(listModelsConfigToMldev, "listModelsConfigToMldev");
-    __name2(listModelsConfigToVertex, "listModelsConfigToVertex");
-    __name2(listModelsParametersToMldev, "listModelsParametersToMldev");
-    __name2(listModelsParametersToVertex, "listModelsParametersToVertex");
-    __name2(listModelsResponseFromMldev, "listModelsResponseFromMldev");
-    __name2(listModelsResponseFromVertex, "listModelsResponseFromVertex");
-    __name2(maskReferenceConfigToVertex, "maskReferenceConfigToVertex");
-    __name2(mcpServerToVertex, "mcpServerToVertex");
-    __name2(modelFromMldev, "modelFromMldev");
-    __name2(modelFromVertex, "modelFromVertex");
-    __name2(multiSpeakerVoiceConfigToVertex, "multiSpeakerVoiceConfigToVertex");
-    __name2(partToMldev$1, "partToMldev$1");
-    __name2(partToVertex$1, "partToVertex$1");
-    __name2(productImageToVertex, "productImageToVertex");
-    __name2(recontextImageConfigToVertex, "recontextImageConfigToVertex");
-    __name2(recontextImageParametersToVertex, "recontextImageParametersToVertex");
-    __name2(recontextImageResponseFromVertex, "recontextImageResponseFromVertex");
-    __name2(recontextImageSourceToVertex, "recontextImageSourceToVertex");
-    __name2(referenceImageAPIInternalToVertex, "referenceImageAPIInternalToVertex");
-    __name2(replicatedVoiceConfigToVertex, "replicatedVoiceConfigToVertex");
-    __name2(safetyAttributesFromMldev, "safetyAttributesFromMldev");
-    __name2(safetyAttributesFromVertex, "safetyAttributesFromVertex");
-    __name2(safetySettingToMldev$1, "safetySettingToMldev$1");
-    __name2(scribbleImageToVertex, "scribbleImageToVertex");
-    __name2(segmentImageConfigToVertex, "segmentImageConfigToVertex");
-    __name2(segmentImageParametersToVertex, "segmentImageParametersToVertex");
-    __name2(segmentImageResponseFromVertex, "segmentImageResponseFromVertex");
-    __name2(segmentImageSourceToVertex, "segmentImageSourceToVertex");
-    __name2(speakerVoiceConfigToVertex, "speakerVoiceConfigToVertex");
-    __name2(speechConfigToVertex, "speechConfigToVertex");
-    __name2(toolConfigToMldev, "toolConfigToMldev");
-    __name2(toolConfigToVertex, "toolConfigToVertex");
-    __name2(toolToMldev$1, "toolToMldev$1");
-    __name2(toolToVertex, "toolToVertex");
-    __name2(tunedModelInfoFromMldev, "tunedModelInfoFromMldev");
-    __name2(tunedModelInfoFromVertex, "tunedModelInfoFromVertex");
-    __name2(updateModelConfigToMldev, "updateModelConfigToMldev");
-    __name2(updateModelConfigToVertex, "updateModelConfigToVertex");
-    __name2(updateModelParametersToMldev, "updateModelParametersToMldev");
-    __name2(updateModelParametersToVertex, "updateModelParametersToVertex");
-    __name2(upscaleImageAPIConfigInternalToVertex, "upscaleImageAPIConfigInternalToVertex");
-    __name2(upscaleImageAPIParametersInternalToVertex, "upscaleImageAPIParametersInternalToVertex");
-    __name2(upscaleImageResponseFromVertex, "upscaleImageResponseFromVertex");
-    __name2(videoFromMldev, "videoFromMldev");
-    __name2(videoFromVertex, "videoFromVertex");
-    __name2(videoGenerationMaskToVertex, "videoGenerationMaskToVertex");
-    __name2(videoGenerationReferenceImageToMldev, "videoGenerationReferenceImageToMldev");
-    __name2(videoGenerationReferenceImageToVertex, "videoGenerationReferenceImageToVertex");
-    __name2(videoToMldev, "videoToMldev");
-    __name2(videoToVertex, "videoToVertex");
-    __name2(voiceConfigToVertex, "voiceConfigToVertex");
-    __name2(createFileSearchStoreConfigToMldev, "createFileSearchStoreConfigToMldev");
-    __name2(createFileSearchStoreParametersToMldev, "createFileSearchStoreParametersToMldev");
-    __name2(deleteFileSearchStoreConfigToMldev, "deleteFileSearchStoreConfigToMldev");
-    __name2(deleteFileSearchStoreParametersToMldev, "deleteFileSearchStoreParametersToMldev");
-    __name2(getFileSearchStoreParametersToMldev, "getFileSearchStoreParametersToMldev");
-    __name2(importFileConfigToMldev, "importFileConfigToMldev");
-    __name2(importFileOperationFromMldev, "importFileOperationFromMldev");
-    __name2(importFileParametersToMldev, "importFileParametersToMldev");
-    __name2(importFileResponseFromMldev, "importFileResponseFromMldev");
-    __name2(listFileSearchStoresConfigToMldev, "listFileSearchStoresConfigToMldev");
-    __name2(listFileSearchStoresParametersToMldev, "listFileSearchStoresParametersToMldev");
-    __name2(listFileSearchStoresResponseFromMldev, "listFileSearchStoresResponseFromMldev");
-    __name2(uploadToFileSearchStoreConfigToMldev, "uploadToFileSearchStoreConfigToMldev");
-    __name2(uploadToFileSearchStoreParametersToMldev, "uploadToFileSearchStoreParametersToMldev");
-    __name2(uploadToFileSearchStoreResumableResponseFromMldev, "uploadToFileSearchStoreResumableResponseFromMldev");
+    __name(authConfigToMldev$2, "authConfigToMldev$2");
+    __name(blobToMldev$2, "blobToMldev$2");
+    __name(computerUseToVertex$1, "computerUseToVertex$1");
+    __name(contentToMldev$2, "contentToMldev$2");
+    __name(contentToVertex$2, "contentToVertex$2");
+    __name(fileDataToMldev$2, "fileDataToMldev$2");
+    __name(functionCallToMldev$2, "functionCallToMldev$2");
+    __name(generationConfigToVertex$1, "generationConfigToVertex$1");
+    __name(googleMapsToMldev$2, "googleMapsToMldev$2");
+    __name(googleSearchToMldev$2, "googleSearchToMldev$2");
+    __name(liveConnectConfigToMldev$1, "liveConnectConfigToMldev$1");
+    __name(liveConnectConfigToVertex, "liveConnectConfigToVertex");
+    __name(liveConnectParametersToMldev, "liveConnectParametersToMldev");
+    __name(liveConnectParametersToVertex, "liveConnectParametersToVertex");
+    __name(liveMusicSetConfigParametersToMldev, "liveMusicSetConfigParametersToMldev");
+    __name(liveMusicSetWeightedPromptsParametersToMldev, "liveMusicSetWeightedPromptsParametersToMldev");
+    __name(liveSendRealtimeInputParametersToMldev, "liveSendRealtimeInputParametersToMldev");
+    __name(liveSendRealtimeInputParametersToVertex, "liveSendRealtimeInputParametersToVertex");
+    __name(liveServerMessageFromVertex, "liveServerMessageFromVertex");
+    __name(mcpServerToVertex$1, "mcpServerToVertex$1");
+    __name(multiSpeakerVoiceConfigToVertex$1, "multiSpeakerVoiceConfigToVertex$1");
+    __name(partToMldev$2, "partToMldev$2");
+    __name(partToVertex$2, "partToVertex$2");
+    __name(replicatedVoiceConfigToVertex$1, "replicatedVoiceConfigToVertex$1");
+    __name(safetySettingToMldev$2, "safetySettingToMldev$2");
+    __name(sessionResumptionConfigToMldev$1, "sessionResumptionConfigToMldev$1");
+    __name(speakerVoiceConfigToVertex$1, "speakerVoiceConfigToVertex$1");
+    __name(speechConfigToVertex$1, "speechConfigToVertex$1");
+    __name(toolToMldev$2, "toolToMldev$2");
+    __name(toolToVertex$1, "toolToVertex$1");
+    __name(usageMetadataFromVertex, "usageMetadataFromVertex");
+    __name(voiceActivityFromVertex, "voiceActivityFromVertex");
+    __name(voiceConfigToVertex$1, "voiceConfigToVertex$1");
+    __name(authConfigToMldev$1, "authConfigToMldev$1");
+    __name(blobToMldev$1, "blobToMldev$1");
+    __name(candidateFromMldev, "candidateFromMldev");
+    __name(citationMetadataFromMldev, "citationMetadataFromMldev");
+    __name(computeTokensParametersToVertex, "computeTokensParametersToVertex");
+    __name(computeTokensResponseFromVertex, "computeTokensResponseFromVertex");
+    __name(computerUseToVertex, "computerUseToVertex");
+    __name(contentEmbeddingFromVertex, "contentEmbeddingFromVertex");
+    __name(contentEmbeddingStatisticsFromVertex, "contentEmbeddingStatisticsFromVertex");
+    __name(contentToMldev$1, "contentToMldev$1");
+    __name(contentToVertex$1, "contentToVertex$1");
+    __name(controlReferenceConfigToVertex, "controlReferenceConfigToVertex");
+    __name(countTokensConfigToMldev, "countTokensConfigToMldev");
+    __name(countTokensConfigToVertex, "countTokensConfigToVertex");
+    __name(countTokensParametersToMldev, "countTokensParametersToMldev");
+    __name(countTokensParametersToVertex, "countTokensParametersToVertex");
+    __name(countTokensResponseFromMldev, "countTokensResponseFromMldev");
+    __name(countTokensResponseFromVertex, "countTokensResponseFromVertex");
+    __name(deleteModelParametersToMldev, "deleteModelParametersToMldev");
+    __name(deleteModelParametersToVertex, "deleteModelParametersToVertex");
+    __name(deleteModelResponseFromMldev, "deleteModelResponseFromMldev");
+    __name(deleteModelResponseFromVertex, "deleteModelResponseFromVertex");
+    __name(editImageConfigToVertex, "editImageConfigToVertex");
+    __name(editImageParametersInternalToVertex, "editImageParametersInternalToVertex");
+    __name(editImageResponseFromVertex, "editImageResponseFromVertex");
+    __name(embedContentConfigToMldev, "embedContentConfigToMldev");
+    __name(embedContentConfigToVertex, "embedContentConfigToVertex");
+    __name(embedContentParametersPrivateToMldev, "embedContentParametersPrivateToMldev");
+    __name(embedContentParametersPrivateToVertex, "embedContentParametersPrivateToVertex");
+    __name(embedContentResponseFromMldev, "embedContentResponseFromMldev");
+    __name(embedContentResponseFromVertex, "embedContentResponseFromVertex");
+    __name(endpointFromVertex, "endpointFromVertex");
+    __name(fileDataToMldev$1, "fileDataToMldev$1");
+    __name(functionCallToMldev$1, "functionCallToMldev$1");
+    __name(functionCallingConfigToMldev, "functionCallingConfigToMldev");
+    __name(generateContentConfigToMldev, "generateContentConfigToMldev");
+    __name(generateContentConfigToVertex, "generateContentConfigToVertex");
+    __name(generateContentParametersToMldev, "generateContentParametersToMldev");
+    __name(generateContentParametersToVertex, "generateContentParametersToVertex");
+    __name(generateContentResponseFromMldev, "generateContentResponseFromMldev");
+    __name(generateContentResponseFromVertex, "generateContentResponseFromVertex");
+    __name(generateImagesConfigToMldev, "generateImagesConfigToMldev");
+    __name(generateImagesConfigToVertex, "generateImagesConfigToVertex");
+    __name(generateImagesParametersToMldev, "generateImagesParametersToMldev");
+    __name(generateImagesParametersToVertex, "generateImagesParametersToVertex");
+    __name(generateImagesResponseFromMldev, "generateImagesResponseFromMldev");
+    __name(generateImagesResponseFromVertex, "generateImagesResponseFromVertex");
+    __name(generateVideosConfigToMldev, "generateVideosConfigToMldev");
+    __name(generateVideosConfigToVertex, "generateVideosConfigToVertex");
+    __name(generateVideosOperationFromMldev, "generateVideosOperationFromMldev");
+    __name(generateVideosOperationFromVertex, "generateVideosOperationFromVertex");
+    __name(generateVideosParametersToMldev, "generateVideosParametersToMldev");
+    __name(generateVideosParametersToVertex, "generateVideosParametersToVertex");
+    __name(generateVideosResponseFromMldev, "generateVideosResponseFromMldev");
+    __name(generateVideosResponseFromVertex, "generateVideosResponseFromVertex");
+    __name(generateVideosSourceToMldev, "generateVideosSourceToMldev");
+    __name(generateVideosSourceToVertex, "generateVideosSourceToVertex");
+    __name(generatedImageFromMldev, "generatedImageFromMldev");
+    __name(generatedImageFromVertex, "generatedImageFromVertex");
+    __name(generatedImageMaskFromVertex, "generatedImageMaskFromVertex");
+    __name(generatedVideoFromMldev, "generatedVideoFromMldev");
+    __name(generatedVideoFromVertex, "generatedVideoFromVertex");
+    __name(generationConfigToVertex, "generationConfigToVertex");
+    __name(getModelParametersToMldev, "getModelParametersToMldev");
+    __name(getModelParametersToVertex, "getModelParametersToVertex");
+    __name(googleMapsToMldev$1, "googleMapsToMldev$1");
+    __name(googleSearchToMldev$1, "googleSearchToMldev$1");
+    __name(imageConfigToMldev, "imageConfigToMldev");
+    __name(imageConfigToVertex, "imageConfigToVertex");
+    __name(imageFromMldev, "imageFromMldev");
+    __name(imageFromVertex, "imageFromVertex");
+    __name(imageToMldev, "imageToMldev");
+    __name(imageToVertex, "imageToVertex");
+    __name(listModelsConfigToMldev, "listModelsConfigToMldev");
+    __name(listModelsConfigToVertex, "listModelsConfigToVertex");
+    __name(listModelsParametersToMldev, "listModelsParametersToMldev");
+    __name(listModelsParametersToVertex, "listModelsParametersToVertex");
+    __name(listModelsResponseFromMldev, "listModelsResponseFromMldev");
+    __name(listModelsResponseFromVertex, "listModelsResponseFromVertex");
+    __name(maskReferenceConfigToVertex, "maskReferenceConfigToVertex");
+    __name(mcpServerToVertex, "mcpServerToVertex");
+    __name(modelFromMldev, "modelFromMldev");
+    __name(modelFromVertex, "modelFromVertex");
+    __name(multiSpeakerVoiceConfigToVertex, "multiSpeakerVoiceConfigToVertex");
+    __name(partToMldev$1, "partToMldev$1");
+    __name(partToVertex$1, "partToVertex$1");
+    __name(productImageToVertex, "productImageToVertex");
+    __name(recontextImageConfigToVertex, "recontextImageConfigToVertex");
+    __name(recontextImageParametersToVertex, "recontextImageParametersToVertex");
+    __name(recontextImageResponseFromVertex, "recontextImageResponseFromVertex");
+    __name(recontextImageSourceToVertex, "recontextImageSourceToVertex");
+    __name(referenceImageAPIInternalToVertex, "referenceImageAPIInternalToVertex");
+    __name(replicatedVoiceConfigToVertex, "replicatedVoiceConfigToVertex");
+    __name(safetyAttributesFromMldev, "safetyAttributesFromMldev");
+    __name(safetyAttributesFromVertex, "safetyAttributesFromVertex");
+    __name(safetySettingToMldev$1, "safetySettingToMldev$1");
+    __name(scribbleImageToVertex, "scribbleImageToVertex");
+    __name(segmentImageConfigToVertex, "segmentImageConfigToVertex");
+    __name(segmentImageParametersToVertex, "segmentImageParametersToVertex");
+    __name(segmentImageResponseFromVertex, "segmentImageResponseFromVertex");
+    __name(segmentImageSourceToVertex, "segmentImageSourceToVertex");
+    __name(speakerVoiceConfigToVertex, "speakerVoiceConfigToVertex");
+    __name(speechConfigToVertex, "speechConfigToVertex");
+    __name(toolConfigToMldev, "toolConfigToMldev");
+    __name(toolConfigToVertex, "toolConfigToVertex");
+    __name(toolToMldev$1, "toolToMldev$1");
+    __name(toolToVertex, "toolToVertex");
+    __name(tunedModelInfoFromMldev, "tunedModelInfoFromMldev");
+    __name(tunedModelInfoFromVertex, "tunedModelInfoFromVertex");
+    __name(updateModelConfigToMldev, "updateModelConfigToMldev");
+    __name(updateModelConfigToVertex, "updateModelConfigToVertex");
+    __name(updateModelParametersToMldev, "updateModelParametersToMldev");
+    __name(updateModelParametersToVertex, "updateModelParametersToVertex");
+    __name(upscaleImageAPIConfigInternalToVertex, "upscaleImageAPIConfigInternalToVertex");
+    __name(upscaleImageAPIParametersInternalToVertex, "upscaleImageAPIParametersInternalToVertex");
+    __name(upscaleImageResponseFromVertex, "upscaleImageResponseFromVertex");
+    __name(videoFromMldev, "videoFromMldev");
+    __name(videoFromVertex, "videoFromVertex");
+    __name(videoGenerationMaskToVertex, "videoGenerationMaskToVertex");
+    __name(videoGenerationReferenceImageToMldev, "videoGenerationReferenceImageToMldev");
+    __name(videoGenerationReferenceImageToVertex, "videoGenerationReferenceImageToVertex");
+    __name(videoToMldev, "videoToMldev");
+    __name(videoToVertex, "videoToVertex");
+    __name(voiceConfigToVertex, "voiceConfigToVertex");
+    __name(createFileSearchStoreConfigToMldev, "createFileSearchStoreConfigToMldev");
+    __name(createFileSearchStoreParametersToMldev, "createFileSearchStoreParametersToMldev");
+    __name(deleteFileSearchStoreConfigToMldev, "deleteFileSearchStoreConfigToMldev");
+    __name(deleteFileSearchStoreParametersToMldev, "deleteFileSearchStoreParametersToMldev");
+    __name(getFileSearchStoreParametersToMldev, "getFileSearchStoreParametersToMldev");
+    __name(importFileConfigToMldev, "importFileConfigToMldev");
+    __name(importFileOperationFromMldev, "importFileOperationFromMldev");
+    __name(importFileParametersToMldev, "importFileParametersToMldev");
+    __name(importFileResponseFromMldev, "importFileResponseFromMldev");
+    __name(listFileSearchStoresConfigToMldev, "listFileSearchStoresConfigToMldev");
+    __name(listFileSearchStoresParametersToMldev, "listFileSearchStoresParametersToMldev");
+    __name(listFileSearchStoresResponseFromMldev, "listFileSearchStoresResponseFromMldev");
+    __name(uploadToFileSearchStoreConfigToMldev, "uploadToFileSearchStoreConfigToMldev");
+    __name(uploadToFileSearchStoreParametersToMldev, "uploadToFileSearchStoreParametersToMldev");
+    __name(uploadToFileSearchStoreResumableResponseFromMldev, "uploadToFileSearchStoreResumableResponseFromMldev");
     CONTENT_TYPE_HEADER = "Content-Type";
     SERVER_TIMEOUT_HEADER = "X-Server-Timeout";
     USER_AGENT_HEADER = "User-Agent";
@@ -60075,8 +58876,8 @@ var init_web = __esm({
     VERTEX_AI_API_DEFAULT_VERSION = "v1beta1";
     GOOGLE_AI_API_DEFAULT_VERSION = "v1beta";
     MULTI_REGIONAL_LOCATIONS = /* @__PURE__ */ new Set(["us", "eu"]);
-    __name2(raiseUndiciTimeouts, "raiseUndiciTimeouts");
-    __name2(createAttemptSignal, "createAttemptSignal");
+    __name(raiseUndiciTimeouts, "raiseUndiciTimeouts");
+    __name(createAttemptSignal, "createAttemptSignal");
     DEFAULT_RETRY_ATTEMPTS = 5;
     DEFAULT_RETRY_INITIAL_DELAY = 1;
     DEFAULT_RETRY_MAX_DELAY = 60;
@@ -60099,9 +58900,6 @@ var init_web = __esm({
     ApiClient = class {
       static {
         __name(this, "ApiClient");
-      }
-      static {
-        __name2(this, "ApiClient");
       }
       constructor(opts) {
         var _a2, _b, _c;
@@ -60325,7 +59123,7 @@ var init_web = __esm({
         });
       }
       processStreamResponse(response) {
-        return __asyncGenerator(this, arguments, /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function* processStreamResponse_1() {
+        return __asyncGenerator(this, arguments, /* @__PURE__ */ __name(function* processStreamResponse_1() {
           var _a2;
           const reader = (_a2 = response === null || response === void 0 ? void 0 : response.body) === null || _a2 === void 0 ? void 0 : _a2.getReader();
           const decoder = new TextDecoder("utf-8");
@@ -60403,12 +59201,12 @@ var init_web = __esm({
           } finally {
             reader.releaseLock();
           }
-        }, "processStreamResponse_1"), "processStreamResponse_1"));
+        }, "processStreamResponse_1"));
       }
       async apiCall(url, requestInit, retryOptions, timeout, abortSignal) {
         var _a2, _b, _c, _d, _e, _f;
         const retryableStatusCodes = (_a2 = retryOptions === null || retryOptions === void 0 ? void 0 : retryOptions.httpStatusCodes) !== null && _a2 !== void 0 ? _a2 : DEFAULT_RETRY_HTTP_STATUS_CODES;
-        const runFetch = /* @__PURE__ */ __name2(async () => {
+        const runFetch = /* @__PURE__ */ __name(async () => {
           const attempt = createAttemptSignal(timeout, abortSignal);
           let response;
           try {
@@ -60439,7 +59237,7 @@ var init_web = __esm({
           minTimeout,
           maxTimeout,
           randomize: ((_f = retryOptions.jitter) !== null && _f !== void 0 ? _f : DEFAULT_RETRY_JITTER) > 0,
-          onFailedAttempt: /* @__PURE__ */ __name2((info) => {
+          onFailedAttempt: /* @__PURE__ */ __name((info) => {
             var _a3;
             if (abortSignal === null || abortSignal === void 0 ? void 0 : abortSignal.aborted) {
               throw (_a3 = info.error) !== null && _a3 !== void 0 ? _a3 : info;
@@ -60583,20 +59381,17 @@ var init_web = __esm({
         return uploadUrl;
       }
     };
-    __name2(throwErrorIfNotOK, "throwErrorIfNotOK");
-    __name2(includeExtraBodyToRequestInit, "includeExtraBodyToRequestInit");
+    __name(throwErrorIfNotOK, "throwErrorIfNotOK");
+    __name(includeExtraBodyToRequestInit, "includeExtraBodyToRequestInit");
     MCP_LABEL = "mcp_used/unknown";
     hasMcpToolUsageFromMcpToTool = false;
-    __name2(hasMcpToolUsage, "hasMcpToolUsage");
-    __name2(setMcpUsageHeader, "setMcpUsageHeader");
-    __name2(isMcpCallableTool, "isMcpCallableTool");
-    __name2(listAllTools, "listAllTools");
+    __name(hasMcpToolUsage, "hasMcpToolUsage");
+    __name(setMcpUsageHeader, "setMcpUsageHeader");
+    __name(isMcpCallableTool, "isMcpCallableTool");
+    __name(listAllTools, "listAllTools");
     McpCallableTool = class _McpCallableTool {
       static {
-        __name(this, "_McpCallableTool");
-      }
-      static {
-        __name2(this, "McpCallableTool");
+        __name(this, "McpCallableTool");
       }
       constructor(mcpClients = [], config) {
         this.mcpTools = [];
@@ -60687,13 +59482,12 @@ var init_web = __esm({
         return functionCallResponseParts;
       }
     };
-    __name2(handleWebSocketMessage$1, "handleWebSocketMessage$1");
+    __name(isMcpClient, "isMcpClient");
+    __name(mcpToTool, "mcpToTool");
+    __name(handleWebSocketMessage$1, "handleWebSocketMessage$1");
     LiveMusic = class {
       static {
         __name(this, "LiveMusic");
-      }
-      static {
-        __name2(this, "LiveMusic");
       }
       constructor(apiClient, auth, webSocketFactory) {
         this.apiClient = apiClient;
@@ -60741,19 +59535,19 @@ var init_web = __esm({
         const headers = mapToHeaders$1(this.apiClient.getDefaultHeaders());
         const apiKey = this.apiClient.getApiKey();
         const url = `${websocketBaseUrl}/ws/google.ai.generativelanguage.${apiVersion}.GenerativeService.BidiGenerateMusic?key=${apiKey}`;
-        let onopenResolve = /* @__PURE__ */ __name2(() => {
+        let onopenResolve = /* @__PURE__ */ __name(() => {
         }, "onopenResolve");
         const onopenPromise = new Promise((resolve) => {
           onopenResolve = resolve;
         });
         const callbacks = params.callbacks;
-        const onopenAwaitedCallback = /* @__PURE__ */ __name2(function() {
+        const onopenAwaitedCallback = /* @__PURE__ */ __name(function() {
           onopenResolve({});
         }, "onopenAwaitedCallback");
         const apiClient = this.apiClient;
         const websocketCallbacks = {
           onopen: onopenAwaitedCallback,
-          onmessage: /* @__PURE__ */ __name2((event) => {
+          onmessage: /* @__PURE__ */ __name((event) => {
             void handleWebSocketMessage$1(apiClient, callbacks.onmessage, event);
           }, "onmessage"),
           onerror: (_a2 = callbacks === null || callbacks === void 0 ? void 0 : callbacks.onerror) !== null && _a2 !== void 0 ? _a2 : function(e) {
@@ -60774,9 +59568,6 @@ var init_web = __esm({
     LiveMusicSession = class {
       static {
         __name(this, "LiveMusicSession");
-      }
-      static {
-        __name2(this, "LiveMusicSession");
       }
       constructor(conn, apiClient) {
         this.conn = conn;
@@ -60866,16 +59657,13 @@ var init_web = __esm({
         this.conn.close();
       }
     };
-    __name2(headersToMap$1, "headersToMap$1");
-    __name2(mapToHeaders$1, "mapToHeaders$1");
+    __name(headersToMap$1, "headersToMap$1");
+    __name(mapToHeaders$1, "mapToHeaders$1");
     FUNCTION_RESPONSE_REQUIRES_ID = "FunctionResponse request must have an `id` field from the response of a ToolCall.FunctionalCalls in Google AI.";
-    __name2(handleWebSocketMessage, "handleWebSocketMessage");
+    __name(handleWebSocketMessage, "handleWebSocketMessage");
     Live = class {
       static {
         __name(this, "Live");
-      }
-      static {
-        __name2(this, "Live");
       }
       constructor(apiClient, auth, webSocketFactory) {
         this.apiClient = apiClient;
@@ -60963,13 +59751,13 @@ var init_web = __esm({
           }
           url = `${websocketBaseUrl}/ws/google.ai.generativelanguage.${apiVersion}.GenerativeService.${method}?${keyName}=${apiKey}`;
         }
-        let onopenResolve = /* @__PURE__ */ __name2(() => {
+        let onopenResolve = /* @__PURE__ */ __name(() => {
         }, "onopenResolve");
         const onopenPromise = new Promise((resolve) => {
           onopenResolve = resolve;
         });
         const callbacks = params.callbacks;
-        const onopenAwaitedCallback = /* @__PURE__ */ __name2(function() {
+        const onopenAwaitedCallback = /* @__PURE__ */ __name(function() {
           var _a3;
           (_a3 = callbacks === null || callbacks === void 0 ? void 0 : callbacks.onopen) === null || _a3 === void 0 ? void 0 : _a3.call(callbacks);
           onopenResolve({});
@@ -60977,14 +59765,14 @@ var init_web = __esm({
         const apiClient = this.apiClient;
         let sessionResolved = false;
         const messageQueue = [];
-        let setupCompleteResolve = /* @__PURE__ */ __name2(() => {
+        let setupCompleteResolve = /* @__PURE__ */ __name(() => {
         }, "setupCompleteResolve");
         const setupCompletePromise = new Promise((resolve) => {
           setupCompleteResolve = resolve;
         });
         const websocketCallbacks = {
           onopen: onopenAwaitedCallback,
-          onmessage: /* @__PURE__ */ __name2((event) => {
+          onmessage: /* @__PURE__ */ __name((event) => {
             void handleWebSocketMessage(apiClient, (msg) => {
               if (msg.setupComplete && !session.setupComplete) {
                 session.setupComplete = msg.setupComplete;
@@ -61068,9 +59856,6 @@ var init_web = __esm({
     Session = class {
       static {
         __name(this, "Session");
-      }
-      static {
-        __name2(this, "Session");
       }
       constructor(conn, apiClient) {
         this.conn = conn;
@@ -61258,20 +60043,17 @@ var init_web = __esm({
         this.conn.close();
       }
     };
-    __name2(headersToMap, "headersToMap");
-    __name2(mapToHeaders, "mapToHeaders");
+    __name(headersToMap, "headersToMap");
+    __name(mapToHeaders, "mapToHeaders");
     DEFAULT_MAX_REMOTE_CALLS = 10;
-    __name2(shouldDisableAfc, "shouldDisableAfc");
-    __name2(isCallableTool, "isCallableTool");
-    __name2(hasCallableTools, "hasCallableTools");
-    __name2(findAfcIncompatibleToolIndexes, "findAfcIncompatibleToolIndexes");
-    __name2(shouldAppendAfcHistory, "shouldAppendAfcHistory");
+    __name(shouldDisableAfc, "shouldDisableAfc");
+    __name(isCallableTool, "isCallableTool");
+    __name(hasCallableTools, "hasCallableTools");
+    __name(findAfcIncompatibleToolIndexes, "findAfcIncompatibleToolIndexes");
+    __name(shouldAppendAfcHistory, "shouldAppendAfcHistory");
     Models = class _Models extends BaseModule {
       static {
-        __name(this, "_Models");
-      }
-      static {
-        __name2(this, "Models");
+        __name(this, "Models");
       }
       constructor(apiClient) {
         super();
@@ -62575,9 +61357,6 @@ var init_web = __esm({
       static {
         __name(this, "Operations");
       }
-      static {
-        __name2(this, "Operations");
-      }
       constructor(apiClient) {
         super();
         this.apiClient = apiClient;
@@ -62726,29 +61505,26 @@ var init_web = __esm({
         }
       }
     };
-    __name2(authConfigToMldev, "authConfigToMldev");
-    __name2(blobToMldev, "blobToMldev");
-    __name2(contentToMldev, "contentToMldev");
-    __name2(createAuthTokenConfigToMldev, "createAuthTokenConfigToMldev");
-    __name2(createAuthTokenParametersToMldev, "createAuthTokenParametersToMldev");
-    __name2(fileDataToMldev, "fileDataToMldev");
-    __name2(functionCallToMldev, "functionCallToMldev");
-    __name2(googleMapsToMldev, "googleMapsToMldev");
-    __name2(googleSearchToMldev, "googleSearchToMldev");
-    __name2(liveConnectConfigToMldev, "liveConnectConfigToMldev");
-    __name2(liveConnectConstraintsToMldev, "liveConnectConstraintsToMldev");
-    __name2(partToMldev, "partToMldev");
-    __name2(safetySettingToMldev, "safetySettingToMldev");
-    __name2(sessionResumptionConfigToMldev, "sessionResumptionConfigToMldev");
-    __name2(toolToMldev, "toolToMldev");
-    __name2(getFieldMasks, "getFieldMasks");
-    __name2(convertBidiSetupToTokenSetup, "convertBidiSetupToTokenSetup");
+    __name(authConfigToMldev, "authConfigToMldev");
+    __name(blobToMldev, "blobToMldev");
+    __name(contentToMldev, "contentToMldev");
+    __name(createAuthTokenConfigToMldev, "createAuthTokenConfigToMldev");
+    __name(createAuthTokenParametersToMldev, "createAuthTokenParametersToMldev");
+    __name(fileDataToMldev, "fileDataToMldev");
+    __name(functionCallToMldev, "functionCallToMldev");
+    __name(googleMapsToMldev, "googleMapsToMldev");
+    __name(googleSearchToMldev, "googleSearchToMldev");
+    __name(liveConnectConfigToMldev, "liveConnectConfigToMldev");
+    __name(liveConnectConstraintsToMldev, "liveConnectConstraintsToMldev");
+    __name(partToMldev, "partToMldev");
+    __name(safetySettingToMldev, "safetySettingToMldev");
+    __name(sessionResumptionConfigToMldev, "sessionResumptionConfigToMldev");
+    __name(toolToMldev, "toolToMldev");
+    __name(getFieldMasks, "getFieldMasks");
+    __name(convertBidiSetupToTokenSetup, "convertBidiSetupToTokenSetup");
     Tokens = class extends BaseModule {
       static {
         __name(this, "Tokens");
-      }
-      static {
-        __name2(this, "Tokens");
       }
       constructor(apiClient) {
         super();
@@ -62868,18 +61644,15 @@ var init_web = __esm({
         }
       }
     };
-    __name2(deleteDocumentConfigToMldev, "deleteDocumentConfigToMldev");
-    __name2(deleteDocumentParametersToMldev, "deleteDocumentParametersToMldev");
-    __name2(getDocumentParametersToMldev, "getDocumentParametersToMldev");
-    __name2(listDocumentsConfigToMldev, "listDocumentsConfigToMldev");
-    __name2(listDocumentsParametersToMldev, "listDocumentsParametersToMldev");
-    __name2(listDocumentsResponseFromMldev, "listDocumentsResponseFromMldev");
+    __name(deleteDocumentConfigToMldev, "deleteDocumentConfigToMldev");
+    __name(deleteDocumentParametersToMldev, "deleteDocumentParametersToMldev");
+    __name(getDocumentParametersToMldev, "getDocumentParametersToMldev");
+    __name(listDocumentsConfigToMldev, "listDocumentsConfigToMldev");
+    __name(listDocumentsParametersToMldev, "listDocumentsParametersToMldev");
+    __name(listDocumentsResponseFromMldev, "listDocumentsResponseFromMldev");
     Documents = class extends BaseModule {
       static {
         __name(this, "Documents");
-      }
-      static {
-        __name2(this, "Documents");
       }
       constructor(apiClient) {
         super();
@@ -62984,9 +61757,6 @@ var init_web = __esm({
     FileSearchStores = class extends BaseModule {
       static {
         __name(this, "FileSearchStores");
-      }
-      static {
-        __name2(this, "FileSearchStores");
       }
       constructor(apiClient, documents = new Documents(apiClient)) {
         super();
@@ -63274,16 +62044,13 @@ var init_web = __esm({
         }
       }
     };
-    __name2(isDeno, "isDeno");
+    __name(isDeno, "isDeno");
     envMemo = void 0;
-    __name2(env, "env");
-    __name2(fillGlobals, "fillGlobals");
+    __name(env, "env");
+    __name(fillGlobals, "fillGlobals");
     GoogleGenAISecurityProvider = class {
       static {
         __name(this, "GoogleGenAISecurityProvider");
-      }
-      static {
-        __name2(this, "GoogleGenAISecurityProvider");
       }
       constructor(options) {
         this.options = options;
@@ -63298,9 +62065,6 @@ var init_web = __esm({
     GoogleGenAIAuthHook = class {
       static {
         __name(this, "GoogleGenAIAuthHook");
-      }
-      static {
-        __name2(this, "GoogleGenAIAuthHook");
       }
       beforeCreateRequest(_hookCtx, input) {
         return Object.assign(Object.assign({}, input), { url: decodeSDKLevelAPIVersionPath(input.url) });
@@ -63317,25 +62081,22 @@ var init_web = __esm({
         return request;
       }
     };
-    __name2(decodeSDKLevelAPIVersionPath, "decodeSDKLevelAPIVersionPath");
-    __name2(resolveSecurity$1, "resolveSecurity$1");
-    __name2(getStaticDefaultHeaders, "getStaticDefaultHeaders");
-    __name2(withEnvSecurity, "withEnvSecurity");
-    __name2(securityFromHeaders, "securityFromHeaders");
-    __name2(applyDefaultHeaders, "applyDefaultHeaders");
-    __name2(applyUserProject, "applyUserProject");
-    __name2(applyAuth, "applyAuth");
-    __name2(hasAuthHeaders, "hasAuthHeaders");
-    __name2(bearer, "bearer");
-    __name2(isSecurity, "isSecurity");
-    __name2(isSecurityResolver, "isSecurityResolver");
-    __name2(hasSecurityValue, "hasSecurityValue");
+    __name(decodeSDKLevelAPIVersionPath, "decodeSDKLevelAPIVersionPath");
+    __name(resolveSecurity$1, "resolveSecurity$1");
+    __name(getStaticDefaultHeaders, "getStaticDefaultHeaders");
+    __name(withEnvSecurity, "withEnvSecurity");
+    __name(securityFromHeaders, "securityFromHeaders");
+    __name(applyDefaultHeaders, "applyDefaultHeaders");
+    __name(applyUserProject, "applyUserProject");
+    __name(applyAuth, "applyAuth");
+    __name(hasAuthHeaders, "hasAuthHeaders");
+    __name(bearer, "bearer");
+    __name(isSecurity, "isSecurity");
+    __name(isSecurityResolver, "isSecurityResolver");
+    __name(hasSecurityValue, "hasSecurityValue");
     HTTPClientError = class extends Error {
       static {
         __name(this, "HTTPClientError");
-      }
-      static {
-        __name2(this, "HTTPClientError");
       }
       constructor(message, opts) {
         let msg = message;
@@ -63353,9 +62114,6 @@ var init_web = __esm({
       static {
         __name(this, "UnexpectedClientError");
       }
-      static {
-        __name2(this, "UnexpectedClientError");
-      }
       constructor() {
         super(...arguments);
         this.name = "UnexpectedClientError";
@@ -63364,9 +62122,6 @@ var init_web = __esm({
     InvalidRequestError = class extends HTTPClientError {
       static {
         __name(this, "InvalidRequestError");
-      }
-      static {
-        __name2(this, "InvalidRequestError");
       }
       constructor() {
         super(...arguments);
@@ -63377,9 +62132,6 @@ var init_web = __esm({
       static {
         __name(this, "RequestAbortedError");
       }
-      static {
-        __name2(this, "RequestAbortedError");
-      }
       constructor() {
         super(...arguments);
         this.name = "RequestAbortedError";
@@ -63388,9 +62140,6 @@ var init_web = __esm({
     RequestTimeoutError = class extends HTTPClientError {
       static {
         __name(this, "RequestTimeoutError");
-      }
-      static {
-        __name2(this, "RequestTimeoutError");
       }
       constructor() {
         super(...arguments);
@@ -63401,9 +62150,6 @@ var init_web = __esm({
       static {
         __name(this, "ConnectionError");
       }
-      static {
-        __name2(this, "ConnectionError");
-      }
       constructor() {
         super(...arguments);
         this.name = "ConnectionError";
@@ -63412,9 +62158,6 @@ var init_web = __esm({
     GoogleGenAiError = class extends Error {
       static {
         __name(this, "GoogleGenAiError");
-      }
-      static {
-        __name2(this, "GoogleGenAiError");
       }
       constructor(message, httpMeta) {
         var _a2, _b, _c, _d;
@@ -63431,16 +62174,10 @@ var init_web = __esm({
       static {
         __name(this, "GeminiNextGenAPIClientError");
       }
-      static {
-        __name2(this, "GeminiNextGenAPIClientError");
-      }
     };
     APIError = class _APIError extends GeminiNextGenAPIClientError {
       static {
-        __name(this, "_APIError");
-      }
-      static {
-        __name2(this, "APIError");
+        __name(this, "APIError");
       }
       constructor(status, error, message, headers) {
         super(_APIError.makeMessage(status, error, message));
@@ -63501,9 +62238,6 @@ var init_web = __esm({
       static {
         __name(this, "APIUserAbortError");
       }
-      static {
-        __name2(this, "APIUserAbortError");
-      }
       constructor({ message } = {}) {
         super(void 0, void 0, message || "Request was aborted.", void 0);
       }
@@ -63511,9 +62245,6 @@ var init_web = __esm({
     APIConnectionError = class extends APIError {
       static {
         __name(this, "APIConnectionError");
-      }
-      static {
-        __name2(this, "APIConnectionError");
       }
       constructor({ message, cause }) {
         super(void 0, void 0, message || "Connection error.", void 0);
@@ -63523,9 +62254,6 @@ var init_web = __esm({
     APIConnectionTimeoutError = class extends APIConnectionError {
       static {
         __name(this, "APIConnectionTimeoutError");
-      }
-      static {
-        __name2(this, "APIConnectionTimeoutError");
       }
       constructor({ message } = {}) {
         super({
@@ -63537,82 +62265,55 @@ var init_web = __esm({
       static {
         __name(this, "BadRequestError");
       }
-      static {
-        __name2(this, "BadRequestError");
-      }
     };
     AuthenticationError = class extends APIError {
       static {
         __name(this, "AuthenticationError");
-      }
-      static {
-        __name2(this, "AuthenticationError");
       }
     };
     PermissionDeniedError = class extends APIError {
       static {
         __name(this, "PermissionDeniedError");
       }
-      static {
-        __name2(this, "PermissionDeniedError");
-      }
     };
     NotFoundError = class extends APIError {
       static {
         __name(this, "NotFoundError");
-      }
-      static {
-        __name2(this, "NotFoundError");
       }
     };
     ConflictError = class extends APIError {
       static {
         __name(this, "ConflictError");
       }
-      static {
-        __name2(this, "ConflictError");
-      }
     };
     UnprocessableEntityError = class extends APIError {
       static {
         __name(this, "UnprocessableEntityError");
       }
-      static {
-        __name2(this, "UnprocessableEntityError");
-      }
     };
     RateLimitError2 = class extends APIError {
       static {
-        __name(this, "RateLimitError2");
-      }
-      static {
-        __name2(this, "RateLimitError");
+        __name(this, "RateLimitError");
       }
     };
     InternalServerError = class extends APIError {
       static {
         __name(this, "InternalServerError");
       }
-      static {
-        __name2(this, "InternalServerError");
-      }
     };
-    __name2(wrapSDKError, "wrapSDKError");
-    __name2(wrapAPIError, "wrapAPIError");
-    __name2(wrapHTTPClientError, "wrapHTTPClientError");
-    __name2(getErrorPayload, "getErrorPayload");
-    __name2(getObjectProperty, "getObjectProperty");
-    __name2(stringifyErrorBody, "stringifyErrorBody");
-    __name2(isPlainObject$2, "isPlainObject$2");
-    __name2(isCompatAPIErrorInstance, "isCompatAPIErrorInstance");
-    __name2(defineReadonly, "defineReadonly");
-    __name2(initHooks, "initHooks");
+    __name(wrapSDKError, "wrapSDKError");
+    __name(wrapAPIError, "wrapAPIError");
+    __name(wrapHTTPClientError, "wrapHTTPClientError");
+    __name(getErrorPayload, "getErrorPayload");
+    __name(getObjectProperty, "getObjectProperty");
+    __name(stringifyErrorBody, "stringifyErrorBody");
+    __name(isPlainObject$2, "isPlainObject$2");
+    __name(isCompatAPIErrorInstance, "isCompatAPIErrorInstance");
+    __name(defineReadonly, "defineReadonly");
+    __name(initHooks, "initHooks");
     SDKHooks = class {
       static {
         __name(this, "SDKHooks");
-      }
-      static {
-        __name2(this, "SDKHooks");
       }
       constructor() {
         this.sdkInitHooks = [];
@@ -63690,40 +62391,40 @@ var init_web = __esm({
         return { response: res, error: err };
       }
     };
-    __name2(OK, "OK");
-    __name2(ERR, "ERR");
-    __name2(bytesToBase64, "bytesToBase64");
-    __name2(stringToBytes, "stringToBytes");
-    __name2(stringToBase64, "stringToBase64");
+    __name(OK, "OK");
+    __name(ERR, "ERR");
+    __name(bytesToBase64, "bytesToBase64");
+    __name(stringToBytes, "stringToBytes");
+    __name(stringToBase64, "stringToBase64");
     hasOwn = Object.prototype.hasOwnProperty;
-    __name2(pathToFunc, "pathToFunc");
+    __name(pathToFunc, "pathToFunc");
     ServerList = [
       /**
        * Global Endpoint
        */
       "https://generativelanguage.googleapis.com"
     ];
-    __name2(serverURLFromOptions, "serverURLFromOptions");
+    __name(serverURLFromOptions, "serverURLFromOptions");
     SDK_METADATA = {
       userAgent: "speakeasy-sdk/typescript 2.4.1-preview.4 2.924.0 v1beta @google/genai"
     };
-    __name2(combineSignals, "combineSignals");
-    __name2(abortSignalAny, "abortSignalAny");
-    __name2(compactMap, "compactMap");
-    __name2(isPlainObject$1, "isPlainObject$1");
-    __name2(formEncoder, "formEncoder");
+    __name(combineSignals, "combineSignals");
+    __name(abortSignalAny, "abortSignalAny");
+    __name(compactMap, "compactMap");
+    __name(isPlainObject$1, "isPlainObject$1");
+    __name(formEncoder, "formEncoder");
     encodeForm = formEncoder(",");
-    __name2(encodeJSON, "encodeJSON");
-    encodeSimple = /* @__PURE__ */ __name2((key, value, options) => {
+    __name(encodeJSON, "encodeJSON");
+    encodeSimple = /* @__PURE__ */ __name((key, value, options) => {
       let out = "";
       const pairs = (options === null || options === void 0 ? void 0 : options.explode) ? explode(key, value) : [[key, value]];
       if (pairs.every(([_, v]) => v == null)) {
         return;
       }
-      const encodeString = /* @__PURE__ */ __name2((v) => {
+      const encodeString = /* @__PURE__ */ __name((v) => {
         return (options === null || options === void 0 ? void 0 : options.charEncoding) === "percent" ? encodeURIComponent(v) : v;
       }, "encodeString");
-      const encodeValue = /* @__PURE__ */ __name2((v) => encodeString(serializeValue(v)), "encodeValue");
+      const encodeValue = /* @__PURE__ */ __name((v) => encodeString(serializeValue(v)), "encodeValue");
       pairs.forEach(([pk, pv]) => {
         var _a2;
         let tmp = "";
@@ -63744,15 +62445,15 @@ var init_web = __esm({
       });
       return out.slice(1);
     }, "encodeSimple");
-    __name2(explode, "explode");
-    __name2(serializeValue, "serializeValue");
-    __name2(jsonReplacer, "jsonReplacer");
-    __name2(mapDefined, "mapDefined");
-    __name2(mapDefinedEntries, "mapDefinedEntries");
-    __name2(queryJoin, "queryJoin");
-    __name2(queryEncoder, "queryEncoder");
+    __name(explode, "explode");
+    __name(serializeValue, "serializeValue");
+    __name(jsonReplacer, "jsonReplacer");
+    __name(mapDefined, "mapDefined");
+    __name(mapDefinedEntries, "mapDefinedEntries");
+    __name(queryJoin, "queryJoin");
+    __name(queryEncoder, "queryEncoder");
     encodeFormQuery = queryEncoder(encodeForm);
-    DEFAULT_FETCHER = /* @__PURE__ */ __name2((input, init) => {
+    DEFAULT_FETCHER = /* @__PURE__ */ __name((input, init) => {
       if (init == null) {
         return fetch(input);
       } else {
@@ -63761,10 +62462,7 @@ var init_web = __esm({
     }, "DEFAULT_FETCHER");
     HTTPClient = class _HTTPClient {
       static {
-        __name(this, "_HTTPClient");
-      }
-      static {
-        __name2(this, "HTTPClient");
+        __name(this, "HTTPClient");
       }
       constructor(options = {}) {
         this.requestHooks = [];
@@ -63832,13 +62530,13 @@ var init_web = __esm({
       }
     };
     mediaParamSeparator = /\s*;\s*/g;
-    __name2(matchContentType, "matchContentType");
+    __name(matchContentType, "matchContentType");
     codeRangeRE$1 = new RegExp("^[0-9]xx$", "i");
-    __name2(matchStatusCode, "matchStatusCode");
-    __name2(matchResponse, "matchResponse");
-    __name2(isConnectionError, "isConnectionError");
-    __name2(isTimeoutError, "isTimeoutError");
-    __name2(isAbortError, "isAbortError");
+    __name(matchStatusCode, "matchStatusCode");
+    __name(matchResponse, "matchResponse");
+    __name(isConnectionError, "isConnectionError");
+    __name(isTimeoutError, "isTimeoutError");
+    __name(isAbortError, "isAbortError");
     defaultBackoff = {
       initialInterval: 500,
       maxInterval: 6e4,
@@ -63847,10 +62545,7 @@ var init_web = __esm({
     };
     PermanentError = class _PermanentError extends Error {
       static {
-        __name(this, "_PermanentError");
-      }
-      static {
-        __name2(this, "PermanentError");
+        __name(this, "PermanentError");
       }
       constructor(message, options) {
         let msg = message;
@@ -63867,10 +62562,7 @@ var init_web = __esm({
     };
     TemporaryError = class _TemporaryError extends Error {
       static {
-        __name(this, "_TemporaryError");
-      }
-      static {
-        __name2(this, "TemporaryError");
+        __name(this, "TemporaryError");
       }
       constructor(message, response) {
         super(message);
@@ -63879,23 +62571,20 @@ var init_web = __esm({
         Object.setPrototypeOf(this, _TemporaryError.prototype);
       }
     };
-    __name2(retry, "retry");
-    __name2(wrapFetcher, "wrapFetcher");
+    __name(retry, "retry");
+    __name(wrapFetcher, "wrapFetcher");
     codeRangeRE = new RegExp("^[0-9]xx$", "i");
-    __name2(isRetryableResponse, "isRetryableResponse");
-    __name2(retryBackoff, "retryBackoff");
-    __name2(retryAttemptCountBackoff, "retryAttemptCountBackoff");
-    __name2(retryIntervalFromResponse, "retryIntervalFromResponse");
-    __name2(delay, "delay");
+    __name(isRetryableResponse, "isRetryableResponse");
+    __name(retryBackoff, "retryBackoff");
+    __name(retryAttemptCountBackoff, "retryAttemptCountBackoff");
+    __name(retryIntervalFromResponse, "retryIntervalFromResponse");
+    __name(delay, "delay");
     gt = typeof globalThis === "undefined" ? null : globalThis;
     webWorkerLike = typeof gt === "object" && gt != null && "importScripts" in gt && typeof gt["importScripts"] === "function";
     isBrowserLike = webWorkerLike || typeof navigator !== "undefined" && "serviceWorker" in navigator || typeof window === "object" && typeof window.document !== "undefined";
     ClientSDK = class {
       static {
         __name(this, "ClientSDK");
-      }
-      static {
-        __name2(this, "ClientSDK");
       }
       constructor(options = {}) {
         const opt = options;
@@ -63938,7 +62627,7 @@ var init_web = __esm({
           reqURL = baseURL;
         }
         reqURL.hash = "";
-        const mergeQuery = /* @__PURE__ */ __name2((current, additions) => {
+        const mergeQuery = /* @__PURE__ */ __name((current, additions) => {
           if (!additions) {
             return current;
           }
@@ -63952,7 +62641,7 @@ var init_web = __esm({
           });
           return [...kept, additions].join("&");
         }, "mergeQuery");
-        const encodeQueryRecord = /* @__PURE__ */ __name2((record) => {
+        const encodeQueryRecord = /* @__PURE__ */ __name((record) => {
           return Object.entries(record).map(([k, v]) => {
             if (v == null) {
               return void 0;
@@ -64095,14 +62784,11 @@ var init_web = __esm({
     };
     jsonLikeContentTypeRE = /^(application|text)\/([^+]+\+)*json.*/;
     jsonlLikeContentTypeRE = /^(application|text)\/([^+]+\+)*(jsonl|x-ndjson)\b.*/;
-    __name2(logRequest, "logRequest");
-    __name2(logResponse, "logResponse");
+    __name(logRequest, "logRequest");
+    __name(logResponse, "logResponse");
     GoogleGenAiDefaultError = class extends GoogleGenAiError {
       static {
         __name(this, "GoogleGenAiDefaultError");
-      }
-      static {
-        __name2(this, "GoogleGenAiDefaultError");
       }
       constructor(message, httpMeta) {
         if (message) {
@@ -64127,14 +62813,11 @@ var init_web = __esm({
         this.name = "GoogleGenAiDefaultError";
       }
     };
-    __name2(tryParseJson, "tryParseJson");
-    __name2(wrapEventStreamResponse, "wrapEventStreamResponse");
+    __name(tryParseJson, "tryParseJson");
+    __name(wrapEventStreamResponse, "wrapEventStreamResponse");
     Stream = class extends ReadableStream {
       static {
         __name(this, "Stream");
-      }
-      static {
-        __name2(this, "Stream");
       }
       constructor(responseBody, parse2, opts) {
         var _a2;
@@ -64185,7 +62868,7 @@ var init_web = __esm({
               await upstream.cancel(e);
             }
           },
-          cancel: /* @__PURE__ */ __name2((reason) => upstream.cancel(reason), "cancel")
+          cancel: /* @__PURE__ */ __name((reason) => upstream.cancel(reason), "cancel")
         });
       }
       [Symbol.asyncIterator](options) {
@@ -64194,7 +62877,7 @@ var init_web = __esm({
           return fn.call(this, options);
         const reader = this.getReader();
         const iterator = {
-          next: /* @__PURE__ */ __name2(async () => {
+          next: /* @__PURE__ */ __name(async () => {
             const r = await reader.read();
             if (r.done) {
               reader.releaseLock();
@@ -64202,12 +62885,12 @@ var init_web = __esm({
             }
             return { done: false, value: r.value };
           }, "next"),
-          throw: /* @__PURE__ */ __name2(async (e) => {
+          throw: /* @__PURE__ */ __name(async (e) => {
             await reader.cancel(e);
             reader.releaseLock();
             return { done: true, value: void 0 };
           }, "throw"),
-          return: /* @__PURE__ */ __name2(async () => {
+          return: /* @__PURE__ */ __name(async () => {
             await reader.cancel("done");
             reader.releaseLock();
             return { done: true, value: void 0 };
@@ -64250,8 +62933,8 @@ var init_web = __esm({
       // \n\n
     ];
     MAX_BOUNDARY_LEN = BOUNDARIES.reduce((m, b) => Math.max(m, b.length), 0);
-    __name2(findBoundary, "findBoundary");
-    __name2(parseMessage, "parseMessage");
+    __name(findBoundary, "findBoundary");
+    __name(parseMessage, "parseMessage");
     DEFAULT_CONTENT_TYPES = {
       jsonl: "application/jsonl",
       json: "application/json",
@@ -64262,24 +62945,21 @@ var init_web = __esm({
       nil: "*",
       fail: "*"
     };
-    __name2(jsonErr, "jsonErr");
-    __name2(json, "json");
-    __name2(sse, "sse");
-    __name2(nil, "nil");
-    __name2(fail, "fail");
-    __name2(match, "match");
+    __name(jsonErr, "jsonErr");
+    __name(json, "json");
+    __name(sse, "sse");
+    __name(nil, "nil");
+    __name(fail, "fail");
+    __name(match, "match");
     headerValRE = /, */;
-    __name2(unpackHeaders, "unpackHeaders");
+    __name(unpackHeaders, "unpackHeaders");
     SecurityErrorCode = {
       Incomplete: "incomplete",
       UnrecognisedSecurityType: "unrecognized_security_type"
     };
     SecurityError = class _SecurityError extends Error {
       static {
-        __name(this, "_SecurityError");
-      }
-      static {
-        __name2(this, "SecurityError");
+        __name(this, "SecurityError");
       }
       constructor(code, message) {
         super(message);
@@ -64293,17 +62973,14 @@ var init_web = __esm({
         return new _SecurityError(SecurityErrorCode.UnrecognisedSecurityType, `Unrecognised security type: ${type}`);
       }
     };
-    __name2(resolveSecurity, "resolveSecurity");
-    __name2(applyBasic, "applyBasic");
-    __name2(applyBearer, "applyBearer");
-    __name2(resolveGlobalSecurity, "resolveGlobalSecurity");
-    __name2(extractSecurity, "extractSecurity");
+    __name(resolveSecurity, "resolveSecurity");
+    __name(applyBasic, "applyBasic");
+    __name(applyBearer, "applyBearer");
+    __name(resolveGlobalSecurity, "resolveGlobalSecurity");
+    __name(extractSecurity, "extractSecurity");
     APIPromise = class _APIPromise {
       static {
-        __name(this, "_APIPromise");
-      }
-      static {
-        __name2(this, "APIPromise");
+        __name(this, "APIPromise");
       }
       constructor(p, callSource) {
         this[_a] = "APIPromise";
@@ -64353,21 +63030,18 @@ var init_web = __esm({
       }
     };
     _a = Symbol.toStringTag;
-    __name2(unwrapAsAPIPromise, "unwrapAsAPIPromise");
-    __name2(agentsCreate, "agentsCreate");
-    __name2($do$p, "$do$p");
-    __name2(agentsDelete, "agentsDelete");
-    __name2($do$o, "$do$o");
-    __name2(agentsGet, "agentsGet");
-    __name2($do$n, "$do$n");
-    __name2(agentsList, "agentsList");
-    __name2($do$m, "$do$m");
+    __name(unwrapAsAPIPromise, "unwrapAsAPIPromise");
+    __name(agentsCreate, "agentsCreate");
+    __name($do$p, "$do$p");
+    __name(agentsDelete, "agentsDelete");
+    __name($do$o, "$do$o");
+    __name(agentsGet, "agentsGet");
+    __name($do$n, "$do$n");
+    __name(agentsList, "agentsList");
+    __name($do$m, "$do$m");
     Agents = class extends ClientSDK {
       static {
         __name(this, "Agents");
-      }
-      static {
-        __name2(this, "Agents");
       }
       /**
        * Creates a new Agent (Typed version for SDK).
@@ -64395,20 +63069,17 @@ var init_web = __esm({
         return unwrapAsAPIPromise(agentsDelete(this, id, params === null || params === void 0 ? void 0 : params.api_version, options));
       }
     };
-    __name2(environmentsCreateEnvironment, "environmentsCreateEnvironment");
-    __name2($do$l, "$do$l");
-    __name2(environmentsDeleteEnvironment, "environmentsDeleteEnvironment");
-    __name2($do$k, "$do$k");
-    __name2(environmentsGetEnvironment, "environmentsGetEnvironment");
-    __name2($do$j, "$do$j");
-    __name2(environmentsListEnvironments, "environmentsListEnvironments");
-    __name2($do$i, "$do$i");
+    __name(environmentsCreateEnvironment, "environmentsCreateEnvironment");
+    __name($do$l, "$do$l");
+    __name(environmentsDeleteEnvironment, "environmentsDeleteEnvironment");
+    __name($do$k, "$do$k");
+    __name(environmentsGetEnvironment, "environmentsGetEnvironment");
+    __name($do$j, "$do$j");
+    __name(environmentsListEnvironments, "environmentsListEnvironments");
+    __name($do$i, "$do$i");
     Environments = class extends ClientSDK {
       static {
         __name(this, "Environments");
-      }
-      static {
-        __name2(this, "Environments");
       }
       /**
        * Creates an environment.
@@ -64439,9 +63110,6 @@ var init_web = __esm({
       static {
         __name(this, "CancelInteractionByIdServerError");
       }
-      static {
-        __name2(this, "CancelInteractionByIdServerError");
-      }
       constructor(err, httpMeta) {
         var _a2;
         const message = ((_a2 = err.error) === null || _a2 === void 0 ? void 0 : _a2.message) || `API error occurred: ${JSON.stringify(err)}`;
@@ -64454,9 +63122,6 @@ var init_web = __esm({
     CancelInteractionByIdClientError = class extends GoogleGenAiError {
       static {
         __name(this, "CancelInteractionByIdClientError");
-      }
-      static {
-        __name2(this, "CancelInteractionByIdClientError");
       }
       constructor(err, httpMeta) {
         var _a2;
@@ -64471,9 +63136,6 @@ var init_web = __esm({
       static {
         __name(this, "CreateInteractionServerError");
       }
-      static {
-        __name2(this, "CreateInteractionServerError");
-      }
       constructor(err, httpMeta) {
         var _a2;
         const message = ((_a2 = err.error) === null || _a2 === void 0 ? void 0 : _a2.message) || `API error occurred: ${JSON.stringify(err)}`;
@@ -64486,9 +63148,6 @@ var init_web = __esm({
     CreateInteractionClientError = class extends GoogleGenAiError {
       static {
         __name(this, "CreateInteractionClientError");
-      }
-      static {
-        __name2(this, "CreateInteractionClientError");
       }
       constructor(err, httpMeta) {
         var _a2;
@@ -64503,9 +63162,6 @@ var init_web = __esm({
       static {
         __name(this, "DeleteInteractionServerError");
       }
-      static {
-        __name2(this, "DeleteInteractionServerError");
-      }
       constructor(err, httpMeta) {
         var _a2;
         const message = ((_a2 = err.error) === null || _a2 === void 0 ? void 0 : _a2.message) || `API error occurred: ${JSON.stringify(err)}`;
@@ -64518,9 +63174,6 @@ var init_web = __esm({
     DeleteInteractionClientError = class extends GoogleGenAiError {
       static {
         __name(this, "DeleteInteractionClientError");
-      }
-      static {
-        __name2(this, "DeleteInteractionClientError");
       }
       constructor(err, httpMeta) {
         var _a2;
@@ -64535,9 +63188,6 @@ var init_web = __esm({
       static {
         __name(this, "GetInteractionByIdServerError");
       }
-      static {
-        __name2(this, "GetInteractionByIdServerError");
-      }
       constructor(err, httpMeta) {
         var _a2;
         const message = ((_a2 = err.error) === null || _a2 === void 0 ? void 0 : _a2.message) || `API error occurred: ${JSON.stringify(err)}`;
@@ -64551,9 +63201,6 @@ var init_web = __esm({
       static {
         __name(this, "GetInteractionByIdClientError");
       }
-      static {
-        __name2(this, "GetInteractionByIdClientError");
-      }
       constructor(err, httpMeta) {
         var _a2;
         const message = ((_a2 = err.error) === null || _a2 === void 0 ? void 0 : _a2.message) || `API error occurred: ${JSON.stringify(err)}`;
@@ -64563,20 +63210,17 @@ var init_web = __esm({
         this.name = "GetInteractionByIdClientError";
       }
     };
-    __name2(interactionsCancel, "interactionsCancel");
-    __name2($do$h, "$do$h");
-    __name2(interactionsCreate, "interactionsCreate");
-    __name2($do$g, "$do$g");
-    __name2(interactionsDelete, "interactionsDelete");
-    __name2($do$f, "$do$f");
-    __name2(interactionsGet, "interactionsGet");
-    __name2($do$e, "$do$e");
+    __name(interactionsCancel, "interactionsCancel");
+    __name($do$h, "$do$h");
+    __name(interactionsCreate, "interactionsCreate");
+    __name($do$g, "$do$g");
+    __name(interactionsDelete, "interactionsDelete");
+    __name($do$f, "$do$f");
+    __name(interactionsGet, "interactionsGet");
+    __name($do$e, "$do$e");
     Interactions = class extends ClientSDK {
       static {
         __name(this, "Interactions");
-      }
-      static {
-        __name2(this, "Interactions");
       }
       create(params, options) {
         const { api_version } = params, body = __rest2(params, ["api_version"]);
@@ -64604,26 +63248,23 @@ var init_web = __esm({
         return unwrapAsAPIPromise(interactionsCancel(this, id, params === null || params === void 0 ? void 0 : params.api_version, options));
       }
     };
-    __name2(triggersCreate, "triggersCreate");
-    __name2($do$d, "$do$d");
-    __name2(triggersDelete, "triggersDelete");
-    __name2($do$c, "$do$c");
-    __name2(triggersGet, "triggersGet");
-    __name2($do$b, "$do$b");
-    __name2(triggersListExecutions, "triggersListExecutions");
-    __name2($do$a, "$do$a");
-    __name2(triggersList, "triggersList");
-    __name2($do$9, "$do$9");
-    __name2(triggersRun, "triggersRun");
-    __name2($do$8, "$do$8");
-    __name2(triggersUpdate, "triggersUpdate");
-    __name2($do$7, "$do$7");
+    __name(triggersCreate, "triggersCreate");
+    __name($do$d, "$do$d");
+    __name(triggersDelete, "triggersDelete");
+    __name($do$c, "$do$c");
+    __name(triggersGet, "triggersGet");
+    __name($do$b, "$do$b");
+    __name(triggersListExecutions, "triggersListExecutions");
+    __name($do$a, "$do$a");
+    __name(triggersList, "triggersList");
+    __name($do$9, "$do$9");
+    __name(triggersRun, "triggersRun");
+    __name($do$8, "$do$8");
+    __name(triggersUpdate, "triggersUpdate");
+    __name($do$7, "$do$7");
     Triggers = class extends ClientSDK {
       static {
         __name(this, "Triggers");
-      }
-      static {
-        __name2(this, "Triggers");
       }
       /**
        * Creates a new trigger that will invoke the specified agent on the given cron schedule.
@@ -64670,26 +63311,23 @@ var init_web = __esm({
         return unwrapAsAPIPromise(triggersListExecutions(this, trigger_id, params === null || params === void 0 ? void 0 : params.api_version, params === null || params === void 0 ? void 0 : params.page_size, params === null || params === void 0 ? void 0 : params.page_token, options));
       }
     };
-    __name2(webhooksCreate, "webhooksCreate");
-    __name2($do$6, "$do$6");
-    __name2(webhooksDelete, "webhooksDelete");
-    __name2($do$5, "$do$5");
-    __name2(webhooksGet, "webhooksGet");
-    __name2($do$4, "$do$4");
-    __name2(webhooksList, "webhooksList");
-    __name2($do$3, "$do$3");
-    __name2(webhooksPing, "webhooksPing");
-    __name2($do$2, "$do$2");
-    __name2(webhooksRotateSigningSecret, "webhooksRotateSigningSecret");
-    __name2($do$1, "$do$1");
-    __name2(webhooksUpdate, "webhooksUpdate");
-    __name2($do, "$do");
+    __name(webhooksCreate, "webhooksCreate");
+    __name($do$6, "$do$6");
+    __name(webhooksDelete, "webhooksDelete");
+    __name($do$5, "$do$5");
+    __name(webhooksGet, "webhooksGet");
+    __name($do$4, "$do$4");
+    __name(webhooksList, "webhooksList");
+    __name($do$3, "$do$3");
+    __name(webhooksPing, "webhooksPing");
+    __name($do$2, "$do$2");
+    __name(webhooksRotateSigningSecret, "webhooksRotateSigningSecret");
+    __name($do$1, "$do$1");
+    __name(webhooksUpdate, "webhooksUpdate");
+    __name($do, "$do");
     Webhooks = class extends ClientSDK {
       static {
         __name(this, "Webhooks");
-      }
-      static {
-        __name2(this, "Webhooks");
       }
       /**
        * Creates a new Webhook.
@@ -64741,9 +63379,6 @@ var init_web = __esm({
       static {
         __name(this, "GoogleGenAI");
       }
-      static {
-        __name2(this, "GoogleGenAI");
-      }
       get interactions() {
         var _a2;
         return (_a2 = this._interactions) !== null && _a2 !== void 0 ? _a2 : this._interactions = new Interactions(this._options);
@@ -64769,15 +63404,12 @@ var init_web = __esm({
       "lyria-3-pro-preview",
       "lyria-3-clip-preview"
     ]);
-    __name2(getGoogleGenAIServerURL, "getGoogleGenAIServerURL");
-    __name2(getGoogleGenAIAPIVersion, "getGoogleGenAIAPIVersion");
-    __name2(buildGoogleGenAIClient, "buildGoogleGenAIClient");
+    __name(getGoogleGenAIServerURL, "getGoogleGenAIServerURL");
+    __name(getGoogleGenAIAPIVersion, "getGoogleGenAIAPIVersion");
+    __name(buildGoogleGenAIClient, "buildGoogleGenAIClient");
     GeminiNextGenInteractions = class {
       static {
         __name(this, "GeminiNextGenInteractions");
-      }
-      static {
-        __name2(this, "GeminiNextGenInteractions");
       }
       constructor(parentClient) {
         this.parentClient = parentClient;
@@ -64821,9 +63453,6 @@ var init_web = __esm({
       static {
         __name(this, "GeminiNextGenAgents");
       }
-      static {
-        __name2(this, "GeminiNextGenAgents");
-      }
       constructor(parentClient) {
         this.parentClient = parentClient;
       }
@@ -64855,9 +63484,6 @@ var init_web = __esm({
     GeminiNextGenWebhooks = class {
       static {
         __name(this, "GeminiNextGenWebhooks");
-      }
-      static {
-        __name2(this, "GeminiNextGenWebhooks");
       }
       constructor(parentClient) {
         this.parentClient = parentClient;
@@ -64898,9 +63524,6 @@ var init_web = __esm({
       static {
         __name(this, "GeminiNextGenTriggers");
       }
-      static {
-        __name2(this, "GeminiNextGenTriggers");
-      }
       constructor(parentClient) {
         this.parentClient = parentClient;
       }
@@ -64940,27 +63563,24 @@ var init_web = __esm({
         return this.sdk;
       }
     };
-    __name2(trimSlashes, "trimSlashes");
-    __name2(toGoogleGenAIRequestOptions, "toGoogleGenAIRequestOptions");
-    __name2(warnIgnoredOption, "warnIgnoredOption");
-    __name2(unwrapWithSdkHttpResponse, "unwrapWithSdkHttpResponse");
-    __name2(wrapSDKCall, "wrapSDKCall");
-    __name2(wrapStreamErrors, "wrapStreamErrors");
-    __name2(attachSdkHttpResponse, "attachSdkHttpResponse");
-    __name2(createSdkHttpResponse, "createSdkHttpResponse");
-    __name2(addOutputPropertiesIfInteraction, "addOutputPropertiesIfInteraction");
-    __name2(normalizeInteractionShape, "normalizeInteractionShape");
-    __name2(isLegacyLyriaInteraction, "isLegacyLyriaInteraction");
-    __name2(isPlainObject2, "isPlainObject");
-    __name2(addOutputProperties, "addOutputProperties");
-    __name2(normalizeInteractionDates, "normalizeInteractionDates");
-    __name2(normalizeDateLike, "normalizeDateLike");
+    __name(trimSlashes, "trimSlashes");
+    __name(toGoogleGenAIRequestOptions, "toGoogleGenAIRequestOptions");
+    __name(warnIgnoredOption, "warnIgnoredOption");
+    __name(unwrapWithSdkHttpResponse, "unwrapWithSdkHttpResponse");
+    __name(wrapSDKCall, "wrapSDKCall");
+    __name(wrapStreamErrors, "wrapStreamErrors");
+    __name(attachSdkHttpResponse, "attachSdkHttpResponse");
+    __name(createSdkHttpResponse, "createSdkHttpResponse");
+    __name(addOutputPropertiesIfInteraction, "addOutputPropertiesIfInteraction");
+    __name(normalizeInteractionShape, "normalizeInteractionShape");
+    __name(isLegacyLyriaInteraction, "isLegacyLyriaInteraction");
+    __name(isPlainObject2, "isPlainObject");
+    __name(addOutputProperties, "addOutputProperties");
+    __name(normalizeInteractionDates, "normalizeInteractionDates");
+    __name(normalizeDateLike, "normalizeDateLike");
     GeminiNextGenEnvironments = class {
       static {
         __name(this, "GeminiNextGenEnvironments");
-      }
-      static {
-        __name2(this, "GeminiNextGenEnvironments");
       }
       constructor(parentClient) {
         this.parentClient = parentClient;
@@ -64990,41 +63610,38 @@ var init_web = __esm({
         return this.sdk;
       }
     };
-    __name2(cancelTuningJobParametersToMldev, "cancelTuningJobParametersToMldev");
-    __name2(cancelTuningJobParametersToVertex, "cancelTuningJobParametersToVertex");
-    __name2(cancelTuningJobResponseFromMldev, "cancelTuningJobResponseFromMldev");
-    __name2(cancelTuningJobResponseFromVertex, "cancelTuningJobResponseFromVertex");
-    __name2(contentToVertex, "contentToVertex");
-    __name2(createTuningJobConfigToMldev, "createTuningJobConfigToMldev");
-    __name2(createTuningJobConfigToVertex, "createTuningJobConfigToVertex");
-    __name2(createTuningJobParametersPrivateToMldev, "createTuningJobParametersPrivateToMldev");
-    __name2(createTuningJobParametersPrivateToVertex, "createTuningJobParametersPrivateToVertex");
-    __name2(distillationHyperParametersFromVertex, "distillationHyperParametersFromVertex");
-    __name2(distillationSamplingSpecFromVertex, "distillationSamplingSpecFromVertex");
-    __name2(distillationSpecFromVertex, "distillationSpecFromVertex");
-    __name2(generationConfigFromVertex, "generationConfigFromVertex");
-    __name2(getTuningJobParametersToMldev, "getTuningJobParametersToMldev");
-    __name2(getTuningJobParametersToVertex, "getTuningJobParametersToVertex");
-    __name2(listTuningJobsConfigToVertex, "listTuningJobsConfigToVertex");
-    __name2(listTuningJobsParametersToVertex, "listTuningJobsParametersToVertex");
-    __name2(listTuningJobsResponseFromVertex, "listTuningJobsResponseFromVertex");
-    __name2(partToVertex, "partToVertex");
-    __name2(reinforcementTuningExampleToVertex, "reinforcementTuningExampleToVertex");
-    __name2(tunedModelFromMldev, "tunedModelFromMldev");
-    __name2(tuningDatasetToMldev, "tuningDatasetToMldev");
-    __name2(tuningDatasetToVertex, "tuningDatasetToVertex");
-    __name2(tuningJobFromMldev, "tuningJobFromMldev");
-    __name2(tuningJobFromVertex, "tuningJobFromVertex");
-    __name2(tuningOperationFromMldev, "tuningOperationFromMldev");
-    __name2(tuningValidationDatasetToVertex, "tuningValidationDatasetToVertex");
-    __name2(validateRewardParametersToVertex, "validateRewardParametersToVertex");
-    __name2(validateRewardResponseFromVertex, "validateRewardResponseFromVertex");
+    __name(cancelTuningJobParametersToMldev, "cancelTuningJobParametersToMldev");
+    __name(cancelTuningJobParametersToVertex, "cancelTuningJobParametersToVertex");
+    __name(cancelTuningJobResponseFromMldev, "cancelTuningJobResponseFromMldev");
+    __name(cancelTuningJobResponseFromVertex, "cancelTuningJobResponseFromVertex");
+    __name(contentToVertex, "contentToVertex");
+    __name(createTuningJobConfigToMldev, "createTuningJobConfigToMldev");
+    __name(createTuningJobConfigToVertex, "createTuningJobConfigToVertex");
+    __name(createTuningJobParametersPrivateToMldev, "createTuningJobParametersPrivateToMldev");
+    __name(createTuningJobParametersPrivateToVertex, "createTuningJobParametersPrivateToVertex");
+    __name(distillationHyperParametersFromVertex, "distillationHyperParametersFromVertex");
+    __name(distillationSamplingSpecFromVertex, "distillationSamplingSpecFromVertex");
+    __name(distillationSpecFromVertex, "distillationSpecFromVertex");
+    __name(generationConfigFromVertex, "generationConfigFromVertex");
+    __name(getTuningJobParametersToMldev, "getTuningJobParametersToMldev");
+    __name(getTuningJobParametersToVertex, "getTuningJobParametersToVertex");
+    __name(listTuningJobsConfigToVertex, "listTuningJobsConfigToVertex");
+    __name(listTuningJobsParametersToVertex, "listTuningJobsParametersToVertex");
+    __name(listTuningJobsResponseFromVertex, "listTuningJobsResponseFromVertex");
+    __name(partToVertex, "partToVertex");
+    __name(reinforcementTuningExampleToVertex, "reinforcementTuningExampleToVertex");
+    __name(tunedModelFromMldev, "tunedModelFromMldev");
+    __name(tuningDatasetToMldev, "tuningDatasetToMldev");
+    __name(tuningDatasetToVertex, "tuningDatasetToVertex");
+    __name(tuningJobFromMldev, "tuningJobFromMldev");
+    __name(tuningJobFromVertex, "tuningJobFromVertex");
+    __name(tuningOperationFromMldev, "tuningOperationFromMldev");
+    __name(tuningValidationDatasetToVertex, "tuningValidationDatasetToVertex");
+    __name(validateRewardParametersToVertex, "validateRewardParametersToVertex");
+    __name(validateRewardResponseFromVertex, "validateRewardResponseFromVertex");
     Tunings = class extends BaseModule {
       static {
         __name(this, "Tunings");
-      }
-      static {
-        __name2(this, "Tunings");
       }
       constructor(apiClient) {
         super();
@@ -65351,9 +63968,6 @@ var init_web = __esm({
       static {
         __name(this, "BrowserDownloader");
       }
-      static {
-        __name2(this, "BrowserDownloader");
-      }
       async download(_params, _apiClient) {
         throw new Error("Download to file is not supported in the browser, please use a browser compliant download like an <a> tag.");
       }
@@ -65363,17 +63977,14 @@ var init_web = __esm({
     INITIAL_RETRY_DELAY_MS = 1e3;
     DELAY_MULTIPLIER = 2;
     X_GOOG_UPLOAD_STATUS_HEADER_FIELD = "x-goog-upload-status";
-    __name2(uploadBlob, "uploadBlob");
-    __name2(uploadBlobToFileSearchStore, "uploadBlobToFileSearchStore");
-    __name2(uploadBlobInternal, "uploadBlobInternal");
-    __name2(getBlobStat, "getBlobStat");
-    __name2(sleep3, "sleep");
+    __name(uploadBlob, "uploadBlob");
+    __name(uploadBlobToFileSearchStore, "uploadBlobToFileSearchStore");
+    __name(uploadBlobInternal, "uploadBlobInternal");
+    __name(getBlobStat, "getBlobStat");
+    __name(sleep3, "sleep");
     BrowserUploader = class {
       static {
         __name(this, "BrowserUploader");
-      }
-      static {
-        __name2(this, "BrowserUploader");
       }
       async upload(file, uploadUrl, apiClient, httpOptions) {
         if (typeof file === "string") {
@@ -65399,9 +64010,6 @@ var init_web = __esm({
       static {
         __name(this, "BrowserWebSocketFactory");
       }
-      static {
-        __name2(this, "BrowserWebSocketFactory");
-      }
       create(url, headers, callbacks) {
         return new BrowserWebSocket(url, headers, callbacks);
       }
@@ -65409,9 +64017,6 @@ var init_web = __esm({
     BrowserWebSocket = class {
       static {
         __name(this, "BrowserWebSocket");
-      }
-      static {
-        __name2(this, "BrowserWebSocket");
       }
       constructor(url, headers, callbacks) {
         this.url = url;
@@ -65443,9 +64048,6 @@ var init_web = __esm({
       static {
         __name(this, "WebAuth");
       }
-      static {
-        __name2(this, "WebAuth");
-      }
       constructor(apiKey) {
         this.apiKey = apiKey;
       }
@@ -65466,10 +64068,7 @@ var init_web = __esm({
     LANGUAGE_LABEL_PREFIX = "gl-node/";
     GoogleGenAI2 = class {
       static {
-        __name(this, "GoogleGenAI2");
-      }
-      static {
-        __name2(this, "GoogleGenAI");
+        __name(this, "GoogleGenAI");
       }
       getNextGenClient() {
         const httpOpts = this.httpOptions;
@@ -65573,11 +64172,145 @@ var init_web = __esm({
     };
   }
 });
-var FORBIDDEN_WORDS;
-var ALLOW_LIST;
+
+// api/feedback.js
+async function onRequestPost3(context) {
+  const { request, env: env2 } = context;
+  try {
+    const authHeader = request.headers.get("Authorization");
+    if (!authHeader) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+    const token = authHeader.replace("Bearer ", "");
+    const supabaseClient = createClient(env2.VITE_SUPABASE_URL, env2.VITE_SUPABASE_ANON_KEY);
+    const { data: { user }, error: userError } = await supabaseClient.auth.getUser(token);
+    if (userError || !user) {
+      return new Response(JSON.stringify({ error: "Invalid token" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+    const body = await request.json();
+    const rating = parseInt(body.rating, 10);
+    const comment = (body.comment || "").slice(0, 1e3);
+    if (isNaN(rating) || rating < 1 || rating > 5) {
+      return new Response(JSON.stringify({ error: "Rating must be between 1 and 5" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+    const supabaseAdmin = createClient(env2.VITE_SUPABASE_URL, env2.SUPABASE_SERVICE_ROLE_KEY);
+    const { error: insertError } = await supabaseAdmin.from("feedbacks").insert({
+      user_id: user.id,
+      rating,
+      comment
+    });
+    if (insertError) {
+      console.error("Failed to insert feedback:", insertError);
+      return new Response(JSON.stringify({ error: "Failed to save feedback" }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+    let aiEmoji = "";
+    let isCritical = false;
+    if (env2.GEMINI_API_KEY && comment.trim().length > 0) {
+      try {
+        const { GoogleGenAI: GoogleGenAI3 } = await Promise.resolve().then(() => (init_web(), web_exports));
+        const ai = new GoogleGenAI3({ apiKey: env2.GEMINI_API_KEY });
+        const response = await ai.models.generateContent({
+          model: "gemini-3.6-flash",
+          contents: `\u0E27\u0E34\u0E40\u0E04\u0E23\u0E32\u0E30\u0E2B\u0E4C\u0E02\u0E49\u0E2D\u0E04\u0E27\u0E32\u0E21 Feedback \u0E02\u0E2D\u0E07\u0E25\u0E39\u0E01\u0E04\u0E49\u0E32\u0E19\u0E35\u0E49: <user_comment>${comment}</user_comment>
+\u0E43\u0E2B\u0E49\u0E15\u0E2D\u0E1A\u0E01\u0E25\u0E31\u0E1A\u0E21\u0E32\u0E40\u0E1B\u0E47\u0E19 JSON \u0E40\u0E17\u0E48\u0E32\u0E19\u0E31\u0E49\u0E19 \u0E42\u0E14\u0E22\u0E21\u0E35 2 \u0E04\u0E48\u0E32:
+1. "emoji": Emoji 1 \u0E15\u0E31\u0E27\u0E17\u0E35\u0E48\u0E15\u0E23\u0E07\u0E01\u0E31\u0E1A\u0E04\u0E27\u0E32\u0E21\u0E23\u0E39\u0E49\u0E2A\u0E36\u0E01\u0E25\u0E39\u0E01\u0E04\u0E49\u0E32\u0E17\u0E35\u0E48\u0E2A\u0E38\u0E14 (\u0E40\u0E0A\u0E48\u0E19 \u{1F929}, \u{1F60D}, \u{1F60A}, \u{1F914}, \u{1F621}, \u{1F62D}, \u{1F4A1}, \u{1F41B}, \u{1F64F})
+2. "is_critical_bug": true \u0E16\u0E49\u0E32\u0E25\u0E39\u0E01\u0E04\u0E49\u0E32\u0E23\u0E32\u0E22\u0E07\u0E32\u0E19\u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E17\u0E35\u0E48\u0E17\u0E33\u0E43\u0E2B\u0E49\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19\u0E15\u0E48\u0E2D\u0E44\u0E21\u0E48\u0E44\u0E14\u0E49, \u0E08\u0E48\u0E32\u0E22\u0E40\u0E07\u0E34\u0E19\u0E44\u0E21\u0E48\u0E44\u0E14\u0E49, \u0E2B\u0E23\u0E37\u0E2D\u0E23\u0E30\u0E1A\u0E1A\u0E25\u0E48\u0E21 (\u0E16\u0E49\u0E32\u0E44\u0E21\u0E48\u0E43\u0E0A\u0E48 \u0E43\u0E2B\u0E49\u0E40\u0E1B\u0E47\u0E19 false)`,
+          config: {
+            temperature: 0.1,
+            responseMimeType: "application/json"
+          }
+        });
+        if (response.text) {
+          const aiResult = JSON.parse(response.text);
+          aiEmoji = aiResult.emoji || "";
+          isCritical = aiResult.is_critical_bug === true;
+        }
+      } catch (e) {
+        console.error("Gemini sentiment analysis failed:", e);
+      }
+    }
+    if (!aiEmoji || aiEmoji.length > 5) {
+      if (rating === 5) aiEmoji = "\u{1F929}";
+      else if (rating === 4) aiEmoji = "\u{1F60A}";
+      else if (rating === 3) aiEmoji = "\u{1F914}";
+      else aiEmoji = "\u{1F621}";
+    }
+    let avatarUrl = "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4ac.png";
+    try {
+      const codePoint = aiEmoji.codePointAt(0).toString(16);
+      avatarUrl = `https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/${codePoint}.png`;
+    } catch (e) {
+    }
+    const targetWebhookUrl = rating >= 4 ? env2.DISCORD_WEBHOOK_HIGH_STAR : env2.DISCORD_WEBHOOK_LOW_STAR;
+    const finalWebhookUrl = targetWebhookUrl || env2.DISCORD_WEBHOOK_URL;
+    if (finalWebhookUrl) {
+      const emailText = user.email || user.id;
+      const starStr = "\u2B50".repeat(rating);
+      const payload = {
+        content: isCritical ? "@everyone \u{1F6A8} **CRITICAL SYSTEM ALERT** \u{1F6A8} \u0E25\u0E39\u0E01\u0E04\u0E49\u0E32\u0E1E\u0E1A\u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E23\u0E49\u0E32\u0E22\u0E41\u0E23\u0E07/\u0E23\u0E30\u0E1A\u0E1A\u0E25\u0E48\u0E21 \u0E01\u0E23\u0E38\u0E13\u0E32\u0E15\u0E23\u0E27\u0E08\u0E2A\u0E2D\u0E1A\u0E14\u0E48\u0E27\u0E19!" : null,
+        username: `AutoScript Feedback ${aiEmoji}`,
+        avatar_url: avatarUrl,
+        embeds: [{
+          title: rating >= 4 ? `${aiEmoji} \u0E25\u0E39\u0E01\u0E04\u0E49\u0E32\u0E1B\u0E23\u0E30\u0E17\u0E31\u0E1A\u0E43\u0E08\u0E41\u0E2D\u0E1B\u0E02\u0E2D\u0E07\u0E40\u0E23\u0E32!` : rating === 3 ? `${aiEmoji} \u0E21\u0E35\u0E23\u0E35\u0E27\u0E34\u0E27\u0E43\u0E2B\u0E21\u0E48\u0E08\u0E32\u0E01\u0E25\u0E39\u0E01\u0E04\u0E49\u0E32` : `${aiEmoji} \u0E25\u0E39\u0E01\u0E04\u0E49\u0E32\u0E1E\u0E1A\u0E1B\u0E31\u0E0D\u0E2B\u0E32/\u0E44\u0E21\u0E48\u0E1E\u0E2D\u0E43\u0E08!`,
+          color: isCritical ? 16711680 : rating >= 4 ? 3066993 : rating === 3 ? 16776960 : 15158332,
+          // Pure Red for critical
+          fields: [
+            { name: "\u{1F464} User", value: emailText, inline: true },
+            { name: "\u2B50\uFE0F Rating", value: starStr, inline: true },
+            { name: "\u{1F4AC} Comment", value: comment || "-(\u0E44\u0E21\u0E48\u0E44\u0E14\u0E49\u0E1E\u0E34\u0E21\u0E1E\u0E4C\u0E02\u0E49\u0E2D\u0E04\u0E27\u0E32\u0E21)-", inline: false }
+          ],
+          timestamp: (/* @__PURE__ */ new Date()).toISOString()
+        }]
+      };
+      try {
+        await fetch(finalWebhookUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+      } catch (discordErr) {
+        console.error("Failed to send Discord Webhook:", discordErr);
+      }
+    }
+    return new Response(JSON.stringify({ success: true }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" }
+    });
+  } catch (err) {
+    console.error("Feedback API Error:", err);
+    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+}
+var init_feedback = __esm({
+  "api/feedback.js"() {
+    init_functionsRoutes_0_7667722716287171();
+    init_dist4();
+    __name(onRequestPost3, "onRequestPost");
+  }
+});
+
+// ../app/lib/moderation/forbidden-words-th.js
+var FORBIDDEN_WORDS, ALLOW_LIST;
 var init_forbidden_words_th = __esm({
-  "../src/lib/moderation/forbidden-words-th.js"() {
-    init_functionsRoutes_0_6131355600780521();
+  "../app/lib/moderation/forbidden-words-th.js"() {
+    init_functionsRoutes_0_7667722716287171();
     FORBIDDEN_WORDS = [
       // --- CRITICAL (Threats, Self Harm, Illegal, Severe Sexual) ---
       { term: "\u0E06\u0E48\u0E32\u0E15\u0E31\u0E27\u0E15\u0E32\u0E22", category: "self_harm", severity: "critical", action: "block" },
@@ -65651,6 +64384,8 @@ var init_forbidden_words_th = __esm({
     ];
   }
 });
+
+// ../app/lib/moderation/normalize-text.js
 function normalizeText(text) {
   if (!text || typeof text !== "string") return "";
   let normalized = text;
@@ -65662,28 +64397,26 @@ function normalizeText(text) {
   normalized = normalized.trim();
   return normalized;
 }
-__name(normalizeText, "normalizeText");
 function stripAllSpaces(text) {
   return text.replace(/\s+/g, "");
 }
-__name(stripAllSpaces, "stripAllSpaces");
 function collapseRepeatedChars(text) {
   return text.replace(/(.)\1{2,}/gu, "$1");
 }
-__name(collapseRepeatedChars, "collapseRepeatedChars");
 function normalizeThaiVowels(text) {
   return text.replace(/([\u0E30-\u0E4F])\1+/g, "$1");
 }
-__name(normalizeThaiVowels, "normalizeThaiVowels");
 var init_normalize_text = __esm({
-  "../src/lib/moderation/normalize-text.js"() {
-    init_functionsRoutes_0_6131355600780521();
-    __name2(normalizeText, "normalizeText");
-    __name2(stripAllSpaces, "stripAllSpaces");
-    __name2(collapseRepeatedChars, "collapseRepeatedChars");
-    __name2(normalizeThaiVowels, "normalizeThaiVowels");
+  "../app/lib/moderation/normalize-text.js"() {
+    init_functionsRoutes_0_7667722716287171();
+    __name(normalizeText, "normalizeText");
+    __name(stripAllSpaces, "stripAllSpaces");
+    __name(collapseRepeatedChars, "collapseRepeatedChars");
+    __name(normalizeThaiVowels, "normalizeThaiVowels");
   }
 });
+
+// ../app/lib/moderation/engine.js
 function moderateText(rawText) {
   if (!rawText || typeof rawText !== "string" || rawText.trim() === "") {
     return {
@@ -65709,7 +64442,7 @@ function moderateText(rawText) {
   let finalAction = "allow";
   let matchedCategory = "none";
   const matchedTerms = [];
-  const updateResult = /* @__PURE__ */ __name2((wordDef, matchText) => {
+  const updateResult = /* @__PURE__ */ __name((wordDef, matchText) => {
     matchedTerms.push(wordDef.term);
     if (SEVERITY_RANK[wordDef.severity] > SEVERITY_RANK[highestSeverity]) {
       highestSeverity = wordDef.severity;
@@ -65754,11 +64487,10 @@ function moderateText(rawText) {
   };
   return result;
 }
-__name(moderateText, "moderateText");
 var SEVERITY_RANK;
 var init_engine = __esm({
-  "../src/lib/moderation/engine.js"() {
-    init_functionsRoutes_0_6131355600780521();
+  "../app/lib/moderation/engine.js"() {
+    init_functionsRoutes_0_7667722716287171();
     init_forbidden_words_th();
     init_normalize_text();
     SEVERITY_RANK = {
@@ -65768,9 +64500,11 @@ var init_engine = __esm({
       "high": 3,
       "critical": 4
     };
-    __name2(moderateText, "moderateText");
+    __name(moderateText, "moderateText");
   }
 });
+
+// api/generate.js
 function safeParseJson(rawText) {
   if (!rawText || typeof rawText !== "string") {
     throw new Error("AI_EMPTY_RESPONSE");
@@ -65788,8 +64522,7 @@ function safeParseJson(rawText) {
     throw new Error("AI \u0E15\u0E2D\u0E1A\u0E01\u0E25\u0E31\u0E1A\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E21\u0E32\u0E43\u0E19\u0E23\u0E39\u0E1B\u0E41\u0E1A\u0E1A\u0E17\u0E35\u0E48\u0E2D\u0E48\u0E32\u0E19\u0E44\u0E21\u0E48\u0E44\u0E14\u0E49 (\u0E21\u0E35\u0E2D\u0E31\u0E01\u0E02\u0E23\u0E30\u0E1E\u0E34\u0E40\u0E28\u0E29) \u0E01\u0E23\u0E38\u0E13\u0E32\u0E01\u0E14\u0E2A\u0E23\u0E49\u0E32\u0E07\u0E2A\u0E04\u0E23\u0E34\u0E1B\u0E15\u0E4C\u0E43\u0E2B\u0E21\u0E48\u0E2D\u0E35\u0E01\u0E04\u0E23\u0E31\u0E49\u0E07\u0E04\u0E23\u0E31\u0E1A");
   }
 }
-__name(safeParseJson, "safeParseJson");
-async function onRequestPost3(context) {
+async function onRequestPost4(context) {
   const { request, env: env2 } = context;
   let creditDeducted = false;
   let creditAmount = 1;
@@ -65813,7 +64546,17 @@ async function onRequestPost3(context) {
       });
     }
     const body = await request.json();
-    const { productName, productDetails, pricePromo, videoLength, mode, competitor, targetAudience, isMultiVersion, falseBelief, mechanism, speakerTone } = body;
+    const productName = (body.productName || "").slice(0, 100);
+    const productDetails = (body.productDetails || "").slice(0, 2e3);
+    const pricePromo = (body.pricePromo || "").slice(0, 100);
+    const competitor = (body.competitor || "").slice(0, 200);
+    const targetAudience = (body.targetAudience || "").slice(0, 300);
+    const falseBelief = (body.falseBelief || "").slice(0, 500);
+    const mechanism = (body.mechanism || "").slice(0, 500);
+    const mode = body.mode || "PAS";
+    const videoLength = body.videoLength || "30s";
+    const speakerTone = body.speakerTone || "\u0E1C\u0E39\u0E49\u0E2B\u0E0D\u0E34\u0E07";
+    const isMultiVersion = !!body.isMultiVersion;
     supabaseAdmin = createClient(env2.VITE_SUPABASE_URL, env2.SUPABASE_SERVICE_ROLE_KEY);
     const combinedInput = [productName, productDetails, pricePromo, competitor, targetAudience, falseBelief, mechanism].filter(Boolean).join(" ");
     const modResult = moderateText(combinedInput);
@@ -65839,6 +64582,9 @@ async function onRequestPost3(context) {
     const effectiveTier = profile.tier === "free" && profile.trial_pro_remaining > 0 ? "pro" : profile.tier;
     if (isMultiVersion && effectiveTier !== "pro") {
       return new Response(JSON.stringify({ error: "Multi-version scripts require Pro tier." }), { status: 403, headers: { "Content-Type": "application/json" } });
+    }
+    if (mode === "\u0E42\u0E04\u0E23\u0E07\u0E2A\u0E23\u0E49\u0E32\u0E07\u0E40\u0E08\u0E32\u0E30\u0E25\u0E36\u0E01" && effectiveTier !== "pro") {
+      return new Response(JSON.stringify({ error: "\u0E42\u0E2B\u0E21\u0E14\u0E42\u0E04\u0E23\u0E07\u0E2A\u0E23\u0E49\u0E32\u0E07\u0E40\u0E08\u0E32\u0E30\u0E25\u0E36\u0E01 (Belief-Shifting) \u0E2A\u0E07\u0E27\u0E19\u0E44\u0E27\u0E49\u0E2A\u0E33\u0E2B\u0E23\u0E31\u0E1A\u0E1C\u0E39\u0E49\u0E43\u0E0A\u0E49 Pro \u0E40\u0E17\u0E48\u0E32\u0E19\u0E31\u0E49\u0E19" }), { status: 403, headers: { "Content-Type": "application/json" } });
     }
     creditAmount = isMultiVersion ? 2 : 1;
     userIdForRefund = user.id;
@@ -65878,12 +64624,34 @@ async function onRequestPost3(context) {
     - \u0E04\u0E27\u0E32\u0E21\u0E22\u0E32\u0E27\u0E04\u0E25\u0E34\u0E1B: ${videoLength}
     - \u0E42\u0E17\u0E19\u0E40\u0E2A\u0E35\u0E22\u0E07/\u0E40\u0E1E\u0E28\u0E1C\u0E39\u0E49\u0E1E\u0E39\u0E14 (Speaker Tone/Gender): ${speakerTone || "\u0E1C\u0E39\u0E49\u0E2B\u0E0D\u0E34\u0E07"}
     `;
+    const baseSystemPrompt = isMultiVersion ? SYSTEM_PROMPT_MULTI : mode === "\u0E42\u0E04\u0E23\u0E07\u0E2A\u0E23\u0E49\u0E32\u0E07\u0E40\u0E08\u0E32\u0E30\u0E25\u0E36\u0E01" ? SYSTEM_PROMPT_BELIEF_SHIFTER : SYSTEM_PROMPT_SINGLE;
+    const advancedIntelligenceRules = `
+## \u{1F9E0} AI INTELLIGENCE UPGRADE (Micro-Persona & Contextual Few-Shot)
+\u0E04\u0E38\u0E13\u0E15\u0E49\u0E2D\u0E07\u0E22\u0E01\u0E23\u0E30\u0E14\u0E31\u0E1A\u0E04\u0E27\u0E32\u0E21\u0E40\u0E1B\u0E47\u0E19\u0E21\u0E19\u0E38\u0E29\u0E22\u0E4C (Humanized AI) \u0E42\u0E14\u0E22\u0E1B\u0E0F\u0E34\u0E1A\u0E31\u0E15\u0E34\u0E15\u0E32\u0E21\u0E01\u0E0E\u0E19\u0E35\u0E49\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E40\u0E04\u0E23\u0E48\u0E07\u0E04\u0E23\u0E31\u0E14:
+
+1. \u0E2A\u0E27\u0E21\u0E27\u0E34\u0E0D\u0E0D\u0E32\u0E13\u0E19\u0E31\u0E01\u0E1E\u0E39\u0E14 (Micro-Persona): \u0E27\u0E34\u0E40\u0E04\u0E23\u0E32\u0E30\u0E2B\u0E4C\u0E08\u0E32\u0E01\u0E2A\u0E34\u0E19\u0E04\u0E49\u0E32\u0E41\u0E25\u0E30\u0E40\u0E1E\u0E28\u0E1C\u0E39\u0E49\u0E1E\u0E39\u0E14 \u0E41\u0E25\u0E49\u0E27\u0E40\u0E25\u0E37\u0E2D\u0E01\u0E2A\u0E27\u0E21\u0E1A\u0E17\u0E1A\u0E32\u0E17 1 \u0E43\u0E19 4 \u0E2A\u0E44\u0E15\u0E25\u0E4C\u0E19\u0E35\u0E49:
+   - "\u0E40\u0E1E\u0E37\u0E48\u0E2D\u0E19\u0E2A\u0E32\u0E27\u0E08\u0E2D\u0E21\u0E41\u0E09/\u0E1B\u0E49\u0E32\u0E22\u0E22\u0E32": \u0E1E\u0E39\u0E14\u0E40\u0E23\u0E47\u0E27, \u0E01\u0E31\u0E14\u0E08\u0E34\u0E01, \u0E23\u0E35\u0E27\u0E34\u0E27\u0E15\u0E23\u0E07\u0E46, \u0E2A\u0E41\u0E25\u0E07\u0E40\u0E22\u0E2D\u0E30 (\u0E43\u0E0A\u0E49\u0E04\u0E33\u0E40\u0E0A\u0E48\u0E19 "\u0E41\u0E01\u0E40\u0E2D\u0E49\u0E22", "\u0E40\u0E2D\u0E32\u0E14\u0E35\u0E46", "\u0E08\u0E36\u0E49\u0E07\u0E21\u0E32\u0E01", "\u0E15\u0E31\u0E27\u0E21\u0E32\u0E23\u0E14\u0E32", "\u0E09\u0E48\u0E33")
+   - "\u0E1C\u0E39\u0E49\u0E40\u0E0A\u0E35\u0E48\u0E22\u0E27\u0E0A\u0E32\u0E0D\u0E19\u0E48\u0E32\u0E40\u0E0A\u0E37\u0E48\u0E2D\u0E16\u0E37\u0E2D": \u0E19\u0E34\u0E48\u0E07, \u0E19\u0E48\u0E32\u0E40\u0E0A\u0E37\u0E48\u0E2D\u0E16\u0E37\u0E2D, \u0E40\u0E19\u0E49\u0E19\u0E1C\u0E25\u0E25\u0E31\u0E1E\u0E18\u0E4C (\u0E43\u0E0A\u0E49\u0E04\u0E33\u0E40\u0E0A\u0E48\u0E19 "\u0E23\u0E39\u0E49\u0E2B\u0E23\u0E37\u0E2D\u0E44\u0E21\u0E48...", "\u0E2B\u0E25\u0E31\u0E01\u0E01\u0E32\u0E23\u0E04\u0E37\u0E2D...", "\u0E2A\u0E34\u0E48\u0E07\u0E2A\u0E33\u0E04\u0E31\u0E0D\u0E04\u0E37\u0E2D...")
+   - "\u0E41\u0E21\u0E48\u0E04\u0E49\u0E32\u0E2A\u0E32\u0E22\u0E2E\u0E32\u0E23\u0E4C\u0E14\u0E40\u0E0B\u0E25\u0E25\u0E4C": \u0E1E\u0E25\u0E31\u0E07\u0E40\u0E22\u0E2D\u0E30, \u0E01\u0E23\u0E30\u0E15\u0E38\u0E49\u0E19\u0E04\u0E27\u0E32\u0E21\u0E04\u0E38\u0E49\u0E21\u0E04\u0E48\u0E32, \u0E23\u0E35\u0E1A\u0E40\u0E23\u0E48\u0E07 (\u0E43\u0E0A\u0E49\u0E04\u0E33\u0E40\u0E0A\u0E48\u0E19 "\u0E1F\u0E31\u0E07\u0E19\u0E30\u0E41\u0E21\u0E48!", "\u0E1E\u0E25\u0E32\u0E14\u0E04\u0E37\u0E2D\u0E1E\u0E25\u0E32\u0E14\u0E21\u0E32\u0E01", "\u0E01\u0E14\u0E15\u0E30\u0E01\u0E23\u0E49\u0E32\u0E14\u0E48\u0E27\u0E19")
+   - "\u0E1C\u0E39\u0E49\u0E0A\u0E32\u0E22\u0E23\u0E35\u0E27\u0E34\u0E27\u0E08\u0E23\u0E34\u0E07\u0E43\u0E08": \u0E41\u0E21\u0E19\u0E46, \u0E15\u0E23\u0E07\u0E44\u0E1B\u0E15\u0E23\u0E07\u0E21\u0E32, \u0E44\u0E21\u0E48\u0E2D\u0E49\u0E2D\u0E21\u0E04\u0E49\u0E2D\u0E21 (\u0E43\u0E0A\u0E49\u0E04\u0E33\u0E40\u0E0A\u0E48\u0E19 "\u0E40\u0E2D\u0E32\u0E08\u0E23\u0E34\u0E07\u0E46\u0E19\u0E30", "\u0E1A\u0E2D\u0E01\u0E15\u0E23\u0E07\u0E46", "\u0E02\u0E2D\u0E07\u0E42\u0E04\u0E15\u0E23\u0E14\u0E35", "\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E41\u0E08\u0E48\u0E21")
+
+2. \u0E01\u0E32\u0E23\u0E40\u0E27\u0E49\u0E19\u0E08\u0E31\u0E07\u0E2B\u0E27\u0E30\u0E2B\u0E32\u0E22\u0E43\u0E08\u0E41\u0E25\u0E30\u0E01\u0E32\u0E23\u0E40\u0E25\u0E48\u0E19\u0E04\u0E33 (Breathing & Wordplay):
+   - \u0E1A\u0E31\u0E07\u0E04\u0E31\u0E1A\u0E43\u0E0A\u0E49\u0E40\u0E04\u0E23\u0E37\u0E48\u0E2D\u0E07\u0E2B\u0E21\u0E32\u0E22 "..." \u0E40\u0E1E\u0E37\u0E48\u0E2D\u0E40\u0E27\u0E49\u0E19\u0E08\u0E31\u0E07\u0E2B\u0E27\u0E30\u0E1E\u0E31\u0E01\u0E2B\u0E32\u0E22\u0E43\u0E08\u0E41\u0E1A\u0E1A\u0E04\u0E19\u0E1E\u0E39\u0E14\u0E08\u0E23\u0E34\u0E07\u0E46 \u0E40\u0E1E\u0E37\u0E48\u0E2D\u0E44\u0E21\u0E48\u0E43\u0E2B\u0E49\u0E40\u0E1B\u0E47\u0E19\u0E2B\u0E38\u0E48\u0E19\u0E22\u0E19\u0E15\u0E4C
+   - \u0E1E\u0E22\u0E32\u0E22\u0E32\u0E21\u0E43\u0E0A\u0E49\u0E04\u0E33\u0E04\u0E25\u0E49\u0E2D\u0E07\u0E08\u0E2D\u0E07\u0E2B\u0E23\u0E37\u0E2D\u0E27\u0E25\u0E35\u0E08\u0E33\u0E07\u0E48\u0E32\u0E22 (Punchline) \u0E40\u0E1E\u0E37\u0E48\u0E2D\u0E43\u0E2B\u0E49\u0E04\u0E25\u0E34\u0E1B\u0E19\u0E48\u0E32\u0E2A\u0E19\u0E43\u0E08
+   
+3. \u0E15\u0E31\u0E27\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E01\u0E32\u0E23\u0E1E\u0E39\u0E14\u0E17\u0E35\u0E48\u0E40\u0E1B\u0E47\u0E19\u0E18\u0E23\u0E23\u0E21\u0E0A\u0E32\u0E15\u0E34 (Few-Shot Reference):
+   - [Hook] "\u0E41\u0E01\u0E40\u0E2D\u0E49\u0E22... \u0E15\u0E2D\u0E19\u0E41\u0E23\u0E01\u0E01\u0E47\u0E44\u0E21\u0E48\u0E40\u0E0A\u0E37\u0E48\u0E2D\u0E19\u0E30\u0E40\u0E27\u0E49\u0E22 \u0E27\u0E48\u0E32\u0E21\u0E31\u0E19\u0E08\u0E30\u0E40\u0E19\u0E35\u0E22\u0E19\u0E02\u0E19\u0E32\u0E14\u0E19\u0E35\u0E49... \u0E04\u0E37\u0E2D\u0E41\u0E1A\u0E1A... \u0E0A\u0E47\u0E2D\u0E04\u0E21\u0E32\u0E01!"
+   - [Agitate] "\u0E40\u0E2D\u0E32\u0E08\u0E23\u0E34\u0E07\u0E46\u0E19\u0E30... \u0E43\u0E04\u0E23\u0E17\u0E35\u0E48\u0E2B\u0E19\u0E49\u0E32\u0E21\u0E31\u0E19\u0E40\u0E22\u0E34\u0E49\u0E21\u0E23\u0E30\u0E2B\u0E27\u0E48\u0E32\u0E07\u0E27\u0E31\u0E19... \u0E2B\u0E22\u0E38\u0E14\u0E1F\u0E31\u0E07\u0E04\u0E25\u0E34\u0E1B\u0E19\u0E35\u0E49\u0E14\u0E48\u0E27\u0E19\u0E46 \u0E40\u0E25\u0E22\u0E04\u0E23\u0E31\u0E1A"
+   - [CTA] "\u0E1F\u0E31\u0E07\u0E19\u0E30\u0E41\u0E21\u0E48!... \u0E15\u0E31\u0E27\u0E19\u0E35\u0E49\u0E04\u0E37\u0E2D\u0E41\u0E23\u0E23\u0E4C\u0E44\u0E2D\u0E40\u0E17\u0E21... \u0E23\u0E35\u0E1A\u0E01\u0E14\u0E15\u0E30\u0E01\u0E23\u0E49\u0E32\u0E40\u0E2B\u0E25\u0E37\u0E2D\u0E07\u0E43\u0E2B\u0E49\u0E17\u0E31\u0E19\u0E01\u0E48\u0E2D\u0E19\u0E02\u0E2D\u0E07\u0E08\u0E30\u0E2B\u0E21\u0E14\u0E19\u0E30\u0E08\u0E4A\u0E30"
+`;
+    const finalSystemInstruction = baseSystemPrompt + advancedIntelligenceRules;
     const response = await ai.models.generateContent({
       model: "gemini-3.6-flash",
       contents: userPrompt,
       config: {
-        systemInstruction: isMultiVersion ? SYSTEM_PROMPT_MULTI : mode === "\u0E42\u0E04\u0E23\u0E07\u0E2A\u0E23\u0E49\u0E32\u0E07\u0E40\u0E08\u0E32\u0E30\u0E25\u0E36\u0E01" ? SYSTEM_PROMPT_BELIEF_SHIFTER : SYSTEM_PROMPT_SINGLE,
-        temperature: 0.8,
+        systemInstruction: finalSystemInstruction,
+        temperature: 0.85,
+        // Increased from 0.8 to 0.85 for slightly more creativity/wordplay
         responseMimeType: isMultiVersion ? "text/plain" : "application/json"
       }
     });
@@ -65932,10 +64700,13 @@ async function onRequestPost3(context) {
     }
     let updatedTrialRemaining = profile.trial_pro_remaining;
     if (profile.tier === "free" && profile.trial_pro_remaining > 0) {
-      updatedTrialRemaining = Math.max(0, profile.trial_pro_remaining - creditAmount);
-      await supabaseAdmin.from("profiles").update({
-        trial_pro_remaining: updatedTrialRemaining
-      }).eq("id", user.id);
+      const { data: newTrialVal, error: trialErr } = await supabaseAdmin.rpc("decrement_trial_quota", {
+        p_user_id: user.id,
+        p_amount: creditAmount
+      });
+      if (!trialErr && newTrialVal !== null) {
+        updatedTrialRemaining = newTrialVal;
+      }
     }
     return new Response(JSON.stringify({
       script: resultJson,
@@ -65982,13 +64753,10 @@ async function onRequestPost3(context) {
     });
   }
 }
-__name(onRequestPost3, "onRequestPost3");
-var SYSTEM_PROMPT_SINGLE;
-var SYSTEM_PROMPT_MULTI;
-var SYSTEM_PROMPT_BELIEF_SHIFTER;
+var SYSTEM_PROMPT_SINGLE, SYSTEM_PROMPT_MULTI, SYSTEM_PROMPT_BELIEF_SHIFTER;
 var init_generate = __esm({
   "api/generate.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_web();
     init_dist4();
     init_engine();
@@ -66219,11 +64987,13 @@ Before writing the script, you MUST perform a neuromarketing analysis to plan th
   ]
 }
 `;
-    __name2(safeParseJson, "safeParseJson");
-    __name2(onRequestPost3, "onRequestPost");
+    __name(safeParseJson, "safeParseJson");
+    __name(onRequestPost4, "onRequestPost");
   }
 });
-async function onRequestPost4({ request, env: env2 }) {
+
+// api/webhook.js
+async function onRequestPost5({ request, env: env2 }) {
   if (!env2.STRIPE_SECRET_KEY || !env2.STRIPE_WEBHOOK_SECRET || !env2.VITE_SUPABASE_URL || !env2.SUPABASE_SERVICE_ROLE_KEY) {
     return new Response("Missing environment variables", { status: 500 });
   }
@@ -66311,22 +65081,184 @@ async function onRequestPost4({ request, env: env2 }) {
     return new Response(`Webhook handler Error: ${err.message}`, { status: 500 });
   }
 }
-__name(onRequestPost4, "onRequestPost4");
 var init_webhook = __esm({
   "api/webhook.js"() {
-    init_functionsRoutes_0_6131355600780521();
+    init_functionsRoutes_0_7667722716287171();
     init_stripe_esm_worker();
     init_dist4();
-    __name2(onRequestPost4, "onRequestPost");
+    __name(onRequestPost5, "onRequestPost");
   }
 });
+
+// api/weekly-summary.js
+async function onRequestPost6(context) {
+  const { request, env: env2 } = context;
+  try {
+    const authHeader = request.headers.get("Authorization");
+    if (!authHeader || authHeader.replace("Bearer ", "") !== env2.ADMIN_CRON_KEY) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+    const supabaseAdmin = createClient(env2.VITE_SUPABASE_URL, env2.SUPABASE_SERVICE_ROLE_KEY);
+    const sevenDaysAgo = /* @__PURE__ */ new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    const { data: feedbacks, error: dbError } = await supabaseAdmin.from("feedbacks").select("rating, comment, created_at").gte("created_at", sevenDaysAgo.toISOString()).order("created_at", { ascending: false });
+    if (dbError) {
+      throw new Error(`Database Error: ${dbError.message}`);
+    }
+    if (!feedbacks || feedbacks.length === 0) {
+      return new Response(JSON.stringify({ message: "No feedback in the last 7 days. Skipped summary." }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+    const { GoogleGenAI: GoogleGenAI3 } = await Promise.resolve().then(() => (init_web(), web_exports));
+    const ai = new GoogleGenAI3({ apiKey: env2.GEMINI_API_KEY });
+    const avgRating = (feedbacks.reduce((s, f) => s + f.rating, 0) / feedbacks.length).toFixed(1);
+    const rawDataStr = feedbacks.map((f) => `[${f.rating}\u2B50] ${f.comment || "\u0E44\u0E21\u0E48\u0E21\u0E35\u0E04\u0E2D\u0E21\u0E40\u0E21\u0E19\u0E15\u0E4C"}`).join("\n");
+    const prompt = `\u0E04\u0E38\u0E13\u0E40\u0E1B\u0E47\u0E19 Product Manager \u0E1C\u0E39\u0E49\u0E40\u0E0A\u0E35\u0E48\u0E22\u0E27\u0E0A\u0E32\u0E0D \u0E27\u0E34\u0E40\u0E04\u0E23\u0E32\u0E30\u0E2B\u0E4C Feedback \u0E25\u0E39\u0E01\u0E04\u0E49\u0E32\u0E15\u0E48\u0E2D\u0E44\u0E1B\u0E19\u0E35\u0E49 (${feedbacks.length} \u0E23\u0E32\u0E22\u0E01\u0E32\u0E23, \u0E04\u0E30\u0E41\u0E19\u0E19\u0E40\u0E09\u0E25\u0E35\u0E48\u0E22 ${avgRating}/5):
+
+${rawDataStr}
+
+\u0E15\u0E2D\u0E1A\u0E01\u0E25\u0E31\u0E1A\u0E21\u0E32\u0E40\u0E1B\u0E47\u0E19 JSON \u0E40\u0E17\u0E48\u0E32\u0E19\u0E31\u0E49\u0E19 (\u0E44\u0E21\u0E48\u0E21\u0E35 markdown code block) \u0E42\u0E14\u0E22\u0E21\u0E35\u0E42\u0E04\u0E23\u0E07\u0E2A\u0E23\u0E49\u0E32\u0E07\u0E14\u0E31\u0E07\u0E19\u0E35\u0E49:
+{
+  "overall": "\u0E2A\u0E23\u0E38\u0E1B\u0E20\u0E32\u0E1E\u0E23\u0E27\u0E21 1-2 \u0E1B\u0E23\u0E30\u0E42\u0E22\u0E04 \u0E01\u0E23\u0E30\u0E0A\u0E31\u0E1A \u0E15\u0E23\u0E07\u0E1B\u0E23\u0E30\u0E40\u0E14\u0E47\u0E19",
+  "praise": "\u0E2A\u0E34\u0E48\u0E07\u0E17\u0E35\u0E48\u0E25\u0E39\u0E01\u0E04\u0E49\u0E32\u0E0A\u0E2D\u0E1A \u0E2B\u0E23\u0E37\u0E2D '\u0E22\u0E31\u0E07\u0E44\u0E21\u0E48\u0E21\u0E35\u0E43\u0E19\u0E2A\u0E31\u0E1B\u0E14\u0E32\u0E2B\u0E4C\u0E19\u0E35\u0E49' \u0E16\u0E49\u0E32\u0E44\u0E21\u0E48\u0E21\u0E35",
+  "bugs": "\u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E14\u0E48\u0E27\u0E19\u0E17\u0E35\u0E48\u0E15\u0E49\u0E2D\u0E07\u0E41\u0E01\u0E49 \u0E2B\u0E23\u0E37\u0E2D '\u2705 \u0E44\u0E21\u0E48\u0E1E\u0E1A\u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E40\u0E23\u0E48\u0E07\u0E14\u0E48\u0E27\u0E19' \u0E16\u0E49\u0E32\u0E44\u0E21\u0E48\u0E21\u0E35",
+  "requests": "\u0E1F\u0E35\u0E40\u0E08\u0E2D\u0E23\u0E4C\u0E17\u0E35\u0E48\u0E25\u0E39\u0E01\u0E04\u0E49\u0E32\u0E15\u0E49\u0E2D\u0E07\u0E01\u0E32\u0E23 \u0E2B\u0E23\u0E37\u0E2D '\u0E22\u0E31\u0E07\u0E44\u0E21\u0E48\u0E21\u0E35\u0E43\u0E19\u0E2A\u0E31\u0E1B\u0E14\u0E32\u0E2B\u0E4C\u0E19\u0E35\u0E49' \u0E16\u0E49\u0E32\u0E44\u0E21\u0E48\u0E21\u0E35",
+  "action": "Next Action \u0E17\u0E35\u0E48\u0E41\u0E19\u0E30\u0E19\u0E33 1 \u0E02\u0E49\u0E2D\u0E17\u0E35\u0E48\u0E2A\u0E33\u0E04\u0E31\u0E0D\u0E17\u0E35\u0E48\u0E2A\u0E38\u0E14"
+}
+\u0E41\u0E15\u0E48\u0E25\u0E30 field \u0E2B\u0E49\u0E32\u0E21\u0E22\u0E32\u0E27\u0E40\u0E01\u0E34\u0E19 200 \u0E15\u0E31\u0E27\u0E2D\u0E31\u0E01\u0E29\u0E23 \u0E43\u0E0A\u0E49\u0E20\u0E32\u0E29\u0E32\u0E44\u0E17\u0E22 \u0E01\u0E23\u0E30\u0E0A\u0E31\u0E1A \u0E40\u0E02\u0E49\u0E32\u0E43\u0E08\u0E07\u0E48\u0E32\u0E22`;
+    const response = await ai.models.generateContent({
+      model: "gemini-3.6-flash",
+      contents: prompt,
+      config: {
+        temperature: 0.2,
+        responseMimeType: "application/json"
+      }
+    });
+    let summary = { overall: "", praise: "", bugs: "", requests: "", action: "" };
+    try {
+      summary = JSON.parse(response.text);
+    } catch (e) {
+      summary.overall = response.text.trim().slice(0, 300);
+    }
+    const starCounts = [1, 2, 3, 4, 5].map((s) => ({ star: s, count: feedbacks.filter((f) => f.rating === s).length }));
+    const starBar = starCounts.reverse().map((s) => s.count > 0 ? `${s.star}\u2B50 \xD7 ${s.count}` : null).filter(Boolean).join("  |  ");
+    const webhookUrl = env2.DISCORD_WEBHOOK_WEEKLY_REPORT || env2.DISCORD_WEBHOOK_URL;
+    if (webhookUrl) {
+      const payload = {
+        username: "AutoScript Weekly Report \u{1F4C8}",
+        avatar_url: "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4c8.png",
+        embeds: [{
+          title: "\u{1F5D3}\uFE0F \u0E23\u0E32\u0E22\u0E07\u0E32\u0E19 Feedback \u0E23\u0E32\u0E22\u0E2A\u0E31\u0E1B\u0E14\u0E32\u0E2B\u0E4C",
+          color: 3447003,
+          // Blue
+          fields: [
+            {
+              name: "\u{1F4CA} \u0E20\u0E32\u0E1E\u0E23\u0E27\u0E21\u0E2A\u0E31\u0E1B\u0E14\u0E32\u0E2B\u0E4C",
+              value: summary.overall || "-",
+              inline: false
+            },
+            {
+              name: "\u{1F4C8} \u0E2A\u0E16\u0E34\u0E15\u0E34\u0E04\u0E30\u0E41\u0E19\u0E19\u0E14\u0E32\u0E27",
+              value: `**\u0E40\u0E09\u0E25\u0E35\u0E48\u0E22 ${avgRating}/5** \u0E08\u0E32\u0E01 ${feedbacks.length} \u0E23\u0E35\u0E27\u0E34\u0E27
+${starBar}`,
+              inline: false
+            },
+            {
+              name: "\u{1F496} \u0E25\u0E39\u0E01\u0E04\u0E49\u0E32\u0E1B\u0E23\u0E30\u0E17\u0E31\u0E1A\u0E43\u0E08",
+              value: summary.praise || "-",
+              inline: true
+            },
+            {
+              name: "\u{1F6E0}\uFE0F \u0E1B\u0E31\u0E0D\u0E2B\u0E32\u0E15\u0E49\u0E2D\u0E07\u0E41\u0E01\u0E49\u0E14\u0E48\u0E27\u0E19",
+              value: summary.bugs || "\u2705 \u0E44\u0E21\u0E48\u0E1E\u0E1A\u0E1B\u0E31\u0E0D\u0E2B\u0E32",
+              inline: true
+            },
+            {
+              name: "\u{1F4A1} \u0E1F\u0E35\u0E40\u0E08\u0E2D\u0E23\u0E4C\u0E17\u0E35\u0E48\u0E40\u0E23\u0E35\u0E22\u0E01\u0E23\u0E49\u0E2D\u0E07",
+              value: summary.requests || "-",
+              inline: false
+            },
+            {
+              name: "\u{1F3AF} Next Action \u0E41\u0E19\u0E30\u0E19\u0E33",
+              value: summary.action || "-",
+              inline: false
+            }
+          ],
+          footer: {
+            text: `Auto-generated by AutoScript AI \u2022 \u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E08\u0E32\u0E01 7 \u0E27\u0E31\u0E19\u0E17\u0E35\u0E48\u0E1C\u0E48\u0E32\u0E19\u0E21\u0E32`
+          },
+          timestamp: (/* @__PURE__ */ new Date()).toISOString()
+        }]
+      };
+      await fetch(webhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+    }
+    return new Response(JSON.stringify({ success: true, count: feedbacks.length }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" }
+    });
+  } catch (err) {
+    console.error("Weekly Summary API Error:", err);
+    return new Response(JSON.stringify({ error: err.message || "Internal Server Error" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+}
+var init_weekly_summary = __esm({
+  "api/weekly-summary.js"() {
+    init_functionsRoutes_0_7667722716287171();
+    init_dist4();
+    __name(onRequestPost6, "onRequestPost");
+  }
+});
+
+// api/_middleware.js
+var onRequest;
+var init_middleware = __esm({
+  "api/_middleware.js"() {
+    init_functionsRoutes_0_7667722716287171();
+    onRequest = /* @__PURE__ */ __name(async (context) => {
+      const { request, next } = context;
+      if (request.method === "OPTIONS") {
+        return new Response(null, {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+            "Access-Control-Max-Age": "86400"
+          }
+        });
+      }
+      const response = await next();
+      const newResponse = new Response(response.body, response);
+      newResponse.headers.set("Access-Control-Allow-Origin", "*");
+      newResponse.headers.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+      newResponse.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+      return newResponse;
+    }, "onRequest");
+  }
+});
+
+// ../.wrangler/tmp/pages-mWlWqM/functionsRoutes-0.7667722716287171.mjs
 var routes;
-var init_functionsRoutes_0_6131355600780521 = __esm({
-  "../.wrangler/tmp/pages-5uVHgk/functionsRoutes-0.6131355600780521.mjs"() {
+var init_functionsRoutes_0_7667722716287171 = __esm({
+  "../.wrangler/tmp/pages-mWlWqM/functionsRoutes-0.7667722716287171.mjs"() {
     init_create_portal();
     init_delete_account();
+    init_feedback();
     init_generate();
     init_webhook();
+    init_weekly_summary();
+    init_middleware();
     routes = [
       {
         routePath: "/api/create-portal",
@@ -66343,26 +65275,49 @@ var init_functionsRoutes_0_6131355600780521 = __esm({
         modules: [onRequestPost2]
       },
       {
-        routePath: "/api/generate",
+        routePath: "/api/feedback",
         mountPath: "/api",
         method: "POST",
         middlewares: [],
         modules: [onRequestPost3]
       },
       {
-        routePath: "/api/webhook",
+        routePath: "/api/generate",
         mountPath: "/api",
         method: "POST",
         middlewares: [],
         modules: [onRequestPost4]
+      },
+      {
+        routePath: "/api/webhook",
+        mountPath: "/api",
+        method: "POST",
+        middlewares: [],
+        modules: [onRequestPost5]
+      },
+      {
+        routePath: "/api/weekly-summary",
+        mountPath: "/api",
+        method: "POST",
+        middlewares: [],
+        modules: [onRequestPost6]
+      },
+      {
+        routePath: "/api",
+        mountPath: "/api",
+        method: "",
+        middlewares: [onRequest],
+        modules: []
       }
     ];
   }
 });
-init_functionsRoutes_0_6131355600780521();
-init_functionsRoutes_0_6131355600780521();
-init_functionsRoutes_0_6131355600780521();
-init_functionsRoutes_0_6131355600780521();
+
+// ../../../Users/tiwlx/AppData/Roaming/npm/node_modules/wrangler/templates/pages-template-worker.ts
+init_functionsRoutes_0_7667722716287171();
+
+// ../../../Users/tiwlx/AppData/Roaming/npm/node_modules/wrangler/node_modules/path-to-regexp/dist.es2015/index.js
+init_functionsRoutes_0_7667722716287171();
 function lexer(str) {
   var tokens = [];
   var i = 0;
@@ -66447,7 +65402,6 @@ function lexer(str) {
   return tokens;
 }
 __name(lexer, "lexer");
-__name2(lexer, "lexer");
 function parse(str, options) {
   if (options === void 0) {
     options = {};
@@ -66458,18 +65412,18 @@ function parse(str, options) {
   var key = 0;
   var i = 0;
   var path = "";
-  var tryConsume = /* @__PURE__ */ __name2(function(type) {
+  var tryConsume = /* @__PURE__ */ __name(function(type) {
     if (i < tokens.length && tokens[i].type === type)
       return tokens[i++].value;
   }, "tryConsume");
-  var mustConsume = /* @__PURE__ */ __name2(function(type) {
+  var mustConsume = /* @__PURE__ */ __name(function(type) {
     var value2 = tryConsume(type);
     if (value2 !== void 0)
       return value2;
     var _a3 = tokens[i], nextType = _a3.type, index = _a3.index;
     throw new TypeError("Unexpected ".concat(nextType, " at ").concat(index, ", expected ").concat(type));
   }, "mustConsume");
-  var consumeText = /* @__PURE__ */ __name2(function() {
+  var consumeText = /* @__PURE__ */ __name(function() {
     var result2 = "";
     var value2;
     while (value2 = tryConsume("CHAR") || tryConsume("ESCAPED_CHAR")) {
@@ -66477,7 +65431,7 @@ function parse(str, options) {
     }
     return result2;
   }, "consumeText");
-  var isSafe = /* @__PURE__ */ __name2(function(value2) {
+  var isSafe = /* @__PURE__ */ __name(function(value2) {
     for (var _i = 0, delimiter_1 = delimiter; _i < delimiter_1.length; _i++) {
       var char2 = delimiter_1[_i];
       if (value2.indexOf(char2) > -1)
@@ -66485,7 +65439,7 @@ function parse(str, options) {
     }
     return false;
   }, "isSafe");
-  var safePattern = /* @__PURE__ */ __name2(function(prefix2) {
+  var safePattern = /* @__PURE__ */ __name(function(prefix2) {
     var prev = result[result.length - 1];
     var prevText = prefix2 || (prev && typeof prev === "string" ? prev : "");
     if (prev && !prevText) {
@@ -66548,14 +65502,12 @@ function parse(str, options) {
   return result;
 }
 __name(parse, "parse");
-__name2(parse, "parse");
 function match2(str, options) {
   var keys = [];
   var re = pathToRegexp(str, keys, options);
   return regexpToFunction(re, keys, options);
 }
-__name(match2, "match2");
-__name2(match2, "match");
+__name(match2, "match");
 function regexpToFunction(re, keys, options) {
   if (options === void 0) {
     options = {};
@@ -66569,7 +65521,7 @@ function regexpToFunction(re, keys, options) {
       return false;
     var path = m[0], index = m.index;
     var params = /* @__PURE__ */ Object.create(null);
-    var _loop_1 = /* @__PURE__ */ __name2(function(i2) {
+    var _loop_1 = /* @__PURE__ */ __name(function(i2) {
       if (m[i2] === void 0)
         return "continue";
       var key = keys[i2 - 1];
@@ -66588,17 +65540,14 @@ function regexpToFunction(re, keys, options) {
   };
 }
 __name(regexpToFunction, "regexpToFunction");
-__name2(regexpToFunction, "regexpToFunction");
 function escapeString(str) {
   return str.replace(/([.+*?=^!:${}()[\]|/\\])/g, "\\$1");
 }
 __name(escapeString, "escapeString");
-__name2(escapeString, "escapeString");
 function flags(options) {
   return options && options.sensitive ? "" : "i";
 }
 __name(flags, "flags");
-__name2(flags, "flags");
 function regexpToRegexp(path, keys) {
   if (!keys)
     return path;
@@ -66619,7 +65568,6 @@ function regexpToRegexp(path, keys) {
   return path;
 }
 __name(regexpToRegexp, "regexpToRegexp");
-__name2(regexpToRegexp, "regexpToRegexp");
 function arrayToRegexp(paths, keys, options) {
   var parts = paths.map(function(path) {
     return pathToRegexp(path, keys, options).source;
@@ -66627,12 +65575,10 @@ function arrayToRegexp(paths, keys, options) {
   return new RegExp("(?:".concat(parts.join("|"), ")"), flags(options));
 }
 __name(arrayToRegexp, "arrayToRegexp");
-__name2(arrayToRegexp, "arrayToRegexp");
 function stringToRegexp(path, keys, options) {
   return tokensToRegexp(parse(path, options), keys, options);
 }
 __name(stringToRegexp, "stringToRegexp");
-__name2(stringToRegexp, "stringToRegexp");
 function tokensToRegexp(tokens, keys, options) {
   if (options === void 0) {
     options = {};
@@ -66688,7 +65634,6 @@ function tokensToRegexp(tokens, keys, options) {
   return new RegExp(route, flags(options));
 }
 __name(tokensToRegexp, "tokensToRegexp");
-__name2(tokensToRegexp, "tokensToRegexp");
 function pathToRegexp(path, keys, options) {
   if (path instanceof RegExp)
     return regexpToRegexp(path, keys);
@@ -66697,7 +65642,8 @@ function pathToRegexp(path, keys, options) {
   return stringToRegexp(path, keys, options);
 }
 __name(pathToRegexp, "pathToRegexp");
-__name2(pathToRegexp, "pathToRegexp");
+
+// ../../../Users/tiwlx/AppData/Roaming/npm/node_modules/wrangler/templates/pages-template-worker.ts
 var escapeRegex = /[.+?^${}()|[\]\\]/g;
 function* executeRequest(request) {
   const requestPath = new URL(request.url).pathname;
@@ -66748,14 +65694,13 @@ function* executeRequest(request) {
   }
 }
 __name(executeRequest, "executeRequest");
-__name2(executeRequest, "executeRequest");
 var pages_template_worker_default = {
   async fetch(originalRequest, env2, workerContext) {
     let request = originalRequest;
     const handlerIterator = executeRequest(request);
     let data = {};
     let isFailOpen = false;
-    const next = /* @__PURE__ */ __name2(async (input, init) => {
+    const next = /* @__PURE__ */ __name(async (input, init) => {
       if (input !== void 0) {
         let url = input;
         if (typeof input === "string") {
@@ -66782,7 +65727,7 @@ var pages_template_worker_default = {
           },
           env: env2,
           waitUntil: workerContext.waitUntil.bind(workerContext),
-          passThroughOnException: /* @__PURE__ */ __name2(() => {
+          passThroughOnException: /* @__PURE__ */ __name(() => {
             isFailOpen = true;
           }, "passThroughOnException")
         };
@@ -66810,374 +65755,15 @@ var pages_template_worker_default = {
     }
   }
 };
-var cloneResponse = /* @__PURE__ */ __name2((response) => (
+var cloneResponse = /* @__PURE__ */ __name((response) => (
   // https://fetch.spec.whatwg.org/#null-body-status
   new Response(
     [101, 204, 205, 304].includes(response.status) ? null : response.body,
     response
   )
 ), "cloneResponse");
-init_functionsRoutes_0_6131355600780521();
-var drainBody = /* @__PURE__ */ __name2(async (request, env2, _ctx, middlewareCtx) => {
-  try {
-    return await middlewareCtx.next(request, env2);
-  } finally {
-    try {
-      if (request.body !== null && !request.bodyUsed) {
-        const reader = request.body.getReader();
-        while (!(await reader.read()).done) {
-        }
-      }
-    } catch (e) {
-      console.error("Failed to drain the unused request body.", e);
-    }
-  }
-}, "drainBody");
-var middleware_ensure_req_body_drained_default = drainBody;
-init_functionsRoutes_0_6131355600780521();
-function reduceError(e) {
-  return {
-    name: e?.name,
-    message: e?.message ?? String(e),
-    stack: e?.stack,
-    cause: e?.cause === void 0 ? void 0 : reduceError(e.cause)
-  };
-}
-__name(reduceError, "reduceError");
-__name2(reduceError, "reduceError");
-var jsonError = /* @__PURE__ */ __name2(async (request, env2, _ctx, middlewareCtx) => {
-  try {
-    return await middlewareCtx.next(request, env2);
-  } catch (e) {
-    const error = reduceError(e);
-    const body = JSON.stringify(error);
-    const headers = {
-      "Content-Type": "application/json",
-      "MF-Experimental-Error-Stack": "true"
-    };
-    const encoded = encodeURIComponent(body);
-    if (encoded.length <= 8192) {
-      headers["MF-Experimental-Error-Stack-Payload"] = encoded;
-    }
-    return new Response(body, { status: 500, headers });
-  }
-}, "jsonError");
-var middleware_miniflare3_json_error_default = jsonError;
-var __INTERNAL_WRANGLER_MIDDLEWARE__ = [
-  middleware_ensure_req_body_drained_default,
-  middleware_miniflare3_json_error_default
-];
-var middleware_insertion_facade_default = pages_template_worker_default;
-init_functionsRoutes_0_6131355600780521();
-var __facade_middleware__ = [];
-function __facade_register__(...args) {
-  __facade_middleware__.push(...args.flat());
-}
-__name(__facade_register__, "__facade_register__");
-__name2(__facade_register__, "__facade_register__");
-function __facade_invokeChain__(request, env2, ctx, dispatch, middlewareChain) {
-  const [head2, ...tail] = middlewareChain;
-  const middlewareCtx = {
-    dispatch,
-    next(newRequest, newEnv) {
-      return __facade_invokeChain__(newRequest, newEnv, ctx, dispatch, tail);
-    }
-  };
-  return head2(request, env2, ctx, middlewareCtx);
-}
-__name(__facade_invokeChain__, "__facade_invokeChain__");
-__name2(__facade_invokeChain__, "__facade_invokeChain__");
-function __facade_invoke__(request, env2, ctx, dispatch, finalMiddleware) {
-  return __facade_invokeChain__(request, env2, ctx, dispatch, [
-    ...__facade_middleware__,
-    finalMiddleware
-  ]);
-}
-__name(__facade_invoke__, "__facade_invoke__");
-__name2(__facade_invoke__, "__facade_invoke__");
-var __Facade_ScheduledController__ = class ___Facade_ScheduledController__ {
-  static {
-    __name(this, "___Facade_ScheduledController__");
-  }
-  constructor(scheduledTime, cron, noRetry) {
-    this.scheduledTime = scheduledTime;
-    this.cron = cron;
-    this.#noRetry = noRetry;
-  }
-  scheduledTime;
-  cron;
-  static {
-    __name2(this, "__Facade_ScheduledController__");
-  }
-  #noRetry;
-  noRetry() {
-    if (!(this instanceof ___Facade_ScheduledController__)) {
-      throw new TypeError("Illegal invocation");
-    }
-    this.#noRetry();
-  }
-};
-function wrapExportedHandler(worker) {
-  if (__INTERNAL_WRANGLER_MIDDLEWARE__ === void 0 || __INTERNAL_WRANGLER_MIDDLEWARE__.length === 0) {
-    return worker;
-  }
-  for (const middleware of __INTERNAL_WRANGLER_MIDDLEWARE__) {
-    __facade_register__(middleware);
-  }
-  const fetchDispatcher = /* @__PURE__ */ __name2(function(request, env2, ctx) {
-    if (worker.fetch === void 0) {
-      throw new Error("Handler does not export a fetch() function.");
-    }
-    return worker.fetch(request, env2, ctx);
-  }, "fetchDispatcher");
-  return {
-    ...worker,
-    fetch(request, env2, ctx) {
-      const dispatcher = /* @__PURE__ */ __name2(function(type, init) {
-        if (type === "scheduled" && worker.scheduled !== void 0) {
-          const controller = new __Facade_ScheduledController__(
-            Date.now(),
-            init.cron ?? "",
-            () => {
-            }
-          );
-          return worker.scheduled(controller, env2, ctx);
-        }
-      }, "dispatcher");
-      return __facade_invoke__(request, env2, ctx, dispatcher, fetchDispatcher);
-    }
-  };
-}
-__name(wrapExportedHandler, "wrapExportedHandler");
-__name2(wrapExportedHandler, "wrapExportedHandler");
-function wrapWorkerEntrypoint(klass) {
-  if (__INTERNAL_WRANGLER_MIDDLEWARE__ === void 0 || __INTERNAL_WRANGLER_MIDDLEWARE__.length === 0) {
-    return klass;
-  }
-  for (const middleware of __INTERNAL_WRANGLER_MIDDLEWARE__) {
-    __facade_register__(middleware);
-  }
-  return class extends klass {
-    #fetchDispatcher = /* @__PURE__ */ __name2((request, env2, ctx) => {
-      this.env = env2;
-      this.ctx = ctx;
-      if (super.fetch === void 0) {
-        throw new Error("Entrypoint class does not define a fetch() function.");
-      }
-      return super.fetch(request);
-    }, "#fetchDispatcher");
-    #dispatcher = /* @__PURE__ */ __name2((type, init) => {
-      if (type === "scheduled" && super.scheduled !== void 0) {
-        const controller = new __Facade_ScheduledController__(
-          Date.now(),
-          init.cron ?? "",
-          () => {
-          }
-        );
-        return super.scheduled(controller);
-      }
-    }, "#dispatcher");
-    fetch(request) {
-      return __facade_invoke__(
-        request,
-        this.env,
-        this.ctx,
-        this.#dispatcher,
-        this.#fetchDispatcher
-      );
-    }
-  };
-}
-__name(wrapWorkerEntrypoint, "wrapWorkerEntrypoint");
-__name2(wrapWorkerEntrypoint, "wrapWorkerEntrypoint");
-var WRAPPED_ENTRY;
-if (typeof middleware_insertion_facade_default === "object") {
-  WRAPPED_ENTRY = wrapExportedHandler(middleware_insertion_facade_default);
-} else if (typeof middleware_insertion_facade_default === "function") {
-  WRAPPED_ENTRY = wrapWorkerEntrypoint(middleware_insertion_facade_default);
-}
-var middleware_loader_entry_default = WRAPPED_ENTRY;
-
-// ../../Users/tiwlx/AppData/Roaming/npm/node_modules/wrangler/templates/middleware/middleware-ensure-req-body-drained.ts
-var drainBody2 = /* @__PURE__ */ __name(async (request, env2, _ctx, middlewareCtx) => {
-  try {
-    return await middlewareCtx.next(request, env2);
-  } finally {
-    try {
-      if (request.body !== null && !request.bodyUsed) {
-        const reader = request.body.getReader();
-        while (!(await reader.read()).done) {
-        }
-      }
-    } catch (e) {
-      console.error("Failed to drain the unused request body.", e);
-    }
-  }
-}, "drainBody");
-var middleware_ensure_req_body_drained_default2 = drainBody2;
-
-// ../../Users/tiwlx/AppData/Roaming/npm/node_modules/wrangler/templates/middleware/middleware-miniflare3-json-error.ts
-function reduceError2(e) {
-  return {
-    name: e?.name,
-    message: e?.message ?? String(e),
-    stack: e?.stack,
-    cause: e?.cause === void 0 ? void 0 : reduceError2(e.cause)
-  };
-}
-__name(reduceError2, "reduceError");
-var jsonError2 = /* @__PURE__ */ __name(async (request, env2, _ctx, middlewareCtx) => {
-  try {
-    return await middlewareCtx.next(request, env2);
-  } catch (e) {
-    const error = reduceError2(e);
-    const body = JSON.stringify(error);
-    const headers = {
-      "Content-Type": "application/json",
-      "MF-Experimental-Error-Stack": "true"
-    };
-    const encoded = encodeURIComponent(body);
-    if (encoded.length <= 8192) {
-      headers["MF-Experimental-Error-Stack-Payload"] = encoded;
-    }
-    return new Response(body, { status: 500, headers });
-  }
-}, "jsonError");
-var middleware_miniflare3_json_error_default2 = jsonError2;
-
-// .wrangler/tmp/bundle-GPPhea/middleware-insertion-facade.js
-var __INTERNAL_WRANGLER_MIDDLEWARE__2 = [
-  middleware_ensure_req_body_drained_default2,
-  middleware_miniflare3_json_error_default2
-];
-var middleware_insertion_facade_default2 = middleware_loader_entry_default;
-
-// ../../Users/tiwlx/AppData/Roaming/npm/node_modules/wrangler/templates/middleware/common.ts
-var __facade_middleware__2 = [];
-function __facade_register__2(...args) {
-  __facade_middleware__2.push(...args.flat());
-}
-__name(__facade_register__2, "__facade_register__");
-function __facade_invokeChain__2(request, env2, ctx, dispatch, middlewareChain) {
-  const [head2, ...tail] = middlewareChain;
-  const middlewareCtx = {
-    dispatch,
-    next(newRequest, newEnv) {
-      return __facade_invokeChain__2(newRequest, newEnv, ctx, dispatch, tail);
-    }
-  };
-  return head2(request, env2, ctx, middlewareCtx);
-}
-__name(__facade_invokeChain__2, "__facade_invokeChain__");
-function __facade_invoke__2(request, env2, ctx, dispatch, finalMiddleware) {
-  return __facade_invokeChain__2(request, env2, ctx, dispatch, [
-    ...__facade_middleware__2,
-    finalMiddleware
-  ]);
-}
-__name(__facade_invoke__2, "__facade_invoke__");
-
-// .wrangler/tmp/bundle-GPPhea/middleware-loader.entry.ts
-var __Facade_ScheduledController__2 = class ___Facade_ScheduledController__2 {
-  constructor(scheduledTime, cron, noRetry) {
-    this.scheduledTime = scheduledTime;
-    this.cron = cron;
-    this.#noRetry = noRetry;
-  }
-  scheduledTime;
-  cron;
-  static {
-    __name(this, "__Facade_ScheduledController__");
-  }
-  #noRetry;
-  noRetry() {
-    if (!(this instanceof ___Facade_ScheduledController__2)) {
-      throw new TypeError("Illegal invocation");
-    }
-    this.#noRetry();
-  }
-};
-function wrapExportedHandler2(worker) {
-  if (__INTERNAL_WRANGLER_MIDDLEWARE__2 === void 0 || __INTERNAL_WRANGLER_MIDDLEWARE__2.length === 0) {
-    return worker;
-  }
-  for (const middleware of __INTERNAL_WRANGLER_MIDDLEWARE__2) {
-    __facade_register__2(middleware);
-  }
-  const fetchDispatcher = /* @__PURE__ */ __name(function(request, env2, ctx) {
-    if (worker.fetch === void 0) {
-      throw new Error("Handler does not export a fetch() function.");
-    }
-    return worker.fetch(request, env2, ctx);
-  }, "fetchDispatcher");
-  return {
-    ...worker,
-    fetch(request, env2, ctx) {
-      const dispatcher = /* @__PURE__ */ __name(function(type, init) {
-        if (type === "scheduled" && worker.scheduled !== void 0) {
-          const controller = new __Facade_ScheduledController__2(
-            Date.now(),
-            init.cron ?? "",
-            () => {
-            }
-          );
-          return worker.scheduled(controller, env2, ctx);
-        }
-      }, "dispatcher");
-      return __facade_invoke__2(request, env2, ctx, dispatcher, fetchDispatcher);
-    }
-  };
-}
-__name(wrapExportedHandler2, "wrapExportedHandler");
-function wrapWorkerEntrypoint2(klass) {
-  if (__INTERNAL_WRANGLER_MIDDLEWARE__2 === void 0 || __INTERNAL_WRANGLER_MIDDLEWARE__2.length === 0) {
-    return klass;
-  }
-  for (const middleware of __INTERNAL_WRANGLER_MIDDLEWARE__2) {
-    __facade_register__2(middleware);
-  }
-  return class extends klass {
-    #fetchDispatcher = /* @__PURE__ */ __name((request, env2, ctx) => {
-      this.env = env2;
-      this.ctx = ctx;
-      if (super.fetch === void 0) {
-        throw new Error("Entrypoint class does not define a fetch() function.");
-      }
-      return super.fetch(request);
-    }, "#fetchDispatcher");
-    #dispatcher = /* @__PURE__ */ __name((type, init) => {
-      if (type === "scheduled" && super.scheduled !== void 0) {
-        const controller = new __Facade_ScheduledController__2(
-          Date.now(),
-          init.cron ?? "",
-          () => {
-          }
-        );
-        return super.scheduled(controller);
-      }
-    }, "#dispatcher");
-    fetch(request) {
-      return __facade_invoke__2(
-        request,
-        this.env,
-        this.ctx,
-        this.#dispatcher,
-        this.#fetchDispatcher
-      );
-    }
-  };
-}
-__name(wrapWorkerEntrypoint2, "wrapWorkerEntrypoint");
-var WRAPPED_ENTRY2;
-if (typeof middleware_insertion_facade_default2 === "object") {
-  WRAPPED_ENTRY2 = wrapExportedHandler2(middleware_insertion_facade_default2);
-} else if (typeof middleware_insertion_facade_default2 === "function") {
-  WRAPPED_ENTRY2 = wrapWorkerEntrypoint2(middleware_insertion_facade_default2);
-}
-var middleware_loader_entry_default2 = WRAPPED_ENTRY2;
 export {
-  __INTERNAL_WRANGLER_MIDDLEWARE__2 as __INTERNAL_WRANGLER_MIDDLEWARE__,
-  middleware_loader_entry_default2 as default
+  pages_template_worker_default as default
 };
 /*! Bundled license information:
 
@@ -67195,4 +65781,3 @@ export {
    * g3-prettier-ignore-file
    *)
 */
-//# sourceMappingURL=functionsWorker-0.03628886513571916.js.map
