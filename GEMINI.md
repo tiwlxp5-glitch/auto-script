@@ -240,6 +240,12 @@ c:\Auto script\
    - **Retention Banner:** `history.jsx` shows an amber banner (Free) or blue banner (Plus) informing users how long their scripts are kept, with a link to upgrade. Pro users see no banner.
    - **Bulk Delete Mode (UX):** Added "เลือกลบ" button (Trash SVG icon) in the History toolbar. Clicking enters Delete Mode — all filter controls are replaced with a delete toolbar (select-all checkbox + delete count button + cancel button). Each card shows a checkbox; favorites show a locked star icon instead. Deleted cards are removed instantly via optimistic UI update. All icons are Heroicons/SVG consistent with the existing design system (no text emojis).
 
+25. **Post-Launch SSG Bug Fixes (Cloudflare Pages SPA)**:
+   - **Broken Imports (Build Failure):** Fixed Cloudflare Pages silently failing to deploy due to Edge API functions still importing from `src/` instead of `app/` after the React Router v7 migration.
+   - **CSP Hydration Block:** Added `'unsafe-inline'` to `script-src` in `public/_headers` to allow React Router v7's inline hydration scripts to execute, which were previously blocked, rendering all interactive elements (like Login buttons) dead.
+   - **Supabase WS Crash (Node v20 vs v22):** `@supabase/supabase-js` v2.112+ requires Node 22+ for native WebSocket support. Created `.node-version` (`22`) to force Cloudflare Pages to use Node 22 during build, fixing the `native WebSocket not found` server crash. Added `.trim()` to Supabase env vars in `supabase.js` to defensively strip accidental trailing whitespace from Cloudflare dashboard config.
+   - **Manifest Fetch Error (SPA Routing):** Set `ssr: false` in `react-router.config.ts` to stop the client from trying to fetch `/__manifest` (which Cloudflare responded to with `index.html`, causing a JSON parse error). Updated `postbuild.js` to rename `dist/__spa-fallback.html` to `dist/404.html` so Cloudflare Pages handles client-side routing correctly as a SPA fallback.
+
 
 ---
 
