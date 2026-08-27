@@ -48,7 +48,7 @@ The audio_spoken field must sound like a real person talking, NOT like a written
 - "คุณกำลังประสบปัญหา..." → too TV-ad. Speak from your own personal experience instead.
 
 **Spoken style guide:**
-- Use filler words naturally: "คือแบบ", "เอาจริงๆ", "บอกเลยนะ", "โห", "แม่!", "จิงป่ะ" (female) / "เอาจริงๆนะ", "บอกตรงๆ", "จริงๆไม่โกหก" (male)
+- Use filler words naturally (DO NOT overuse the same words, mix them up): "คือแบบ", "บอกเลยนะ", "โห", "แม่!", "จิงป่ะ", "แกเอ้ย" (female) / "บอกตรงๆ", "จริงๆไม่โกหก", "เชื่อผมดิ", "เคยป่ะ", "ทุกคนครับ" (male)
 - Use "..." to indicate a natural pause or breath mid-sentence
 - Mix short punchy sentences (3-5 words) with longer explanatory ones for rhythm
 - Avoid sentences that feel like they were written — they should feel spoken
@@ -111,7 +111,7 @@ The audio_spoken field must sound like a real person talking, NOT a written ad. 
 - "วันนี้ฉันจะมาแนะนำ..." → never. Dive straight into hook.
 
 **Spoken style guide:**
-- Use filler words naturally: "คือแบบ", "เอาจริงๆ", "บอกเลยนะ", "โห", "แม่!" (female) / "เอาจริงๆนะ", "บอกตรงๆ", "จริงๆไม่โกหก" (male)
+- Use filler words naturally (Mix them up, DO NOT start with the same word every time): "คือแบบ", "บอกเลยนะ", "โห", "แม่!", "แกเอ้ย" (female) / "บอกตรงๆ", "จริงๆไม่โกหก", "เชื่อผมดิ", "เคยป่ะ" (male)
 - Use "..." for natural breathing pauses
 - Mix short punchy sentences (3-5 words) with longer explanatory ones
 - BAD: "ผลิตภัณฑ์นี้สามารถช่วยคุมความมันได้ถึง 12 ชั่วโมง"
@@ -182,7 +182,7 @@ The audio_spoken field must sound like a real person talking, NOT a written adve
 
 **Spoken style guide (especially important for belief-shifting):**
 - Use "..." to indicate a natural pause — critical for building tension and emotion
-- Use filler words: "รู้ป่ะ", "คือแบบ", "เอาจริงๆ", "ช็อคมากเลยนะ" (female) / "รู้ป่ะ", "เอาจริงๆนะ", "บอกตรงๆ" (male)
+- Use filler words (VARY them, do not repeat): "รู้ป่ะ", "คือแบบ", "ช็อคมากเลยนะ" (female) / "รู้ป่ะ", "บอกตรงๆ", "คิดดูดิ", "แปลกมากที่" (male)
 - Fragmented sentences are GOOD for emotional peak moments: "คือ... ไม่น่าเชื่อเลย" / "แบบ... ทำไมไม่มีใครบอกเราเร็วกว่านี้?"
 - BAD: "ลูกค้าหลายท่านมักเชื่อว่าการลดน้ำหนักต้องอดอาหาร อย่างไรก็ตาม ผลิตภัณฑ์นี้สามารถช่วยได้"
 - GOOD: "รู้ป่ะ... ที่อดข้าวเย็นมาตลอด... มันไม่ได้ช่วยอะไรเลยนะ"
@@ -393,15 +393,17 @@ export async function onRequestPost(context) {
    - "เพื่อนสาวจอมแฉ/ป้ายยา": พูดเร็ว, กัดจิก, รีวิวตรงๆ, สแลงเยอะ (ใช้คำเช่น "แกเอ้ย", "เอาดีๆ", "จึ้งมาก", "ตัวมารดา", "ฉ่ำ")
    - "ผู้เชี่ยวชาญน่าเชื่อถือ": นิ่ง, น่าเชื่อถือ, เน้นผลลัพธ์ (ใช้คำเช่น "รู้หรือไม่...", "หลักการคือ...", "สิ่งสำคัญคือ...")
    - "แม่ค้าสายฮาร์ดเซลล์": พลังเยอะ, กระตุ้นความคุ้มค่า, รีบเร่ง (ใช้คำเช่น "ฟังนะแม่!", "พลาดคือพลาดมาก", "กดตะกร้าด่วน")
-   - "ผู้ชายรีวิวจริงใจ": แมนๆ, ตรงไปตรงมา, ไม่อ้อมค้อม (ใช้คำเช่น "เอาจริงๆนะ", "บอกตรงๆ", "ของโคตรดี", "อย่างแจ่ม")
+   - "ผู้ชายรีวิวจริงใจ": แมนๆ, ตรงไปตรงมา, ไม่อ้อมค้อม (ใช้คำเช่น "ผมบอกตรงๆ", "เชื่อผมดิ", "ของโคตรดี", "อย่างแจ่ม", "คือว่านะ", "ฟังนะทุกคน")
 
-2. การเว้นจังหวะหายใจและการเล่นคำ (Breathing & Wordplay):
+2. การเว้นจังหวะหายใจและการเล่นคำ (Breathing, Wordplay, & DIVERSITY):
    - บังคับใช้เครื่องหมาย "..." เพื่อเว้นจังหวะพักหายใจแบบคนพูดจริงๆ เพื่อไม่ให้เป็นหุ่นยนต์
    - พยายามใช้คำคล้องจองหรือวลีจำง่าย (Punchline) เพื่อให้คลิปน่าสนใจ
-   
-3. ตัวอย่างการพูดที่เป็นธรรมชาติ (Few-Shot Reference):
-   - [Hook] "แกเอ้ย... ตอนแรกก็ไม่เชื่อนะเว้ย ว่ามันจะเนียนขนาดนี้... คือแบบ... ช็อคมาก!"
-   - [Agitate] "เอาจริงๆนะ... ใครที่หน้ามันเยิ้มระหว่างวัน... หยุดฟังคลิปนี้ด่วนๆ เลยครับ"
+   - [CRITICAL - DIVERSITY]: ห้ามเปิด Hook หรือคลิปด้วยคำซ้ำๆ แบบเดิมทุกครั้ง (เช่น ห้ามเปิดคลิปด้วยคำว่า "เอาจริงๆนะ..." พร่ำเพรื่อ) ให้สุ่มวิธีเปิดคลิปให้หลากหลาย เช่น เปิดด้วยคำถาม ("เคยป่ะ..."), เปิดด้วยความตกใจ ("ช็อคมาก!"), หรือเปิดด้วยการบ่น ("คือเซ็งมากนะ...")
+
+3. ตัวอย่างการพูดที่เป็นธรรมชาติ (Few-Shot Reference - DO NOT COPY EXACTLY, USE AS INSPIRATION ONLY):
+   - [Hook 1] "แกเอ้ย... ตอนแรกก็ไม่เชื่อนะเว้ย ว่ามันจะเนียนขนาดนี้... คือแบบ... ช็อคมาก!"
+   - [Hook 2] "ใครที่หน้ามันเยิ้มระหว่างวัน... หยุดฟังคลิปนี้ด่วนๆ เลยครับ"
+   - [Hook 3] "เคยป่ะ... ซื้อของมาแล้วไม่ตรงปก... แต่อันนี้คือแบบ... เกินคาดว่ะ!"
    - [CTA] "ฟังนะแม่!... ตัวนี้คือแรร์ไอเทม... รีบกดตะกร้าเหลืองให้ทันก่อนของจะหมดนะจ๊ะ"
 `;
 
