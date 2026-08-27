@@ -251,6 +251,11 @@ c:\Auto script\
    - Fixed obsolete legacy chunk-load Vitest UI tests broken by the RRv7 migration.
    - Replaced the low-quality AI-generated OG image with a pixel-perfect, light-themed, professional OG image (`1200x630`) generated via a custom Playwright headless browser script (`generate_og.cjs`) to ensure Thai typography (Kanit font) renders perfectly without artifacts.
 
+27. **Competitor Field: Harsh-Word Ban + Warning UI**:
+   - **Warning UI (create.jsx):** Added an amber-colored hint text (`<p>`) below the "คู่แข่ง / สินค้าที่นำมาเปรียบเทียบ" label. Only appears when `mode === 'เปรียบเทียบชัดๆ'`. Warns users to avoid harsh comparison words before they submit.
+   - **Validation Logic (create.jsx):** Added a dedicated harsh-word check for the competitor field (`harshWords = ["กาก", "ห่วย", "แย่", "ขยะ", "สวะ", "หลอกลวง", "หมา"]`). Runs before the existing `containsProfanity` check. Only activates when `mode === 'เปรียบเทียบชัดๆ'` — has zero impact on all other modes. Shows a descriptive Thai error message suggesting safer alternatives.
+   - **Home Page Fix (_index.jsx):** Added `inline-block` to the `<strong>` wrapping `"6 สูตรจิตวิทยาการขายระดับโลก"` to prevent the number "6" from orphaning onto its own line on mobile screens.
+
 ### Infrastructure Bottlenecks & Upgrade Path (For Future Scaling)
 *If the user asks for help upgrading the system tiers because of high traffic, guide them through these bottlenecks in order:*
 1. **Resend (Email) - The First Bottleneck:** Free tier is limited to 100 emails/day. If daily new signups exceed this, users will fail to receive verification emails.
