@@ -5,116 +5,34 @@ import path from 'path';
 describe('CHALLENGER AUDIT 2: FRONTEND UX, STATE, CODE SPLITTING & INFRASTRUCTURE HARNESS', () => {
 
   const frontendRoot = path.resolve(__dirname, '../../../src');
-  const appJsxPath = path.join(frontendRoot, 'App.jsx');
-  const createScriptPath = path.join(frontendRoot, 'pages', 'CreateScript.jsx');
-  const errorBoundaryPath = path.join(frontendRoot, 'components', 'ErrorBoundary.jsx');
-  const mainLayoutPath = path.join(frontendRoot, 'layouts', 'MainLayout.jsx');
-  const navbarPath = path.join(frontendRoot, 'components', 'Navbar.jsx');
-  const settingsPath = path.join(frontendRoot, 'pages', 'Settings.jsx');
-  const historyPath = path.join(frontendRoot, 'pages', 'History.jsx');
-  const loginPath = path.join(frontendRoot, 'pages', 'Login.jsx');
-  const registerPath = path.join(frontendRoot, 'pages', 'Register.jsx');
-  const authContextPath = path.join(frontendRoot, 'context', 'AuthContext.jsx');
+  const appJsxPath = path.resolve(__dirname, '../../../app/root.jsx'); // main layout/root
+  const mainJsxPath = path.resolve(__dirname, '../../../app/entry.client.jsx');
+  const mainLayoutPath = path.resolve(__dirname, '../../../app/layouts/MainLayout.jsx');
+  const errorBoundaryPath = path.resolve(__dirname, '../../../app/components/ErrorBoundary.jsx');
+  const createScriptPath = path.resolve(__dirname, '../../../app/routes/create.jsx');
+  const historyPath = path.resolve(__dirname, '../../../app/routes/history.jsx');
+  const settingsPath = path.resolve(__dirname, '../../../app/routes/settings.jsx');
+  const loginPath = path.resolve(__dirname, '../../../app/routes/login.jsx');
+  const registerPath = path.resolve(__dirname, '../../../app/routes/register.jsx');
+  const authContextPath = path.resolve(__dirname, '../../../app/context/AuthContext.jsx');
+  const navbarPath = path.resolve(__dirname, '../../../app/components/Navbar.jsx');
 
   // =========================================================================
   // FOCUS 1: ErrorBoundary, Chunk Loading (lazyWithRetry) & Suspense Hierarchy
   // =========================================================================
   describe('Focus 1: ErrorBoundary, Dynamic Chunk Loading & Suspense Architecture', () => {
     
-    it('EMP-CHUNK-1: App.jsx uses lazyWithRetry for automatic chunk reload recovery on 404 ChunkLoadErrors [FIXED]', () => {
-      const appCode = fs.readFileSync(appJsxPath, 'utf8');
-      
-      // FIXED: App.jsx now uses lazyWithRetry instead of bare lazy()
-      expect(appCode).toContain('lazyWithRetry');
-      expect(appCode).toContain("from './utils/lazyWithRetry'");
-      
-      // All lazy-loaded pages use lazyWithRetry
-      expect(appCode).toMatch(/lazyWithRetry\s*\(\s*\(\)\s*=>\s*import\(/);
+    it.skip('EMP-CHUNK-1: App.jsx uses lazyWithRetry for automatic chunk reload recovery on 404 ChunkLoadErrors [OBSOLETE IN RRv7]', () => {
+      // Skipped: RRv7 native file-based routing eliminates the need for lazyWithRetry.
     });
 
 
-    it('EMP-CHUNK-2: lazyWithRetry simulation proves single force-refresh recovery without infinite reload loops', async () => {
-      // Mock sessionStorage and window.location
-      const storage = new Map();
-      const mockSessionStorage = {
-        getItem: (k) => storage.get(k) || null,
-        setItem: (k, v) => storage.set(k, String(v)),
-        removeItem: (k) => storage.delete(k),
-        clear: () => storage.clear()
-      };
-      
-      let reloadCount = 0;
-      const mockLocation = {
-        reload: () => { reloadCount++; }
-      };
-
-      // Implement lazyWithRetry logic
-      function simulateLazyWithRetry(componentImporter) {
-        return async () => {
-          const pageHasBeenForceRefreshed = JSON.parse(
-            mockSessionStorage.getItem('page-has-been-force-refreshed') || 'false'
-          );
-
-          try {
-            const component = await componentImporter();
-            mockSessionStorage.setItem('page-has-been-force-refreshed', 'false');
-            return component;
-          } catch (error) {
-            if (!pageHasBeenForceRefreshed) {
-              mockSessionStorage.setItem('page-has-been-force-refreshed', 'true');
-              mockLocation.reload();
-              return { status: 'reloading' };
-            }
-            throw error; // Propagate on second failure to prevent loop
-          }
-        };
-      }
-
-      // Scenario A: First chunk failure -> triggers exactly 1 reload
-      const failingImporter = vi.fn().mockRejectedValue(new Error('Failed to fetch dynamically imported module'));
-      const lazyLoader = simulateLazyWithRetry(failingImporter);
-      
-      const firstAttempt = await lazyLoader();
-      expect(reloadCount).toBe(1);
-      expect(mockSessionStorage.getItem('page-has-been-force-refreshed')).toBe('true');
-      expect(firstAttempt.status).toBe('reloading');
-
-      // Scenario B: Second consecutive failure after reload -> does NOT loop, throws to ErrorBoundary
-      let caughtError = null;
-      try {
-        await lazyLoader();
-      } catch (err) {
-        caughtError = err;
-      }
-      expect(caughtError).not.toBeNull();
-      expect(caughtError.message).toContain('Failed to fetch dynamically imported module');
-      expect(reloadCount).toBe(1); // Reload count remains 1 (no infinite loop)
-
-      // Scenario C: Successful recovery on new build chunk -> resets guard flag
-      const successfulImporter = vi.fn().mockResolvedValue({ default: () => 'PageLoaded' });
-      const recoveryLoader = simulateLazyWithRetry(successfulImporter);
-      
-      const successfulAttempt = await recoveryLoader();
-      expect(successfulAttempt.default()).toBe('PageLoaded');
-      expect(mockSessionStorage.getItem('page-has-been-force-refreshed')).toBe('false');
+    it.skip('EMP-CHUNK-2: lazyWithRetry simulation proves single force-refresh recovery without infinite reload loops [OBSOLETE IN RRv7]', async () => {
+      // Skipped
     });
 
-    it('EMP-SUSPENSE-1: App.jsx wraps entire Routes in Suspense, causing MainLayout and Navbar to unmount during lazy loads', () => {
-      const appCode = fs.readFileSync(appJsxPath, 'utf8');
-      const layoutCode = fs.readFileSync(mainLayoutPath, 'utf8');
-
-      // In App.jsx: <Suspense> is outside <Routes>
-      const suspenseIndex = appCode.indexOf('<Suspense fallback={<PageLoader />}>');
-      const routesIndex = appCode.indexOf('<Routes>');
-      const mainLayoutRouteIndex = appCode.indexOf('<Route path="/" element={<MainLayout />}>');
-
-      expect(suspenseIndex).toBeGreaterThan(-1);
-      expect(routesIndex).toBeGreaterThan(suspenseIndex);
-      expect(mainLayoutRouteIndex).toBeGreaterThan(routesIndex);
-
-      // In MainLayout.jsx: currently lacks internal Suspense around Outlet
-      expect(layoutCode).not.toContain('<Suspense');
-      expect(layoutCode).toContain('<Outlet />');
+    it.skip('EMP-SUSPENSE-1: App.jsx wraps entire Routes in Suspense, causing MainLayout and Navbar to unmount during lazy loads [OBSOLETE IN RRv7]', () => {
+      // Skipped
     });
 
     it('EMP-ERRB-1: ErrorBoundary.jsx lacks dynamic reset handler on route navigation', () => {
@@ -333,7 +251,7 @@ describe('CHALLENGER AUDIT 2: FRONTEND UX, STATE, CODE SPLITTING & INFRASTRUCTUR
       const csAlerts = scanAlerts(createScriptPath);
       const historyAlerts = scanAlerts(historyPath);
       const settingsAlerts = scanAlerts(settingsPath);
-      const pricingAlerts = scanAlerts(path.join(frontendRoot, 'pages', 'Pricing.jsx'));
+      const pricingAlerts = scanAlerts(path.resolve(__dirname, '../../../app/routes/pricing.jsx'));
 
       expect(csAlerts).toBeGreaterThanOrEqual(4); // 4 alerts in CreateScript
       expect(historyAlerts).toBeGreaterThanOrEqual(4); // 4+ alerts in History
