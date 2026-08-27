@@ -246,6 +246,11 @@ c:\Auto script\
    - **Supabase WS Crash (Node v20 vs v22):** `@supabase/supabase-js` v2.112+ requires Node 22+ for native WebSocket support. Created `.node-version` (`22`) to force Cloudflare Pages to use Node 22 during build, fixing the `native WebSocket not found` server crash. Added `.trim()` to Supabase env vars in `supabase.js` to defensively strip accidental trailing whitespace from Cloudflare dashboard config.
    - **Manifest Fetch Error (SPA Routing):** Set `ssr: false` in `react-router.config.ts` to stop the client from trying to fetch `/__manifest` (which Cloudflare responded to with `index.html`, causing a JSON parse error). Updated `postbuild.js` to rename `dist/__spa-fallback.html` to `dist/404.html` so Cloudflare Pages handles client-side routing correctly as a SPA fallback.
 
+26. **Final Pre-Launch Audit & OG Image**:
+   - Conducted a comprehensive deep-dive audit of the entire stack (Security, Payments, Database, SEO).
+   - Fixed obsolete legacy chunk-load Vitest UI tests broken by the RRv7 migration.
+   - Replaced the low-quality AI-generated OG image with a pixel-perfect, light-themed, professional OG image (`1200x630`) generated via a custom Playwright headless browser script (`generate_og.cjs`) to ensure Thai typography (Kanit font) renders perfectly without artifacts.
+
 
 ---
 
