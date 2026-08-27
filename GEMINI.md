@@ -226,7 +226,12 @@ c:\Auto script\
    - **React 19 Document Metadata API (Phase 2):** Added native `<title>` and `<meta description>` to all main pages (Home, Pricing, Login, Register, Legal) without extra libraries.
    - **Next Steps (Phase 3):** React Router v7 SSG pre-rendering for perfect social unfurling on all routes.
 
-
+23. **SEO Phase 3 — React Router v7 SSG Migration**:
+   - **Architecture Shift:** Migrated the Vite SPA to React Router v7 Framework Mode for native SSR/SSG support.
+   - **File-Based Routing:** Refactored `src/` to `app/` and adopted File-based routing inside `app/routes/` (e.g. `_index.jsx`, `pricing.jsx`), removing the old `react-router-dom` `<Routes>` setup.
+   - **Entry Points:** Replaced `index.html`, `main.jsx`, `App.jsx` with `app/root.jsx`, `app/entry.client.jsx`, and `app/entry.server.jsx`.
+   - **SSG Prerendering:** Configured `react-router.config.ts` to statically pre-render all public routes (`/`, `/pricing`, `/login`, `/register`, `/legal`, `/forgot-password`, `/reset-password`) into static HTML files to ensure 100% perfect social unfurling (Open Graph) on Facebook and LINE.
+   - **Cloudflare Pages Compatibility:** Added a `postbuild.js` script to automatically rename `build/client` to `dist` after `npm run build` so that Cloudflare Pages deployment continues to work seamlessly without manual dashboard configuration changes.
 ---
 
 ## Zero-Tolerance End-of-Task Protocol (Project-Level Enforcement)
