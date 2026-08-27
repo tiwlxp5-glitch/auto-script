@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "react-router dev",
+    "build": "react-router build && node postbuild.js",
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "oxlint",
@@ -13,8 +13,11 @@
   },
   "dependencies": {
     "@google/genai": "^2.18.0",
+    "@react-router/node": "^7.18.2",
+    "@react-router/serve": "^7.18.2",
     "@supabase/supabase-js": "^2.112.3",
     "@tailwindcss/vite": "^4.3.3",
+    "isbot": "^5.2.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router-dom": "^7.18.2",
@@ -22,6 +25,8 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.62.1",
+    "@react-router/dev": "^7.18.2",
+    "@react-router/fs-routes": "^7.18.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.4",
