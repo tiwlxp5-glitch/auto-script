@@ -140,7 +140,17 @@ function CreateScript() {
       }
     }
 
-    // 0. Profanity Check (Strict Ban)
+    // 0. Harsh Comparative Words Check (Competitor)
+    if (mode === 'เปรียบเทียบชัดๆ' && competitor) {
+      const harshWords = ["กาก", "ห่วย", "แย่", "ขยะ", "สวะ", "หลอกลวง", "หมา"];
+      if (harshWords.some(w => competitor.includes(w))) {
+        setError('ไม่อนุญาตให้ใช้คำพาดพิงคู่แข่งรุนแรง (เช่น กาก, ห่วย, แย่) โปรดใช้คำที่สุภาพขึ้น เช่น "แบรนด์ทั่วไป" หรือ "แบบเก่า" เพื่อความเป็นมืออาชีพ');
+        scrollToError();
+        return;
+      }
+    }
+
+    // 0.5 Profanity Check (Strict Ban)
     const allInputs = `${productName} ${productDetails} ${competitor} ${targetAudience}`;
     if (containsProfanity(allInputs)) {
       setError('ไม่อนุญาตให้ใช้คำหยาบคาย! เว็บ Auto Script ห้ามใช้คำหยาบเด็ดขาด กรุณาแก้ไขข้อมูลของคุณ');
@@ -511,7 +521,10 @@ function CreateScript() {
             {/* ช่องกรอกคู่แข่ง จะโผล่มาเมื่อเลือกโหมดเปรียบเทียบ */}
             {mode === 'เปรียบเทียบชัดๆ' && (
               <div className="animate-fade-in-up">
-                <label className="block text-sm font-medium text-slate-700 mb-2">คู่แข่ง / สินค้าที่นำมาเปรียบเทียบ</label>
+                <label className="block text-sm font-medium text-slate-700 mb-1">คู่แข่ง / สินค้าที่นำมาเปรียบเทียบ</label>
+                <p className="text-[11px] sm:text-xs text-amber-600 mb-2 font-medium">
+                  * กรุณาหลีกเลี่ยงการใช้คำพาดพิงรุนแรง (เช่น กาก, ห่วย, แย่) ระบบมีการตรวจจับคำหยาบเช่นเดียวกับช่องข้อมูลสินค้า
+                </p>
                 <input
                   type="text"
                   required
