@@ -643,6 +643,8 @@ ${hookInstruction}
         errorMessage = "ขณะนี้ระบบ AI ของ Google กำลังมีผู้ใช้งานหนาแน่น (503 Service Unavailable) ระบบได้คืนเครดิตให้คุณแล้ว กรุณาลองกดสร้างใหม่อีกครั้งครับ";
       } else if (errorMessage.includes('429') || errorMessage.includes('RESOURCE_EXHAUSTED')) {
         errorMessage = "ระบบ AI ของ Google กำลังทำงานหนักเกินไป (429 Too Many Requests) ระบบได้คืนเครดิตให้คุณแล้ว กรุณารอสักครู่แล้วลองใหม่ครับ";
+      } else if (errorMessage.includes('User location is not supported')) {
+        errorMessage = "ไม่สามารถเชื่อมต่อ AI ได้เนื่องจากเครือข่ายหรือพื้นที่ของคุณไม่รองรับ (เช่น เปิด VPN หรืออยู่ต่างประเทศ) กรุณาปิด VPN หรือสลับอินเทอร์เน็ตแล้วลองใหม่ครับ (ระบบคืนเครดิตให้แล้ว)";
       } else if (errorMessage.startsWith('{')) {
         try {
           const parsed = JSON.parse(errorMessage);
