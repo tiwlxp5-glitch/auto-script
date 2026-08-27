@@ -251,6 +251,14 @@ c:\Auto script\
    - Fixed obsolete legacy chunk-load Vitest UI tests broken by the RRv7 migration.
    - Replaced the low-quality AI-generated OG image with a pixel-perfect, light-themed, professional OG image (`1200x630`) generated via a custom Playwright headless browser script (`generate_og.cjs`) to ensure Thai typography (Kanit font) renders perfectly without artifacts.
 
+### Infrastructure Bottlenecks & Upgrade Path (For Future Scaling)
+*If the user asks for help upgrading the system tiers because of high traffic, guide them through these bottlenecks in order:*
+1. **Resend (Email) - The First Bottleneck:** Free tier is limited to 100 emails/day. If daily new signups exceed this, users will fail to receive verification emails.
+   - **Action:** Guide user to Resend dashboard -> Upgrade to Pro ($20/mo) for 50,000 emails/mo. No code changes needed.
+2. **Cloudflare Pages - The Second Bottleneck:** Free tier allows 100,000 requests/day.
+   - **Action:** Guide user to Cloudflare dashboard -> Upgrade to Pro ($20/mo). No code changes needed.
+3. **Supabase - The Final Bottleneck:** Free tier handles 50k MAU, 500MB DB. (Note: DB bloat is already mitigated by `pg_cron` auto-cleanup of free-tier scripts).
+   - **Action:** Guide user to Supabase project -> Upgrade to Pro ($25/mo) for 100k MAU and 8GB DB.
 
 ---
 
