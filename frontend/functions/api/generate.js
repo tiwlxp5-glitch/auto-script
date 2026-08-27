@@ -1,6 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
 import { createClient } from '@supabase/supabase-js';
-import { moderateText } from '../../src/lib/moderation/engine.js';
+import { moderateText } from '../../app/lib/moderation/engine.js';
 
 const SYSTEM_PROMPT_SINGLE = `
 You are an elite Short-Form Video Scriptwriter and Neuromarketing Expert specializing in the Thai TikTok/Reels e-commerce market (Affiliate/ปักตะกร้า).

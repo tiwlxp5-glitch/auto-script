@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { moderateText } from '../../../src/lib/moderation/engine.js';
-import { normalizeText, stripAllSpaces, collapseRepeatedChars } from '../../../src/lib/moderation/normalize-text.js';
+import { moderateText, containsThaiObfuscation } from '../../../app/lib/moderation/engine.js';
+import { normalizeText, stripAllSpaces, collapseRepeatedChars } from '../../../app/lib/moderation/normalize-text.js';
 
 describe('Text Normalization', () => {
   it('should remove zero-width chars and standard punctuation', () => {
