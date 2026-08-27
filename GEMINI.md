@@ -232,6 +232,15 @@ c:\Auto script\
    - **Entry Points:** Replaced `index.html`, `main.jsx`, `App.jsx` with `app/root.jsx`, `app/entry.client.jsx`, and `app/entry.server.jsx`.
    - **SSG Prerendering:** Configured `react-router.config.ts` to statically pre-render all public routes (`/`, `/pricing`, `/login`, `/register`, `/legal`, `/forgot-password`, `/reset-password`) into static HTML files to ensure 100% perfect social unfurling (Open Graph) on Facebook and LINE.
    - **Cloudflare Pages Compatibility:** Added a `postbuild.js` script to automatically rename `build/client` to `dist` after `npm run build` so that Cloudflare Pages deployment continues to work seamlessly without manual dashboard configuration changes.
+
+24. **Tier-Based Script Auto-Cleanup + Bulk Delete UI**:
+   - **Database (pg_cron):** Added `supabase/migrations/20260827000000_auto_cleanup_scripts.sql`. Enables `pg_cron` extension and creates `cleanup_old_scripts()` SQL function. Schedule: every day at 17:00 UTC (midnight Bangkok time).
+   - **Retention Rules:** Free = delete non-favorite scripts after 3 days, Plus = 30 days, Pro = never delete.
+   - **Favorites Protection:** Scripts with `is_favorite = true` are excluded from auto-deletion regardless of tier.
+   - **Retention Banner:** `history.jsx` shows an amber banner (Free) or blue banner (Plus) informing users how long their scripts are kept, with a link to upgrade. Pro users see no banner.
+   - **Bulk Delete Mode (UX):** Added "เลือกลบ" button (Trash SVG icon) in the History toolbar. Clicking enters Delete Mode — all filter controls are replaced with a delete toolbar (select-all checkbox + delete count button + cancel button). Each card shows a checkbox; favorites show a locked star icon instead. Deleted cards are removed instantly via optimistic UI update. All icons are Heroicons/SVG consistent with the existing design system (no text emojis).
+
+
 ---
 
 ## Zero-Tolerance End-of-Task Protocol (Project-Level Enforcement)
