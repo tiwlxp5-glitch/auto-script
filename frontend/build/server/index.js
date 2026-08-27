@@ -1871,7 +1871,7 @@ var settings_default = UNSAFE_withComponentProps(Settings);
 //#region app/routes/history.jsx
 var history_exports = /* @__PURE__ */ __exportAll({ default: () => history_default });
 function History() {
-	const { user, loading: authLoading } = useAuth();
+	const { user, profile, loading: authLoading } = useAuth();
 	const [scripts, setScripts] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [searchTerm, setSearchTerm] = useState("");
@@ -1879,6 +1879,9 @@ function History() {
 	const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
 	const [selectedScript, setSelectedScript] = useState(null);
 	const [activeModalTab, setActiveModalTab] = useState("funny");
+	const [isDeleteMode, setIsDeleteMode] = useState(false);
+	const [selectedIds, setSelectedIds] = useState(/* @__PURE__ */ new Set());
+	const [isDeleting, setIsDeleting] = useState(false);
 	const navigate = useNavigate();
 	const loadHistory = async (userId) => {
 		setLoading(true);
@@ -1919,6 +1922,46 @@ function History() {
 		} : s));
 		await supabase.from("scripts").update({ is_favorite: !currentStatus }).eq("id", scriptId);
 	};
+	const toggleSelectId = (id) => {
+		setSelectedIds((prev) => {
+			const next = new Set(prev);
+			if (next.has(id)) next.delete(id);
+			else next.add(id);
+			return next;
+		});
+	};
+	const toggleSelectAll = () => {
+		if (selectedIds.size === filteredScriptsForDelete.length) setSelectedIds(/* @__PURE__ */ new Set());
+		else setSelectedIds(new Set(filteredScriptsForDelete.map((s) => s.id)));
+	};
+	const exitDeleteMode = () => {
+		setIsDeleteMode(false);
+		setSelectedIds(/* @__PURE__ */ new Set());
+	};
+	const handleDeleteSelected = async () => {
+		if (selectedIds.size === 0) return;
+		setIsDeleting(true);
+		const idsToDelete = [...selectedIds];
+		const { error } = await supabase.from("scripts").delete().in("id", idsToDelete).eq("user_id", user.id);
+		if (!error) {
+			setScripts((prev) => prev.filter((s) => !idsToDelete.includes(s.id)));
+			exitDeleteMode();
+		}
+		setIsDeleting(false);
+	};
+	const getRetentionLabel = () => {
+		const tier = profile?.tier || "free";
+		if (tier === "pro") return null;
+		if (tier === "plus") return {
+			days: 30,
+			color: "blue"
+		};
+		return {
+			days: 3,
+			color: "amber"
+		};
+	};
+	const retentionInfo = getRetentionLabel();
 	const parseMultiVersion = (rawMultiVersion) => {
 		const safeParse = (str) => {
 			try {
@@ -1992,6 +2035,8 @@ function History() {
 		const matchFavorite = !showFavoritesOnly || s.is_favorite;
 		return matchSearch && matchMode && matchFavorite;
 	});
+	const filteredScriptsForDelete = filteredScripts.filter((s) => !s.is_favorite);
+	const allDeleteSelected = filteredScriptsForDelete.length > 0 && selectedIds.size === filteredScriptsForDelete.length;
 	const uniqueModes = ["all", ...Array.from(new Set(scripts.map((s) => s.mode)))];
 	const formatModeDisplay = (modeStr) => {
 		if (modeStr === "all") return "ทุกโหมด";
@@ -2017,6 +2062,34 @@ function History() {
 					})
 				}), "ย้อนกลับ"]
 			}),
+			retentionInfo && /* @__PURE__ */ jsxs("div", {
+				className: `flex items-start gap-3 mb-5 p-3.5 rounded-xl border text-sm ${retentionInfo.color === "amber" ? "bg-amber-50 border-amber-200 text-amber-800" : "bg-blue-50 border-blue-200 text-blue-800"}`,
+				children: [/* @__PURE__ */ jsx("svg", {
+					className: "w-5 h-5 shrink-0 mt-0.5",
+					fill: "none",
+					stroke: "currentColor",
+					viewBox: "0 0 24 24",
+					children: /* @__PURE__ */ jsx("path", {
+						strokeLinecap: "round",
+						strokeLinejoin: "round",
+						strokeWidth: "2",
+						d: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+					})
+				}), /* @__PURE__ */ jsxs("span", { children: [
+					"สคริปต์ที่ไม่ได้บันทึกเป็นรายการโปรด จะถูกลบอัตโนมัติหลังจาก ",
+					/* @__PURE__ */ jsxs("strong", { children: [retentionInfo.days, " วัน"] }),
+					" ",
+					retentionInfo.color === "amber" && /* @__PURE__ */ jsxs("span", { children: [
+						"— ",
+						/* @__PURE__ */ jsx("a", {
+							href: "/pricing",
+							className: "underline font-medium",
+							children: "อัปเกรดแพลน"
+						}),
+						" เพื่อเก็บนานขึ้น"
+					] })
+				] })]
+			}),
 			/* @__PURE__ */ jsxs("div", {
 				className: "flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4",
 				children: [/* @__PURE__ */ jsxs("h1", {
@@ -2035,7 +2108,7 @@ function History() {
 					})]
 				}), /* @__PURE__ */ jsxs("div", {
 					className: "flex flex-col sm:flex-row gap-3 w-full md:w-auto",
-					children: [
+					children: [!isDeleteMode && /* @__PURE__ */ jsxs(Fragment, { children: [
 						/* @__PURE__ */ jsx("input", {
 							type: "text",
 							placeholder: "ค้นหาชื่อสินค้า...",
@@ -2077,8 +2150,76 @@ function History() {
 									})
 								}), " ดูรายการโปรด"]
 							})
+						}),
+						scripts.length > 0 && /* @__PURE__ */ jsxs("button", {
+							onClick: () => setIsDeleteMode(true),
+							className: "flex items-center gap-2 px-4 py-2 rounded-lg font-medium border border-rose-200 text-rose-600 bg-white hover:bg-rose-50 transition-colors shrink-0",
+							children: [/* @__PURE__ */ jsx("svg", {
+								className: "w-4 h-4",
+								fill: "none",
+								stroke: "currentColor",
+								viewBox: "0 0 24 24",
+								children: /* @__PURE__ */ jsx("path", {
+									strokeLinecap: "round",
+									strokeLinejoin: "round",
+									strokeWidth: "2",
+									d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+								})
+							}), "เลือกลบ"]
 						})
-					]
+					] }), isDeleteMode && /* @__PURE__ */ jsxs("div", {
+						className: "flex items-center gap-3 w-full",
+						children: [
+							/* @__PURE__ */ jsxs("label", {
+								className: "flex items-center gap-2 cursor-pointer select-none text-sm font-medium text-slate-700 shrink-0",
+								children: [
+									/* @__PURE__ */ jsx("input", {
+										type: "checkbox",
+										checked: allDeleteSelected,
+										onChange: toggleSelectAll,
+										className: "w-4 h-4 rounded border-slate-300 text-rose-600 cursor-pointer accent-rose-600"
+									}),
+									"เลือกทั้งหมด (",
+									filteredScriptsForDelete.length,
+									")"
+								]
+							}),
+							/* @__PURE__ */ jsx("div", { className: "flex-1" }),
+							/* @__PURE__ */ jsxs("button", {
+								onClick: handleDeleteSelected,
+								disabled: selectedIds.size === 0 || isDeleting,
+								className: "flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm bg-rose-600 text-white hover:bg-rose-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors",
+								children: [/* @__PURE__ */ jsx("svg", {
+									className: "w-4 h-4",
+									fill: "none",
+									stroke: "currentColor",
+									viewBox: "0 0 24 24",
+									children: /* @__PURE__ */ jsx("path", {
+										strokeLinecap: "round",
+										strokeLinejoin: "round",
+										strokeWidth: "2",
+										d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+									})
+								}), isDeleting ? "กำลังลบ..." : `ลบที่เลือก${selectedIds.size > 0 ? ` (${selectedIds.size})` : ""}`]
+							}),
+							/* @__PURE__ */ jsxs("button", {
+								onClick: exitDeleteMode,
+								className: "flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm border border-slate-300 text-slate-600 bg-white hover:bg-slate-50 transition-colors",
+								children: [/* @__PURE__ */ jsx("svg", {
+									className: "w-4 h-4",
+									fill: "none",
+									stroke: "currentColor",
+									viewBox: "0 0 24 24",
+									children: /* @__PURE__ */ jsx("path", {
+										strokeLinecap: "round",
+										strokeLinejoin: "round",
+										strokeWidth: "2",
+										d: "M6 18L18 6M6 6l12 12"
+									})
+								}), "ยกเลิก"]
+							})
+						]
+					})]
 				})]
 			}),
 			loading ? /* @__PURE__ */ jsx("div", {
@@ -2113,67 +2254,97 @@ function History() {
 				]
 			}) : /* @__PURE__ */ jsx("div", {
 				className: "flex flex-col gap-3",
-				children: filteredScripts.map((script) => /* @__PURE__ */ jsxs("div", {
-					onClick: () => {
-						setSelectedScript(script);
-						setActiveModalTab("funny");
-					},
-					className: "bg-white rounded-xl shadow-sm border border-slate-200 p-4 hover:shadow-md transition-shadow cursor-pointer flex items-center justify-between",
-					children: [/* @__PURE__ */ jsxs("div", {
-						className: "flex-1 min-w-0 pr-4",
-						children: [/* @__PURE__ */ jsx("h3", {
-							className: "text-base font-bold text-slate-900 truncate flex items-center gap-2",
-							children: /* @__PURE__ */ jsx("span", {
-								className: "truncate",
-								children: script.product_name
-							})
-						}), /* @__PURE__ */ jsxs("div", {
-							className: "flex flex-wrap items-center gap-2 mt-1.5",
-							children: [
-								script.totalVersions > 1 && /* @__PURE__ */ jsxs("span", {
-									className: "text-[10px] sm:text-xs font-medium text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200 whitespace-nowrap",
-									children: ["ครั้งที่ ", script.versionIndex]
-								}),
-								/* @__PURE__ */ jsx("span", {
-									className: "text-[10px] sm:text-xs font-medium bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full whitespace-nowrap border border-blue-100",
-									children: formatModeDisplay(script.mode)
-								}),
-								/* @__PURE__ */ jsx("span", {
-									className: "text-[10px] sm:text-xs text-slate-500 whitespace-nowrap",
-									children: new Date(script.created_at).toLocaleDateString("th-TH", {
-										year: "2-digit",
-										month: "short",
-										day: "numeric"
+				children: filteredScripts.map((script) => {
+					const isSelected = selectedIds.has(script.id);
+					const isDeletable = !script.is_favorite;
+					return /* @__PURE__ */ jsxs("div", {
+						onClick: () => {
+							if (isDeleteMode) {
+								if (isDeletable) toggleSelectId(script.id);
+							} else {
+								setSelectedScript(script);
+								setActiveModalTab("funny");
+							}
+						},
+						className: `bg-white rounded-xl shadow-sm border p-4 transition-all cursor-pointer flex items-center gap-3 ${isDeleteMode && isSelected ? "border-rose-300 bg-rose-50 shadow-rose-100" : isDeleteMode && !isDeletable ? "border-slate-100 opacity-50 cursor-not-allowed" : "border-slate-200 hover:shadow-md"}`,
+						children: [
+							isDeleteMode && /* @__PURE__ */ jsx("div", {
+								className: "shrink-0",
+								onClick: (e) => e.stopPropagation(),
+								children: isDeletable ? /* @__PURE__ */ jsx("input", {
+									type: "checkbox",
+									checked: isSelected,
+									onChange: () => toggleSelectId(script.id),
+									className: "w-5 h-5 rounded border-slate-300 cursor-pointer accent-rose-600"
+								}) : /* @__PURE__ */ jsx("div", {
+									className: "w-5 h-5 flex items-center justify-center",
+									title: "รายการโปรด — ไม่สามารถลบได้",
+									children: /* @__PURE__ */ jsx("svg", {
+										className: "w-4 h-4 text-amber-400",
+										fill: "currentColor",
+										viewBox: "0 0 20 20",
+										children: /* @__PURE__ */ jsx("path", { d: "M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" })
 									})
 								})
-							]
-						})]
-					}), /* @__PURE__ */ jsx("button", {
-						onClick: (e) => {
-							e.stopPropagation();
-							toggleFavorite(script.id, script.is_favorite);
-						},
-						className: "p-2 -mr-2 text-2xl hover:scale-110 transition-transform shrink-0",
-						title: "บันทึกเป็นรายการโปรด",
-						children: script.is_favorite ? /* @__PURE__ */ jsx("svg", {
-							className: "w-6 h-6 text-amber-400",
-							fill: "currentColor",
-							viewBox: "0 0 20 20",
-							children: /* @__PURE__ */ jsx("path", { d: "M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" })
-						}) : /* @__PURE__ */ jsx("svg", {
-							className: "w-6 h-6 text-slate-300 hover:text-amber-400",
-							fill: "none",
-							stroke: "currentColor",
-							viewBox: "0 0 24 24",
-							children: /* @__PURE__ */ jsx("path", {
-								strokeLinecap: "round",
-								strokeLinejoin: "round",
-								strokeWidth: "2",
-								d: "M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+							}),
+							/* @__PURE__ */ jsxs("div", {
+								className: "flex-1 min-w-0 pr-2",
+								children: [/* @__PURE__ */ jsx("h3", {
+									className: "text-base font-bold text-slate-900 truncate flex items-center gap-2",
+									children: /* @__PURE__ */ jsx("span", {
+										className: "truncate",
+										children: script.product_name
+									})
+								}), /* @__PURE__ */ jsxs("div", {
+									className: "flex flex-wrap items-center gap-2 mt-1.5",
+									children: [
+										script.totalVersions > 1 && /* @__PURE__ */ jsxs("span", {
+											className: "text-[10px] sm:text-xs font-medium text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200 whitespace-nowrap",
+											children: ["ครั้งที่ ", script.versionIndex]
+										}),
+										/* @__PURE__ */ jsx("span", {
+											className: "text-[10px] sm:text-xs font-medium bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full whitespace-nowrap border border-blue-100",
+											children: formatModeDisplay(script.mode)
+										}),
+										/* @__PURE__ */ jsx("span", {
+											className: "text-[10px] sm:text-xs text-slate-500 whitespace-nowrap",
+											children: new Date(script.created_at).toLocaleDateString("th-TH", {
+												year: "2-digit",
+												month: "short",
+												day: "numeric"
+											})
+										})
+									]
+								})]
+							}),
+							!isDeleteMode && /* @__PURE__ */ jsx("button", {
+								onClick: (e) => {
+									e.stopPropagation();
+									toggleFavorite(script.id, script.is_favorite);
+								},
+								className: "p-2 -mr-2 hover:scale-110 transition-transform shrink-0",
+								title: "บันทึกเป็นรายการโปรด",
+								children: script.is_favorite ? /* @__PURE__ */ jsx("svg", {
+									className: "w-6 h-6 text-amber-400",
+									fill: "currentColor",
+									viewBox: "0 0 20 20",
+									children: /* @__PURE__ */ jsx("path", { d: "M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" })
+								}) : /* @__PURE__ */ jsx("svg", {
+									className: "w-6 h-6 text-slate-300 hover:text-amber-400",
+									fill: "none",
+									stroke: "currentColor",
+									viewBox: "0 0 24 24",
+									children: /* @__PURE__ */ jsx("path", {
+										strokeLinecap: "round",
+										strokeLinejoin: "round",
+										strokeWidth: "2",
+										d: "M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+									})
+								})
 							})
-						})
-					})]
-				}, script.id))
+						]
+					}, script.id);
+				})
 			}),
 			selectedScript && (() => {
 				let parsed = null;
@@ -5265,14 +5436,14 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/root-BpOKzsiq.js",
+			"module": "/assets/root-MZIIFYVr.js",
 			"imports": [
 				"/assets/jsx-runtime-CU6ZeWfl.js",
 				"/assets/react-dom-DMgvKEUl.js",
 				"/assets/supabase-BlHG2laC.js",
 				"/assets/AuthContext-B7plj0MP.js"
 			],
-			"css": ["/assets/root-BpW4gSA8.css"],
+			"css": ["/assets/root-DkjU5nQA.css"],
 			"clientActionModule": void 0,
 			"clientLoaderModule": void 0,
 			"clientMiddlewareModule": void 0,
@@ -5391,7 +5562,7 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/history-DOpIV8F4.js",
+			"module": "/assets/history-e7AWLLmb.js",
 			"imports": [
 				"/assets/jsx-runtime-CU6ZeWfl.js",
 				"/assets/supabase-BlHG2laC.js",
@@ -5521,8 +5692,8 @@ var server_manifest_default = {
 			"hydrateFallbackModule": void 0
 		}
 	},
-	"url": "/assets/manifest-4d50d0aa.js",
-	"version": "4d50d0aa",
+	"url": "/assets/manifest-98422600.js",
+	"version": "98422600",
 	"sri": void 0
 };
 //#endregion

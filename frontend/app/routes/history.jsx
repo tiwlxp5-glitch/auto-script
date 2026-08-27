@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 function History() {
-  const { user, loading: authLoading } = useAuth();
+  const { user, profile, loading: authLoading } = useAuth();
   const [scripts, setScripts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -12,6 +12,10 @@ function History() {
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
   const [selectedScript, setSelectedScript] = useState(null);
   const [activeModalTab, setActiveModalTab] = useState('funny');
+  // ── Bulk Delete State ──────────────────────────────────────────
+  const [isDeleteMode, setIsDeleteMode] = useState(false);
+  const [selectedIds, setSelectedIds] = useState(new Set());
+  const [isDeleting, setIsDeleting] = useState(false);
   const navigate = useNavigate();
 
   const loadHistory = async (userId) => {
@@ -63,6 +67,55 @@ function History() {
       .update({ is_favorite: !currentStatus })
       .eq('id', scriptId);
   };
+
+  // ── Bulk Delete Helpers ──────────────────────────────────────────
+  const toggleSelectId = (id) => {
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedIds.size === filteredScriptsForDelete.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(filteredScriptsForDelete.map(s => s.id)));
+    }
+  };
+
+  const exitDeleteMode = () => {
+    setIsDeleteMode(false);
+    setSelectedIds(new Set());
+  };
+
+  const handleDeleteSelected = async () => {
+    if (selectedIds.size === 0) return;
+    setIsDeleting(true);
+    const idsToDelete = [...selectedIds];
+    const { error } = await supabase
+      .from('scripts')
+      .delete()
+      .in('id', idsToDelete)
+      .eq('user_id', user.id); // Safety: RLS + extra guard
+    if (!error) {
+      setScripts(prev => prev.filter(s => !idsToDelete.includes(s.id)));
+      exitDeleteMode();
+    }
+    setIsDeleting(false);
+  };
+
+  // ── Tier Retention Label ─────────────────────────────────────────
+  const getRetentionLabel = () => {
+    const tier = profile?.tier || 'free';
+    if (tier === 'pro') return null; // Pro = เก็บตลอดกาล ไม่ต้องแสดง Banner
+    if (tier === 'plus') return { days: 30, color: 'blue' };
+    return { days: 3, color: 'amber' };
+  };
+  const retentionInfo = getRetentionLabel();
+
+
 
   const parseMultiVersion = (rawMultiVersion) => {
     const safeParse = (str) => {
@@ -144,6 +197,10 @@ function History() {
     return matchSearch && matchMode && matchFavorite;
   });
 
+  // รายการที่ลบได้ (ไม่ใช่รายการโปรด) ใช้ใน Delete Mode
+  const filteredScriptsForDelete = filteredScripts.filter(s => !s.is_favorite);
+  const allDeleteSelected = filteredScriptsForDelete.length > 0 && selectedIds.size === filteredScriptsForDelete.length;
+
   const uniqueModes = ['all', ...Array.from(new Set(scripts.map(s => s.mode)))];
   
   const formatModeDisplay = (modeStr) => {
@@ -161,6 +218,26 @@ function History() {
         <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
         ย้อนกลับ
       </button>
+
+      {/* ── Retention Banner ─────────────────────────────────────── */}
+      {retentionInfo && (
+        <div className={`flex items-start gap-3 mb-5 p-3.5 rounded-xl border text-sm ${
+          retentionInfo.color === 'amber'
+            ? 'bg-amber-50 border-amber-200 text-amber-800'
+            : 'bg-blue-50 border-blue-200 text-blue-800'
+        }`}>
+          <svg className="w-5 h-5 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>
+            สคริปต์ที่ไม่ได้บันทึกเป็นรายการโปรด จะถูกลบอัตโนมัติหลังจาก <strong>{retentionInfo.days} วัน</strong>{' '}
+            {retentionInfo.color === 'amber' && (
+              <span>— <a href="/pricing" className="underline font-medium">อัปเกรดแพลน</a> เพื่อเก็บนานขึ้น</span>
+            )}
+          </span>
+        </div>
+      )}
+
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
         <h1 className="text-3xl font-bold text-slate-900 mb-4 md:mb-0 flex items-center gap-2">
           ประวัติการสร้างสคริปต์ 
@@ -168,37 +245,94 @@ function History() {
         </h1>
         
         <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-          <input 
-            type="text" 
-            placeholder="ค้นหาชื่อสินค้า..." 
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-          />
-          <div className="flex bg-slate-100 p-1 rounded-lg overflow-x-auto hide-scrollbar shrink-0">
-            {uniqueModes.map(modeId => (
-              <button
-                key={modeId}
-                onClick={() => setFilterMode(modeId)}
-                className={`whitespace-nowrap px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
-                  filterMode === modeId ? 'bg-white text-blue-700 shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/50'
+          {!isDeleteMode && (
+            <>
+              <input 
+                type="text" 
+                placeholder="ค้นหาชื่อสินค้า..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+              />
+              <div className="flex bg-slate-100 p-1 rounded-lg overflow-x-auto hide-scrollbar shrink-0">
+                {uniqueModes.map(modeId => (
+                  <button
+                    key={modeId}
+                    onClick={() => setFilterMode(modeId)}
+                    className={`whitespace-nowrap px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
+                      filterMode === modeId ? 'bg-white text-blue-700 shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/50'
+                    }`}
+                  >
+                    {formatModeDisplay(modeId)}
+                  </button>
+                ))}
+              </div>
+              <button 
+                onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors border ${
+                  showFavoritesOnly ? 'bg-amber-100 border-amber-300 text-amber-700' : 'bg-white border-slate-300 text-slate-600 hover:bg-slate-50'
                 }`}
               >
-                {formatModeDisplay(modeId)}
+                {showFavoritesOnly 
+                  ? <span className="flex items-center gap-1"><svg className="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg> เฉพาะรายการโปรด</span> 
+                  : <span className="flex items-center gap-1"><svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg> ดูรายการโปรด</span>
+                }
               </button>
-            ))}
-          </div>
-          <button 
-            onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors border ${
-              showFavoritesOnly ? 'bg-amber-100 border-amber-300 text-amber-700' : 'bg-white border-slate-300 text-slate-600 hover:bg-slate-50'
-            }`}
-          >
-            {showFavoritesOnly 
-              ? <span className="flex items-center gap-1"><svg className="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg> เฉพาะรายการโปรด</span> 
-              : <span className="flex items-center gap-1"><svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg> ดูรายการโปรด</span>
-            }
-          </button>
+              {/* ปุ่ม "เลือกลบ" */}
+              {scripts.length > 0 && (
+                <button
+                  onClick={() => setIsDeleteMode(true)}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium border border-rose-200 text-rose-600 bg-white hover:bg-rose-50 transition-colors shrink-0"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                  เลือกลบ
+                </button>
+              )}
+            </>
+          )}
+
+          {/* ── Delete Mode Toolbar ──────────────────────────────── */}
+          {isDeleteMode && (
+            <div className="flex items-center gap-3 w-full">
+              {/* Select All Checkbox */}
+              <label className="flex items-center gap-2 cursor-pointer select-none text-sm font-medium text-slate-700 shrink-0">
+                <input
+                  type="checkbox"
+                  checked={allDeleteSelected}
+                  onChange={toggleSelectAll}
+                  className="w-4 h-4 rounded border-slate-300 text-rose-600 cursor-pointer accent-rose-600"
+                />
+                เลือกทั้งหมด ({filteredScriptsForDelete.length})
+              </label>
+
+              <div className="flex-1" />
+
+              {/* Delete Button */}
+              <button
+                onClick={handleDeleteSelected}
+                disabled={selectedIds.size === 0 || isDeleting}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm bg-rose-600 text-white hover:bg-rose-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+                {isDeleting ? 'กำลังลบ...' : `ลบที่เลือก${selectedIds.size > 0 ? ` (${selectedIds.size})` : ''}`}
+              </button>
+
+              {/* Cancel Button */}
+              <button
+                onClick={exitDeleteMode}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm border border-slate-300 text-slate-600 bg-white hover:bg-slate-50 transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                ยกเลิก
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -214,13 +348,48 @@ function History() {
         </div>
       ) : (
         <div className="flex flex-col gap-3">
-          {filteredScripts.map(script => (
+          {filteredScripts.map(script => {
+            const isSelected = selectedIds.has(script.id);
+            const isDeletable = !script.is_favorite;
+            return (
              <div 
                 key={script.id} 
-                onClick={() => { setSelectedScript(script); setActiveModalTab('funny'); }}
-                className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 hover:shadow-md transition-shadow cursor-pointer flex items-center justify-between"
+                onClick={() => {
+                  if (isDeleteMode) {
+                    if (isDeletable) toggleSelectId(script.id);
+                  } else {
+                    setSelectedScript(script); setActiveModalTab('funny');
+                  }
+                }}
+                className={`bg-white rounded-xl shadow-sm border p-4 transition-all cursor-pointer flex items-center gap-3 ${
+                  isDeleteMode && isSelected
+                    ? 'border-rose-300 bg-rose-50 shadow-rose-100'
+                    : isDeleteMode && !isDeletable
+                    ? 'border-slate-100 opacity-50 cursor-not-allowed'
+                    : 'border-slate-200 hover:shadow-md'
+                }`}
              >
-               <div className="flex-1 min-w-0 pr-4"> 
+               {/* Checkbox in Delete Mode */}
+               {isDeleteMode && (
+                 <div className="shrink-0" onClick={e => e.stopPropagation()}>
+                   {isDeletable ? (
+                     <input
+                       type="checkbox"
+                       checked={isSelected}
+                       onChange={() => toggleSelectId(script.id)}
+                       className="w-5 h-5 rounded border-slate-300 cursor-pointer accent-rose-600"
+                     />
+                   ) : (
+                     <div className="w-5 h-5 flex items-center justify-center" title="รายการโปรด — ไม่สามารถลบได้">
+                       <svg className="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                       </svg>
+                     </div>
+                   )}
+                 </div>
+               )}
+
+               <div className="flex-1 min-w-0 pr-2"> 
                  <h3 className="text-base font-bold text-slate-900 truncate flex items-center gap-2">
                     <span className="truncate">{script.product_name}</span>
                  </h3>
@@ -239,18 +408,22 @@ function History() {
                  </div>
                </div>
                
-               <button 
-                  onClick={(e) => { e.stopPropagation(); toggleFavorite(script.id, script.is_favorite); }}
-                  className="p-2 -mr-2 text-2xl hover:scale-110 transition-transform shrink-0"
-                  title="บันทึกเป็นรายการโปรด"
-               >
-                 {script.is_favorite 
-                   ? <svg className="w-6 h-6 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                   : <svg className="w-6 h-6 text-slate-300 hover:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
-                 }
-               </button>
+               {/* ปุ่มดาว (ซ่อนตอน Delete Mode) */}
+               {!isDeleteMode && (
+                 <button 
+                    onClick={(e) => { e.stopPropagation(); toggleFavorite(script.id, script.is_favorite); }}
+                    className="p-2 -mr-2 hover:scale-110 transition-transform shrink-0"
+                    title="บันทึกเป็นรายการโปรด"
+                 >
+                   {script.is_favorite 
+                     ? <svg className="w-6 h-6 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                     : <svg className="w-6 h-6 text-slate-300 hover:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
+                   }
+                 </button>
+               )}
              </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
