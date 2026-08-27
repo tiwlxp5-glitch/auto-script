@@ -256,6 +256,17 @@ c:\Auto script\
    - **Validation Logic (create.jsx):** Added a dedicated harsh-word check for the competitor field (`harshWords = ["กาก", "ห่วย", "แย่", "ขยะ", "สวะ", "หลอกลวง", "หมา"]`). Runs before the existing `containsProfanity` check. Only activates when `mode === 'เปรียบเทียบชัดๆ'` — has zero impact on all other modes. Shows a descriptive Thai error message suggesting safer alternatives.
    - **Home Page Fix (_index.jsx):** Added `inline-block` to the `<strong>` wrapping `"6 สูตรจิตวิทยาการขายระดับโลก"` to prevent the number "6" from orphaning onto its own line on mobile screens.
 
+28. **Dynamic Hook Strategy Engine (V2 - Anti-Repetition Upgrade)**:
+   - Fixed AI repetitiveness by completely rewriting `HOOK_STRATEGIES` and `MULTI_VERSION_HOOKS` to feature 6 abstract concepts per mode (40+ total) rather than providing literal sentence examples.
+   - Implemented strict negative constraints (`❌ ห้ามใช้คำเปิดคลิปเหล่านี้เด็ดขาด`) forbidding cliché phrases like "เคยป่ะ", "ใครที่กำลัง", "เอาจริงๆนะ".
+   - Adjusted Few-Shot examples in `advancedIntelligenceRules` to focus entirely on punctuation/vibe, explicitly instructing the AI not to copy them.
+
+29. **Dynamic Progress Timeline (Mobile-First UI)**:
+   - Replaced the simple loading spinner in `create.jsx` with a real-time 0-100% dynamic progress timeline.
+   - Used an asymptotic progression engine (`setInterval`) to simulate AI thinking, reaching 95% smoothly and snapping to 100% on API success.
+   - Built a beautiful mobile-first vertical timeline UI using Tailwind CSS and Heroicons, showcasing 4 psychological generation steps (Analyze -> Structure -> Tone -> Check) dynamically mapped to the user's selected `mode` and `speakerTone`.
+   - Added a custom `animate-shimmer` CSS keyframe in Tailwind v4 (`app/index.css`) for a premium loading effect.
+   - Protected against memory leaks by rigorously clearing intervals in `useEffect` cleanup and `finally` blocks.
 ### Infrastructure Bottlenecks & Upgrade Path (For Future Scaling)
 *If the user asks for help upgrading the system tiers because of high traffic, guide them through these bottlenecks in order:*
 1. **Resend (Email) - The First Bottleneck:** Free tier is limited to 100 emails/day. If daily new signups exceed this, users will fail to receive verification emails.

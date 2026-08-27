@@ -31,6 +31,8 @@ function CreateScript() {
   const [generatedScript, setGeneratedScript] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatingMode, setGeneratingMode] = useState(null);
+  const [generationProgress, setGenerationProgress] = useState(0);
+  const progressIntervalRef = useRef(null);
   const [bannedWarnings, setBannedWarnings] = useState([]);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('funny');
@@ -98,6 +100,9 @@ function CreateScript() {
     return () => {
       if (analyzeAbortRef.current) {
         analyzeAbortRef.current.abort();
+      }
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
       }
     };
   }, []);
@@ -182,6 +187,16 @@ function CreateScript() {
     setError(null);
     setGeneratedScript(null);
     setBannedWarnings([]);
+    setGenerationProgress(0);
+
+    // Dynamic Progress Engine (simulates AI thinking steps)
+    if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+    let currentProgress = 0;
+    progressIntervalRef.current = setInterval(() => {
+      // Approach 95% asymptotically
+      currentProgress += (95 - currentProgress) * 0.15;
+      setGenerationProgress(Math.min(95, Math.round(currentProgress)));
+    }, 500);
 
     // FIX FE-02: AbortController + 60s timeout
     // Analogy: Like setting a 60-second kitchen timer when making a call.
@@ -293,6 +308,8 @@ function CreateScript() {
       scrollToError();
     } finally {
       clearTimeout(timeoutId);
+      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+      setGenerationProgress(100);
       setIsGenerating(false);
       setGeneratingMode(null);
     }
@@ -654,11 +671,90 @@ function CreateScript() {
               <p className="text-slate-500 max-w-sm">กรอกข้อมูลด้านซ้ายแล้วกดสร้างสคริปต์ AI จะเขียนสคริปต์ป้ายยาให้คุณภายใน 5 วินาที</p>
             </div>
           ) : isGenerating ? (
-            <div className="flex-1 bg-white border border-slate-200 rounded-2xl flex flex-col items-center justify-center p-12 min-h-[400px] shadow-sm">
-              <div className="mb-4 text-blue-600 flex justify-center">
-                <svg className="w-12 h-12 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"></path></svg>
+            <div className="flex-1 bg-white border border-slate-200 rounded-2xl flex flex-col p-6 md:p-12 min-h-[400px] shadow-sm justify-center">
+              {/* Progress Bar & Percent */}
+              <div className="mb-8 w-full max-w-sm mx-auto">
+                <div className="flex justify-between items-end mb-2">
+                  <span className="text-sm font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100/50 flex items-center gap-2">
+                    <svg className="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                    AI กำลังคิดสคริปต์
+                  </span>
+                  <span className="text-2xl font-black text-slate-800 tracking-tight">
+                    {generationProgress}%
+                  </span>
+                </div>
+                <div className="h-3 w-full bg-slate-100 rounded-full overflow-hidden shadow-inner">
+                  <div 
+                    className="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 rounded-full transition-all duration-300 ease-out relative"
+                    style={{ width: `${generationProgress}%` }}
+                  >
+                    <div className="absolute top-0 right-0 bottom-0 left-0 bg-white/20 animate-shimmer" style={{ backgroundImage: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)', transform: 'skewX(-20deg)' }}></div>
+                  </div>
+                </div>
               </div>
-              <p className="text-lg font-medium text-slate-700 animate-pulse">กำลังสวมวิญญาณแม่ค้าตัวท็อป...</p>
+
+              {/* Timeline Steps (Mobile Optimized Vertical) */}
+              <div className="w-full max-w-sm mx-auto pl-2">
+                <div className="relative border-l-2 border-slate-100 ml-4 space-y-7 pb-2">
+                  
+                  {/* Step 1 */}
+                  <div className="relative pl-8">
+                    <div className={`absolute -left-[17px] top-0.5 flex items-center justify-center w-8 h-8 rounded-full border-[3px] border-white shadow-sm transition-colors duration-300 ${generationProgress >= 0 ? (generationProgress < 25 ? 'bg-blue-500 text-white animate-bounce' : 'bg-emerald-500 text-white') : 'bg-slate-200 text-slate-400'}`}>
+                      {generationProgress >= 25 ? (
+                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                      ) : (
+                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                      )}
+                    </div>
+                    <div>
+                       <p className={`text-sm font-bold ${generationProgress >= 0 ? 'text-slate-800' : 'text-slate-400'}`}>วิเคราะห์ข้อมูลสินค้า</p>
+                       <p className="text-xs text-slate-500">กำลังสกัดจุดเด่นและกลุ่มเป้าหมาย...</p>
+                    </div>
+                  </div>
+
+                  {/* Step 2 */}
+                  <div className="relative pl-8">
+                    <div className={`absolute -left-[17px] top-0.5 flex items-center justify-center w-8 h-8 rounded-full border-[3px] border-white shadow-sm transition-colors duration-300 ${generationProgress >= 25 ? (generationProgress < 60 ? 'bg-amber-500 text-white animate-bounce' : 'bg-emerald-500 text-white') : 'bg-slate-200 text-slate-400'}`}>
+                      {generationProgress >= 60 ? (
+                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                      ) : (
+                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                      )}
+                    </div>
+                    <div>
+                       <p className={`text-sm font-bold ${generationProgress >= 25 ? 'text-slate-800' : 'text-slate-400'}`}>วางโครงสร้างจิตวิทยา</p>
+                       <p className="text-xs text-slate-500">เรียบเรียงสูตร {mode.split(' ')[0]}...</p>
+                    </div>
+                  </div>
+
+                  {/* Step 3 */}
+                  <div className="relative pl-8">
+                    <div className={`absolute -left-[17px] top-0.5 flex items-center justify-center w-8 h-8 rounded-full border-[3px] border-white shadow-sm transition-colors duration-300 ${generationProgress >= 60 ? (generationProgress < 85 ? 'bg-purple-500 text-white animate-bounce' : 'bg-emerald-500 text-white') : 'bg-slate-200 text-slate-400'}`}>
+                      {generationProgress >= 85 ? (
+                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                      ) : (
+                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"></path></svg>
+                      )}
+                    </div>
+                    <div>
+                       <p className={`text-sm font-bold ${generationProgress >= 60 ? 'text-slate-800' : 'text-slate-400'}`}>สวมวิญญาณนักขาย</p>
+                       <p className="text-xs text-slate-500">ปรับโทนเสียงเป็น{speakerTone}แบบธรรมชาติ...</p>
+                    </div>
+                  </div>
+
+                  {/* Step 4 */}
+                  <div className="relative pl-8">
+                    <div className={`absolute -left-[17px] top-0.5 flex items-center justify-center w-8 h-8 rounded-full border-[3px] border-white shadow-sm transition-colors duration-300 ${generationProgress >= 85 ? 'bg-indigo-500 text-white animate-bounce' : 'bg-slate-200 text-slate-400'}`}>
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    </div>
+                    <div>
+                       <p className={`text-sm font-bold ${generationProgress >= 85 ? 'text-slate-800' : 'text-slate-400'}`}>ตรวจสอบความเรียบร้อย</p>
+                       <p className="text-xs text-slate-500">สแกนคำต้องห้าม & จัดรูปแบบ...</p>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
             </div>
           ) : (
             <div className="bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden flex flex-col shadow-sm h-full">
