@@ -531,18 +531,41 @@ ${hookInstruction}
 
     const finalSystemInstruction = baseSystemPrompt + advancedIntelligenceRules;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-3.6-flash',
-      contents: userPrompt,
-      config: {
-        systemInstruction: finalSystemInstruction,
-        temperature: 0.85, // Increased from 0.8 to 0.85 for slightly more creativity/wordplay
-        responseMimeType: isMultiVersion ? "text/plain" : "application/json",
-      }
-    });
-
     let resultJson = null;
-    let rawOutput = response.text;
+    let rawOutput = '';
+    const maxRetries = 3;
+    let attempt = 0;
+
+    while (attempt <= maxRetries) {
+      try {
+        const response = await ai.models.generateContent({
+          model: 'gemini-3.6-flash',
+          contents: userPrompt,
+          config: {
+            systemInstruction: finalSystemInstruction,
+            temperature: 0.85, // Increased from 0.8 to 0.85 for slightly more creativity/wordplay
+            responseMimeType: isMultiVersion ? "text/plain" : "application/json",
+          }
+        });
+        rawOutput = response.text;
+        break; // Success, exit retry loop
+      } catch (err) {
+        const errMsg = err.message || String(err);
+        const isRetryable = errMsg.includes('429') || errMsg.includes('RESOURCE_EXHAUSTED') || 
+                            errMsg.includes('503') || errMsg.includes('high demand') || errMsg.includes('UNAVAILABLE');
+        
+        if (isRetryable && attempt < maxRetries) {
+          attempt++;
+          const backoffDelay = Math.pow(2, attempt) * 1000; // 2s, 4s, 8s
+          console.warn(`[Auto-Retry] Gemini API Error (Attempt ${attempt}/${maxRetries}): ${errMsg}. Retrying in ${backoffDelay}ms...`);
+          await new Promise(resolve => setTimeout(resolve, backoffDelay));
+        } else {
+          // Max retries reached or not a retryable error, throw to outer catch for refund and user notification
+          throw err;
+        }
+      }
+    }
+
     
     if (isMultiVersion) {
       const funnyMatch = rawOutput.match(/<VERSION_FUNNY>([\s\S]*?)<\/VERSION_FUNNY>/);
