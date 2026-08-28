@@ -267,6 +267,20 @@ c:\Auto script\
    - Built a beautiful mobile-first vertical timeline UI using Tailwind CSS and Heroicons, showcasing 4 psychological generation steps (Analyze -> Structure -> Tone -> Check) dynamically mapped to the user's selected `mode` and `speakerTone`.
    - Added a custom `animate-shimmer` CSS keyframe in Tailwind v4 (`app/index.css`) for a premium loading effect.
    - Protected against memory leaks by rigorously clearing intervals in `useEffect` cleanup and `finally` blocks.
+
+30. **White-Box Security Audit & Hardening**:
+   - Conducted a comprehensive security audit (White-Hat Persona) covering API Logic, Database RLS, Payment Webhooks, and Race Conditions.
+   - Found the core infrastructure (IDOR prevention, Atomic credits, Webhook idempotency) to be highly robust.
+   - Fixed a permissive CORS misconfiguration (`Access-Control-Allow-Origin: "*"`) in `frontend/functions/api/_middleware.js` to strictly allow `autoscript-ai.com` and `localhost`.
+
+31. **API Rate Limit (429) & Backend Auto-Retry Engine Roadmap**:
+   - Diagnosed `429 Too Many Requests` error occurring during rapid generation requests on the Gemini API free tier.
+   - Evaluated Google Cloud Billing setup requirements (Google strictly blocks Prepaid cards like TrueMoney, requiring bank debit/credit cards).
+   - Designed a Backend Auto-Retry Engine with Exponential Backoff (2s -> 4s) in `frontend/functions/api/generate.js` for handling transient 429 and 503 errors seamlessly.
+   - Confirmed frontend compatibility: The dynamic vertical progress timeline in `app/routes/create.jsx` uses asymptotic timing and will seamlessly stay smooth and real-time during retry cycles without breaking UI state.
+
+32. **Backend Auto-Retry Engine (Exponential Backoff)**: Added a robust backend retry loop in `frontend/functions/api/generate.js` to handle Gemini API `429 Too Many Requests` and `503 Service Unavailable` errors. It automatically retries up to 3 times (with 2s, 4s, 8s exponential backoff) before failing. This hides transient network/quota errors from the user while keeping the frontend UI smooth via the asymptotic progress bar.
+
 ### Infrastructure Bottlenecks & Upgrade Path (For Future Scaling)
 *If the user asks for help upgrading the system tiers because of high traffic, guide them through these bottlenecks in order:*
 1. **Resend (Email) - The First Bottleneck:** Free tier is limited to 100 emails/day. If daily new signups exceed this, users will fail to receive verification emails.
