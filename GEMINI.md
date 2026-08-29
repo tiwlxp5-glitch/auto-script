@@ -7,7 +7,8 @@ When providing code blocks or technical commands to the user, the agent MUST ALW
 - Use simple analogies (like building blocks, security guards, etc.) to explain complex logic, keeping in mind that the user is a beginner.
 
 ## 2. Gemini Model Version Rule
-When writing code that integrates with the Google Gemini API (e.g., using `@google/genai`), ALWAYS use the `gemini-3.6-flash` model (or the explicitly required latest version). Do NOT use `gemini-2.5-flash` or older models, as they are deprecated for new users and will result in a 404 "NOT_FOUND" / "UNAUTHENTICATED" API error.
+When writing code that integrates with the Google Gemini API (e.g., using `@google/genai`), ALWAYS use the `gemini-3.6-flash` model by default. 
+*EXCEPTION (Smart Dynamic Brain)*: For the "Pro Deep Brain" feature (Pro tier users using the "โครงสร้างเจาะลึก" / Belief-Shifting mode), explicitly use the `gemini-2.5-pro-preview-06-05` model (or the latest stable `gemini-2.5-pro` equivalent) to provide deep psychological analysis. Do NOT use `gemini-2.5-flash` or older deprecated models.
 
 ## 3. Proactive Compliance & Security Warning Rule
 The agent MUST proactively warn the user about any critical platform rules, Terms of Service (ToS) violations (e.g., using Vercel free tier for commercial SaaS), licensing issues, or data privacy concerns (e.g., PDPA, GDPR, safeguarding personal data). If a requested action or architectural choice poses a compliance or security risk, the agent must alert the user immediately and suggest a safer, compliant alternative, rather than just executing the request blindly.
@@ -287,6 +288,13 @@ c:\Auto script\
    - Cost Control & Safety Posture: Confirmed `Auto-reload` is DISABLED. Costs are strictly limited to the prepaid amount with zero risk of runaway charges. THB 400 covers ~5,000 - 10,000 script generations with `gemini-3.6-flash`.
    - Verified Zero Code Changes: Existing `GEMINI_API_KEY` seamlessly inherited production quotas (1,000+ RPM), permanently eliminating Error 429 during normal generation workflows.
 
+34. **Smart Dynamic Brain & Pro Deep Brain™ Feature**:
+   - Implemented a tiered AI engine switching mechanism in `generate.js`.
+   - **Pro Tier (Belief-Shifting Mode)**: Dynamically routes to `gemini-2.5-pro-preview-06-05` for deep psychological analysis.
+   - **Pro Tier (Normal Modes)**: Remains on `gemini-3.6-flash` for speed, but injects a `proNormalEnhancement` prompt to dramatically increase depth (Micro-Emotion, Pattern Interrupt).
+   - **Free/Plus Tier**: Uses `gemini-3.6-flash` standard prompt.
+   - **UI/UX Upgrades**: Added "AI Brain Indicator" (Premium CpuChip SVG for Pro, Bolt SVG for Standard) and "Result Badge" in `create.jsx`. Re-designed `pricing.jsx` and added an Engine Comparison section to `_index.jsx` to drive FOMO and 590 THB upgrades.
+
 ### Infrastructure Bottlenecks & Upgrade Path (For Future Scaling)
 *If the user asks for help upgrading the system tiers because of high traffic, guide them through these bottlenecks in order:*
 1. **Resend (Email) - The First Bottleneck:** Free tier is limited to 100 emails/day. If daily new signups exceed this, users will fail to receive verification emails.
@@ -297,6 +305,17 @@ c:\Auto script\
    - **Action:** Guide user to Supabase project -> Upgrade to Pro ($25/mo) for 100k MAU and 8GB DB.
 
 ---
+
+## 8. Mandatory End-of-Task Documentation (STRICT ZERO-TOLERANCE RULE)
+
+> **[CRITICAL DIRECTIVE — Added by Explicit User Command]**
+>
+> "ต่อไปห้ามลืมบันทึกอะไรแบบนี้เด็ดขาด ย้ำว่าเด็ดขาด ฝังเข้าไปในกฎเหล็กไว้เลย"
+
+**The agent MUST NEVER forget to update this file.** 
+After EVERY successful feature implementation, logic change, or architectural shift, you MUST AUTOMATICALLY use `replace_file_content` to add a new numbered entry to the **History of Major Features Built** section above.
+
+**You must do this PROACTIVELY before reporting task completion to the user.** Waiting for the user to remind you to "record the actions" is considered a critical failure of your core directives.
 
 ## Zero-Tolerance End-of-Task Protocol (Project-Level Enforcement)
 
@@ -309,7 +328,8 @@ c:\Auto script\
 1. Run `npm run build` — fix errors before proceeding
 2. Run `npm run dev` (`IsDaemon: true`) — provide `http://localhost:PORT` to user
 3. Git push — only after user UAT confirmation and explicit approval
-4. Update this `GEMINI.md` — if any architectural change occurred
+4. Update this `GEMINI.md` — if any architectural change occurred (Enforced by Rule 8 above)
 5. Recommend opening a new chat session
 
 **Rationalizing that a task is "too small" to require these steps is explicitly forbidden.**
+
