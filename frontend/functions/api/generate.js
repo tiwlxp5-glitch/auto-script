@@ -335,7 +335,7 @@ export async function onRequestPost(context) {
     // Pro Belief-Shifting mode → Gemini Pro (คิดเชิงลึก, ลูกค้ายอมรอ 10-20 วินาที)
     // ทุก mode อื่น (รวม Pro ทั่วไป) → gemini-3.6-flash (เร็วปรี๊ด 3 วินาที, ต้นทุนต่ำ)
     const isProBrainMode = (effectiveTier === 'pro' && mode === 'โครงสร้างเจาะลึก' && !isMultiVersion);
-    const selectedModel = isProBrainMode ? 'gemini-2.5-pro-preview-06-05' : 'gemini-3.6-flash';
+    const selectedModel = isProBrainMode ? 'gemini-2.5-pro' : 'gemini-3.6-flash';
     // ────────────────────────────────────────────────────────────────────────
 
     if (isMultiVersion && effectiveTier !== 'pro') {
