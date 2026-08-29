@@ -8,7 +8,7 @@ When providing code blocks or technical commands to the user, the agent MUST ALW
 
 ## 2. Gemini Model Version Rule
 When writing code that integrates with the Google Gemini API (e.g., using `@google/genai`), ALWAYS use the `gemini-3.6-flash` model by default. 
-*EXCEPTION (Smart Dynamic Brain)*: For the "Pro Deep Brain" feature (Pro tier users using the "โครงสร้างเจาะลึก" / Belief-Shifting mode), explicitly use the `gemini-2.5-pro-preview-06-05` model (or the latest stable `gemini-2.5-pro` equivalent) to provide deep psychological analysis. Do NOT use `gemini-2.5-flash` or older deprecated models.
+*EXCEPTION (Smart Dynamic Brain)*: For the "Pro Deep Brain" feature (Pro tier users using the "โครงสร้างเจาะลึก" / Belief-Shifting mode), explicitly use the `gemini-3.1-pro-preview` model to provide deep psychological analysis. Do NOT use `gemini-2.5-flash` or older deprecated models.
 
 ## 3. Proactive Compliance & Security Warning Rule
 The agent MUST proactively warn the user about any critical platform rules, Terms of Service (ToS) violations (e.g., using Vercel free tier for commercial SaaS), licensing issues, or data privacy concerns (e.g., PDPA, GDPR, safeguarding personal data). If a requested action or architectural choice poses a compliance or security risk, the agent must alert the user immediately and suggest a safer, compliant alternative, rather than just executing the request blindly.
@@ -290,7 +290,7 @@ c:\Auto script\
 
 34. **Smart Dynamic Brain & Pro Deep Brain™ Feature**:
    - Implemented a tiered AI engine switching mechanism in `generate.js`.
-   - **Pro Tier (Belief-Shifting Mode)**: Dynamically routes to `gemini-2.5-pro-preview-06-05` for deep psychological analysis.
+   - **Pro Tier (Belief-Shifting Mode)**: Dynamically routes to `gemini-3.1-pro-preview` for deep psychological analysis.
    - **Pro Tier (Normal Modes)**: Remains on `gemini-3.6-flash` for speed, but injects a `proNormalEnhancement` prompt to dramatically increase depth (Micro-Emotion, Pattern Interrupt).
    - **Free/Plus Tier**: Uses `gemini-3.6-flash` standard prompt.
    - **UI/UX Upgrades**: Added "AI Brain Indicator" (Premium CpuChip SVG for Pro, Bolt SVG for Standard) and "Result Badge" in `create.jsx`. Re-designed `pricing.jsx` and added an Engine Comparison section to `_index.jsx` to drive FOMO and 590 THB upgrades.
