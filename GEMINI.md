@@ -281,6 +281,12 @@ c:\Auto script\
 
 32. **Backend Auto-Retry Engine (Exponential Backoff)**: Added a robust backend retry loop in `frontend/functions/api/generate.js` to handle Gemini API `429 Too Many Requests` and `503 Service Unavailable` errors. It automatically retries up to 3 times (with 2s, 4s, 8s exponential backoff) before failing. This hides transient network/quota errors from the user while keeping the frontend UI smooth via the asymptotic progress bar.
 
+33. **Gemini API Billing & Production Prepay Activation**:
+   - Upgraded Google AI Studio project from Free Tier to Paid Tier via Google Cloud Prepay model.
+   - Successfully linked Krungthai Mastercard debit card and deposited THB 400.00 initial credit balance (valid for 1 year).
+   - Cost Control & Safety Posture: Confirmed `Auto-reload` is DISABLED. Costs are strictly limited to the prepaid amount with zero risk of runaway charges. THB 400 covers ~5,000 - 10,000 script generations with `gemini-3.6-flash`.
+   - Verified Zero Code Changes: Existing `GEMINI_API_KEY` seamlessly inherited production quotas (1,000+ RPM), permanently eliminating Error 429 during normal generation workflows.
+
 ### Infrastructure Bottlenecks & Upgrade Path (For Future Scaling)
 *If the user asks for help upgrading the system tiers because of high traffic, guide them through these bottlenecks in order:*
 1. **Resend (Email) - The First Bottleneck:** Free tier is limited to 100 emails/day. If daily new signups exceed this, users will fail to receive verification emails.
