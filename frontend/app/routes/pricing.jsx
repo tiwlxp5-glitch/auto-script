@@ -139,6 +139,14 @@ function Pricing() {
               <span className="text-green-500 mr-3">✓</span>
               <span className="text-slate-700">ใช้งานได้เฉพาะโหมด "ป้ายยาตรงๆ"</span>
             </li>
+            {/* Standard Speed Engine label — สร้าง Tier Differentiation */}
+            <li className="flex items-start gap-2">
+              {/* Bolt icon (Heroicons) */}
+              <svg className="w-4 h-4 text-slate-300 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              <span className="text-slate-400 text-sm">ขับเคลื่อนด้วย Standard Speed Engine</span>
+            </li>
             <li className="flex items-start">
               <span className="text-slate-300 mr-3">✗</span>
               <span className="text-slate-400 line-through">ระบุกลุ่มเป้าหมาย</span>
@@ -184,6 +192,13 @@ function Pricing() {
               <span className="text-slate-300 mr-3">✗</span>
               <span className="text-slate-400 line-through">สร้างทีเดียว 3 สไตล์ (Multi-Version)</span>
             </li>
+            {/* Standard Speed Engine label — สร้าง Tier Differentiation */}
+            <li className="flex items-start gap-2 mt-1">
+              <svg className="w-4 h-4 text-blue-300 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              <span className="text-slate-500 text-sm">ขับเคลื่อนด้วย Standard Speed Engine</span>
+            </li>
           </ul>
           {renderButton(
             'plus', 
@@ -210,6 +225,17 @@ function Pricing() {
             <span className="text-sm font-medium text-amber-400 mt-2 bg-amber-400/10 w-fit px-2 py-1 rounded border border-amber-400/20">เฉลี่ยเพียง 3.9 บาท/สคริปต์ (คุ้มสุด)</span>
           </div>
           <ul className="mt-6 space-y-4 flex-1">
+            {/* Pro Deep Brain™ — Feature ที่ 1 (จุดขายหลัก) */}
+            <li className="flex items-center gap-3 p-3 bg-gradient-to-r from-amber-900/40 to-purple-900/40 rounded-xl border border-amber-500/30 -mx-1">
+              {/* CpuChip icon (Heroicons) */}
+              <svg className="w-5 h-5 text-amber-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3H7a2 2 0 00-2 2v2M9 3h6M9 3v2m6-2h2a2 2 0 012 2v2m0 0V7m0 0h2M3 9v6m0 0v2a2 2 0 002 2h2m-4-4h2m14-2v6m0-6h2m-2 6v2a2 2 0 01-2 2h-2m0 0H9m6 0v-2M9 21H7a2 2 0 01-2-2v-2m0 0H3m4 0h2M9 9h6v6H9V9z" />
+              </svg>
+              <div>
+                <span className="text-amber-200 font-bold text-sm">Pro Deep Brain™</span>
+                <p className="text-slate-400 text-xs mt-0.5 leading-relaxed">AI คิดเชิงลึก ฉลาดขึ้น เข้าใจสำนวนไทย · วิเคราะห์จิตวิทยาการซื้อแบบเจาะลึก</p>
+              </div>
+            </li>
             <li className="flex items-start">
               <span className="text-amber-400 mr-3">✓</span>
               <span className="text-white font-medium">ได้โควต้า 150 สคริปต์</span>

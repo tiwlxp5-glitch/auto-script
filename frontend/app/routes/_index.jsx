@@ -119,6 +119,104 @@ function Home() {
         </div>
       </div>
 
+      {/* ─── Engine Comparison: Standard vs Pro Deep Brain ─────────────────── */}
+      <div className="mt-8 mb-12 w-full max-w-4xl mx-auto px-4">
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center gap-2 bg-purple-50 border border-purple-200 text-purple-700 text-xs font-bold px-3 py-1.5 rounded-full mb-4 shadow-sm">
+            {/* CpuChip icon (Heroicons) */}
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3H7a2 2 0 00-2 2v2M9 3h6M9 3v2m6-2h2a2 2 0 012 2v2m0 0V7m0 0h2M3 9v6m0 0v2a2 2 0 002 2h2m-4-4h2m14-2v6m0-6h2m-2 6v2a2 2 0 01-2 2h-2m0 0H9m6 0v-2M9 21H7a2 2 0 01-2-2v-2m0 0H3m4 0h2M9 9h6v6H9V9z" />
+            </svg>
+            เบื้องหลัง AI Engine
+          </div>
+          <h2 className="text-xl sm:text-3xl font-extrabold text-slate-900 mb-3 leading-snug">
+            ทำไม Pro ถึงปิดการขาย <span className="text-purple-600">เนียนกว่า?</span>
+          </h2>
+          <p className="text-sm sm:text-base text-slate-500 max-w-xl mx-auto">
+            ความต่างอยู่ที่ AI Engine ที่ทำงานอยู่เบื้องหลัง — ไม่ใช่แค่ UI ที่แตกต่างกัน
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Standard Fast Engine */}
+          <div className="bg-white border-2 border-slate-200 rounded-2xl p-6 relative">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center">
+                {/* Bolt icon (Heroicons) */}
+                <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="font-bold text-slate-700 text-base">Standard Fast Engine</h3>
+                <p className="text-xs text-slate-400">Free · Plus</p>
+              </div>
+            </div>
+            <ul className="space-y-3 text-sm text-slate-600">
+              <li className="flex items-start gap-2">
+                <svg className="w-4 h-4 text-slate-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
+                <span>เขียนสคริปต์เสร็จใน <strong>2-4 วินาที</strong></span>
+              </li>
+              <li className="flex items-start gap-2">
+                <svg className="w-4 h-4 text-slate-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
+                <span>ภาษาไทยพูดได้เป็นธรรมชาติ ครบทุกสูตร</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <svg className="w-4 h-4 text-slate-300 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                <span className="text-slate-400">วิเคราะห์จิตวิทยาเชิงลึก (Deep Psychology)</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <svg className="w-4 h-4 text-slate-300 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                <span className="text-slate-400">ถอดความเชื่อผิดๆ ของลูกค้า (Belief-Shifting)</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Pro Deep Brain™ */}
+          <div className="bg-slate-900 border-2 border-amber-400/30 rounded-2xl p-6 relative overflow-hidden">
+            <div className="absolute top-0 right-0 left-0 h-0.5 bg-gradient-to-r from-amber-400 to-purple-500"></div>
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 bg-gradient-to-br from-amber-400/20 to-purple-500/20 rounded-xl flex items-center justify-center border border-amber-400/20">
+                {/* CpuChip icon (Heroicons) */}
+                <svg className="w-5 h-5 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3H7a2 2 0 00-2 2v2M9 3h6M9 3v2m6-2h2a2 2 0 012 2v2m0 0V7m0 0h2M3 9v6m0 0v2a2 2 0 002 2h2m-4-4h2m14-2v6m0-6h2m-2 6v2a2 2 0 01-2 2h-2m0 0H9m6 0v-2M9 21H7a2 2 0 01-2-2v-2m0 0H3m4 0h2M9 9h6v6H9V9z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="font-bold text-white text-base">Pro Deep Brain™</h3>
+                <p className="text-xs text-amber-400">Pro เท่านั้น · โหมด Belief-Shifting</p>
+              </div>
+            </div>
+            <ul className="space-y-3 text-sm">
+              <li className="flex items-start gap-2 text-slate-200">
+                <svg className="w-4 h-4 text-amber-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
+                <span>เขียนสคริปต์เสร็จใน <strong className="text-white">10-20 วินาที</strong> (คิดลึกกว่า)</span>
+              </li>
+              <li className="flex items-start gap-2 text-slate-200">
+                <svg className="w-4 h-4 text-amber-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
+                <span>ภาษาไทยพูดได้เป็นธรรมชาติ + สำนวนจัดจ้าน</span>
+              </li>
+              <li className="flex items-start gap-2 text-white">
+                <svg className="w-4 h-4 text-amber-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
+                <span><strong>วิเคราะห์ Deep Psychology</strong> ก่อนเขียนทุกครั้ง</span>
+              </li>
+              <li className="flex items-start gap-2 text-white">
+                <svg className="w-4 h-4 text-amber-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
+                <span><strong>ถอดความเชื่อผิดๆ</strong> ของลูกค้าแล้วหักล้างอย่างมีชั้นเชิง</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="mt-6 text-center">
+          <a href="/pricing" className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-6 py-3 rounded-xl font-bold text-sm shadow-md transition-all hover:shadow-lg">
+            <svg className="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3H7a2 2 0 00-2 2v2M9 3h6M9 3v2m6-2h2a2 2 0 012 2v2m0 0V7m0 0h2M3 9v6m0 0v2a2 2 0 002 2h2m-4-4h2m14-2v6m0-6h2m-2 6v2a2 2 0 01-2 2h-2m0 0H9m6 0v-2M9 21H7a2 2 0 01-2-2v-2m0 0H3m4 0h2M9 9h6v6H9V9z" /></svg>
+            ลองใช้ Pro Deep Brain™ → ดูแพ็กเกจ
+          </a>
+        </div>
+      </div>
+      {/* ──────────────────────────────────────────────────────────────────── */}
+
       {/* Secret Sauce / Psychology Section */}
       <div className="mt-8 mb-20 w-full max-w-6xl mx-auto px-4 text-left">
         <div className="text-center mb-10">

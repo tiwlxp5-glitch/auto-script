@@ -331,6 +331,13 @@ export async function onRequestPost(context) {
 
     const effectiveTier = (profile.tier === 'free' && profile.trial_pro_remaining > 0) ? 'pro' : profile.tier;
 
+    // ─── Smart Dynamic Brain: Model Selection ───────────────────────────────
+    // Pro Belief-Shifting mode → Gemini Pro (คิดเชิงลึก, ลูกค้ายอมรอ 10-20 วินาที)
+    // ทุก mode อื่น (รวม Pro ทั่วไป) → gemini-3.6-flash (เร็วปรี๊ด 3 วินาที, ต้นทุนต่ำ)
+    const isProBrainMode = (effectiveTier === 'pro' && mode === 'โครงสร้างเจาะลึก' && !isMultiVersion);
+    const selectedModel = isProBrainMode ? 'gemini-2.5-pro-preview-06-05' : 'gemini-3.6-flash';
+    // ────────────────────────────────────────────────────────────────────────
+
     if (isMultiVersion && effectiveTier !== 'pro') {
       return new Response(JSON.stringify({ error: 'Multi-version scripts require Pro tier.' }), { status: 403, headers: { 'Content-Type': 'application/json' } });
     }
@@ -529,7 +536,21 @@ export async function onRequestPost(context) {
 ${hookInstruction}
 `;
 
-    const finalSystemInstruction = baseSystemPrompt + advancedIntelligenceRules;
+    // ─── Pro Normal Mode: Enhanced Depth Prompt (ไม่เปลี่ยน model, แต่เพิ่มความลึกของ Prompt) ─────
+    // เฉพาะ Pro ที่ไม่ได้ใช้ Belief-Shifting mode (ซึ่งไม่ต้องการ Pro model)
+    const proNormalEnhancement = (effectiveTier === 'pro' && !isProBrainMode) ? `
+
+## 🧠 PRO DEEP BRAIN ENHANCEMENT — Normal Mode Upgrade
+คุณกำลังทำงานในโหมดขั้นสูงของ Pro Deep Brain™ (Fast Engine) เพิ่มความลึกดังนี้อย่างเคร่งครัด:
+
+1. **Micro-Emotion Targeting**: วิเคราะห์ Pain Point ของกลุ่มเป้าหมายเชิงลึกกว่า Free/Plus อย่างน้อย 1 ระดับ ระบุอารมณ์ที่ซ่อนอยู่เบื้องหลังการซื้อ (เช่น "กลัวถูกมองว่าล้าหลัง" ไม่ใช่แค่ "อยากของดี")
+2. **Pattern Interrupt Hook**: Hook ต้องใช้เทคนิค "ทำลายความคาดหวัง" หรือ "Curiosity Gap" เปิดด้วยสิ่งที่ไม่มีใครพูดถึงหรือสวนทางความคิดเดิม อย่างน้อย 1 ครั้ง
+3. **Specific Social Proof**: อ้างอิง Social Proof ที่เฉพาะเจาะจงกว่า (เช่น "คนซื้อซ้ำ 3 รอบในเดือนเดียว" ดีกว่า "คนชอบมาก", "ขายแล้ว 2,000+ ชิ้น" ดีกว่า "ขายดีมาก")
+4. **Precision Micro-Urgency CTA**: CTA ต้องมี Urgency ที่เป็นธรรมชาติ 100% ห้าม generic เช่น "รีบกดตะกร้า" ให้ใช้เหตุผลเฉพาะเจาะจงของสินค้านั้น (เช่น "โปรนี้ขึ้นอยู่กับสต็อก ถ้าหมดรอบหน้าไม่รู้ราคาจะเท่าไหร่")
+` : '';
+    // ──────────────────────────────────────────────────────────────────────────────────────────────
+
+    const finalSystemInstruction = baseSystemPrompt + advancedIntelligenceRules + proNormalEnhancement;
 
     let resultJson = null;
     let rawOutput = '';
@@ -539,7 +560,7 @@ ${hookInstruction}
     while (attempt <= maxRetries) {
       try {
         const response = await ai.models.generateContent({
-          model: 'gemini-3.6-flash',
+          model: selectedModel, // Smart Dynamic Brain: Flash for all, Pro only for Belief-Shifting
           contents: userPrompt,
           config: {
             systemInstruction: finalSystemInstruction,
@@ -639,7 +660,8 @@ ${hookInstruction}
     return new Response(JSON.stringify({ 
       script: resultJson,
       credits_remaining: remainingCredits,
-      trial_pro_remaining: updatedTrialRemaining
+      trial_pro_remaining: updatedTrialRemaining,
+      used_pro_brain: isProBrainMode, // Smart Dynamic Brain flag for frontend badge
     }), { 
       status: 200,
       headers: { 'Content-Type': 'application/json' }
