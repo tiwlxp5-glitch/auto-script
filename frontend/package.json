@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@google/genai": "^2.18.0",
+    "@marsidev/react-turnstile": "^1.6.1",
     "@react-router/node": "^7.18.2",
     "@react-router/serve": "^7.18.2",
     "@supabase/supabase-js": "^2.112.3",

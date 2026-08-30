@@ -417,3 +417,10 @@ After EVERY successful feature implementation, logic change, or architectural sh
 All 5 items from the Expert Architecture Audit have been successfully implemented and tested.
 
 26. **Bug Fix (RPC Overload):** Fixed Failed to start credit transaction (500 Error) caused by a Supabase PostgREST PGRST203 function overload conflict when the start_generation_tx signature was updated without dropping the old one.
+
+47. **Pre-Launch Security & UX Hardening (Turnstile + Abandoned Charge Fix + 524 Timeout Resilience)**:
+   - **Bot & Spam Protection**: Integrated Cloudflare Turnstile natively via `@marsidev/react-turnstile` into `register.jsx`. Added `captchaToken` to `supabase.auth.signUp({ options: { captchaToken } })` with Supabase Auth Attack Protection. Added client-side fast-fail UX check for common temporary email providers (`tempmail.com`, `yopmail.com`, `10minutemail.com`, etc.).
+   - **Abandoned Charge / React Unmount Leak**: Fixed memory leak in `create.jsx` where `analyzeAbortRef.current` was never assigned to `controller`. If the user navigates away or unmounts the component, `analyzeAbortRef.current.abort()` triggers cleanly, canceling the fetch.
+   - **Edge Abort Recovery**: Added `request.signal.addEventListener('abort', ...)` with `context.waitUntil(supabaseAdmin.rpc('refund_generation_tx', ...))` in `generate.js`. Added checks for `request.signal.aborted` before calling Gemini and before committing the transaction.
+   - **Cloudflare 524 HTML Resilience**: Added content-type check in `create.jsx` before calling `response.json()` to catch Cloudflare HTML error pages (Error 524 Gateway Timeout) and present a clean Thai message instead of crashing the React application with a `SyntaxError`.
+

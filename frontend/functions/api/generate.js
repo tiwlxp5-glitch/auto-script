@@ -436,6 +436,23 @@ export async function onRequestPost(context) {
     let remainingCredits = txResult.credits;
     // ─────────────────────────────────────────────────────────────────────────
 
+    // ─── FIX V6: The Refund Trap (Cloudflare Worker Teardown) ──────────────────
+    // ผูก Event Listener ดักสายหลุด (Abort) ถ้าฝั่ง Client ตัดการเชื่อมต่อ 
+    // เราจะยิง refund ทันทีแบบ background task (context.waitUntil) 
+    // เพื่อรับประกันว่าเครดิตจะคืนทันที ไม่ว่า Worker จะถูกฆ่าทิ้งหรือไม่
+    if (request.signal) {
+      request.signal.addEventListener('abort', () => {
+        logger.warn('[Credit Ledger] Client aborted connection early. Triggering immediate background refund.', { transactionId });
+        context.waitUntil(
+          supabaseAdmin.rpc('refund_generation_tx', {
+            p_transaction_id: transactionId,
+            p_user_id: userId
+          }).catch(e => logger.error('[Credit Ledger] Background eager refund failed', e, { transactionId }))
+        );
+      });
+    }
+    // ─────────────────────────────────────────────────────────────────────────
+
 
     const finalTargetAudience = (effectiveTier === 'plus' || effectiveTier === 'pro') ? targetAudience : null;
     const apiKey = env.GEMINI_API_KEY || env.VITE_GEMINI_API_KEY;
@@ -633,6 +650,10 @@ ${hookInstruction}
 
     while (attempt <= maxRetries) {
       try {
+        if (request.signal && request.signal.aborted) {
+          throw new Error('AbortError');
+        }
+
         const response = await ai.models.generateContent({
           model: selectedModel, // Smart Dynamic Brain: Flash for all, Pro only for Belief-Shifting
           contents: userPrompt,
@@ -701,6 +722,11 @@ ${hookInstruction}
     // ถ้า insert ล้มเหลว → ทั้งคู่ rollback → pg_cron จะ refund เครดิตอัตโนมัติ
     // ⚠️ NOTE: ส่ง transactionId ที่จับมาจาก start_generation_tx ลงไปตรงๆ
     //          user_id ถูกตรวจสอบซ้ำอีกครั้งใน RPC เพื่อป้องกัน IDOR
+    
+    if (request.signal && request.signal.aborted) {
+      throw new Error('AbortError');
+    }
+
     const { data: commitResult, error: commitError } = await supabaseAdmin.rpc('commit_generation_tx', {
       p_transaction_id: transactionId,
       p_user_id:        user.id,

@@ -2,20 +2,20 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>Auto Script Architecture - Professional Edition (V2)</title>
+  <title>Auto Script Data Security Architecture</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0a0a0a;
-      --card-bg: #111111;
-      --border: #27272a;
-      --text-main: #f4f4f5;
-      --text-sub: #a1a1aa;
-      --accent: #e4e4e7;
-      --line: #3f3f46;
-      --highlight: #10b981;
+      --bg: #040814;
+      --card-bg: #0B1221;
+      --border: #1e293b;
+      --text-main: #f1f5f9;
+      --text-sub: #94a3b8;
+      --accent: #e2e8f0;
+      --line: #334155;
+      --highlight: #06b6d4; /* Cyber Cyan */
     }
     
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,13 +32,16 @@
       position: relative;
     }
 
+    /* Security Radar/Grid background */
     body::before {
       content: "";
       position: absolute;
       inset: 0;
-      background-image: radial-gradient(circle, #27272a 1px, transparent 1px);
+      background-image: 
+        linear-gradient(rgba(6, 182, 212, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(6, 182, 212, 0.04) 1px, transparent 1px);
       background-size: 32px 32px;
-      opacity: 0.5;
+      opacity: 0.8;
       pointer-events: none;
       z-index: 0;
     }
@@ -56,7 +59,7 @@
     /* Header section */
     .header {
       margin-bottom: 24px;
-      border-left: 6px solid var(--text-main);
+      border-left: 6px solid var(--highlight);
       padding-left: 20px;
     }
     .header-badge {
@@ -65,7 +68,7 @@
       font-weight: 600;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: #71717a;
+      color: #22d3ee;
       margin-bottom: 8px;
       display: flex;
       align-items: center;
@@ -78,6 +81,7 @@
       height: 8px;
       background: var(--highlight);
       border-radius: 50%;
+      box-shadow: 0 0 10px var(--highlight);
     }
     .header-title {
       font-size: 44px;
@@ -123,7 +127,7 @@
       font-family: 'Inter', sans-serif;
       font-size: 16px;
       font-weight: 700;
-      color: #71717a;
+      color: #22d3ee;
       letter-spacing: 1px;
       margin-bottom: 4px;
     }
@@ -138,11 +142,11 @@
       font-family: 'Inter', sans-serif;
       font-size: 15px;
       font-weight: 500;
-      color: #a1a1aa;
-      background: #18181b;
+      color: #94a3b8;
+      background: #0f172a;
       padding: 6px 14px;
       border-radius: 6px;
-      border: 1px solid #27272a;
+      border: 1px solid #1e293b;
     }
 
     .content-grid {
@@ -163,21 +167,21 @@
     .item-title {
       font-size: 20px;
       font-weight: 600;
-      color: #e4e4e7;
+      color: #f8fafc;
       margin-bottom: 2px;
       display: flex;
       align-items: center;
       gap: 8px;
     }
     
-    .tag-new {
+    .tag-shield {
       font-size: 12px;
       font-weight: 700;
-      background: rgba(16, 185, 129, 0.2);
-      color: #34d399;
+      background: rgba(6, 182, 212, 0.2);
+      color: #22d3ee;
       padding: 2px 6px;
       border-radius: 4px;
-      border: 1px solid rgba(16, 185, 129, 0.4);
+      border: 1px solid rgba(6, 182, 212, 0.4);
       letter-spacing: 0.5px;
     }
 
@@ -199,11 +203,11 @@
       top: 9px;
       width: 6px;
       height: 6px;
-      background: #52525b;
+      background: #475569;
       border-radius: 50%;
     }
     .item-list li strong {
-      color: #d4d4d8;
+      color: #cbd5e1;
       font-weight: 500;
     }
 
@@ -225,7 +229,7 @@
     .connector-label {
       background: var(--bg);
       border: 1px solid var(--border);
-      color: #d4d4d8;
+      color: #cbd5e1;
       font-size: 15px;
       font-weight: 500;
       padding: 6px 20px;
@@ -240,7 +244,7 @@
     .connector-label::before {
       content: "↓";
       font-family: 'Inter', sans-serif;
-      color: #71717a;
+      color: #22d3ee;
     }
 
     /* Footer */
@@ -251,7 +255,7 @@
       align-items: center;
       font-family: 'Inter', sans-serif;
       font-size: 16px;
-      color: #52525b;
+      color: #475569;
     }
     .footer-left {
       display: flex;
@@ -264,28 +268,27 @@
   <div class="container">
     <!-- Header -->
     <div class="header">
-      <div class="header-badge">Production Architecture (Expert Audited)</div>
-      <h1 class="header-title">Auto Script System Flow</h1>
-      <p class="header-subtitle">แผนผังสถาปัตยกรรมระดับองค์กร V2 - อัปเดตความปลอดภัยสูงสุด</p>
+      <div class="header-badge">Data Security & Privacy Architecture</div>
+      <h1 class="header-title">Auto Script Security Shield</h1>
+      <p class="header-subtitle">แผนผังระบบรักษาความปลอดภัยของข้อมูลส่วนบุคคลและธุรกรรมทางการเงิน</p>
     </div>
 
     <div class="flow-wrapper">
       
-      <!-- 1. Frontend -->
+      <!-- 1. Access & Network Shield -->
       <div class="block">
         <div class="block-header">
           <div>
             <div class="block-step">01</div>
-            <div class="block-title">Client Layer (Frontend)</div>
+            <div class="block-title">Access & Network Shield</div>
           </div>
-          <div class="block-tech">React 19 + React Router v7</div>
+          <div class="block-tech">Cloudflare CORS & Auth</div>
         </div>
         <div class="content-single">
           <div class="item-group">
             <ul class="item-list">
-              <li><strong>Dynamic Progress UX:</strong> แถบโหลด 0-100% ตอบสนองเรียลไทม์ตามความเร็ว AI</li>
-              <li><strong>SSG Prerendering:</strong> โหลดหน้าเว็บรวดเร็วภายในเวลา &lt; 50ms</li>
-              <li><strong>Resilience:</strong> มีระบบ lazyWithRetry ป้องกันหน้าขาว และ AbortController ดักค้าง</li>
+              <li><strong>CORS Policy & DoS Protection:</strong> อนุญาตเฉพาะโดเมนแท้ ตัดข้อความยาวเกินดักจับ Memory Exhaustion (DoS)</li>
+              <li><strong>Auth Hardening:</strong> บังคับรหัส 8 ตัว ป้องกัน Email Enumeration (สุ่มหาอีเมล) และยืนยันตัวตนผ่าน Resend SMTP</li>
             </ul>
           </div>
         </div>
@@ -293,32 +296,30 @@
 
       <div class="connector">
         <div class="connector-line"></div>
-        <div class="connector-label">ส่งคำขอสร้างสคริปต์ (HTTPS POST)</div>
+        <div class="connector-label">ตรวจสอบ Token ข้ามไปยัง Serverless API</div>
         <div class="connector-line"></div>
       </div>
 
-      <!-- 2. API Edge -->
+      <!-- 2. API Firewall -->
       <div class="block">
         <div class="block-header">
           <div>
             <div class="block-step">02</div>
-            <div class="block-title">Edge Serverless API (Security Wall)</div>
+            <div class="block-title">Backend API Firewall</div>
           </div>
-          <div class="block-tech">Cloudflare Pages Functions</div>
+          <div class="block-tech">Edge Functions Security</div>
         </div>
         <div class="content-grid">
           <div class="item-group">
-            <div class="item-title">Observability & Retry <span class="tag-new">NEW</span></div>
+            <div class="item-title">RPC Lockdown <span class="tag-shield">AUDITED</span></div>
             <ul class="item-list">
-              <li><strong>X-Request-Id:</strong> แนบ UUID ทุก Request เพื่อการทำ Structured Logging</li>
-              <li><strong>Auto-Retry Engine:</strong> หาก Gemini ติด 429/503 ระบบจะดึงกลับมายิงใหม่ 3 รอบแบบไร้รอยต่อ</li>
+              <li><strong>Service Role Guard:</strong> ปิดกั้นการเจาะฐานข้อมูลตรงจากหน้าเว็บ API เป็นด่านตรวจสิทธิ์ชั้นแรก 100%</li>
             </ul>
           </div>
           <div class="item-group">
-            <div class="item-title">Resilience Network</div>
+            <div class="item-title">Prompt Injection Guard</div>
             <ul class="item-list">
-              <li><strong>State-Aware Webhooks:</strong> มี Idempotency (pending/success) กัน Stripe ยิงซ้ำเวลาเซิร์ฟเวอร์พัง</li>
-              <li><strong>Content Moderation:</strong> ล้าง Zero-Width Chars ก่อนยิง AI</li>
+              <li><strong>XML Enclosure:</strong> ห่อหุ้มข้อมูลผู้ใช้ใน <code>&lt;user_comment&gt;</code> ป้องกันการแฮ็กหลอกข้ามคำสั่ง AI</li>
             </ul>
           </div>
         </div>
@@ -326,32 +327,30 @@
 
       <div class="connector">
         <div class="connector-line"></div>
-        <div class="connector-label">JWT Token ตรวจผ่าน ➔ เริ่ม Transaction</div>
+        <div class="connector-label">ผ่านการกรอง ➔ สั่งการระบบจัดการเครดิต</div>
         <div class="connector-line"></div>
       </div>
 
-      <!-- 3. DB & Auth -->
+      <!-- 3. DB & Isolation -->
       <div class="block">
         <div class="block-header">
           <div>
             <div class="block-step">03</div>
-            <div class="block-title">Security & Ledger (Database)</div>
+            <div class="block-title">Database & Isolation</div>
           </div>
-          <div class="block-tech">Supabase (PostgreSQL 15)</div>
+          <div class="block-tech">Supabase Row Level Security</div>
         </div>
         <div class="content-grid">
           <div class="item-group">
-            <div class="item-title">Saga Pattern Ledger <span class="tag-new">NEW</span></div>
+            <div class="item-title">Row Level Security (RLS)</div>
             <ul class="item-list">
-              <li><strong>Atomic State:</strong> ใช้ 3 ขั้นตอน (start, commit, refund) ทำสถานะ pending ป้องกันเครดิตสูญหาย</li>
-              <li><strong>RPC Lockdown:</strong> ล็อคสิทธิ์เฉพาะ Service Role ห้ามเข้าถึงตรงจาก Frontend อย่างเด็ดขาด</li>
+              <li><strong>100% Data Isolation:</strong> กั้นกำแพงข้อมูล ผู้ใช้ไม่สามารถอ่าน หรือมองเห็นสคริปต์ของคนอื่นได้เด็ดขาด</li>
             </ul>
           </div>
           <div class="item-group">
-            <div class="item-title">Data Protection</div>
+            <div class="item-title">Concurrency Safety</div>
             <ul class="item-list">
-              <li><strong>Row Level Security:</strong> คุมสิทธิ์แยกข้อมูลผู้ใช้ 100%</li>
-              <li><strong>pg_cron:</strong> ลบสคริปต์เก่าอัตโนมัติ 3/30 วัน (ยกเว้นติดดาว)</li>
+              <li><strong>Race Condition Guard:</strong> บัญชีเครดิตทำงานแบบ Atomic ป้องกันการกดรัวๆ (Double Spend) เพื่อโกงเครดิต</li>
             </ul>
           </div>
         </div>
@@ -359,31 +358,30 @@
 
       <div class="connector">
         <div class="connector-line"></div>
-        <div class="connector-label">สถานะเครดิต = Pending ➔ ส่งเข้า AI</div>
+        <div class="connector-label">เชื่อมต่อระบบชำระเงินภายนอก (Stripe)</div>
         <div class="connector-line"></div>
       </div>
 
-      <!-- 4. AI -->
+      <!-- 4. Payment Security -->
       <div class="block">
         <div class="block-header">
           <div>
             <div class="block-step">04</div>
-            <div class="block-title">AI Processing Engine</div>
+            <div class="block-title">Payment & Financial Security</div>
           </div>
-          <div class="block-tech">Google Gemini Dual-Engine</div>
+          <div class="block-tech">Stripe Webhooks & Ledger</div>
         </div>
         <div class="content-grid">
           <div class="item-group">
-            <div class="item-title">Dynamic Smart Brain</div>
+            <div class="item-title">Backend-Only Validation</div>
             <ul class="item-list">
-              <li><strong>Gemini 3.6 Flash:</strong> ใช้แต่งบทพูดธรรมชาติระดับ Micro-Persona</li>
-              <li><strong>Gemini 3.1 Pro:</strong> วิเคราะห์จิตวิทยาด้วย <strong>Chain of Thought (CoT)</strong> เจาะลึก Belief-Shifting</li>
+              <li><strong>Trust No Client:</strong> การเลื่อนขั้นแพ็กเกจ (Tier) จะถูกอัปเดตผ่านหลังบ้านจาก Stripe โดยตรง ป้องกันการปลอมแปลงบิล</li>
             </ul>
           </div>
           <div class="item-group">
-            <div class="item-title">Output Security <span class="tag-new">NEW</span></div>
+            <div class="item-title">Idempotency System</div>
             <ul class="item-list">
-              <li><strong>Schema Validation:</strong> ตรวจสอบ JSON ของ AI ฝั่ง Backend (safeParseJson) ก่อนส่งให้หน้าเว็บ ป้องกัน UI พัง</li>
+              <li><strong>Replay Attack Prevention:</strong> ดักจับ Event ID หากเกิดการยิงซ้ำ (Retry) ป้องกันการแจกเครดิตเบิ้ล</li>
             </ul>
           </div>
         </div>
@@ -391,25 +389,24 @@
 
       <div class="connector">
         <div class="connector-line"></div>
-        <div class="connector-label">AI ตอบกลับสำเร็จ ➔ Commit & บันทึกประวัติ</div>
+        <div class="connector-label">วัฏจักรข้อมูล & สิทธิส่วนบุคคล (PDPA)</div>
         <div class="connector-line"></div>
       </div>
 
-      <!-- 5. Delivery -->
+      <!-- 5. Data Privacy -->
       <div class="block">
         <div class="block-header">
           <div>
             <div class="block-step">05</div>
-            <div class="block-title">Delivery & Failsafe</div>
+            <div class="block-title">Data Privacy & Lifecycle</div>
           </div>
-          <div class="block-tech">System Integrity</div>
+          <div class="block-tech">Data Protection Standards</div>
         </div>
         <div class="content-single">
           <div class="item-group">
-            <div class="item-title">Self-Healing Infrastructure <span class="tag-new">NEW</span></div>
             <ul class="item-list">
-              <li><strong>Symmetric Refund & Auto-Heal:</strong> หาก AI ขัดข้อง หรือเซิร์ฟเวอร์โดนตัดกลางทาง (50s Timeout) ระบบ <code>pg_cron</code> จะตรวจจับสถานะ <code>pending</code> ที่ค้างเกิน 5 นาที และ <strong>คืนเครดิตอัตโนมัติ 100%</strong></li>
-              <li><strong>Discord Alerts:</strong> ยิงแจ้งเตือนฟีดแบ็กและบั๊กเข้าห้อง Admin แบบเรียลไทม์ พร้อม AI สรุปรายงานรายสัปดาห์</li>
+              <li><strong>Auto-Cleanup (pg_cron):</strong> ระบบลบสคริปต์ของบัญชีฟรีอัตโนมัติใน 3 วัน ลดภาระพื้นที่และไม่เก็บข้อมูลค้างเกินจำเป็น</li>
+              <li><strong>Full CASCADE Deletion:</strong> หากผู้ใช้ขอลบบัญชี ระบบจะล้างประวัติ ทรานแซคชัน และสคริปต์ทั้งหมดแบบถอนรากถอนโคน เพื่อเคารพสิทธิความเป็นส่วนตัว (Right to be Forgotten)</li>
             </ul>
           </div>
         </div>
@@ -423,7 +420,7 @@
         <span>autoscript-ai.com</span>
         <span>Strictly Confidential</span>
       </div>
-      <div>Architecture Build: V2.1 (Expert Audited)</div>
+      <div>Security Operations (SecOps) Diagram</div>
     </div>
 
   </div>

@@ -2,10 +2,12 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { translateError } from '../utils/translateError';
+import { Turnstile } from '@marsidev/react-turnstile';
 
 function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [captchaToken, setCaptchaToken] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -68,11 +70,27 @@ function Register() {
       return;
     }
 
+    if (!captchaToken) {
+      setError('กรุณายืนยันว่าคุณไม่ใช่บอท (CAPTCHA)');
+      setLoading(false);
+      return;
+    }
+
+    // Fast-fail UX check for common temp mails
+    const emailDomain = email.split('@')[1]?.toLowerCase();
+    const bannedDomains = ['tempmail.com', 'yopmail.com', '10minutemail.com', 'guerrillamail.com'];
+    if (bannedDomains.includes(emailDomain)) {
+      setError('อีเมลนี้มาจากผู้ให้บริการอีเมลชั่วคราว ไม่อนุญาตให้ใช้สมัครสมาชิกครับ');
+      setLoading(false);
+      return;
+    }
+
     // ส่งคำสั่งไปบอก Supabase ให้สร้างผู้ใช้ใหม่
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
+        captchaToken,
         emailRedirectTo: `${window.location.origin}/create`
       }
     });
@@ -249,9 +267,20 @@ function Register() {
             </label>
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
+            <div className="flex justify-center mt-6">
+              <Turnstile 
+                siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY || '1x00000000000000000000AA'} 
+                onSuccess={(token) => setCaptchaToken(token)}
+                options={{
+                  theme: 'light'
+                }}
+              />
+            </div>
+
+            {/* ปุ่มสมัครสมาชิก */}
+            <button
+              type="submit"
+              disabled={loading || !captchaToken}
             className={`w-full py-2 rounded-lg text-white font-medium transition-colors ${
               loading ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
             }`}

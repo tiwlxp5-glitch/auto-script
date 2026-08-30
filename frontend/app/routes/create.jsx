@@ -215,12 +215,14 @@ function CreateScript() {
       setGenerationProgress(Math.floor(currentProgress));
     }, updateIntervalMs);
 
-    // FIX FE-02: AbortController + 60s timeout
-    // Analogy: Like setting a 60-second kitchen timer when making a call.
+    // FIX FE-02 & V6: AbortController with dynamic timeout & unmount cleanup
+    // Analogy: Like setting a 60/100-second kitchen timer when making a call.
     // If the line is silent for too long (mobile tunnel / Wi-Fi drop),
     // we hang up gracefully instead of holding the phone forever.
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 60000);
+    analyzeAbortRef.current = controller; // V6: Bind to ref for unmount cleanup
+    const timeoutDuration = isProBrain ? 100000 : 60000;
+    const timeoutId = setTimeout(() => controller.abort(), timeoutDuration);
 
     let hasError = false;
     try {
@@ -257,6 +259,11 @@ function CreateScript() {
       });
 
       clearTimeout(timeoutId);
+      
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('text/html')) {
+        throw new Error('การเชื่อมต่อกับเซิร์ฟเวอร์ขัดข้อง (Timeout) เครดิตของคุณถูกคืนให้แล้ว กรุณาลองใหม่');
+      }
 
       const responseData = await response.json();
 

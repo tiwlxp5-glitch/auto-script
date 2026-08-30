@@ -2,20 +2,21 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>Auto Script Architecture - Professional Edition (V2)</title>
+  <title>Auto Script AI Brain Architecture</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0a0a0a;
-      --card-bg: #111111;
+      --bg: #09090b;
+      --card-bg: #131316;
       --border: #27272a;
       --text-main: #f4f4f5;
       --text-sub: #a1a1aa;
       --accent: #e4e4e7;
       --line: #3f3f46;
-      --highlight: #10b981;
+      --highlight: #8b5cf6; /* Gemini Purple */
+      --highlight-alt: #6366f1; /* Indigo */
     }
     
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,13 +33,16 @@
       position: relative;
     }
 
+    /* AI-themed background pattern */
     body::before {
       content: "";
       position: absolute;
       inset: 0;
-      background-image: radial-gradient(circle, #27272a 1px, transparent 1px);
-      background-size: 32px 32px;
-      opacity: 0.5;
+      background-image: 
+        linear-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.8;
       pointer-events: none;
       z-index: 0;
     }
@@ -56,7 +60,7 @@
     /* Header section */
     .header {
       margin-bottom: 24px;
-      border-left: 6px solid var(--text-main);
+      border-left: 6px solid var(--highlight);
       padding-left: 20px;
     }
     .header-badge {
@@ -65,7 +69,7 @@
       font-weight: 600;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: #71717a;
+      color: #a78bfa;
       margin-bottom: 8px;
       display: flex;
       align-items: center;
@@ -78,6 +82,7 @@
       height: 8px;
       background: var(--highlight);
       border-radius: 50%;
+      box-shadow: 0 0 10px var(--highlight);
     }
     .header-title {
       font-size: 44px;
@@ -123,7 +128,7 @@
       font-family: 'Inter', sans-serif;
       font-size: 16px;
       font-weight: 700;
-      color: #71717a;
+      color: #a78bfa;
       letter-spacing: 1px;
       margin-bottom: 4px;
     }
@@ -170,14 +175,14 @@
       gap: 8px;
     }
     
-    .tag-new {
+    .tag-pro {
       font-size: 12px;
       font-weight: 700;
-      background: rgba(16, 185, 129, 0.2);
-      color: #34d399;
+      background: rgba(139, 92, 246, 0.2);
+      color: #c4b5fd;
       padding: 2px 6px;
       border-radius: 4px;
-      border: 1px solid rgba(16, 185, 129, 0.4);
+      border: 1px solid rgba(139, 92, 246, 0.4);
       letter-spacing: 0.5px;
     }
 
@@ -199,7 +204,7 @@
       top: 9px;
       width: 6px;
       height: 6px;
-      background: #52525b;
+      background: #71717a;
       border-radius: 50%;
     }
     .item-list li strong {
@@ -240,7 +245,7 @@
     .connector-label::before {
       content: "↓";
       font-family: 'Inter', sans-serif;
-      color: #71717a;
+      color: #a78bfa;
     }
 
     /* Footer */
@@ -264,28 +269,27 @@
   <div class="container">
     <!-- Header -->
     <div class="header">
-      <div class="header-badge">Production Architecture (Expert Audited)</div>
-      <h1 class="header-title">Auto Script System Flow</h1>
-      <p class="header-subtitle">แผนผังสถาปัตยกรรมระดับองค์กร V2 - อัปเดตความปลอดภัยสูงสุด</p>
+      <div class="header-badge">AI Prompt Engineering Architecture</div>
+      <h1 class="header-title">Auto Script AI Brain</h1>
+      <p class="header-subtitle">เบื้องหลังวิศวกรรม Prompt และการสร้างเนื้อหาจิตวิทยา</p>
     </div>
 
     <div class="flow-wrapper">
       
-      <!-- 1. Frontend -->
+      <!-- 1. Input Moderation -->
       <div class="block">
         <div class="block-header">
           <div>
             <div class="block-step">01</div>
-            <div class="block-title">Client Layer (Frontend)</div>
+            <div class="block-title">Input Processing & Moderation</div>
           </div>
-          <div class="block-tech">React 19 + React Router v7</div>
+          <div class="block-tech">Data Sanitization</div>
         </div>
         <div class="content-single">
           <div class="item-group">
             <ul class="item-list">
-              <li><strong>Dynamic Progress UX:</strong> แถบโหลด 0-100% ตอบสนองเรียลไทม์ตามความเร็ว AI</li>
-              <li><strong>SSG Prerendering:</strong> โหลดหน้าเว็บรวดเร็วภายในเวลา &lt; 50ms</li>
-              <li><strong>Resilience:</strong> มีระบบ lazyWithRetry ป้องกันหน้าขาว และ AbortController ดักค้าง</li>
+              <li><strong>Thai Obfuscation Detection:</strong> ระบบล้าง Zero-Width Chars และช่องว่าง เพื่อป้องกันการหลบเลี่ยงคำหยาบ</li>
+              <li><strong>Competitor Filter:</strong> ดักจับคำโจมตีคู่แข่ง (เช่น "กาก", "ขยะ") และแจ้งเตือนให้ใช้ภาษาเชิงบวกก่อนยิงเข้า AI</li>
             </ul>
           </div>
         </div>
@@ -293,32 +297,30 @@
 
       <div class="connector">
         <div class="connector-line"></div>
-        <div class="connector-label">ส่งคำขอสร้างสคริปต์ (HTTPS POST)</div>
+        <div class="connector-label">ข้อมูลปลอดภัย ➔ เตรียมสวมบทบาท</div>
         <div class="connector-line"></div>
       </div>
 
-      <!-- 2. API Edge -->
+      <!-- 2. Dynamic Persona -->
       <div class="block">
         <div class="block-header">
           <div>
             <div class="block-step">02</div>
-            <div class="block-title">Edge Serverless API (Security Wall)</div>
+            <div class="block-title">Dynamic Persona Engine</div>
           </div>
-          <div class="block-tech">Cloudflare Pages Functions</div>
+          <div class="block-tech">Micro-Persona System</div>
         </div>
         <div class="content-grid">
           <div class="item-group">
-            <div class="item-title">Observability & Retry <span class="tag-new">NEW</span></div>
+            <div class="item-title">Contextual Roles</div>
             <ul class="item-list">
-              <li><strong>X-Request-Id:</strong> แนบ UUID ทุก Request เพื่อการทำ Structured Logging</li>
-              <li><strong>Auto-Retry Engine:</strong> หาก Gemini ติด 429/503 ระบบจะดึงกลับมายิงใหม่ 3 รอบแบบไร้รอยต่อ</li>
+              <li><strong>Micro-Persona:</strong> AI สวมบทบาทให้เข้ากับสินค้า (เช่น "เพื่อนสาวจอมแฉ", "ผู้เชี่ยวชาญ", "แม่ค้าฮาร์ดเซลล์")</li>
             </ul>
           </div>
           <div class="item-group">
-            <div class="item-title">Resilience Network</div>
+            <div class="item-title">Speaker Tone Alignment</div>
             <ul class="item-list">
-              <li><strong>State-Aware Webhooks:</strong> มี Idempotency (pending/success) กัน Stripe ยิงซ้ำเวลาเซิร์ฟเวอร์พัง</li>
-              <li><strong>Content Moderation:</strong> ล้าง Zero-Width Chars ก่อนยิง AI</li>
+              <li><strong>Gender Context:</strong> ปรับสรรพนามและน้ำเสียงให้ตรงเพศ (ชาย/หญิง) อย่างเป็นธรรมชาติ</li>
             </ul>
           </div>
         </div>
@@ -326,32 +328,30 @@
 
       <div class="connector">
         <div class="connector-line"></div>
-        <div class="connector-label">JWT Token ตรวจผ่าน ➔ เริ่ม Transaction</div>
+        <div class="connector-label">กำหนดคาแรคเตอร์ ➔ เริ่มกระบวนการคิด</div>
         <div class="connector-line"></div>
       </div>
 
-      <!-- 3. DB & Auth -->
+      <!-- 3. Cognitive Processing -->
       <div class="block">
         <div class="block-header">
           <div>
             <div class="block-step">03</div>
-            <div class="block-title">Security & Ledger (Database)</div>
+            <div class="block-title">Cognitive Processing</div>
           </div>
-          <div class="block-tech">Supabase (PostgreSQL 15)</div>
+          <div class="block-tech">Gemini Dual-Engine</div>
         </div>
         <div class="content-grid">
           <div class="item-group">
-            <div class="item-title">Saga Pattern Ledger <span class="tag-new">NEW</span></div>
+            <div class="item-title">Standard Engine (Speed)</div>
             <ul class="item-list">
-              <li><strong>Atomic State:</strong> ใช้ 3 ขั้นตอน (start, commit, refund) ทำสถานะ pending ป้องกันเครดิตสูญหาย</li>
-              <li><strong>RPC Lockdown:</strong> ล็อคสิทธิ์เฉพาะ Service Role ห้ามเข้าถึงตรงจาก Frontend อย่างเด็ดขาด</li>
+              <li><strong>Gemini 3.6 Flash:</strong> ใช้ <code>Temperature 0.85</code> เพื่อความสร้างสรรค์ เน้นโครงสร้าง PAS / HSO / FOMO ที่รวดเร็วและแม่นยำ</li>
             </ul>
           </div>
           <div class="item-group">
-            <div class="item-title">Data Protection</div>
+            <div class="item-title">Pro Deep Brain™ <span class="tag-pro">PRO TIER</span></div>
             <ul class="item-list">
-              <li><strong>Row Level Security:</strong> คุมสิทธิ์แยกข้อมูลผู้ใช้ 100%</li>
-              <li><strong>pg_cron:</strong> ลบสคริปต์เก่าอัตโนมัติ 3/30 วัน (ยกเว้นติดดาว)</li>
+              <li><strong>Chain of Thought (CoT):</strong> เจาะลึกจิตวิทยา Epiphany Bridge วิเคราะห์อารมณ์ลูกค้าก่อนแต่งสคริปต์จริงผ่าน <code>gemini-3.1-pro-preview</code></li>
             </ul>
           </div>
         </div>
@@ -359,31 +359,30 @@
 
       <div class="connector">
         <div class="connector-line"></div>
-        <div class="connector-label">สถานะเครดิต = Pending ➔ ส่งเข้า AI</div>
+        <div class="connector-label">กระบวนการคิดเสร็จสิ้น ➔ เกลาสำนวนภาษา</div>
         <div class="connector-line"></div>
       </div>
 
-      <!-- 4. AI -->
+      <!-- 4. Anti-Repetition -->
       <div class="block">
         <div class="block-header">
           <div>
             <div class="block-step">04</div>
-            <div class="block-title">AI Processing Engine</div>
+            <div class="block-title">Language & Anti-Repetition</div>
           </div>
-          <div class="block-tech">Google Gemini Dual-Engine</div>
+          <div class="block-tech">Dynamic Prompting</div>
         </div>
         <div class="content-grid">
           <div class="item-group">
-            <div class="item-title">Dynamic Smart Brain</div>
+            <div class="item-title">Hook Strategy Engine</div>
             <ul class="item-list">
-              <li><strong>Gemini 3.6 Flash:</strong> ใช้แต่งบทพูดธรรมชาติระดับ Micro-Persona</li>
-              <li><strong>Gemini 3.1 Pro:</strong> วิเคราะห์จิตวิทยาด้วย <strong>Chain of Thought (CoT)</strong> เจาะลึก Belief-Shifting</li>
+              <li><strong>Abstract Concepts:</strong> ดึง 6 โครงสร้าง Hook จากคลัง 40+ แบบ ป้องกันปัญหา AI แต่งคลิปซ้ำซาก (Anti-Repetition)</li>
             </ul>
           </div>
           <div class="item-group">
-            <div class="item-title">Output Security <span class="tag-new">NEW</span></div>
+            <div class="item-title">Negative Constraints</div>
             <ul class="item-list">
-              <li><strong>Schema Validation:</strong> ตรวจสอบ JSON ของ AI ฝั่ง Backend (safeParseJson) ก่อนส่งให้หน้าเว็บ ป้องกัน UI พัง</li>
+              <li><strong>Strict Rules:</strong> ห้ามใช้คำเชยๆ (เช่น "เคยป่ะ", "ใครกำลัง") และบังคับให้เว้นจังหวะหายใจ ("...") ให้เหมือนมนุษย์</li>
             </ul>
           </div>
         </div>
@@ -391,25 +390,24 @@
 
       <div class="connector">
         <div class="connector-line"></div>
-        <div class="connector-label">AI ตอบกลับสำเร็จ ➔ Commit & บันทึกประวัติ</div>
+        <div class="connector-label">จัดรูปแบบเป็น JSON ➔ ส่งกลับไปยัง API</div>
         <div class="connector-line"></div>
       </div>
 
-      <!-- 5. Delivery -->
+      <!-- 5. Output Validation -->
       <div class="block">
         <div class="block-header">
           <div>
             <div class="block-step">05</div>
-            <div class="block-title">Delivery & Failsafe</div>
+            <div class="block-title">Output Validation</div>
           </div>
-          <div class="block-tech">System Integrity</div>
+          <div class="block-tech">Structure Failsafe</div>
         </div>
         <div class="content-single">
           <div class="item-group">
-            <div class="item-title">Self-Healing Infrastructure <span class="tag-new">NEW</span></div>
             <ul class="item-list">
-              <li><strong>Symmetric Refund & Auto-Heal:</strong> หาก AI ขัดข้อง หรือเซิร์ฟเวอร์โดนตัดกลางทาง (50s Timeout) ระบบ <code>pg_cron</code> จะตรวจจับสถานะ <code>pending</code> ที่ค้างเกิน 5 นาที และ <strong>คืนเครดิตอัตโนมัติ 100%</strong></li>
-              <li><strong>Discord Alerts:</strong> ยิงแจ้งเตือนฟีดแบ็กและบั๊กเข้าห้อง Admin แบบเรียลไทม์ พร้อม AI สรุปรายงานรายสัปดาห์</li>
+              <li><strong>Structured JSON Schema:</strong> บังคับให้ AI ต้องคืนค่ากลับมาในรูปแบบ <code>script_blocks</code> และ <code>metadata</code> ตามที่กำหนดเท่านั้น</li>
+              <li><strong>safeParseJson (Backend):</strong> ระบบซ่อมแซมและตรวจสอบชนิดของข้อมูล (Array/String) โดยอัตโนมัติ เพื่อป้องกันไม่ให้หน้าเว็บแครช (UI Breakage)</li>
             </ul>
           </div>
         </div>
@@ -421,9 +419,9 @@
     <div class="footer">
       <div class="footer-left">
         <span>autoscript-ai.com</span>
-        <span>Strictly Confidential</span>
+        <span>AI Architecture Document</span>
       </div>
-      <div>Architecture Build: V2.1 (Expert Audited)</div>
+      <div>AI Prompt Engineering (Gemini Dual-Engine)</div>
     </div>
 
   </div>
