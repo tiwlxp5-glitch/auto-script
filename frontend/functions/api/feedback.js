@@ -1,11 +1,12 @@
 import { createClient } from '@supabase/supabase-js';
 
-export async function onRequestPost(context) {
-  const { request, env } = context;
+export async function onRequestPost({ request, env, data }) {
+  const logger = data?.logger || console;
 
   try {
     const authHeader = request.headers.get('Authorization');
     if (!authHeader) {
+      logger.warn('Unauthorized request: missing authorization header');
       return new Response(JSON.stringify({ error: "Unauthorized" }), { 
         status: 401,
         headers: { 'Content-Type': 'application/json' }
@@ -17,17 +18,21 @@ export async function onRequestPost(context) {
     const { data: { user }, error: userError } = await supabaseClient.auth.getUser(token);
 
     if (userError || !user) {
+      logger.warn('Unauthorized request: token validation failed', { userError });
       return new Response(JSON.stringify({ error: "Invalid token" }), { 
         status: 401,
         headers: { 'Content-Type': 'application/json' }
       });
     }
 
+    if (data?.logger?.setUserId) data.logger.setUserId(user.id);
+
     const body = await request.json();
     const rating = parseInt(body.rating, 10);
     const comment = (body.comment || '').slice(0, 1000); // Max 1000 chars to prevent abuse
 
     if (isNaN(rating) || rating < 1 || rating > 5) {
+      logger.warn('Invalid rating submitted', { rating });
       return new Response(JSON.stringify({ error: "Rating must be between 1 and 5" }), { 
         status: 400,
         headers: { 'Content-Type': 'application/json' }
@@ -45,7 +50,7 @@ export async function onRequestPost(context) {
     });
 
     if (insertError) {
-      console.error("Failed to insert feedback:", insertError);
+      logger.error("Failed to insert feedback", insertError);
       return new Response(JSON.stringify({ error: "Failed to save feedback" }), { 
         status: 500,
         headers: { 'Content-Type': 'application/json' }
@@ -78,7 +83,7 @@ export async function onRequestPost(context) {
            isCritical = aiResult.is_critical_bug === true;
         }
       } catch (e) {
-        console.error("Gemini sentiment analysis failed:", e);
+        logger.error("Gemini sentiment analysis failed", e);
       }
     }
 
@@ -130,9 +135,11 @@ export async function onRequestPost(context) {
           body: JSON.stringify(payload)
         });
       } catch (discordErr) {
-        console.error("Failed to send Discord Webhook:", discordErr);
+        logger.error("Failed to send Discord Webhook", discordErr);
       }
     }
+
+    logger.info('Feedback processed successfully', { rating, isCritical });
 
     return new Response(JSON.stringify({ success: true }), { 
       status: 200,
@@ -140,7 +147,7 @@ export async function onRequestPost(context) {
     });
 
   } catch (err) {
-    console.error("Feedback API Error:", err);
+    logger.error("Feedback API Error", err);
     return new Response(JSON.stringify({ error: "Internal Server Error" }), { 
       status: 500,
       headers: { 'Content-Type': 'application/json' }

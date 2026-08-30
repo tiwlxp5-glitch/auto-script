@@ -1,12 +1,15 @@
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
 
-export async function onRequestPost({ request, env }) {
+export async function onRequestPost({ request, env, data }) {
+  const logger = data?.logger || console;
+
   try {
     // 1. ตรวจสอบการยืนยันตัวตน (JWT Bearer Token จาก Header)
     // เปรียบเสมือนการตรวจบัตรประชาชนที่ประตูทางเข้า เพื่อป้องกันไม่ให้บุคคลภายนอกที่ไม่ได้รับอนุญาตเข้าถึงระบบ
     const authHeader = request.headers.get('Authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      logger.warn('Unauthorized request: missing or invalid authorization header');
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
         status: 401,
         headers: { 'Content-Type': 'application/json' }
@@ -19,11 +22,14 @@ export async function onRequestPost({ request, env }) {
     // 2. ตรวจสอบความถูกต้องของ Token กับ Supabase Auth
     const { data: { user }, error: userError } = await supabaseAdmin.auth.getUser(token);
     if (userError || !user) {
+      logger.warn('Unauthorized request: token validation failed', { userError });
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
         status: 401,
         headers: { 'Content-Type': 'application/json' }
       });
     }
+
+    if (data?.logger?.setUserId) data.logger.setUserId(user.id);
 
     // 3. ดึง stripe_customer_id จากฐานข้อมูล (profiles) โดยอิงตาม user.id ของผู้ใช้ที่ล็อกอินเท่านั้น
     // เพื่อป้องกันช่องโหว่ IDOR (Insecure Direct Object Reference) - ห้ามเชื่อถือ customerId ที่ส่งมาจาก Client
@@ -34,6 +40,7 @@ export async function onRequestPost({ request, env }) {
       .single();
 
     if (profileError || !profile || !profile.stripe_customer_id) {
+      logger.info('No Stripe customer found for this account', { profileError });
       return new Response(JSON.stringify({ error: 'No Stripe customer found for this account' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' }
@@ -52,6 +59,8 @@ export async function onRequestPost({ request, env }) {
       customer: profile.stripe_customer_id,
       return_url: `${new URL(request.url).origin}/settings`,
     });
+    
+    logger.info('Customer portal session created successfully', { customerId: profile.stripe_customer_id });
 
     return new Response(JSON.stringify({ url: session.url }), {
       status: 200,
@@ -59,7 +68,7 @@ export async function onRequestPost({ request, env }) {
     });
 
   } catch (err) {
-    console.error('Portal Error:', err);
+    logger.error('Portal Error', err);
     return new Response(JSON.stringify({ error: err.message || 'Internal Server Error' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }

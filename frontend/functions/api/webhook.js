@@ -1,9 +1,12 @@
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
 
-export async function onRequestPost({ request, env }) {
+export async function onRequestPost({ request, env, data }) {
+  const logger = data?.logger || console;
+
   // 1. ตรวจสอบกุญแจต่างๆ ว่ามีครบไหม
   if (!env.STRIPE_SECRET_KEY || !env.STRIPE_WEBHOOK_SECRET || !env.VITE_SUPABASE_URL || !env.SUPABASE_SERVICE_ROLE_KEY) {
+    logger.error('Missing environment variables for Stripe Webhook');
     return new Response('Missing environment variables', { status: 500 });
   }
 
@@ -22,7 +25,7 @@ export async function onRequestPost({ request, env }) {
   try {
     event = await stripe.webhooks.constructEventAsync(payload, signature, env.STRIPE_WEBHOOK_SECRET);
   } catch (err) {
-    console.error(`Webhook signature verification failed.`, err.message);
+    logger.error(`Webhook signature verification failed`, err);
     return new Response(`Webhook Error: ${err.message}`, { status: 400 });
   }
 
@@ -43,19 +46,19 @@ export async function onRequestPost({ request, env }) {
 
         if (existingEvent) {
           if (existingEvent.status === 'success') {
-            console.log(`Event ${event.id} already processed successfully. Skipping.`);
+            logger.info(`Event ${event.id} already processed successfully. Skipping.`, { eventId: event.id });
             return new Response('Already processed', { status: 200 });
           } else if (existingEvent.status === 'pending') {
             const ageMinutes = (new Date() - new Date(existingEvent.created_at)) / (1000 * 60);
             if (ageMinutes < 5) {
-              console.log(`Event ${event.id} is currently processing. Returning 409 to let Stripe retry later.`);
+              logger.info(`Event ${event.id} is currently processing. Returning 409 to let Stripe retry later.`, { eventId: event.id });
               return new Response('Currently processing', { status: 409 });
             } else {
-              console.log(`Event ${event.id} stuck in pending. Retrying.`);
+              logger.warn(`Event ${event.id} stuck in pending. Retrying.`, { eventId: event.id });
               await supabase.from('webhook_events').update({ status: 'pending', error_message: null }).eq('id', event.id);
             }
           } else if (existingEvent.status === 'failed') {
-            console.log(`Event ${event.id} failed previously. Retrying.`);
+            logger.warn(`Event ${event.id} failed previously. Retrying.`, { eventId: event.id });
             await supabase.from('webhook_events').update({ status: 'pending', error_message: null }).eq('id', event.id);
           }
         }
@@ -69,7 +72,7 @@ export async function onRequestPost({ request, env }) {
 
       // FIX INF-03: Ignore unpaid async sessions (e.g., bank transfers still pending)
       if (session.payment_status !== 'paid') {
-        console.log(`Session ${session.id} not paid yet (${session.payment_status}). Skipping.`);
+        logger.info(`Session ${session.id} not paid yet (${session.payment_status}). Skipping.`, { sessionId: session.id });
         await supabase.from('webhook_events').update({ status: 'failed', error_message: `Payment pending: ${session.payment_status}` }).eq('id', event.id);
         return new Response('Payment pending', { status: 200 });
       }
@@ -77,6 +80,8 @@ export async function onRequestPost({ request, env }) {
       const userId = session.client_reference_id;
 
       if (userId) {
+        if (data?.logger?.setUserId) data.logger.setUserId(userId);
+        
         // ใช้ amount_subtotal แทน amount_total เพื่อแก้ปัญหาเวลาลูกค้าใช้คูปอง 100%
         const amountPaid = session.amount_subtotal;
         let addCredits = amountPaid >= 59000 ? 150 : 60;
@@ -100,7 +105,7 @@ export async function onRequestPost({ request, env }) {
           }, { onConflict: 'id' });
 
         if (upsertError) {
-          console.error("Database upsert failed:", upsertError);
+          logger.error("Database upsert failed", upsertError, { userId, eventId: event.id });
           await supabase.from('webhook_events').update({ status: 'failed', error_message: `DB Upsert Error: ${upsertError.message}` }).eq('id', event.id);
           return new Response(`Database Error: ${upsertError.message}`, { status: 500 });
         }
@@ -112,7 +117,7 @@ export async function onRequestPost({ request, env }) {
         });
 
         if (rpcError) {
-          console.error("RPC increment_credits failed:", rpcError);
+          logger.error("RPC increment_credits failed", rpcError, { userId, eventId: event.id });
           await supabase.from('webhook_events').update({ status: 'failed', error_message: `RPC Error: ${rpcError.message}` }).eq('id', event.id);
           return new Response(`Database Error: ${rpcError.message}`, { status: 500 });
         }
@@ -132,7 +137,8 @@ export async function onRequestPost({ request, env }) {
           .single();
 
         if (profile) {
-          console.log(`Revoking access for refunded/disputed customer ${customerId} (event: ${event.type})`);
+          if (data?.logger?.setUserId) data.logger.setUserId(profile.id);
+          logger.warn(`Revoking access for refunded/disputed customer ${customerId} (event: ${event.type})`, { customerId, eventId: event.id });
           const creditsToDeduct = charge.amount >= 59000 ? 150 : 60;
           const newCredits = Math.max(0, (profile.credits || 0) - creditsToDeduct);
           
@@ -141,7 +147,7 @@ export async function onRequestPost({ request, env }) {
             credits: newCredits
           }).eq('id', profile.id);
 
-          console.log(`Downgraded user ${profile.id} to free tier. Credits adjusted to ${newCredits}.`);
+          logger.info(`Downgraded user ${profile.id} to free tier. Credits adjusted to ${newCredits}.`, { userId: profile.id });
         }
       }
     }
@@ -153,14 +159,16 @@ export async function onRequestPost({ request, env }) {
       .eq('id', event.id);
 
     if (updateSuccessError) {
-      console.error(`Failed to mark event ${event.id} as success:`, updateSuccessError);
+      logger.error(`Failed to mark event ${event.id} as success`, updateSuccessError, { eventId: event.id });
     }
 
     return new Response(JSON.stringify({ received: true }), { status: 200 });
 
   } catch (err) {
-    console.error(`Webhook handler failed.`, err.message);
-    await supabase.from('webhook_events').update({ status: 'failed', error_message: err.message }).eq('id', event.id);
+    logger.error(`Webhook handler failed`, err, { eventId: event?.id });
+    if (event?.id) {
+      await supabase.from('webhook_events').update({ status: 'failed', error_message: err.message }).eq('id', event.id);
+    }
     return new Response(`Webhook handler Error: ${err.message}`, { status: 500 });
   }
 }

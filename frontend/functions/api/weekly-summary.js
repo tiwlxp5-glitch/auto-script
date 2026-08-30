@@ -1,13 +1,14 @@
 import { createClient } from '@supabase/supabase-js';
 
-export async function onRequestPost(context) {
-  const { request, env } = context;
+export async function onRequestPost({ request, env, data }) {
+  const logger = data?.logger || console;
 
   try {
     // 1. Verify Cron Authentication
     // To trigger this, the caller must send a POST request with the correct Bearer token matching ADMIN_CRON_KEY
     const authHeader = request.headers.get('Authorization');
     if (!authHeader || authHeader.replace('Bearer ', '') !== env.ADMIN_CRON_KEY) {
+      logger.warn('Weekly summary cron unauthorized attempt');
       return new Response(JSON.stringify({ error: "Unauthorized" }), { 
         status: 401,
         headers: { 'Content-Type': 'application/json' }
@@ -31,6 +32,7 @@ export async function onRequestPost(context) {
     }
 
     if (!feedbacks || feedbacks.length === 0) {
+      logger.info('No feedback in the last 7 days. Skipped summary.');
       return new Response(JSON.stringify({ message: "No feedback in the last 7 days. Skipped summary." }), { 
         status: 200,
         headers: { 'Content-Type': 'application/json' }
@@ -71,6 +73,7 @@ ${rawDataStr}
     try {
       summary = JSON.parse(response.text);
     } catch(e) {
+      logger.warn('Failed to parse Gemini output as JSON, using raw text', { rawText: response.text });
       summary.overall = response.text.trim().slice(0, 300);
     }
 
@@ -127,12 +130,18 @@ ${rawDataStr}
         }]
       };
 
-      await fetch(webhookUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
+      try {
+        await fetch(webhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      } catch(discordErr) {
+        logger.error('Failed to send discord webhook for weekly report', discordErr);
+      }
     }
+
+    logger.info('Weekly summary generated and sent successfully', { count: feedbacks.length, avgRating });
 
     return new Response(JSON.stringify({ success: true, count: feedbacks.length }), { 
       status: 200,
@@ -140,7 +149,7 @@ ${rawDataStr}
     });
 
   } catch (err) {
-    console.error("Weekly Summary API Error:", err);
+    logger.error("Weekly Summary API Error", err);
     return new Response(JSON.stringify({ error: err.message || "Internal Server Error" }), { 
       status: 500,
       headers: { 'Content-Type': 'application/json' }

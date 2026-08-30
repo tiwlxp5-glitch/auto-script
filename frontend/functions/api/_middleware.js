@@ -1,6 +1,18 @@
+import { Logger } from '../../app/lib/logger.js';
+
 export const onRequest = async (context) => {
   const { request, next } = context;
   const origin = request.headers.get("Origin");
+  
+  // Initialize context data and logger
+  context.data = context.data || {};
+  const reqId = crypto.randomUUID();
+  context.data.reqId = reqId;
+  const logger = new Logger(reqId);
+  context.data.logger = logger;
+  
+  const url = new URL(request.url);
+  logger.info(`[Incoming Request] ${request.method} ${url.pathname}`);
   
   // 1. กำหนด Origin (โดเมน) ที่อนุญาตให้เรียก API ได้
   const allowedOrigins = [
@@ -29,7 +41,11 @@ export const onRequest = async (context) => {
   }
 
   // 3. ปล่อย Request ให้ส่งไปประมวลผลที่ฟังก์ชันหลัก (เช่น generate.js)
+  const startTime = Date.now();
   const response = await next();
+  const duration = Date.now() - startTime;
+  
+  logger.info(`[Response Out] ${request.method} ${url.pathname} - Status: ${response.status} (${duration}ms)`);
 
   // 4. สร้าง Response ใหม่เพื่อแนบ Security Headers
   const newResponse = new Response(response.body, response);
@@ -43,6 +59,7 @@ export const onRequest = async (context) => {
   newResponse.headers.set("X-Content-Type-Options", "nosniff"); // ป้องกัน MIME-type sniffing
   newResponse.headers.set("X-Frame-Options", "DENY"); // ป้องกัน Clickjacking
   newResponse.headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload"); // บังคับใช้ HTTPS
+  newResponse.headers.set("X-Request-Id", reqId); // Observability
 
   return newResponse;
 };

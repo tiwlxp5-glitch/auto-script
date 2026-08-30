@@ -252,10 +252,12 @@ function safeParseJson(rawText) {
 }
 
 export async function onRequestPost(context) {
-  const { request, env } = context;
+  const { request, env, data } = context;
+  const logger = data?.logger || console;
 
   // ─── Credit Ledger State (Saga Pattern) ─────────────────────────────────────
   // transactionId: UUID ที่ได้จาก start_generation_tx — ใช้อ้างอิงตลอด lifecycle
+
   // ถ้า Cloudflare crash กลางคัน pg_cron จะ refund ให้อัตโนมัติผ่าน transaction_id นี้
   let transactionId = null;   // UUID ของ credit_transactions row ที่กำลัง 'pending'
   let creditAmount = 1;       // 1 สำหรับ single script, 2 สำหรับ multi-version
@@ -277,10 +279,15 @@ export async function onRequestPost(context) {
     const { data: { user }, error: userError } = await supabaseClient.auth.getUser(token);
 
     if (userError || !user) {
+      logger.warn("Invalid token or user error", { userError });
       return new Response(JSON.stringify({ error: "Invalid token" }), { 
         status: 401,
         headers: { 'Content-Type': 'application/json' }
       });
+    }
+
+    if (data?.logger?.setUserId) {
+      data.logger.setUserId(user.id);
     }
 
     const body = await request.json();
@@ -364,12 +371,13 @@ export async function onRequestPost(context) {
     });
 
     if (txError) {
-      console.error('[Credit Ledger] start_generation_tx error:', txError);
+      logger.error('[Credit Ledger] start_generation_tx error', txError);
       return new Response(JSON.stringify({ error: "Failed to start credit transaction" }), {
         status: 500, headers: { 'Content-Type': 'application/json' }
       });
     }
     if (!txResult || txResult.credits < 0 || txResult.error) {
+      logger.warn('Insufficient credits', { txResult });
       // insufficient_credits หรือ profile_not_found
       return new Response(JSON.stringify({ error: 'เครดิตไม่พอ กรุณาเติมเครดิต' }), {
         status: 402, headers: { 'Content-Type': 'application/json' }
@@ -597,7 +605,7 @@ ${hookInstruction}
         if (isRetryable && attempt < maxRetries) {
           attempt++;
           const backoffDelay = Math.pow(2, attempt) * 1000; // 2s, 4s, 8s
-          console.warn(`[Auto-Retry] Gemini API Error (Attempt ${attempt}/${maxRetries}): ${errMsg}. Retrying in ${backoffDelay}ms...`);
+          logger.warn(`[Auto-Retry] Gemini API Error (Attempt ${attempt}/${maxRetries}): ${errMsg}. Retrying in ${backoffDelay}ms...`, { attempt });
           await new Promise(resolve => setTimeout(resolve, backoffDelay));
         } else {
           // Max retries reached or not a retryable error, throw to outer catch for refund and user notification
@@ -656,13 +664,13 @@ ${hookInstruction}
     });
 
     if (commitError || commitResult?.error) {
-      console.error('[Credit Ledger] commit_generation_tx failed:', commitError || commitResult?.error);
+      logger.error('[Credit Ledger] commit_generation_tx failed', commitError || commitResult?.error, { transactionId });
       // commit ล้มเหลว → ยิง refund ทันที (Eager refund) ก่อนที่ pg_cron จะทำ
       // ใช้ best-effort (ไม่ await error เพราะ pg_cron ยังเป็น safety net อยู่)
       supabaseAdmin.rpc('refund_generation_tx', {
         p_transaction_id: transactionId,
         p_user_id:        user.id
-      }).catch(e => console.error('[Credit Ledger] Eager refund failed (pg_cron will handle):', e));
+      }).catch(e => logger.error('[Credit Ledger] Eager refund failed (pg_cron will handle)', e, { transactionId }));
 
       throw new Error("Failed to save script history");
     }
@@ -699,20 +707,20 @@ ${hookInstruction}
     //    pg_cron ยังคงเป็น Safety Net สุดท้าย (จะ refund ใน 5 นาที)
     //    ดังนั้นไม่มี "เครดิตหายฟรี" เกิดขึ้นได้อีกต่อไป
     if (transactionId && userId && supabaseAdmin) {
-      console.error('[Credit Ledger] Execution failed after deduction. Attempting immediate refund via transaction:', transactionId);
+      logger.warn('[Credit Ledger] Execution failed after deduction. Attempting immediate refund via transaction', { transactionId });
       try {
         await supabaseAdmin.rpc('refund_generation_tx', {
           p_transaction_id: transactionId,
           p_user_id:        userId
         });
-        console.log('[Credit Ledger] Immediate refund successful for transaction:', transactionId);
+        logger.info('[Credit Ledger] Immediate refund successful for transaction', { transactionId });
       } catch (refundErr) {
         // ไม่ต้องตกใจ — pg_cron จะ refund ภายใน 5 นาที
-        console.error('[Credit Ledger] Immediate refund failed. pg_cron will auto-refund within 5 minutes. Error:', refundErr);
+        logger.error('[Credit Ledger] Immediate refund failed. pg_cron will auto-refund within 5 minutes.', refundErr, { transactionId });
       }
     }
     // ─────────────────────────────────────────────────────────────────────────
-    console.error("Generate API Error:", err);
+    logger.error("Generate API Error", err);
     
     let errorMessage = err.message || "เกิดข้อผิดพลาดที่ไม่คาดคิด กรุณาลองใหม่อีกครั้งครับ";
     if (typeof errorMessage === 'string') {

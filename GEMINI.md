@@ -389,7 +389,12 @@ After EVERY successful feature implementation, logic change, or architectural sh
    - **Migration**: `supabase/migrations/20260830154000_webhook_idempotency.sql`
    - **Test Suite**: Updated stress concurrency and adversarial tests. 120 tests passed.
 
-### Expert Architecture Audit (Items 4-5) - PENDING
-Items 4-5 from the Expert Architecture Audit will be addressed in subsequent sessions (Step-by-Step rule):
-- **Item 4**: Weak Observability - UUID Request IDs + centralized logging
+43. **Observability & Request Tracing (Expert Architecture Audit - Item 4 of 5)**:
+   - **Problem Solved**: Weak Observability. Missing UUID Request IDs and centralized logging made tracking missing credits and debugging impossible across distributed serverless functions.
+   - **Solution (Structured Logging)**: Created a centralized `Logger` class in `app/lib/logger.js`. Integrated it into Cloudflare `_middleware.js` to assign a `crypto.randomUUID()` to every incoming request. Added `X-Request-Id` to response headers.
+   - **Integration**: Refactored `generate.js`, `webhook.js`, `create-portal.js`, `feedback.js`, `weekly-summary.js`, and `delete-account.js` to use `context.data.logger` for structured JSON logging (INFO/WARN/ERROR), attaching `userId` and contextual metadata to every log event.
+   - **Commit**: (Pending auto commit)
+
+### Expert Architecture Audit (Item 5) - PENDING
+Items 5 from the Expert Architecture Audit will be addressed in subsequent sessions (Step-by-Step rule):
 - **Item 5**: AI Output Validation - Output Schema Validation (Zod or Structured Outputs)
