@@ -367,40 +367,42 @@ function CreateScript() {
               </div>
             )}
           </div>
-          <div className="inline-flex items-center bg-white border border-slate-200 text-slate-600 px-3.5 py-1.5 rounded-lg text-sm shadow-sm">
-            <span className="mr-2">โควต้าการสร้าง</span>
-            <span className="flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold px-2 py-0.5 rounded text-xs shadow-inner">
-              {profile ? profile.credits : '...'} สคริปต์
-            </span>
-          </div>
+          <div className="flex flex-wrap items-center gap-2 mt-1 mb-2">
+            <div className="inline-flex items-center bg-white border border-slate-200 text-slate-600 px-3.5 py-1.5 rounded-lg text-sm shadow-sm">
+              <span className="mr-2">โควต้าการสร้าง</span>
+              <span className="flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold px-2 py-0.5 rounded text-xs shadow-inner">
+                {profile ? profile.credits : '...'} สคริปต์
+              </span>
+            </div>
 
-          {/* ─── AI Brain Indicator ─────────────────────────────────── */}
-          {profile && (
-            effectiveTier === 'pro' ? (
-              /* Pro: Pro Deep Brain™ Premium Badge */
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-sm font-semibold bg-gradient-to-r from-amber-50 to-purple-50 border border-amber-300/60 shadow-sm text-amber-800 whitespace-nowrap">
-                {/* CpuChip icon (Heroicons) */}
-                <svg className="w-4 h-4 text-purple-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3H7a2 2 0 00-2 2v2M9 3h6M9 3v2m6-2h2a2 2 0 012 2v2m0 0V7m0 0h2M3 9v6m0 0v2a2 2 0 002 2h2m-4-4h2m14-2v6m0-6h2m-2 6v2a2 2 0 01-2 2h-2m0 0H9m6 0v-2M9 21H7a2 2 0 01-2-2v-2m0 0H3m4 0h2M9 9h6v6H9V9z" />
-                </svg>
-                <span>AI Engine: <strong className="text-purple-700">Pro Deep Brain™</strong></span>
-                <span className="text-[10px] font-normal text-amber-600 hidden sm:inline">วิเคราะห์จิตวิทยาเชิงลึก</span>
-              </div>
-            ) : (
-              /* Free/Plus: Standard Fast Engine + Upgrade CTA */
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-sm bg-slate-50 border border-slate-200 text-slate-500 whitespace-nowrap">
-                {/* Bolt icon (Heroicons) */}
-                <svg className="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-                <span>AI Engine: Standard Fast Engine</span>
-                <a href="/pricing" className="ml-1 text-[11px] font-bold text-purple-600 hover:text-purple-700 transition-colors hidden sm:inline underline underline-offset-2">
-                  อัปเกรด Pro Brain →
-                </a>
-              </div>
-            )
-          )}
-          {/* ────────────────────────────────────────────────────────── */}
+            {/* ─── AI Brain Indicator ─────────────────────────────────── */}
+            {profile && (
+              effectiveTier === 'pro' ? (
+                /* Pro: Pro Deep Brain™ Premium Badge */
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-sm font-semibold bg-gradient-to-r from-amber-50 to-purple-50 border border-amber-300/60 shadow-sm text-amber-800 whitespace-nowrap">
+                  {/* Sparkles icon (Heroicons) */}
+                  <svg className="w-4 h-4 text-purple-600 shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                    <path fillRule="evenodd" d="M9 4.5a.75.75 0 0 1 .721.544l.813 2.846a3.75 3.75 0 0 0 2.576 2.576l2.846.813a.75.75 0 0 1 0 1.442l-2.846.813a3.75 3.75 0 0 0-2.576 2.576l-.813 2.846a.75.75 0 0 1-1.442 0l-.813-2.846a3.75 3.75 0 0 0-2.576-2.576l-2.846-.813a.75.75 0 0 1 0-1.442l2.846-.813A3.75 3.75 0 0 0 7.466 7.89l.813-2.846A.75.75 0 0 1 9 4.5Z" clipRule="evenodd" />
+                  </svg>
+                  <span>AI Engine: <strong className="text-purple-700">Pro Deep Brain™</strong></span>
+                  <span className="text-[10px] font-normal text-amber-600 hidden sm:inline">วิเคราะห์จิตวิทยาเชิงลึก</span>
+                </div>
+              ) : (
+                /* Free/Plus: Standard Fast Engine + Upgrade CTA */
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-sm bg-slate-50 border border-slate-200 text-slate-500 whitespace-nowrap">
+                  {/* Bolt icon (Heroicons) */}
+                  <svg className="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  <span>AI Engine: Standard Fast Engine</span>
+                  <a href="/pricing" className="ml-1 text-[11px] font-bold text-purple-600 hover:text-purple-700 transition-colors hidden sm:inline underline underline-offset-2">
+                    อัปเกรด Pro Brain →
+                  </a>
+                </div>
+              )
+            )}
+            {/* ────────────────────────────────────────────────────────── */}
+          </div>
         </div>
       </div>
 
@@ -802,7 +804,7 @@ function CreateScript() {
             <div className="bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden flex flex-col shadow-sm h-full">
               {/* Header */}
               <div className="bg-white border-b border-slate-200 flex flex-col sticky top-0 z-10">
-                <div className="p-4 flex justify-between items-center">
+                <div className="p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
                   <div>
                     <h2 className="font-bold text-slate-800 flex items-center gap-2">
                       <span className="text-blue-600"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg></span> สคริปต์พร้อมถ่าย
@@ -813,22 +815,25 @@ function CreateScript() {
 
                     {/* ─── Result Badge: Pro Deep Brain™ (เฉพาะ Belief-Shifting mode) ─── */}
                     {usedProBrain && (
-                      <div className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold bg-gradient-to-r from-amber-50 to-purple-50 border border-amber-300/50 text-purple-700 shadow-sm">
-                        {/* Sparkles icon (Heroicons) */}
-                        <svg className="w-3.5 h-3.5 text-amber-500 shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                          <path fillRule="evenodd" d="M9 4.5a.75.75 0 0 1 .721.544l.813 2.846a3.75 3.75 0 0 0 2.576 2.576l2.846.813a.75.75 0 0 1 0 1.442l-2.846.813a3.75 3.75 0 0 0-2.576 2.576l-.813 2.846a.75.75 0 0 1-1.442 0l-.813-2.846a3.75 3.75 0 0 0-2.576-2.576l-2.846-.813a.75.75 0 0 1 0-1.442l2.846-.813A3.75 3.75 0 0 0 7.466 7.89l.813-2.846A.75.75 0 0 1 9 4.5Z" clipRule="evenodd" />
-                        </svg>
-                        Generated by Pro Deep Brain™
-                        <span className="font-normal text-purple-500">· เจาะลึกจิตวิทยา + ภาษาพูดระดับสูง</span>
+                      <div className="mt-2 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold bg-gradient-to-r from-amber-50 to-purple-50 border border-amber-300/50 text-purple-700 shadow-sm">
+                        <div className="flex items-center gap-1.5 whitespace-nowrap">
+                          {/* Sparkles icon (Heroicons) */}
+                          <svg className="w-3.5 h-3.5 text-amber-500 shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                            <path fillRule="evenodd" d="M9 4.5a.75.75 0 0 1 .721.544l.813 2.846a3.75 3.75 0 0 0 2.576 2.576l2.846.813a.75.75 0 0 1 0 1.442l-2.846.813a3.75 3.75 0 0 0-2.576 2.576l-.813 2.846a.75.75 0 0 1-1.442 0l-.813-2.846a3.75 3.75 0 0 0-2.576-2.576l-2.846-.813a.75.75 0 0 1 0-1.442l2.846-.813A3.75 3.75 0 0 0 7.466 7.89l.813-2.846A.75.75 0 0 1 9 4.5Z" clipRule="evenodd" />
+                          </svg>
+                          <span>Generated by Pro Deep Brain™</span>
+                        </div>
+                        <span className="font-normal text-purple-500 hidden sm:inline">·</span>
+                        <span className="font-normal text-purple-500">เจาะลึกจิตวิทยา + ภาษาพูดระดับสูง</span>
                       </div>
                     )}
                     {/* ──────────────────────────────────────────────────────────── */}
                   </div>
                   <button
                     onClick={copyToClipboard}
-                    className="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-xl text-sm font-medium transition-all shadow-sm active:scale-95 flex items-center gap-2"
+                    className="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-xl text-sm font-medium transition-all shadow-sm active:scale-95 flex items-center justify-center gap-2 w-full md:w-auto"
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg> <span>คัดลอกทั้งหมด</span>
+                    <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg> <span className="whitespace-nowrap">คัดลอกทั้งหมด</span>
                   </button>
                 </div>
                 
