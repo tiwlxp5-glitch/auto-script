@@ -125,7 +125,9 @@ describe('R2: POST /api/webhook (Atomic Credit RPC & Webhook Idempotency)', () =
       expect(rpcCall).toBeDefined();
       expect(rpcCall.args).toEqual({
         p_user_id: userId,
-        p_amount: 60
+        p_amount: 60,
+        p_source: 'stripe_webhook',
+        p_reference_id: 'evt_plus_purchase_200'
       });
 
       // Verify profile record was updated
@@ -160,7 +162,9 @@ describe('R2: POST /api/webhook (Atomic Credit RPC & Webhook Idempotency)', () =
       expect(rpcCall).toBeDefined();
       expect(rpcCall.args).toEqual({
         p_user_id: userId,
-        p_amount: 150
+        p_amount: 150,
+        p_source: 'stripe_webhook',
+        p_reference_id: 'evt_pro_purchase_300'
       });
 
       // Verify profile record

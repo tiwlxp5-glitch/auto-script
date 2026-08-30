@@ -368,10 +368,10 @@ describe('ADVERSARIAL STRESS TEST SUITE (challenger_2)', () => {
 
  // Exactly 1 RPC increment_credits should have executed
  expect(globalMockDb.rpcCalls.length).toBe(1);
- expect(globalMockDb.rpcCalls[0]).toEqual({
- functionName: 'increment_credits',
- args: { p_user_id: userId, p_amount: 150 }
- });
+  expect(globalMockDb.rpcCalls[0]).toEqual({
+  functionName: 'increment_credits',
+  args: { p_user_id: userId, p_amount: 150, p_source: 'stripe_webhook', p_reference_id: 'evt_mass_replay_pro_999' }
+  });
 
  // Final credits must be 10 + 150 = 160 (NOT 10 + 30*150 = 4510)
  const finalProfile = globalMockDb.getProfile(userId);

@@ -78,7 +78,7 @@ describe('EMPIRICAL CONCURRENCY & RACE CONDITION STRESS HARNESS (challenger_audi
       expect(globalMockDb.rpcCalls.length).toBe(1);
       expect(globalMockDb.rpcCalls[0]).toEqual({
         functionName: 'increment_credits',
-        args: { p_user_id: userId, p_amount: 60 }
+        args: { p_user_id: userId, p_amount: 60, p_source: 'stripe_webhook', p_reference_id: 'evt_mass_replay_100_plus' }
       });
 
       // Exactly 1 webhook_events entry

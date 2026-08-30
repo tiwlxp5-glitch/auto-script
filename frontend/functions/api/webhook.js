@@ -111,10 +111,17 @@ export async function onRequestPost({ request, env, data }) {
         }
 
         // 2. เติมเครดิตแบบ Atomic ด้วย RPC ป้องกัน Race Condition
-        const { error: rpcError } = await supabase.rpc('increment_credits', {
+        const { error: rpcError, data: rpcData } = await supabase.rpc('increment_credits', {
           p_user_id: userId,
-          p_amount: addCredits
+          p_amount: addCredits,
+          p_source: 'stripe_webhook',
+          p_reference_id: event.id
         });
+
+        // Handle Idempotent Success gracefully (Rule #2)
+        if (rpcData && rpcData.idempotent_success) {
+          logger.info(`Idempotent success for event ${event.id}. Transaction already processed.`);
+        }
 
         if (rpcError) {
           logger.error("RPC increment_credits failed", rpcError, { userId, eventId: event.id });
@@ -124,10 +131,10 @@ export async function onRequestPost({ request, env, data }) {
       }
     }
 
-    // FIX INF-02: Handle Refunds and Chargebacks
     if (event.type === 'charge.refunded' || event.type === 'charge.dispute.created') {
       const charge = event.data.object;
       const customerId = charge.customer;
+      const paymentIntentId = charge.payment_intent; // We will use this to find the exact ledger row
 
       if (customerId) {
         const { data: profile } = await supabase
@@ -139,15 +146,50 @@ export async function onRequestPost({ request, env, data }) {
         if (profile) {
           if (data?.logger?.setUserId) data.logger.setUserId(profile.id);
           logger.warn(`Revoking access for refunded/disputed customer ${customerId} (event: ${event.type})`, { customerId, eventId: event.id });
-          const creditsToDeduct = charge.amount >= 59000 ? 150 : 60;
-          const newCredits = Math.max(0, (profile.credits || 0) - creditsToDeduct);
-          
-          await supabase.from('profiles').update({
-            tier: 'free',
-            credits: newCredits
-          }).eq('id', profile.id);
 
-          logger.info(`Downgraded user ${profile.id} to free tier. Credits adjusted to ${newCredits}.`, { userId: profile.id });
+          // FIND ORIGINAL GRANT
+          const { data: originalTx, error: txError } = await supabase
+            .from('credit_transactions')
+            .select('amount')
+            .eq('user_id', profile.id)
+            .eq('source', 'stripe_webhook')
+            .eq('status', 'completed')
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .single();
+
+          if (txError) {
+             logger.error("Could not find original credit transaction for refund", txError, { userId: profile.id });
+          }
+
+          // Rule #7: Exact original amount. Fallback to charge amount heuristics if not found (for legacy data)
+          const creditsToDeduct = originalTx ? originalTx.amount : (charge.amount >= 59000 ? 150 : 60);
+
+          // Rule #8: Balance may become negative.
+          // Rule #6: Atomic Balance + Ledger via increment_credits
+          // Rule #11: Refund Idempotency (use event.id as reference_id)
+          const { error: refundRpcError, data: refundRpcData } = await supabase.rpc('increment_credits', {
+            p_user_id: profile.id,
+            p_amount: -creditsToDeduct,
+            p_source: event.type === 'charge.refunded' ? 'stripe_refund' : 'stripe_dispute',
+            p_reference_id: event.id
+          });
+
+          if (refundRpcData && refundRpcData.idempotent_success) {
+            logger.info(`Idempotent success for refund/dispute event ${event.id}. Transaction already processed.`);
+            return new Response('Idempotent success', { status: 200 });
+          }
+
+          if (refundRpcError) {
+             logger.error("RPC increment_credits failed for refund", refundRpcError, { userId: profile.id, eventId: event.id });
+             await supabase.from('webhook_events').update({ status: 'failed', error_message: `Refund RPC Error: ${refundRpcError.message}` }).eq('id', event.id);
+             return new Response(`Database Error: ${refundRpcError.message}`, { status: 500 });
+          }
+
+          // Downgrade tier strictly
+          await supabase.from('profiles').update({ tier: 'free' }).eq('id', profile.id);
+
+          logger.info(`Downgraded user ${profile.id} to free tier and deducted ${creditsToDeduct} credits.`, { userId: profile.id });
         }
       }
     }

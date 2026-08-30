@@ -35,6 +35,9 @@ type Pages = {
   "/create": {
     params: {};
   };
+  "/admin": {
+    params: {};
+  };
   "/legal": {
     params: {};
   };
@@ -46,7 +49,7 @@ type Pages = {
 type RouteFiles = {
   "root.jsx": {
     id: "root";
-    page: "/" | "/forgot-password" | "/reset-password" | "/register" | "/settings" | "/history" | "/pricing" | "/create" | "/legal" | "/login";
+    page: "/" | "/forgot-password" | "/reset-password" | "/register" | "/settings" | "/history" | "/pricing" | "/create" | "/admin" | "/legal" | "/login";
   };
   "routes/forgot-password.jsx": {
     id: "routes/forgot-password";
@@ -80,6 +83,10 @@ type RouteFiles = {
     id: "routes/_index";
     page: "/";
   };
+  "routes/admin.jsx": {
+    id: "routes/admin";
+    page: "/admin";
+  };
   "routes/legal.jsx": {
     id: "routes/legal";
     page: "/legal";
@@ -100,6 +107,7 @@ type RouteModules = {
   "routes/pricing": typeof import("./app/routes/pricing.jsx");
   "routes/create": typeof import("./app/routes/create.jsx");
   "routes/_index": typeof import("./app/routes/_index.jsx");
+  "routes/admin": typeof import("./app/routes/admin.jsx");
   "routes/legal": typeof import("./app/routes/legal.jsx");
   "routes/login": typeof import("./app/routes/login.jsx");
 };

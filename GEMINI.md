@@ -268,6 +268,13 @@ c:\Auto script\
 29. **Dynamic Progress Timeline (Mobile-First UI)**:
    - Replaced the simple loading spinner in `create.jsx` with a real-time 0-100% dynamic progress timeline.
    - Used an asymptotic progression engine (`setInterval`) to simulate AI thinking, reaching 95% smoothly and snapping to 100% on API success.
+
+30. **Production Phase 1: Universal Ledger & Admin Security**:
+   - **Universal Ledger:** Upgraded `credit_transactions` to track all credit movements by adding `source` and `reference_id` (NOT NULL). Used safe backfill strategy (`gen_random_uuid`) for legacy rows to prevent migration crashes.
+   - **Financial Invariants (Idempotency):** Enforced a strict `UNIQUE(source, reference_id)` constraint. Refactored `increment_credits` RPC to perform a logical "Idempotent Success" return without throwing 500 errors when Stripe retries duplicate webhooks.
+   - **Admin Security (Least Privilege):** Added `role` to `profiles`. Created secure `admin_list_users` and `admin_grant_credits` RPCs that extract identity securely via `auth.uid()` inside the DB. Blocked unrestricted DB SELECT access from the frontend.
+   - **Audit Trail:** Created an append-only `audit_logs` table. Every manual credit adjustment automatically atomic-inserts into both `audit_logs` and `credit_transactions`.
+   - **Refund Alignment:** Modified `webhook.js` (`charge.refunded`, `charge.dispute.created`) to query the exact original transaction from the ledger (`source = stripe_webhook`) before issuing refunds via `increment_credits`, ensuring exact balance restoration and negative balance support.
    - Built a beautiful mobile-first vertical timeline UI using Tailwind CSS and Heroicons, showcasing 4 psychological generation steps (Analyze -> Structure -> Tone -> Check) dynamically mapped to the user's selected `mode` and `speakerTone`.
    - Added a custom `animate-shimmer` CSS keyframe in Tailwind v4 (`app/index.css`) for a premium loading effect.
    - Protected against memory leaks by rigorously clearing intervals in `useEffect` cleanup and `finally` blocks.

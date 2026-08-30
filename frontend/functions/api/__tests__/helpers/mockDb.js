@@ -268,7 +268,12 @@ export class MockDatabase {
                 filterValue = value;
                 return chain;
               },
+              order: () => chain,
+              limit: () => chain,
               single: async () => {
+                if (table === 'credit_transactions') {
+                  return { data: null, error: { message: "Row not found", code: "PGRST116" } };
+                }
                 if (table === 'profiles') {
                   if (db.failProfileQuery) {
                     return { data: null, error: { message: "Failed to fetch profile" } };
