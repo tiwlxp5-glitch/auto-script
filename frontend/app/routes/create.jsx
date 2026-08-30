@@ -198,14 +198,14 @@ function CreateScript() {
     const expectedTimeMs = isProBrain ? 25000 : (isMultiVersion ? 15000 : 5000);
     const updateIntervalMs = 50; // อัปเดตบ่อยๆ เพื่อให้แถบวิ่งเนียนตา
     const totalSteps = expectedTimeMs / updateIntervalMs;
-    const incrementPerStep = 90 / totalSteps; // ตั้งเป้าให้วิ่งถึง 90% ตามเวลาที่คาดไว้
+    const incrementPerStep = 99 / totalSteps; // ตั้งเป้าให้วิ่งถึง 99% ตามเวลาที่คาดไว้
 
     progressIntervalRef.current = setInterval(() => {
-      if (currentProgress < 90) {
+      if (currentProgress < 99) {
         currentProgress += incrementPerStep;
-      } else if (currentProgress < 98) {
-        // ถ้า AI คิดนานกว่าค่าเฉลี่ย ให้ค่อยๆ ไหลไปช้าๆ จนถึง 98%
-        currentProgress += 0.02;
+      } else if (currentProgress < 99.9) {
+        // ถ้า AI คิดนานกว่าค่าเฉลี่ย ให้ค่อยๆ ไหลไปช้าๆ จนถึง 99.9%
+        currentProgress += 0.01;
       }
       setGenerationProgress(Math.floor(currentProgress));
     }, updateIntervalMs);
@@ -217,6 +217,7 @@ function CreateScript() {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 60000);
 
+    let hasError = false;
     try {
       // ดึง JWT Token ปัจจุบันของผู้ใช้เพื่อส่งไปยืนยันตัวตนที่ Backend
       const { data: { session } } = await supabase.auth.getSession();
@@ -312,6 +313,7 @@ function CreateScript() {
       window.dispatchEvent(new Event('profileUpdated'));
 
     } catch (err) {
+      hasError = true;
       console.error(err);
       // FIX FE-02: Show specific message for network timeout/drop
       if (err.name === 'AbortError') {
@@ -324,8 +326,17 @@ function CreateScript() {
       clearTimeout(timeoutId);
       if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
       setGenerationProgress(100);
-      setIsGenerating(false);
-      setGeneratingMode(null);
+      
+      if (hasError) {
+        setIsGenerating(false);
+        setGeneratingMode(null);
+      } else {
+        // หน่วงเวลาเล็กน้อย (500ms) ให้ผู้ใช้เห็นแถบวิ่งเต็ม 100% ก่อนเปลี่ยนหน้า
+        setTimeout(() => {
+          setIsGenerating(false);
+          setGeneratingMode(null);
+        }, 500);
+      }
     }
   };
 
@@ -800,8 +811,12 @@ function CreateScript() {
 
                   {/* Step 4 */}
                   <div className="relative pl-8">
-                    <div className={`absolute -left-[17px] top-0.5 flex items-center justify-center w-8 h-8 rounded-full border-[3px] border-white shadow-sm transition-colors duration-300 ${generationProgress >= 85 ? 'bg-indigo-500 text-white animate-bounce' : 'bg-slate-200 text-slate-400'}`}>
-                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    <div className={`absolute -left-[17px] top-0.5 flex items-center justify-center w-8 h-8 rounded-full border-[3px] border-white shadow-sm transition-colors duration-300 ${generationProgress >= 85 ? (generationProgress >= 100 ? 'bg-emerald-500 text-white' : 'bg-indigo-500 text-white animate-bounce') : 'bg-slate-200 text-slate-400'}`}>
+                      {generationProgress >= 100 ? (
+                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                      ) : (
+                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                      )}
                     </div>
                     <div>
                        <p className={`text-sm font-bold ${generationProgress >= 85 ? 'text-slate-800' : 'text-slate-400'}`}>ตรวจสอบความเรียบร้อย</p>
