@@ -189,23 +189,28 @@ function CreateScript() {
     setBannedWarnings([]);
     setGenerationProgress(0);
 
-    // Dynamic Progress Engine (Time-based Linear Smoothing)
+    // Dynamic Progress Engine (Asymptotic Smoothing)
     if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
     let currentProgress = 0;
     
-    // คำนวณเวลาที่คาดว่าจะใช้ (อิงตามระบบหลังบ้านจริง)
+    // คำนวณเวลาที่คาดว่าจะใช้ (อิงตามระบบหลังบ้านจริง) ปรับให้ใกล้เคียงของจริงมากขึ้น
     const isProBrain = effectiveTier === 'pro' && mode === 'โครงสร้างเจาะลึก' && !isMultiVersion;
-    const expectedTimeMs = isProBrain ? 25000 : (isMultiVersion ? 15000 : 5000);
-    const updateIntervalMs = 50; // อัปเดตบ่อยๆ เพื่อให้แถบวิ่งเนียนตา
+    const expectedTimeMs = isProBrain ? 40000 : (isMultiVersion ? 25000 : 12000);
+    const updateIntervalMs = 100; // อัปเดตทุก 100ms
     const totalSteps = expectedTimeMs / updateIntervalMs;
-    const incrementPerStep = 99 / totalSteps; // ตั้งเป้าให้วิ่งถึง 99% ตามเวลาที่คาดไว้
+    const incrementPerStep = 99 / totalSteps; // สเต็ปพื้นฐาน
 
     progressIntervalRef.current = setInterval(() => {
-      if (currentProgress < 99) {
+      if (currentProgress < 85) {
+        // ช่วงแรก 0-85% วิ่งตามความเร็วที่คำนวณไว้
         currentProgress += incrementPerStep;
-      } else if (currentProgress < 99.9) {
-        // ถ้า AI คิดนานกว่าค่าเฉลี่ย ให้ค่อยๆ ไหลไปช้าๆ จนถึง 99.9%
-        currentProgress += 0.01;
+      } else if (currentProgress < 99) {
+        // ช่วงปลาย 85-99% ใช้สมการ Asymptotic slowing: ยิ่งใกล้ 99 จะยิ่งเดินช้าลงแบบโค้งเนียนๆ
+        // ช่วยแก้ปัญหาหลอดค้างที่ 99% เป็นเวลานาน 10-20 วิ
+        currentProgress += (99.9 - currentProgress) * 0.015;
+      } else {
+        // ค้างไว้ที่ 99 รอจนกว่า Backend จะส่งข้อมูลกลับมา
+        currentProgress = 99;
       }
       setGenerationProgress(Math.floor(currentProgress));
     }, updateIntervalMs);
