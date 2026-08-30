@@ -10,6 +10,7 @@ function CreateScript() {
   const { user, profile, loading } = useAuth();
   const { 
     isGenerating, 
+    generationProgress,
     generatingMode, 
     generatedScript, 
     usedProBrain, 
