@@ -429,3 +429,7 @@ All 5 items from the Expert Architecture Audit have been successfully implemente
    - **Spotify-like UX**: Added a Floating Widget (Mini-Player) to `MainLayout.jsx` that persists across page navigations. Displays progress bars, error states, and a green success button linking to `/history`.
    - **Security**: Bound `AbortController` at the Context level so page transitions do NOT cancel the fetch, but completely closing the browser tab still triggers the Edge function's `request.signal.abort` for auto-refunds. Included a Concurrency Lock in `create.jsx` and added cleanup logic on user logout.
    - **Mobile Polish**: Utilized `w-[92%] sm:w-auto`, `shrink-0`, and `truncate` to ensure the floating widget does not cramp or overflow on narrow mobile devices.
+
+49. **History UI UX Polish (Bulk Delete Confirmation)**:
+   - **Confirmation Dialog**: Added a `window.confirm` check before executing the bulk delete operation (`handleDeleteSelected`) in `history.jsx`.
+   - **Safety First**: Prevents users from accidentally deleting all their scripts by requiring explicit confirmation, with distinct warnings depending on whether they are deleting multiple items or a single item.
