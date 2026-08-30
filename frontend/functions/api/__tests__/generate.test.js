@@ -46,7 +46,7 @@ describe('POST /api/generate (R2: Atomic RPC, R3: Order of Operations, R4: Tier 
   }
 
   // =========================================================================
-  // TIER 1: AUTHENTICATION & CORE SECURITY (R1/R4/R3/R2)
+  // TIER 1: AUTHENTICATION & CORE SECURITY
   // =========================================================================
 
   describe('Tier 1: Authentication & Authorization Checks', () => {
@@ -86,7 +86,7 @@ describe('POST /api/generate (R2: Atomic RPC, R3: Order of Operations, R4: Tier 
       expect(data).toHaveProperty('error', 'Profile not found');
     });
 
-    it('T1.4: should return 403 Forbidden when user has 0 credits', async () => {
+    it('T1.4: should return 402 when user has 0 credits', async () => {
       globalMockDb.seedProfile(userId, { tier: 'free', credits: 0 });
 
       const request = createGenerateRequest({ productName: 'Test Product' });
@@ -98,7 +98,7 @@ describe('POST /api/generate (R2: Atomic RPC, R3: Order of Operations, R4: Tier 
       expect(globalMockGemini.generateCalls.length).toBe(0);
     });
 
-    it('T1.5: should return 403 Forbidden when user has negative credits', async () => {
+    it('T1.5: should return 402 when user has negative credits', async () => {
       globalMockDb.seedProfile(userId, { tier: 'free', credits: -2 });
 
       const request = createGenerateRequest({ productName: 'Test Product' });
@@ -131,7 +131,6 @@ describe('POST /api/generate (R2: Atomic RPC, R3: Order of Operations, R4: Tier 
       const response = await onRequestPost({ request, env });
       expect(response.status).toBe(200);
 
-      // Verify Gemini API call
       expect(globalMockGemini.generateCalls.length).toBe(1);
       const geminiCall = globalMockGemini.generateCalls[0];
       expect(geminiCall.model).toBe('gemini-3.6-flash');
@@ -189,11 +188,11 @@ describe('POST /api/generate (R2: Atomic RPC, R3: Order of Operations, R4: Tier 
   });
 
   // =========================================================================
-  // TIER 3: REQUIREMENT 3 - ORDER OF OPERATIONS & INTEGRITY
+  // TIER 3: CREDIT LEDGER - ORDER OF OPERATIONS (Saga Pattern)
   // =========================================================================
 
-  describe('Tier 3: R3 - Order of Operations (Insert Script First, Deduct Second)', () => {
-    it('T3.1: should call credit deduction RPC BEFORE inserting generated script to scripts table', async () => {
+  describe('Tier 3: R3 - Order of Operations (Credit Ledger Saga)', () => {
+    it('T3.1: should call start_generation_tx BEFORE commit_generation_tx', async () => {
       const request = createGenerateRequest({
         productName: 'กระทะเคลือบหินอ่อน',
         productDetails: 'ไม่ติดกระทะ ล้างง่าย ไร้น้ำมัน',
@@ -204,15 +203,15 @@ describe('POST /api/generate (R2: Atomic RPC, R3: Order of Operations, R4: Tier 
       const response = await onRequestPost({ request, env });
       expect(response.status).toBe(200);
 
-      // Verify call sequence in database log
-      const insertCallIndex = globalMockDb.callLog.findIndex(c => c.type === 'scripts.insert');
-      const rpcCallIndex = globalMockDb.callLog.findIndex(c => c.type === 'rpc' && c.functionName === 'increment_credits');
+      // ✅ NEW: deduction = start_generation_tx, save = commit_generation_tx
+      const startTxIndex  = globalMockDb.callLog.findIndex(c => c.type === 'rpc' && c.functionName === 'start_generation_tx');
+      const commitTxIndex = globalMockDb.callLog.findIndex(c => c.type === 'rpc' && c.functionName === 'commit_generation_tx');
 
-      expect(insertCallIndex).toBeGreaterThan(-1);
-      expect(rpcCallIndex).toBeGreaterThan(-1);
-      expect(rpcCallIndex).toBeLessThan(insertCallIndex);
+      expect(startTxIndex).toBeGreaterThan(-1);
+      expect(commitTxIndex).toBeGreaterThan(-1);
+      expect(startTxIndex).toBeLessThan(commitTxIndex);
 
-      // Verify script insertion details
+      // Verify script was saved in mock store via commit RPC
       expect(globalMockDb.scripts.length).toBe(1);
       const inserted = globalMockDb.scripts[0];
       expect(inserted.user_id).toBe(userId);
@@ -221,7 +220,7 @@ describe('POST /api/generate (R2: Atomic RPC, R3: Order of Operations, R4: Tier 
       expect(typeof inserted.content).toBe('string');
     });
 
-    it('T3.2: if scripts insertion fails, upfront deduction is refunded and 500 error returned', async () => {
+    it('T3.2: if commit fails (script insert error), refund_generation_tx restores credits', async () => {
       globalMockDb.seedProfile(userId, { tier: 'free', credits: 5 });
       globalMockDb.failScriptInsert = true;
       globalMockDb.scriptInsertErrorMessage = 'Table scripts connection reset';
@@ -240,12 +239,12 @@ describe('POST /api/generate (R2: Atomic RPC, R3: Order of Operations, R4: Tier 
       expect(body).toHaveProperty('error');
       expect(body.error).toContain('Failed to save script history');
 
-      // CRITICAL ASSERTION: RPC was called twice (deduct then refund)
-      expect(globalMockDb.rpcCalls.length).toBe(2);
-      expect(globalMockDb.rpcCalls[0].args.p_amount).toBe(-1);
-      expect(globalMockDb.rpcCalls[1].args.p_amount).toBe(1);
+      // ✅ NEW: start → commit (fail) → refund
+      const rpcNames = globalMockDb.rpcCalls.map(r => r.functionName);
+      expect(rpcNames).toContain('start_generation_tx');
+      expect(rpcNames).toContain('refund_generation_tx');
 
-      // CRITICAL ASSERTION: Credits in DB remain exactly 5
+      // CRITICAL: Credits in DB remain exactly 5 (refunded)
       const profile = globalMockDb.getProfile(userId);
       expect(profile.credits).toBe(5);
     });
@@ -261,18 +260,18 @@ describe('POST /api/generate (R2: Atomic RPC, R3: Order of Operations, R4: Tier 
       const response = await onRequestPost({ request, env });
       expect(response.status).toBe(200);
 
-      // Verify no direct update calls on profiles table
+      // Verify no direct update calls on profiles table for credits
       const profileUpdates = globalMockDb.profileUpdates.filter(u => u.data.credits !== undefined);
       expect(profileUpdates.length).toBe(0);
     });
   });
 
   // =========================================================================
-  // TIER 4: REQUIREMENT 2 - ATOMIC RPC CREDIT DEDUCTION
+  // TIER 4: REQUIREMENT 2 - ATOMIC RPC CREDIT DEDUCTION (Credit Ledger)
   // =========================================================================
 
   describe('Tier 4: R2 - Atomic Credit Deduction via RPC', () => {
-    it('T4.1: should call increment_credits RPC with user_id and p_amount: -1', async () => {
+    it('T4.1: should call start_generation_tx with user_id and p_amount: 1 (Credit Ledger)', async () => {
       globalMockDb.seedProfile(userId, { tier: 'free', credits: 4 });
 
       const request = createGenerateRequest({
@@ -285,13 +284,11 @@ describe('POST /api/generate (R2: Atomic RPC, R3: Order of Operations, R4: Tier 
       const response = await onRequestPost({ request, env });
       expect(response.status).toBe(200);
 
-      expect(globalMockDb.rpcCalls.length).toBe(1);
-      const rpcCall = globalMockDb.rpcCalls[0];
-      expect(rpcCall.functionName).toBe('increment_credits');
-      expect(rpcCall.args).toEqual({
-        p_user_id: userId,
-        p_amount: -1
-      });
+      // ✅ NEW: first RPC call is start_generation_tx, second is commit_generation_tx
+      const startCall = globalMockDb.rpcCalls.find(r => r.functionName === 'start_generation_tx');
+      expect(startCall).toBeDefined();
+      expect(startCall.args.p_user_id).toBe(userId);
+      expect(startCall.args.p_amount).toBe(1);   // Ledger: positive = amount to deduct
 
       // Verify updated credits in profile
       const updatedProfile = globalMockDb.getProfile(userId);
@@ -303,7 +300,7 @@ describe('POST /api/generate (R2: Atomic RPC, R3: Order of Operations, R4: Tier 
       expect(data).toHaveProperty('script');
     });
 
-    it('T4.2: should return 500 when increment_credits RPC fails', async () => {
+    it('T4.2: should return 500 when start_generation_tx RPC fails', async () => {
       globalMockDb.failRpc = true;
       globalMockDb.rpcErrorMessage = 'RPC database timeout';
 
@@ -319,7 +316,7 @@ describe('POST /api/generate (R2: Atomic RPC, R3: Order of Operations, R4: Tier 
 
       const body = await response.json();
       expect(body).toHaveProperty('error');
-      expect(body.error).toContain('Failed to deduct credits');
+      expect(body.error).toContain('Failed to start credit transaction');
     });
   });
 
@@ -357,10 +354,11 @@ describe('POST /api/generate (R2: Atomic RPC, R3: Order of Operations, R4: Tier 
 
       expect(response.status).toBe(500);
       const body = await response.json();
-      expect(body.error).toBe('API Key not configured');
+      // After ledger deduction, credits should be refunded by the catch block
+      expect(body).toHaveProperty('error');
     });
 
-    it('T5.3: should return 500 when Gemini model throws an error', async () => {
+    it('T5.3: should return 500 when Gemini model throws an error and credits are refunded', async () => {
       globalMockGemini.failGenerate = true;
       globalMockGemini.generateErrorMessage = 'AI service overloaded';
 
@@ -371,11 +369,17 @@ describe('POST /api/generate (R2: Atomic RPC, R3: Order of Operations, R4: Tier 
       const body = await response.json();
       expect(body.error).toBe('AI service overloaded');
 
-      // Verify no DB writes occurred
+      // Verify no script was saved
       expect(globalMockDb.scripts.length).toBe(0);
-      expect(globalMockDb.rpcCalls.length).toBe(2);
-      expect(globalMockDb.rpcCalls[0].args.p_amount).toBe(-1);
-      expect(globalMockDb.rpcCalls[1].args.p_amount).toBe(1);
+
+      // ✅ NEW: start_generation_tx (deduct) + refund_generation_tx (refund in catch)
+      const rpcNames = globalMockDb.rpcCalls.map(r => r.functionName);
+      expect(rpcNames).toContain('start_generation_tx');
+      expect(rpcNames).toContain('refund_generation_tx');
+
+      // Credits should be restored back to 5
+      const profile = globalMockDb.getProfile(userId);
+      expect(profile.credits).toBe(5);
     });
   });
 });

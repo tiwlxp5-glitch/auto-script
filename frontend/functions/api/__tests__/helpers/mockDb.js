@@ -121,9 +121,6 @@ export class MockDatabase {
           const currentCredits = profile.credits ?? 0;
           
           // FIX DB-01: Strict Pre-Deduction Sufficiency Check
-          // Previously: greatest(0, 0 - 1) = 0 which bypassed the >= 0 check
-          // Now: if user has 0 credits and tries to deduct ANY amount, return -1 (fail)
-          // This mirrors the new production SQL: IF p_amount < 0 AND v_current_credits < abs(p_amount) THEN RETURN -1
           if (amount < 0 && currentCredits < Math.abs(amount)) {
             return { data: -1, error: null };
           }
@@ -136,11 +133,131 @@ export class MockDatabase {
           return { data: newCredits, error: null };
         }
 
+        // ─── Credit Ledger RPCs (Saga Pattern) ────────────────────────────────
+        // Mock simulates the same Atomic behavior as the real DB RPCs
+        // ─────────────────────────────────────────────────────────────────────
+
+        if (functionName === 'start_generation_tx') {
+          const userId = args.p_user_id;
+          const amount = args.p_amount ?? 1;
+          const mode   = args.p_mode ?? null;
+
+          if (!userId) {
+            return { data: null, error: { message: 'Missing p_user_id for start_generation_tx' } };
+          }
+
+          const profile = db.profiles.get(userId);
+          if (!profile) {
+            return { data: { error: 'profile_not_found', credits: -1 }, error: null };
+          }
+
+          const currentCredits = profile.credits ?? 0;
+          if (currentCredits < amount) {
+            // insufficient_credits → return credits: -1 (same as real RPC)
+            return { data: { error: 'insufficient_credits', credits: -1 }, error: null };
+          }
+
+          // Deduct credits atomically
+          const newCredits = currentCredits - amount;
+          profile.credits = newCredits;
+          db.profiles.set(userId, profile);
+
+          // Create a ledger entry in memory
+          const transactionId = `tx_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
+          if (!db.creditTransactions) db.creditTransactions = new Map();
+          db.creditTransactions.set(transactionId, {
+            id: transactionId,
+            user_id: userId,
+            amount: -amount,
+            status: 'pending',
+            mode,
+            created_at: new Date().toISOString()
+          });
+
+          return { data: { transaction_id: transactionId, credits: newCredits }, error: null };
+        }
+
+        if (functionName === 'commit_generation_tx') {
+          const transactionId = args.p_transaction_id;
+          const userId        = args.p_user_id;
+
+          if (!db.creditTransactions) db.creditTransactions = new Map();
+          const tx = db.creditTransactions.get(transactionId);
+
+          if (!tx || tx.user_id !== userId || tx.status !== 'pending') {
+            return { data: { error: 'transaction_not_found_or_already_processed' }, error: null };
+          }
+
+          // Insert script (delegates to the from('scripts').insert path)
+          const scriptRecord = {
+            id: `script_${Date.now()}`,
+            user_id: userId,
+            product_name:    (args.p_product_name || '').slice(0, 100),
+            product_details: (args.p_product_details || '').slice(0, 2000),
+            mode:    args.p_mode,
+            content: args.p_content,
+            created_at: new Date().toISOString()
+          };
+
+          if (db.failScriptInsert) {
+            // Simulate commit failure — transaction stays pending for pg_cron
+            return { data: null, error: { message: db.scriptInsertErrorMessage, code: '23502' } };
+          }
+
+          db.scripts.push(scriptRecord);
+          db.scriptInserts.push(scriptRecord);
+
+          // Mark transaction as completed
+          tx.status = 'completed';
+          db.creditTransactions.set(transactionId, tx);
+
+          return { data: { success: true }, error: null };
+        }
+
+        if (functionName === 'refund_generation_tx') {
+          const transactionId = args.p_transaction_id;
+          const userId        = args.p_user_id;
+
+          if (!db.creditTransactions) db.creditTransactions = new Map();
+          const tx = db.creditTransactions.get(transactionId);
+
+          if (!tx || tx.user_id !== userId || tx.status !== 'pending') {
+            // Safe no-op — already refunded or committed
+            return { data: { skipped: true }, error: null };
+          }
+
+          // Restore credits (tx.amount is negative, so * -1 adds back)
+          const profile = db.profiles.get(userId);
+          if (profile) {
+            profile.credits = (profile.credits ?? 0) + (tx.amount * -1);
+            db.profiles.set(userId, profile);
+          }
+
+          // Mark as refunded
+          tx.status = 'refunded';
+          db.creditTransactions.set(transactionId, tx);
+
+          return { data: { success: true, refunded_amount: tx.amount * -1 }, error: null };
+        }
+
+        if (functionName === 'decrement_trial_quota') {
+          const userId = args.p_user_id;
+          const amount = args.p_amount ?? 1;
+          const profile = db.profiles.get(userId);
+          if (!profile) return { data: null, error: { message: 'Profile not found' } };
+          const current = profile.trial_pro_remaining ?? 0;
+          const next = Math.max(0, current - amount);
+          profile.trial_pro_remaining = next;
+          db.profiles.set(userId, profile);
+          return { data: next, error: null };
+        }
+
         return { data: null, error: { message: `Unknown RPC function ${functionName}` } };
       },
 
       from: (table) => {
         return {
+
           select: (columns = '*') => {
             let _filterField = null;
             let filterValue = null;

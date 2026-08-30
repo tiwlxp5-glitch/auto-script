@@ -253,10 +253,15 @@ function safeParseJson(rawText) {
 
 export async function onRequestPost(context) {
   const { request, env } = context;
-  let creditDeducted = false;
-  let creditAmount = 1;
-  let userIdForRefund = null;
+
+  // ─── Credit Ledger State (Saga Pattern) ─────────────────────────────────────
+  // transactionId: UUID ที่ได้จาก start_generation_tx — ใช้อ้างอิงตลอด lifecycle
+  // ถ้า Cloudflare crash กลางคัน pg_cron จะ refund ให้อัตโนมัติผ่าน transaction_id นี้
+  let transactionId = null;   // UUID ของ credit_transactions row ที่กำลัง 'pending'
+  let creditAmount = 1;       // 1 สำหรับ single script, 2 สำหรับ multi-version
+  let userId = null;          // เก็บไว้เพื่อใช้ใน catch block (refund_generation_tx)
   let supabaseAdmin = null;
+  // ─────────────────────────────────────────────────────────────────────────────
 
   try {
     const authHeader = request.headers.get('Authorization');
@@ -347,21 +352,35 @@ export async function onRequestPost(context) {
     }
 
     creditAmount = isMultiVersion ? 2 : 1;
-    userIdForRefund = user.id;
+    userId = user.id;  // เก็บ userId ไว้ใช้ใน catch block
 
-    const { data: updatedCredits, error: creditError } = await supabaseAdmin.rpc('increment_credits', {
+    // ─── Credit Ledger: เริ่ม Transaction ───────────────────────────────────
+    // start_generation_tx คืน JSONB: { transaction_id, credits } หรือ { error, credits: -1 }
+    // ทั้งการหักเครดิต + การสร้าง ledger row เกิดขึ้นพร้อมกัน (Atomic)
+    const { data: txResult, error: txError } = await supabaseAdmin.rpc('start_generation_tx', {
       p_user_id: user.id,
-      p_amount: -creditAmount
+      p_amount:  creditAmount,
+      p_mode:    isMultiVersion ? 'Pro_MultiVersion' : mode
     });
-    
-    if (creditError) {
-      return new Response(JSON.stringify({ error: "Failed to deduct credits" }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+
+    if (txError) {
+      console.error('[Credit Ledger] start_generation_tx error:', txError);
+      return new Response(JSON.stringify({ error: "Failed to start credit transaction" }), {
+        status: 500, headers: { 'Content-Type': 'application/json' }
+      });
     }
-    if (updatedCredits === null || updatedCredits < 0) {
-      return new Response(JSON.stringify({ error: 'เครดิตไม่พอ กรุณาเติมเครดิต' }), { status: 402, headers: { 'Content-Type': 'application/json' } });
+    if (!txResult || txResult.credits < 0 || txResult.error) {
+      // insufficient_credits หรือ profile_not_found
+      return new Response(JSON.stringify({ error: 'เครดิตไม่พอ กรุณาเติมเครดิต' }), {
+        status: 402, headers: { 'Content-Type': 'application/json' }
+      });
     }
-    creditDeducted = true;
-    let remainingCredits = updatedCredits;
+
+    // บันทึก transactionId ไว้ — นี่คือ "กุญแจ" ที่ใช้ commit หรือ refund ทีหลัง
+    transactionId = txResult.transaction_id;
+    let remainingCredits = txResult.credits;
+    // ─────────────────────────────────────────────────────────────────────────
+
 
     const finalTargetAudience = (effectiveTier === 'plus' || effectiveTier === 'pro') ? targetAudience : null;
     const apiKey = env.GEMINI_API_KEY || env.VITE_GEMINI_API_KEY;
@@ -620,30 +639,34 @@ ${hookInstruction}
       throw new Error("AI สร้างเนื้อหาที่ไม่เหมาะสม (ถูกบล็อกโดยระบบรักษาความปลอดภัย)");
     }
 
-    // 6. บันทึก History ลงฐานข้อมูล scripts เป็นลำดับแรก (Save first)
-    // Input length boundaries to prevent abuse (INF-01)
-    const { error: insertError } = await supabaseAdmin.from('scripts').insert({
-      user_id: user.id,
-      product_name: (productName || '').slice(0, 100),
-      product_details: (productDetails || '').slice(0, 2000),
-      mode: isMultiVersion ? 'Pro_MultiVersion' : mode,
-      content: JSON.stringify(resultJson)
+    // ─── Credit Ledger: Commit Transaction ──────────────────────────────────
+    // commit_generation_tx ทำ 2 อย่างพร้อมกัน (Atomic):
+    //   1. INSERT script ลงตาราง scripts
+    //   2. เปลี่ยน transaction status: 'pending' → 'completed'
+    // ถ้า insert ล้มเหลว → ทั้งคู่ rollback → pg_cron จะ refund เครดิตอัตโนมัติ
+    // ⚠️ NOTE: ส่ง transactionId ที่จับมาจาก start_generation_tx ลงไปตรงๆ
+    //          user_id ถูกตรวจสอบซ้ำอีกครั้งใน RPC เพื่อป้องกัน IDOR
+    const { data: commitResult, error: commitError } = await supabaseAdmin.rpc('commit_generation_tx', {
+      p_transaction_id: transactionId,
+      p_user_id:        user.id,
+      p_product_name:   (productName || '').slice(0, 100),
+      p_product_details:(productDetails || '').slice(0, 2000),
+      p_mode:           isMultiVersion ? 'Pro_MultiVersion' : mode,
+      p_content:        JSON.stringify(resultJson)
     });
 
-    if (insertError) {
-      console.error("Failed to insert script:", insertError);
-      
-      // ROLLBACK: Refund exact deducted amount
-      await supabaseAdmin.rpc('increment_credits', {
-        p_user_id: user.id,
-        p_amount: creditAmount
-      });
-      
-      // CRITICAL FIX (DB-06): Reset flag so outer catch does NOT issue a SECOND refund
-      creditDeducted = false;
-      
+    if (commitError || commitResult?.error) {
+      console.error('[Credit Ledger] commit_generation_tx failed:', commitError || commitResult?.error);
+      // commit ล้มเหลว → ยิง refund ทันที (Eager refund) ก่อนที่ pg_cron จะทำ
+      // ใช้ best-effort (ไม่ await error เพราะ pg_cron ยังเป็น safety net อยู่)
+      supabaseAdmin.rpc('refund_generation_tx', {
+        p_transaction_id: transactionId,
+        p_user_id:        user.id
+      }).catch(e => console.error('[Credit Ledger] Eager refund failed (pg_cron will handle):', e));
+
       throw new Error("Failed to save script history");
     }
+    // ─────────────────────────────────────────────────────────────────────────
 
     // 7. Deduct Trial Quota if used
     let updatedTrialRemaining = profile.trial_pro_remaining;
@@ -668,18 +691,27 @@ ${hookInstruction}
     });
 
   } catch (err) {
-    if (creditDeducted && userIdForRefund) {
-      console.error("Execution failed after deduction. Issuing compensatory refund:", err);
+    // ─── Credit Ledger: Refund Transaction (Best-Effort) ────────────────────
+    // เรียก refund_generation_tx เฉพาะเมื่อ transactionId มีค่า
+    // (แปลว่าหักเครดิตไปแล้ว แต่งานล้มเหลวก่อน commit)
+    //
+    // ⚠️ DESIGN NOTE: แม้ว่าการ await refund นี้จะล้มเหลว
+    //    pg_cron ยังคงเป็น Safety Net สุดท้าย (จะ refund ใน 5 นาที)
+    //    ดังนั้นไม่มี "เครดิตหายฟรี" เกิดขึ้นได้อีกต่อไป
+    if (transactionId && userId && supabaseAdmin) {
+      console.error('[Credit Ledger] Execution failed after deduction. Attempting immediate refund via transaction:', transactionId);
       try {
-        // CRITICAL FIX (DB-07): Refund the exact creditAmount (1 or 2), NOT hardcoded 1
-        await supabaseAdmin.rpc('increment_credits', { 
-          p_user_id: userIdForRefund, 
-          p_amount: creditAmount 
+        await supabaseAdmin.rpc('refund_generation_tx', {
+          p_transaction_id: transactionId,
+          p_user_id:        userId
         });
+        console.log('[Credit Ledger] Immediate refund successful for transaction:', transactionId);
       } catch (refundErr) {
-        console.error("Failed to execute compensatory refund:", refundErr);
+        // ไม่ต้องตกใจ — pg_cron จะ refund ภายใน 5 นาที
+        console.error('[Credit Ledger] Immediate refund failed. pg_cron will auto-refund within 5 minutes. Error:', refundErr);
       }
     }
+    // ─────────────────────────────────────────────────────────────────────────
     console.error("Generate API Error:", err);
     
     let errorMessage = err.message || "เกิดข้อผิดพลาดที่ไม่คาดคิด กรุณาลองใหม่อีกครั้งครับ";

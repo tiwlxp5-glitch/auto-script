@@ -173,10 +173,11 @@ describe('EMPIRICAL CONCURRENCY & RACE CONDITION STRESS HARNESS (challenger_audi
         expect(res.status).toBe(200);
       }
 
-      // 50 Gemini calls, 50 script rows inserted, 50 RPC calls
+      // 50 Gemini calls, 50 script rows inserted
+      // ✅ NEW Credit Ledger: 2 RPC calls per successful generation (start + commit) = 100
       expect(globalMockGemini.generateCalls.length).toBe(50);
       expect(globalMockDb.scripts.length).toBe(50);
-      expect(globalMockDb.rpcCalls.length).toBe(50);
+      expect(globalMockDb.rpcCalls.length).toBe(100);
 
       // Final balance strictly 0
       const profile = globalMockDb.getProfile(userId);
@@ -317,8 +318,9 @@ describe('EMPIRICAL CONCURRENCY & RACE CONDITION STRESS HARNESS (challenger_audi
       expect(profile.credits).toBe(665);
       expect(profile.tier).toBe('plus');
       expect(globalMockDb.scripts.length).toBe(5);
-      // RPC calls = 10 (topups) + 1 (replay first) + 5 (generations) = 16
-      expect(globalMockDb.rpcCalls.length).toBe(16);
+      // ✅ NEW: RPC calls = 10 (topups sync_profile_credits) + 1 (replay sync) + 5*2 (gen start+commit) = 21
+      expect(globalMockDb.rpcCalls.length).toBe(21);
+
     });
   });
 

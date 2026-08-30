@@ -255,8 +255,10 @@ describe('CHALLENGER AUDIT 2: EMPIRICAL ADVERSARIAL STRESS HARNESS', () => {
       const data = await res.json();
       expect(data.error).toBe('Failed to save script history');
 
-      // VERIFICATION: RPC executed twice (deduct -1, refund +1)
-       expect(globalMockDb.rpcCalls.length).toBe(2);
+      // ✅ NEW Credit Ledger Saga: start (deduct) + refund (restore) both called
+      const rpcNames = globalMockDb.rpcCalls.map(r => r.functionName);
+      expect(rpcNames).toContain('start_generation_tx');
+      expect(rpcNames).toContain('refund_generation_tx');
 
       // VERIFICATION: User credits remain exactly the initial value
       const profile = globalMockDb.getProfile('usr_fault_test');
@@ -288,9 +290,10 @@ describe('CHALLENGER AUDIT 2: EMPIRICAL ADVERSARIAL STRESS HARNESS', () => {
       expect(res.status).toBe(500);
 
       const data = await res.json();
-      expect(data.error).toBe('Failed to deduct credits');
+      // ✅ NEW: error message updated to match Credit Ledger RPC
+      expect(data.error).toBe('Failed to start credit transaction');
 
-      // Script was saved, but RPC failed
+      // Script was NOT saved (RPC failed before AI call)
       expect(globalMockDb.scripts.length).toBe(0);
     });
   });

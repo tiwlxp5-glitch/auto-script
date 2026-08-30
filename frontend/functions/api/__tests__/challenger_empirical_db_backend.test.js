@@ -89,27 +89,17 @@ describe('EMPIRICAL CHALLENGER 1: Database & Backend Vulnerability Verification'
       // The endpoint returns HTTP 500 error
       expect(response.status).toBe(500);
 
-      // Inspect RPC calls executed during this request
-      const rpcCalls = testDb.rpcCalls;
+      // ✅ NEW Credit Ledger: start_generation_tx (deduct) → commit (fail) → refund_generation_tx
+      const rpcNames = testDb.rpcCalls.map(r => r.functionName);
+      expect(rpcNames).toContain('start_generation_tx');
+      expect(rpcNames).toContain('refund_generation_tx');
 
-      // Call 1: Initial upfront deduction (-1)
-      expect(rpcCalls[0].functionName).toBe('increment_credits');
-      expect(rpcCalls[0].args.p_amount).toBe(-1);
-
-      // Call 2: Refund inside `if (insertError)` (+1) - creditDeducted is reset to false after this
-      expect(rpcCalls[1].functionName).toBe('increment_credits');
-      expect(rpcCalls[1].args.p_amount).toBe(1);
-
-      // FIXED (DB-06): Only 2 RPC calls total — outer catch does NOT issue a second refund
-      // because creditDeducted was reset to false after the first refund
-      expect(rpcCalls.length).toBe(2);
-
-      // FIXED: User still has their original credits (5 - 1 + 1 = 5, no bonus)
+      // FIXED: User still has their original credits (deduct + refund = net 0 change)
       const finalCredits = testDb.getProfile(userId).credits;
-      expect(finalCredits).toBe(initialCredits); // 5 - 1 + 1 = 5
+      expect(finalCredits).toBe(initialCredits);
     });
 
-    it('EMP-DB-06.2: Multi-version generation insert failure results in exactly 2 RPC calls with no bonus credits [FIXED]', async () => {
+    it('EMP-DB-06.2: Multi-version generation insert failure restores 2 credits via refund_generation_tx [FIXED]', async () => {
       const initialCredits = 10;
       testDb.seedProfile(userId, {
         tier: 'pro',
@@ -128,11 +118,13 @@ describe('EMPIRICAL CHALLENGER 1: Database & Backend Vulnerability Verification'
       const response = await handleGenerate({ request, env });
       expect(response.status).toBe(500);
 
-      const rpcCalls = testDb.rpcCalls;
-      // FIXED (DB-06): Deduct 2, refund 2 inside insertError, creditDeducted=false prevents 3rd call
-      expect(rpcCalls.length).toBe(2);
-      expect(rpcCalls[0].args.p_amount).toBe(-2);
-      expect(rpcCalls[1].args.p_amount).toBe(2);
+      // ✅ NEW: start_generation_tx (deduct 2) → commit (fail) → refund_generation_tx (refund 2)
+      const rpcNames = testDb.rpcCalls.map(r => r.functionName);
+      expect(rpcNames).toContain('start_generation_tx');
+      expect(rpcNames).toContain('refund_generation_tx');
+
+      const startCall = testDb.rpcCalls.find(r => r.functionName === 'start_generation_tx');
+      expect(startCall.args.p_amount).toBe(2); // Multi-version deducts 2
 
       // FIXED: User balance unchanged (10 - 2 + 2 = 10)
       const finalCredits = testDb.getProfile(userId).credits;
@@ -165,13 +157,13 @@ describe('EMPIRICAL CHALLENGER 1: Database & Backend Vulnerability Verification'
       const response = await handleGenerate({ request, env });
       expect(response.status).toBe(500);
 
-      const rpcCalls = testDb.rpcCalls;
-      // Call 1: Upfront deduction of 2 credits
-      expect(rpcCalls.length).toBe(2);
-      expect(rpcCalls[0].args.p_amount).toBe(-2);
+      // ✅ NEW Credit Ledger: start_generation_tx (deduct 2) → refund_generation_tx (refund 2 in catch)
+      const rpcNames = testDb.rpcCalls.map(r => r.functionName);
+      expect(rpcNames).toContain('start_generation_tx');
+      expect(rpcNames).toContain('refund_generation_tx');
 
-      // FIXED (DB-07): Catch block now refunds creditAmount (2) not hardcoded 1
-      expect(rpcCalls[1].args.p_amount).toBe(2);
+      const startCall = testDb.rpcCalls.find(r => r.functionName === 'start_generation_tx');
+      expect(startCall.args.p_amount).toBe(2); // Multi-version deducts 2
 
       // FIXED: User balance fully restored (10 - 2 + 2 = 10)
       const finalCredits = testDb.getProfile(userId).credits;

@@ -487,13 +487,13 @@ describe('ADVERSARIAL STRESS TEST SUITE (challenger_2)', () => {
  const res = await handleGenerate({ request: req, env });
  expect(res.status).toBe(200);
 
- // Check chronological order of DB operations
- const insertIdx = globalMockDb.callLog.findIndex(c => c.type === 'scripts.insert');
- const rpcIdx = globalMockDb.callLog.findIndex(c => c.type === 'rpc' && c.functionName === 'increment_credits');
+ // ✅ NEW Credit Ledger: deduction = start_generation_tx, save = commit_generation_tx
+ const startIdx  = globalMockDb.callLog.findIndex(c => c.type === 'rpc' && c.functionName === 'start_generation_tx');
+ const commitIdx = globalMockDb.callLog.findIndex(c => c.type === 'rpc' && c.functionName === 'commit_generation_tx');
 
- expect(insertIdx).toBeGreaterThan(-1);
- expect(rpcIdx).toBeGreaterThan(-1);
- expect(rpcIdx).toBeLessThan(insertIdx); // rpc deduction must happen BEFORE scripts.insert
+ expect(startIdx).toBeGreaterThan(-1);
+ expect(commitIdx).toBeGreaterThan(-1);
+ expect(startIdx).toBeLessThan(commitIdx); // deduction must happen BEFORE save
  });
 
  it('ADV-D2: When script insert fails, credits remain 100% untouched and error is returned', async () => {
@@ -521,9 +521,12 @@ describe('ADVERSARIAL STRESS TEST SUITE (challenger_2)', () => {
  const errJson = await res.json();
  expect(errJson.error).toBe('Failed to save script history');
 
- // CRITICAL: Credits MUST NOT be deducted
+ // CRITICAL: Credits MUST NOT be deducted (refunded by ledger)
  expect(globalMockDb.getProfile('user_fail_insert').credits).toBe(7);
-      expect(globalMockDb.rpcCalls.length).toBe(2);
+ // ✅ NEW: Credit Ledger Saga: start (deduct) + refund (restore) both called
+ const rpcNames = globalMockDb.rpcCalls.map(r => r.functionName);
+ expect(rpcNames).toContain('start_generation_tx');
+ expect(rpcNames).toContain('refund_generation_tx');
  });
 
  it('ADV-D3: Users with 0 or negative credits are blocked with 403 before calling AI or DB insert', async () => {
