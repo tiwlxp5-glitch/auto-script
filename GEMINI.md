@@ -383,8 +383,13 @@ After EVERY successful feature implementation, logic change, or architectural sh
    - **Migration**: `supabase/migrations/20260830152617_lock_down_ledger_rpcs.sql`
    - **Commit**: (Pending auto commit)
 
-### Expert Architecture Audit (Items 3–5) — PENDING
-Items 3-5 from the Expert Architecture Audit will be addressed in subsequent sessions (Step-by-Step rule):
-- **Item 3**: Webhook Recovery Risk — state-aware Idempotency (pending/success/failed)
-- **Item 4**: Weak Observability — UUID Request IDs + centralized logging
-- **Item 5**: AI Output Validation — Output Schema Validation (Zod or Structured Outputs)
+42. **Webhook Recovery Risk (Expert Architecture Audit - Item 3 of 5)**:
+   - **Problem Solved**: Webhooks previously used a simple `INSERT` into `webhook_events` for idempotency and `DELETE` on failure. If the worker crashed mid-execution, the ID remained forever, and Stripe retries would hit "Already processed" falsely, leading to lost tier upgrades.
+   - **Solution (State-Aware Idempotency)**: Added `status` (`pending`, `success`, `failed`) and `error_message` to `webhook_events`. The webhook inserts `pending` upfront. Concurrent requests get `409 Conflict` (which Stripe retries). On success, it updates to `success`. On catch error, it updates to `failed`. Stripe retries on `failed` and `409`.
+   - **Migration**: `supabase/migrations/20260830154000_webhook_idempotency.sql`
+   - **Test Suite**: Updated stress concurrency and adversarial tests. 120 tests passed.
+
+### Expert Architecture Audit (Items 4-5) - PENDING
+Items 4-5 from the Expert Architecture Audit will be addressed in subsequent sessions (Step-by-Step rule):
+- **Item 4**: Weak Observability - UUID Request IDs + centralized logging
+- **Item 5**: AI Output Validation - Output Schema Validation (Zod or Structured Outputs)

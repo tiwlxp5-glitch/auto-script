@@ -349,8 +349,8 @@ describe('EMPIRICAL CHALLENGER 1: Database & Backend Vulnerability Verification'
       const requests = Array.from({ length: 10 }, () => createWebhookRequest(sessionPayload));
       const responses = await Promise.all(requests.map(req => handleWebhook({ request: req, env })));
 
-      // All responses should be HTTP 200
-      responses.forEach(res => expect(res.status).toBe(200));
+      // All responses should be HTTP 200 or 409
+      responses.forEach(res => expect([200, 409]).toContain(res.status));
 
       // The profile should have received exactly 150 credits (NOT 10 * 150 = 1500)
       const profile = testDb.getProfile(userId);

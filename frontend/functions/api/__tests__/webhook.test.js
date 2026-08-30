@@ -198,7 +198,7 @@ describe('R2: POST /api/webhook (Atomic Credit RPC & Webhook Idempotency)', () =
       expect(profile.credits).toBe(65);
     });
 
-    it('T1.6: should delete event ID from webhook_events and return 500 when database error occurs to enable Stripe retry', async () => {
+    it('T1.6: should mark event ID as failed in webhook_events and return 500 when database error occurs to enable Stripe retry', async () => {
       globalMockDb.failRpc = true;
       globalMockDb.rpcErrorMessage = 'Database write failed due to lock timeout';
 
@@ -221,9 +221,10 @@ describe('R2: POST /api/webhook (Atomic Credit RPC & Webhook Idempotency)', () =
 
       expect(response.status).toBe(500);
 
-      // Verify the event was removed from webhook_events so Stripe can retry
-      expect(globalMockDb.webhookEvents.has('evt_db_fail_500')).toBe(false);
-      expect(globalMockDb.eventDeletes).toContain('evt_db_fail_500');
+      // Verify the event was marked as failed in webhook_events so Stripe can retry
+      const event = globalMockDb.webhookEvents.get('evt_db_fail_500');
+      expect(event).toBeDefined();
+      expect(event.status).toBe('failed');
     });
   });
 

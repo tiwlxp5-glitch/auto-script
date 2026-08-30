@@ -5,7 +5,7 @@ export class MockDatabase {
   constructor() {
     this.profiles = new Map();
     this.scripts = [];
-    this.webhookEvents = new Set();
+    this.webhookEvents = new Map();
     this.authUsers = new Map();
     
     // Spies & Logs
@@ -303,6 +303,11 @@ export class MockDatabase {
                   }
                   return { data: { ...profile }, error: null };
                 }
+                if (table === 'webhook_events') {
+                  const event = db.webhookEvents.get(filterValue);
+                  if (!event) return { data: null, error: { message: "Row not found", code: "PGRST116" } };
+                  return { data: { ...event }, error: null };
+                }
                 return { data: null, error: { message: `Unknown table ${table}` } };
               }
             };
@@ -327,7 +332,12 @@ export class MockDatabase {
                     error: { message: `duplicate key value violates unique constraint`, code: '23505' }
                   });
                 }
-                db.webhookEvents.add(item.id);
+                db.webhookEvents.set(item.id, {
+                  id: item.id,
+                  status: item.status || 'success',
+                  error_message: item.error_message || null,
+                  created_at: new Date().toISOString()
+                });
               }
               return Promise.resolve({ data: items, error: null });
             }
@@ -393,6 +403,15 @@ export class MockDatabase {
                     return { data: profile, error: null };
                   }
                   return { data: null, error: { message: "Profile not found" } };
+                }
+                if (table === 'webhook_events') {
+                  const event = db.webhookEvents.get(value);
+                  if (event) {
+                    Object.assign(event, data);
+                    db.webhookEvents.set(value, event);
+                    return { data: event, error: null };
+                  }
+                  return { data: null, error: { message: "Event not found" } };
                 }
                 return { data: null, error: null };
               }

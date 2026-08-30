@@ -361,10 +361,10 @@ describe('ADVERSARIAL STRESS TEST SUITE (challenger_2)', () => {
 
  const responses = await Promise.all(promises);
 
- // All 30 must succeed (1 processed + 29 'Already processed')
- for (const res of responses) {
- expect(res.status).toBe(200);
- }
+  // All 30 must succeed (1 processed + 29 'Already processed' or 'Currently processing')
+  for (const res of responses) {
+    expect([200, 409]).toContain(res.status);
+  }
 
  // Exactly 1 RPC increment_credits should have executed
  expect(globalMockDb.rpcCalls.length).toBe(1);
@@ -442,9 +442,10 @@ describe('ADVERSARIAL STRESS TEST SUITE (challenger_2)', () => {
  const res1 = await handleWebhook({ request: req1, env });
  expect(res1.status).toBe(500);
 
- // Event ID must have been deleted from webhook_events
- expect(globalMockDb.webhookEvents.has('evt_retry_failure_001')).toBe(false);
- expect(globalMockDb.eventDeletes).toContain('evt_retry_failure_001');
+  // Event ID must have been marked as failed in webhook_events
+  const failedEvent = globalMockDb.webhookEvents.get('evt_retry_failure_001');
+  expect(failedEvent).toBeDefined();
+  expect(failedEvent.status).toBe('failed');
 
  // 2. Second attempt (Stripe retry) succeeds after DB recovers
  globalMockDb.failRpc = false;
