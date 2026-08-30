@@ -368,3 +368,23 @@ After EVERY successful feature implementation, logic change, or architectural sh
 
 **Rationalizing that a task is "too small" to require these steps is explicitly forbidden.**
 
+40. **Credit Ledger System (Expert Architecture Audit — Item 1 of 5)**:
+   - **Problem Solved**: Credits could be permanently lost if Cloudflare Worker crashed between deduction and script save (no catch block executed in crash).
+   - **Solution (Saga Pattern)**: 3 atomic DB RPCs: `start_generation_tx` (deduct + create `pending` ledger row), `commit_generation_tx` (save script + mark `completed`), `refund_generation_tx` (restore credits + mark `refunded`).
+   - **Self-Healing**: `pg_cron` job `auto_refund_stuck_transactions` runs every 5 minutes — auto-refunds any `pending` transaction older than 5 minutes. Handles Cloudflare crash where catch block never runs.
+   - **Migration**: `supabase/migrations/20260830000000_credit_ledger_system.sql` — `credit_transactions` table with `status` enum (pending/completed/refunded), FK → `auth.users(id) ON DELETE CASCADE`, RLS enabled.
+   - **Test Suite**: 114 tests passing, 6 skipped (legacy), 0 failed. All test files updated to assert against new Credit Ledger RPC names.
+   - **Commit**: `b892e86` — "feat: Credit Ledger (Saga Pattern) - Expert Audit Item 1 complete"
+
+41. **Broad Service Role Usage Guard (Expert Architecture Audit — Item 2 of 5)**:
+   - **Problem Solved**: The credit ledger RPCs (`start_generation_tx`, `commit_generation_tx`, `refund_generation_tx`) were `SECURITY DEFINER` without caller restrictions, allowing clients to bypass RLS and deduct credits from others (IDOR via anon key).
+   - **Solution (Strict Caller Verification)**: Added `auth.role() = 'service_role'` validation inside all three RPCs and explicitly revoked `EXECUTE` privileges from `PUBLIC`, `anon`, and `authenticated`. 
+   - **Security Pattern Enforced**: The Cloudflare Edge Functions (backend API) act as the primary security wall. They validate the user JWT (`auth.getUser(token)`), extract the true `user.id`, and call the strictly locked-down RPCs using `SUPABASE_SERVICE_ROLE_KEY`.
+   - **Migration**: `supabase/migrations/20260830152617_lock_down_ledger_rpcs.sql`
+   - **Commit**: (Pending auto commit)
+
+### Expert Architecture Audit (Items 3–5) — PENDING
+Items 3-5 from the Expert Architecture Audit will be addressed in subsequent sessions (Step-by-Step rule):
+- **Item 3**: Webhook Recovery Risk — state-aware Idempotency (pending/success/failed)
+- **Item 4**: Weak Observability — UUID Request IDs + centralized logging
+- **Item 5**: AI Output Validation — Output Schema Validation (Zod or Structured Outputs)
