@@ -92,6 +92,15 @@ function History() {
 
   const handleDeleteSelected = async () => {
     if (selectedIds.size === 0) return;
+
+    const confirmMessage = selectedIds.size > 1
+      ? `⚠️ คำเตือน: คุณแน่ใจหรือไม่ว่าต้องการลบสคริปต์ที่เลือกทั้งหมด (${selectedIds.size} รายการ)?\n\nการดำเนินการนี้ไม่สามารถกู้คืนได้`
+      : `คุณแน่ใจหรือไม่ว่าต้องการลบสคริปต์ที่เลือก?\n\nการดำเนินการนี้ไม่สามารถกู้คืนได้`;
+
+    if (!window.confirm(confirmMessage)) {
+      return;
+    }
+
     setIsDeleting(true);
     const idsToDelete = [...selectedIds];
     const { error } = await supabase
