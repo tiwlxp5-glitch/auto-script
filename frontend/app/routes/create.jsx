@@ -4,10 +4,19 @@ import { scanForBannedWords, highlightBannedWords } from '../lib/bannedWords';
 import { containsProfanity } from '../lib/profanityWords';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useScriptGeneration } from '../context/ScriptGenerationContext';
 
 function CreateScript() {
-  const { user, profile, setProfile, loading } = useAuth();
-  const analyzeAbortRef = useRef(null);
+  const { user, profile, loading } = useAuth();
+  const { 
+    isGenerating, 
+    generatingMode, 
+    generatedScript, 
+    usedProBrain, 
+    bannedWarnings, 
+    generateScript 
+  } = useScriptGeneration();
+  
   const errorRef = useRef(null);
   const [productName, setProductName] = useState('');
   const [productDetails, setProductDetails] = useState('');
@@ -23,21 +32,8 @@ function CreateScript() {
   const [falseBelief, setFalseBelief] = useState('');
   const [mechanism, setMechanism] = useState('');
   
-  // Streaming Terminal States
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [terminalText, setTerminalText] = useState('');
-  const [showTerminal, setShowTerminal] = useState(false);
-  
-  const [generatedScript, setGeneratedScript] = useState(null);
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [generatingMode, setGeneratingMode] = useState(null);
-  const [generationProgress, setGenerationProgress] = useState(0);
-  const progressIntervalRef = useRef(null);
-  const [bannedWarnings, setBannedWarnings] = useState([]);
-  const [error, setError] = useState(null);
+  const [formError, setFormError] = useState(null);
   const [activeTab, setActiveTab] = useState('funny');
-  const [usedProBrain, setUsedProBrain] = useState(false);
-  
   
   const navigate = useNavigate();
 
@@ -96,19 +92,7 @@ function CreateScript() {
     if (!loading && !user) navigate('/login');
   }, [user, loading, navigate]);
 
-  useEffect(() => {
-    return () => {
-      if (analyzeAbortRef.current) {
-        analyzeAbortRef.current.abort();
-      }
-      if (progressIntervalRef.current) {
-        clearInterval(progressIntervalRef.current);
-      }
-    };
-  }, []);
-
   const effectiveTier = profile ? (profile.tier === 'free' && profile.trial_pro_remaining > 0 ? 'pro' : profile.tier) : 'free';
-
 
   const scrollToError = () => {
     setTimeout(() => {
@@ -124,22 +108,24 @@ function CreateScript() {
   const handleGenerate = async (e, isMultiVersion = false) => {
     if (e) e.preventDefault();
 
+    setFormError(null); // Clear form error before validation
+
     // Validate required fields
     if (!productName.trim()) {
-      setError('กรุณากรอก "ชื่อสินค้า" ก่อนสร้างสคริปต์ครับ');
+      setFormError('กรุณากรอก "ชื่อสินค้า" ก่อนสร้างสคริปต์ครับ');
       scrollToError();
       return;
     }
 
     if (!productDetails.trim()) {
-      setError('กรุณากรอก "รายละเอียดสินค้า" เพื่อให้ AI เขียนสคริปต์ได้ตรงใจครับ');
+      setFormError('กรุณากรอก "รายละเอียดสินค้า" เพื่อให้ AI เขียนสคริปต์ได้ตรงใจครับ');
       scrollToError();
       return;
     }
 
     if (mode === 'โครงสร้างเจาะลึก') {
       if (!falseBelief.trim() || !mechanism.trim()) {
-        setError('โหมดโครงสร้างเจาะลึก: กรุณากรอก "ความเชื่อผิดๆ" และ "กลไก/ความลับ" ให้ครบถ้วนครับ');
+        setFormError('โหมดโครงสร้างเจาะลึก: กรุณากรอก "ความเชื่อผิดๆ" และ "กลไก/ความลับ" ให้ครบถ้วนครับ');
         scrollToError();
         return;
       }
@@ -149,7 +135,7 @@ function CreateScript() {
     if (mode === 'เปรียบเทียบชัดๆ' && competitor) {
       const harshWords = ["กาก", "ห่วย", "แย่", "ขยะ", "สวะ", "หลอกลวง", "หมา"];
       if (harshWords.some(w => competitor.includes(w))) {
-        setError('ไม่อนุญาตให้ใช้คำพาดพิงคู่แข่งรุนแรง (เช่น กาก, ห่วย, แย่) โปรดใช้คำที่สุภาพขึ้น เช่น "แบรนด์ทั่วไป" หรือ "แบบเก่า" เพื่อความเป็นมืออาชีพ');
+        setFormError('ไม่อนุญาตให้ใช้คำพาดพิงคู่แข่งรุนแรง (เช่น กาก, ห่วย, แย่) โปรดใช้คำที่สุภาพขึ้น เช่น "แบรนด์ทั่วไป" หรือ "แบบเก่า" เพื่อความเป็นมืออาชีพ');
         scrollToError();
         return;
       }
@@ -158,19 +144,19 @@ function CreateScript() {
     // 0.5 Profanity Check (Strict Ban)
     const allInputs = `${productName} ${productDetails} ${competitor} ${targetAudience}`;
     if (containsProfanity(allInputs)) {
-      setError('ไม่อนุญาตให้ใช้คำหยาบคาย! เว็บ Auto Script ห้ามใช้คำหยาบเด็ดขาด กรุณาแก้ไขข้อมูลของคุณ');
+      setFormError('ไม่อนุญาตให้ใช้คำหยาบคาย! เว็บ Auto Script ห้ามใช้คำหยาบเด็ดขาด กรุณาแก้ไขข้อมูลของคุณ');
       scrollToError();
       return;
     }
 
     
     if (!user) {
-      alert("Error: ไม่พบข้อมูล User (ยังไม่ได้ล็อกอิน)");
+      setFormError("Error: ไม่พบข้อมูล User (ยังไม่ได้ล็อกอิน)");
       return;
     }
     
     if (!profile) {
-      alert("Error: ยังโหลดข้อมูลโควต้าไม่เสร็จ หรือโหลดไม่พบ");
+      setFormError("Error: ยังโหลดข้อมูลโควต้าไม่เสร็จ หรือโหลดไม่พบ");
       return;
     }
     
@@ -182,174 +168,26 @@ function CreateScript() {
       return;
     }
     
-    setIsGenerating(true);
-    setGeneratingMode(isMultiVersion ? 'multi' : 'single');
-    setError(null);
-    setGeneratedScript(null);
-    setBannedWarnings([]);
-    setGenerationProgress(0);
-
-    // Dynamic Progress Engine (Asymptotic Smoothing)
-    if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
-    let currentProgress = 0;
-    
-    // คำนวณเวลาที่คาดว่าจะใช้ (อิงตามระบบหลังบ้านจริง) ปรับให้ใกล้เคียงของจริงมากขึ้น
+    // 2. Setup payload and run generator
     const isProBrain = effectiveTier === 'pro' && mode === 'โครงสร้างเจาะลึก' && !isMultiVersion;
-    const expectedTimeMs = isProBrain ? 40000 : (isMultiVersion ? 25000 : 12000);
-    const updateIntervalMs = 100; // อัปเดตทุก 100ms
-    const totalSteps = expectedTimeMs / updateIntervalMs;
-    const incrementPerStep = 99 / totalSteps; // สเต็ปพื้นฐาน
+    const payload = {
+      productName,
+      productDetails,
+      pricePromo,
+      videoLength,
+      speakerTone,
+      mode,
+      competitor: mode === 'เปรียบเทียบชัดๆ' ? competitor : '',
+      falseBelief: mode === 'โครงสร้างเจาะลึก' ? falseBelief : '',
+      mechanism: mode === 'โครงสร้างเจาะลึก' ? mechanism : '',
+      targetAudience: effectiveTier !== 'free' ? targetAudience : '',
+      isMultiVersion: isMultiVersion
+    };
 
-    progressIntervalRef.current = setInterval(() => {
-      if (currentProgress < 85) {
-        // ช่วงแรก 0-85% วิ่งตามความเร็วที่คำนวณไว้
-        currentProgress += incrementPerStep;
-      } else if (currentProgress < 99) {
-        // ช่วงปลาย 85-99% ใช้สมการ Asymptotic slowing: ยิ่งใกล้ 99 จะยิ่งเดินช้าลงแบบโค้งเนียนๆ
-        // ช่วยแก้ปัญหาหลอดค้างที่ 99% เป็นเวลานาน 10-20 วิ
-        currentProgress += (99.9 - currentProgress) * 0.015;
-      } else {
-        // ค้างไว้ที่ 99 รอจนกว่า Backend จะส่งข้อมูลกลับมา
-        currentProgress = 99;
-      }
-      setGenerationProgress(Math.floor(currentProgress));
-    }, updateIntervalMs);
-
-    // FIX FE-02 & V6: AbortController with dynamic timeout & unmount cleanup
-    // Analogy: Like setting a 60/100-second kitchen timer when making a call.
-    // If the line is silent for too long (mobile tunnel / Wi-Fi drop),
-    // we hang up gracefully instead of holding the phone forever.
-    const controller = new AbortController();
-    analyzeAbortRef.current = controller; // V6: Bind to ref for unmount cleanup
-    const timeoutDuration = isProBrain ? 100000 : 60000;
-    const timeoutId = setTimeout(() => controller.abort(), timeoutDuration);
-
-    let hasError = false;
-    try {
-      // ดึง JWT Token ปัจจุบันของผู้ใช้เพื่อส่งไปยืนยันตัวตนที่ Backend
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.access_token) {
-        clearTimeout(timeoutId);
-        throw new Error('กรุณาล็อกอินใหม่');
-      }
-      
-      const payload = {
-        productName,
-        productDetails,
-        pricePromo,
-        videoLength,
-        speakerTone,
-        mode,
-        competitor: mode === 'เปรียบเทียบชัดๆ' ? competitor : '',
-        falseBelief: mode === 'โครงสร้างเจาะลึก' ? falseBelief : '',
-        mechanism: mode === 'โครงสร้างเจาะลึก' ? mechanism : '',
-        targetAudience: effectiveTier !== 'free' ? targetAudience : '',
-        isMultiVersion: isMultiVersion
-      };
-
-      // ยิงข้อมูลไปให้ Backend พร้อม signal สำหรับ abort
-      const response = await fetch('/api/generate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`
-        },
-        body: JSON.stringify(payload),
-        signal: controller.signal
-      });
-
-      clearTimeout(timeoutId);
-      
-      const contentType = response.headers.get('content-type');
-      if (contentType && contentType.includes('text/html')) {
-        throw new Error('การเชื่อมต่อกับเซิร์ฟเวอร์ขัดข้อง (Timeout) เครดิตของคุณถูกคืนให้แล้ว กรุณาลองใหม่');
-      }
-
-      const responseData = await response.json();
-
-      if (!response.ok) {
-        throw new Error(responseData.error || "Failed to generate script");
-      }
-
-
-      let finalScriptData = responseData.script;
-      const newCredits = responseData.credits_remaining;
-      const proBrainUsed = !!responseData.used_pro_brain;
-      
-      let allText = '';
-      
-      if (finalScriptData.raw_multi_version) {
-        // Parse the 3 XML tags
-        const raw = finalScriptData.raw_multi_version;
-        const funnyMatch = raw.match(/<VERSION_FUNNY>([\s\S]*?)<\/VERSION_FUNNY>/);
-        const reviewMatch = raw.match(/<VERSION_REVIEW>([\s\S]*?)<\/VERSION_REVIEW>/);
-        const fomoMatch = raw.match(/<VERSION_FOMO>([\s\S]*?)<\/VERSION_FOMO>/);
-        
-        const safeParse = (str) => {
-          try { return JSON.parse(str.replace(/```json/g, '').replace(/```/g, '').trim()); } 
-          catch(e) { return null; }
-        };
-
-        finalScriptData = {
-          isMulti: true,
-          funny: funnyMatch ? safeParse(funnyMatch[1]) : null,
-          review: reviewMatch ? safeParse(reviewMatch[1]) : null,
-          fomo: fomoMatch ? safeParse(fomoMatch[1]) : null
-        };
-        
-        // Combine text for banned word scan
-        const getBlocks = (scriptObj) => scriptObj?.script_blocks?.map(b => b.audio_spoken).join(' ') || '';
-        allText = getBlocks(finalScriptData.funny) + ' ' + getBlocks(finalScriptData.review) + ' ' + getBlocks(finalScriptData.fomo);
-        
-      } else {
-        allText = finalScriptData.script_blocks?.map(b => b.audio_spoken).join(' ') || '';
-      }
-
-      // สแกนหาคำต้องห้ามในบทพูดทั้งหมด
-      const warnings = scanForBannedWords(allText);
-      
-      // ลบ warnings ที่ซ้ำซาก
-      const uniqueWarnings = Array.from(new Set(warnings.map(a => a.word)))
-        .map(word => warnings.find(a => a.word === word));
-        
-      setBannedWarnings(uniqueWarnings);
-      setGeneratedScript(finalScriptData);
-      setUsedProBrain(proBrainUsed); // Smart Dynamic Brain: ส่ง flag ให้ Result Badge
-      
-      // อัปเดตเครดิตในหน้าเว็บให้ตรงกับที่ Backend หักไป
-      setProfile(prev => prev ? { 
-        ...prev, 
-        credits: newCredits,
-        ...(responseData.trial_pro_remaining !== undefined && { trial_pro_remaining: responseData.trial_pro_remaining })
-      } : prev);
-      window.dispatchEvent(new Event('profileUpdated'));
-
-    } catch (err) {
-      hasError = true;
-      console.error(err);
-      // FIX FE-02: Show specific message for network timeout/drop
-      if (err.name === 'AbortError') {
-        setError('การเชื่อมต่อใช้เวลานานเกินไป (60 วินาที) กรุณาตรวจสอบอินเทอร์เน็ตแล้วลองใหม่ครับ');
-      } else {
-        setError(err.message || "เกิดข้อผิดพลาดในการสร้างสคริปต์ กรุณาลองใหม่อีกครั้งครับ");
-      }
-      scrollToError();
-    } finally {
-      clearTimeout(timeoutId);
-      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
-      setGenerationProgress(100);
-      
-      if (hasError) {
-        setIsGenerating(false);
-        setGeneratingMode(null);
-      } else {
-        // หน่วงเวลาเล็กน้อย (500ms) ให้ผู้ใช้เห็นแถบวิ่งเต็ม 100% ก่อนเปลี่ยนหน้า
-        setTimeout(() => {
-          setIsGenerating(false);
-          setGeneratingMode(null);
-        }, 500);
-      }
-    }
+    // Note: error handling and progress are now fully managed by the global context.
+    // So we just fire and forget here (or await it, doesn't matter).
+    // The Floating Mini-Player handles the UI feedback.
+    generateScript(payload, isMultiVersion, isProBrain);
   };
 
   const copyToClipboard = () => {
@@ -445,9 +283,9 @@ function CreateScript() {
         {/* ฝั่งซ้าย: ฟอร์ม */}
         <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 h-fit">
           <form onSubmit={handleGenerate} className="space-y-6">
-            {error && (
+            {formError && (
               <div ref={errorRef} className="bg-red-50 text-red-600 p-3 rounded-lg text-sm">
-                {error}
+                {formError}
               </div>
             )}
             
@@ -985,49 +823,7 @@ function CreateScript() {
         </div>
       </div>
 
-      {/* Modern AI Analysis Loading Modal */}
-      {showTerminal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-all duration-300">
-          <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-100 flex flex-col relative animate-in fade-in zoom-in-95 duration-200">
-            {/* Header */}
-            <div className="bg-gradient-to-r from-amber-50 to-orange-50 px-6 py-4 border-b border-amber-100/50 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center animate-pulse">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                </div>
-                <h3 className="font-bold text-amber-900">AI กำลังวิเคราะห์ข้อมูลสินค้า</h3>
-              </div>
-            </div>
-            
-            {/* Body */}
-            <div className="p-6">
-              <div className="flex flex-col gap-4">
-                <div className="flex items-start gap-3">
-                  <div className="mt-1">
-                    {isAnalyzing ? (
-                      <svg className="animate-spin h-5 w-5 text-amber-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                    ) : terminalText.includes('Error') ? (
-                      <svg className="h-5 w-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    ) : (
-                      <svg className="h-5 w-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    )}
-                  </div>
-                  <div className="flex-1 bg-slate-50 rounded-xl p-4 border border-slate-100 shadow-inner h-48 overflow-y-auto">
-                    <p className="text-sm text-slate-600 whitespace-pre-wrap leading-relaxed font-medium">
-                      {terminalText || 'กำลังเตรียมข้อมูล...'}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            {/* Animated Bottom Border */}
-            {isAnalyzing && (
-              <div className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-amber-400 to-orange-500 animate-[pulse_2s_ease-in-out_infinite] w-full"></div>
-            )}
-          </div>
-        </div>
-      )}
+
     </div>
   );
 }

@@ -6,6 +6,7 @@ import {
 } from "react-router";
 import { ErrorBoundary as CustomErrorBoundary } from "./components/ErrorBoundary";
 import { AuthProvider } from "./context/AuthContext";
+import { ScriptGenerationProvider } from "./context/ScriptGenerationContext";
 import MainLayout from "./layouts/MainLayout";
 import "./index.css";
 
@@ -69,7 +70,9 @@ export default function App() {
   return (
     <CustomErrorBoundary>
       <AuthProvider>
-        <MainLayout />
+        <ScriptGenerationProvider>
+          <MainLayout />
+        </ScriptGenerationProvider>
       </AuthProvider>
     </CustomErrorBoundary>
   );

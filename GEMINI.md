@@ -416,7 +416,7 @@ After EVERY successful feature implementation, logic change, or architectural sh
 ### Expert Architecture Audit - COMPLETE
 All 5 items from the Expert Architecture Audit have been successfully implemented and tested.
 
-26. **Bug Fix (RPC Overload):** Fixed Failed to start credit transaction (500 Error) caused by a Supabase PostgREST PGRST203 function overload conflict when the start_generation_tx signature was updated without dropping the old one.
+46. **Bug Fix (RPC Overload):** Fixed Failed to start credit transaction (500 Error) caused by a Supabase PostgREST PGRST203 function overload conflict when the start_generation_tx signature was updated without dropping the old one.
 
 47. **Pre-Launch Security & UX Hardening (Turnstile + Abandoned Charge Fix + 524 Timeout Resilience)**:
    - **Bot & Spam Protection**: Integrated Cloudflare Turnstile natively via `@marsidev/react-turnstile` into `register.jsx`. Added `captchaToken` to `supabase.auth.signUp({ options: { captchaToken } })` with Supabase Auth Attack Protection. Added client-side fast-fail UX check for common temporary email providers (`tempmail.com`, `yopmail.com`, `10minutemail.com`, etc.).
@@ -424,3 +424,8 @@ All 5 items from the Expert Architecture Audit have been successfully implemente
    - **Edge Abort Recovery**: Added `request.signal.addEventListener('abort', ...)` with `context.waitUntil(supabaseAdmin.rpc('refund_generation_tx', ...))` in `generate.js`. Added checks for `request.signal.aborted` before calling Gemini and before committing the transaction.
    - **Cloudflare 524 HTML Resilience**: Added content-type check in `create.jsx` before calling `response.json()` to catch Cloudflare HTML error pages (Error 524 Gateway Timeout) and present a clean Thai message instead of crashing the React application with a `SyntaxError`.
 
+48. **Background Script Generation (Global State & Floating Player)**:
+   - **Architecture Shift**: Moved script generation state (`isGenerating`, `generationProgress`, `generatedScript`, `error`) and the core `generateScript` function out of `create.jsx` into a new `ScriptGenerationContext.jsx` wrapped at the root (`root.jsx`).
+   - **Spotify-like UX**: Added a Floating Widget (Mini-Player) to `MainLayout.jsx` that persists across page navigations. Displays progress bars, error states, and a green success button linking to `/history`.
+   - **Security**: Bound `AbortController` at the Context level so page transitions do NOT cancel the fetch, but completely closing the browser tab still triggers the Edge function's `request.signal.abort` for auto-refunds. Included a Concurrency Lock in `create.jsx` and added cleanup logic on user logout.
+   - **Mobile Polish**: Utilized `w-[92%] sm:w-auto`, `shrink-0`, and `truncate` to ensure the floating widget does not cramp or overflow on narrow mobile devices.

@@ -54,15 +54,16 @@ describe('CHALLENGER AUDIT 2: FRONTEND UX, STATE, CODE SPLITTING & INFRASTRUCTUR
   // =========================================================================
   describe('Focus 2: Network Timeout, State Hang & AbortController in CreateScript.jsx', () => {
 
-    it('EMP-FETCH-1: CreateScript.jsx has AbortController + 60s timeout on /api/generate [FIXED]', () => {
-      const createScriptCode = fs.readFileSync(createScriptPath, 'utf8');
+    it('EMP-FETCH-1: ScriptGenerationContext.jsx has AbortController + 60s timeout on /api/generate [FIXED]', () => {
+      const contextPath = path.resolve(__dirname, '../../../app/context/ScriptGenerationContext.jsx');
+      const contextCode = fs.readFileSync(contextPath, 'utf8');
 
       // FIXED: Now includes AbortController and timeout
-      expect(createScriptCode).toContain('AbortController');
-      expect(createScriptCode).toContain('controller.signal');
-      expect(createScriptCode).toContain('controller.abort');
-      expect(createScriptCode).toContain('60000');
-      expect(createScriptCode).toContain('AbortError');
+      expect(contextCode).toContain('AbortController');
+      expect(contextCode).toContain('controller.signal');
+      expect(contextCode).toContain('controller.abort');
+      expect(contextCode).toContain('60000');
+      expect(contextCode).toContain('AbortError');
     });
 
 
@@ -253,7 +254,7 @@ describe('CHALLENGER AUDIT 2: FRONTEND UX, STATE, CODE SPLITTING & INFRASTRUCTUR
       const settingsAlerts = scanAlerts(settingsPath);
       const pricingAlerts = scanAlerts(path.resolve(__dirname, '../../../app/routes/pricing.jsx'));
 
-      expect(csAlerts).toBeGreaterThanOrEqual(4); // 4 alerts in CreateScript
+      expect(csAlerts).toBeGreaterThanOrEqual(1); // At least 1 alert in CreateScript (e.g., copy clipboard)
       expect(historyAlerts).toBeGreaterThanOrEqual(4); // 4+ alerts in History
       expect(settingsAlerts).toBeGreaterThanOrEqual(6); // 6+ alerts/confirms in Settings
       expect(pricingAlerts).toBeGreaterThanOrEqual(1); // 1 alert in Pricing
@@ -266,12 +267,12 @@ describe('CHALLENGER AUDIT 2: FRONTEND UX, STATE, CODE SPLITTING & INFRASTRUCTUR
       expect(createScriptCode).not.toContain('role="status"');
     });
 
-    it('EMP-DEAD-1: CreateScript contains orphaned analyzeAbortRef and showTerminal modal from removed feature', () => {
+    it('EMP-DEAD-1: CreateScript contains orphaned analyzeAbortRef and showTerminal modal from removed feature [FIXED]', () => {
       const createScriptCode = fs.readFileSync(createScriptPath, 'utf8');
 
-      expect(createScriptCode).toContain('const analyzeAbortRef = useRef(null);');
-      expect(createScriptCode).toContain('const [showTerminal, setShowTerminal] = useState(false);');
-      expect(createScriptCode).toContain('{/* Modern AI Analysis Loading Modal */}');
+      expect(createScriptCode).not.toContain('const analyzeAbortRef = useRef(null);');
+      expect(createScriptCode).not.toContain('const [showTerminal, setShowTerminal] = useState(false);');
+      expect(createScriptCode).not.toContain('{/* Modern AI Analysis Loading Modal */}');
     });
   });
 });
