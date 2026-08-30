@@ -415,3 +415,5 @@ After EVERY successful feature implementation, logic change, or architectural sh
 
 ### Expert Architecture Audit - COMPLETE
 All 5 items from the Expert Architecture Audit have been successfully implemented and tested.
+
+26. **Bug Fix (RPC Overload):** Fixed Failed to start credit transaction (500 Error) caused by a Supabase PostgREST PGRST203 function overload conflict when the start_generation_tx signature was updated without dropping the old one.
