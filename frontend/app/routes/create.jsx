@@ -189,14 +189,26 @@ function CreateScript() {
     setBannedWarnings([]);
     setGenerationProgress(0);
 
-    // Dynamic Progress Engine (simulates AI thinking steps)
+    // Dynamic Progress Engine (Time-based Linear Smoothing)
     if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
     let currentProgress = 0;
+    
+    // คำนวณเวลาที่คาดว่าจะใช้ (อิงตามระบบหลังบ้านจริง)
+    const isProBrain = effectiveTier === 'pro' && mode === 'โครงสร้างเจาะลึก' && !isMultiVersion;
+    const expectedTimeMs = isProBrain ? 25000 : (isMultiVersion ? 15000 : 5000);
+    const updateIntervalMs = 50; // อัปเดตบ่อยๆ เพื่อให้แถบวิ่งเนียนตา
+    const totalSteps = expectedTimeMs / updateIntervalMs;
+    const incrementPerStep = 90 / totalSteps; // ตั้งเป้าให้วิ่งถึง 90% ตามเวลาที่คาดไว้
+
     progressIntervalRef.current = setInterval(() => {
-      // Approach 95% asymptotically
-      currentProgress += (95 - currentProgress) * 0.15;
-      setGenerationProgress(Math.min(95, Math.round(currentProgress)));
-    }, 500);
+      if (currentProgress < 90) {
+        currentProgress += incrementPerStep;
+      } else if (currentProgress < 98) {
+        // ถ้า AI คิดนานกว่าค่าเฉลี่ย ให้ค่อยๆ ไหลไปช้าๆ จนถึง 98%
+        currentProgress += 0.02;
+      }
+      setGenerationProgress(Math.floor(currentProgress));
+    }, updateIntervalMs);
 
     // FIX FE-02: AbortController + 60s timeout
     // Analogy: Like setting a 60-second kitchen timer when making a call.
