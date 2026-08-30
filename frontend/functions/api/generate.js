@@ -232,7 +232,7 @@ Before writing the script, you MUST perform a neuromarketing analysis to plan th
 }
 `;
 
-function safeParseJson(rawText) {
+function safeParseJson(rawText, isBeliefShifter = false) {
   if (!rawText || typeof rawText !== 'string') {
     throw new Error('AI_EMPTY_RESPONSE');
   }
@@ -243,12 +243,59 @@ function safeParseJson(rawText) {
     cleaned = cleaned.replace(/^```\s*/, '').replace(/\s*```$/, '');
   }
   
+  let parsed;
   try {
-    return JSON.parse(cleaned);
+    parsed = JSON.parse(cleaned);
   } catch (e) {
     console.error("JSON Parse Error:", e.message, "Raw:", cleaned);
     throw new Error("AI ตอบกลับข้อมูลมาในรูปแบบที่อ่านไม่ได้ (มีอักขระพิเศษ) กรุณากดสร้างสคริปต์ใหม่อีกครั้งครับ");
   }
+
+  // Expert Architecture Audit (Item 5): Output Schema Validation
+  // Validate and auto-fix structural types to prevent frontend UI breakage
+  try {
+    if (!parsed || typeof parsed !== 'object') throw new Error("Output is not an object");
+    
+    // Validate metadata
+    if (!parsed.metadata || typeof parsed.metadata !== 'object') throw new Error("Missing metadata object");
+    
+    parsed.metadata.target_audience_persona = String(parsed.metadata.target_audience_persona || '');
+    parsed.metadata.primary_psychological_trigger = String(parsed.metadata.primary_psychological_trigger || '');
+    
+    const duration = Number(parsed.metadata.estimated_duration_seconds);
+    parsed.metadata.estimated_duration_seconds = isNaN(duration) ? 30 : duration;
+
+    // Validate script_blocks
+    if (!Array.isArray(parsed.script_blocks) || parsed.script_blocks.length === 0) {
+      throw new Error("Missing or empty script_blocks array");
+    }
+
+    for (const [index, block] of parsed.script_blocks.entries()) {
+      if (!block || typeof block !== 'object') throw new Error(`Invalid script_block at index ${index}`);
+      
+      block.timestamp = String(block.timestamp || '');
+      block.phase = String(block.phase || '');
+      block.visual_direction = String(block.visual_direction || '');
+      block.audio_spoken = String(block.audio_spoken || '');
+      block.subtext_emotion = String(block.subtext_emotion || '');
+    }
+
+    // Validate Belief-Shifting specific fields
+    if (isBeliefShifter) {
+      if (!parsed.neuromarketing_analysis || typeof parsed.neuromarketing_analysis !== 'object') {
+        throw new Error("Missing neuromarketing_analysis object for Belief-Shifting mode");
+      }
+      const nm = parsed.neuromarketing_analysis;
+      nm.audience_false_belief = String(nm.audience_false_belief || '');
+      nm.the_epiphany_bridge = String(nm.the_epiphany_bridge || '');
+      nm.emotional_journey = String(nm.emotional_journey || '');
+    }
+  } catch (schemaErr) {
+    console.error("Schema Validation Error:", schemaErr.message, "Parsed Output:", JSON.stringify(parsed));
+    throw new Error("AI ตอบกลับข้อมูลโครงสร้างไม่ครบถ้วน (Schema Mismatch) ระบบคืนเครดิตให้แล้ว กรุณาสร้างใหม่อีกครั้งครับ");
+  }
+
+  return parsed;
 }
 
 export async function onRequestPost(context) {
@@ -624,13 +671,13 @@ ${hookInstruction}
         throw new Error("AI ตอบกลับข้อมูลไม่ครบ 3 รูปแบบ กรุณากดสร้างสคริปต์ใหม่อีกครั้ง");
       }
       
-      safeParseJson(funnyMatch[1]);
-      safeParseJson(reviewMatch[1]);
-      safeParseJson(fomoMatch[1]);
+      safeParseJson(funnyMatch[1], false);
+      safeParseJson(reviewMatch[1], false);
+      safeParseJson(fomoMatch[1], false);
       
       resultJson = { raw_multi_version: rawOutput };
     } else {
-      resultJson = safeParseJson(rawOutput);
+      resultJson = safeParseJson(rawOutput, mode === 'โครงสร้างเจาะลึก');
     }
 
     // --- Output Moderation ---
