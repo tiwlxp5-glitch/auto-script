@@ -137,74 +137,101 @@ function Home() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* Standard Fast Engine */}
-          <div className="bg-white border-2 border-slate-200 rounded-2xl p-6 relative">
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center">
-                {/* Bolt icon (Heroicons) */}
-                <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {/* Plus Smart Engine */}
+          <div className="bg-blue-50/50 border-2 border-blue-200 rounded-3xl p-6 relative flex flex-col h-full hover:shadow-lg transition-shadow">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center shrink-0">
+                {/* Bolt icon */}
+                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
               <div>
-                <h3 className="font-bold text-slate-700 text-base">Standard Fast Engine</h3>
-                <p className="text-xs text-slate-400">Free · Plus</p>
+                <h3 className="font-extrabold text-slate-800 text-lg sm:text-xl">Plus Smart Engine</h3>
+                <p className="text-sm font-semibold text-blue-600 mt-0.5">฿249 <span className="text-slate-400 font-normal">/ 60 คลิป</span></p>
               </div>
             </div>
-            <ul className="space-y-3 text-sm text-slate-600">
-              <li className="flex items-start gap-2">
-                <svg className="w-4 h-4 text-slate-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
-                <span>เขียนสคริปต์เสร็จใน <strong>2-4 วินาที</strong></span>
+            
+            <ul className="space-y-4 text-sm text-slate-700 flex-1">
+              <li className="flex items-start gap-3">
+                <div className="mt-0.5 shrink-0 w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center">
+                  <svg className="w-3 h-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                </div>
+                <span><strong>High-Speed Workflow:</strong> รันสคริปต์เสร็จใน 2-4 วินาที ไม่เสียเวลา เหมาะกับคนถ่ายคลิปประจำวัน</span>
               </li>
-              <li className="flex items-start gap-2">
-                <svg className="w-4 h-4 text-slate-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
-                <span>ภาษาไทยพูดได้เป็นธรรมชาติ ครบทุกสูตร</span>
+              <li className="flex items-start gap-3">
+                <div className="mt-0.5 shrink-0 w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center">
+                  <svg className="w-3 h-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                </div>
+                <span><strong>Targeted Script:</strong> ระบุเพศ ช่วงวัย ของกลุ่มเป้าหมายได้ชัดเจน</span>
               </li>
-              <li className="flex items-start gap-2">
-                <svg className="w-4 h-4 text-slate-300 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                <span className="text-slate-400">วิเคราะห์จิตวิทยาเชิงลึก <span className="whitespace-nowrap">(Deep Psychology)</span></span>
-              </li>
-              <li className="flex items-start gap-2">
-                <svg className="w-4 h-4 text-slate-300 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                <span className="text-slate-400">ถอดความเชื่อผิดๆ ของลูกค้า <span className="whitespace-nowrap">(Belief-Shifting)</span></span>
+              <li className="flex items-start gap-3">
+                <div className="mt-0.5 shrink-0 w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center">
+                  <svg className="w-3 h-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                </div>
+                <span><strong>5 Classic Frameworks:</strong> ครบทุกสูตรขยี้ปัญหา เล่าเรื่อง และ FOMO</span>
               </li>
             </ul>
+            
+            <div className="mt-6 pt-5 border-t border-blue-200/60">
+              <div className="bg-white rounded-xl p-3 flex justify-center items-center gap-2 border border-blue-100 shadow-sm">
+                <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <span className="font-bold text-slate-700">ตกคลิปละ 4.1 บาท</span>
+              </div>
+            </div>
           </div>
 
           {/* Pro Deep Brain™ */}
-          <div className="bg-slate-900 border-2 border-amber-400/30 rounded-2xl p-6 relative overflow-hidden">
-            <div className="absolute top-0 right-0 left-0 h-0.5 bg-gradient-to-r from-amber-400 to-purple-500"></div>
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-10 h-10 bg-gradient-to-br from-amber-400/20 to-purple-500/20 rounded-xl flex items-center justify-center border border-amber-400/20">
-                {/* CpuChip icon (Heroicons) */}
-                <svg className="w-5 h-5 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="bg-slate-900 border-2 border-amber-400/50 rounded-3xl p-6 relative flex flex-col h-full shadow-xl hover:shadow-2xl transition-shadow overflow-hidden">
+            <div className="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-amber-400 via-orange-500 to-purple-600"></div>
+            
+            <div className="absolute top-0 right-6 transform -translate-y-px">
+              <span className="bg-gradient-to-r from-amber-400 to-orange-500 text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider py-1 px-3 rounded-b-lg shadow-sm">
+                ยอดนิยม
+              </span>
+            </div>
+
+            <div className="flex items-center gap-4 mb-6 mt-2">
+              <div className="w-12 h-12 bg-gradient-to-br from-amber-400/20 to-purple-500/20 rounded-2xl flex items-center justify-center shrink-0 border border-amber-400/30">
+                {/* CpuChip icon */}
+                <svg className="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3H7a2 2 0 00-2 2v2M9 3h6M9 3v2m6-2h2a2 2 0 012 2v2m0 0V7m0 0h2M3 9v6m0 0v2a2 2 0 002 2h2m-4-4h2m14-2v6m0-6h2m-2 6v2a2 2 0 01-2 2h-2m0 0H9m6 0v-2M9 21H7a2 2 0 01-2-2v-2m0 0H3m4 0h2M9 9h6v6H9V9z" />
                 </svg>
               </div>
               <div>
-                <h3 className="font-bold text-white text-base">Pro Deep Brain™</h3>
-                <p className="text-xs text-amber-400">Pro เท่านั้น · โหมด Belief-Shifting</p>
+                <h3 className="font-extrabold text-white text-lg sm:text-xl">Pro Deep Brain™</h3>
+                <p className="text-sm font-semibold text-amber-400 mt-0.5">฿590 <span className="text-slate-400 font-normal">/ 150 คลิป</span></p>
               </div>
             </div>
-            <ul className="space-y-3 text-sm">
-              <li className="flex items-start gap-2 text-slate-200">
-                <svg className="w-4 h-4 text-amber-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
-                <span>เขียนสคริปต์เสร็จใน <strong className="text-white">10-20 วินาที</strong> <span className="whitespace-nowrap">(คิดลึกกว่า)</span></span>
+            
+            <ul className="space-y-4 text-sm text-slate-300 flex-1">
+              <li className="flex items-start gap-3">
+                <div className="mt-0.5 shrink-0 w-5 h-5 rounded-full bg-amber-400/20 flex items-center justify-center">
+                  <svg className="w-3 h-3 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+                </div>
+                <span><strong className="text-white">Neuromarketing Brain:</strong> วิเคราะห์จิตวิทยาพฤติกรรมลูกค้าเชิงลึกก่อนเขียน</span>
               </li>
-              <li className="flex items-start gap-2 text-slate-200">
-                <svg className="w-4 h-4 text-amber-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
-                <span>ภาษาไทยพูดได้เป็นธรรมชาติ + <span className="whitespace-nowrap">สำนวนจัดจ้าน</span></span>
+              <li className="flex items-start gap-3">
+                <div className="mt-0.5 shrink-0 w-5 h-5 rounded-full bg-amber-400/20 flex items-center justify-center">
+                  <svg className="w-3 h-3 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+                </div>
+                <span><strong className="text-white">Multi-Version:</strong> สร้างทีเดียว 3 มุมมอง (รีวิว / แฉตลก / เร่งด่วน)</span>
               </li>
-              <li className="flex items-start gap-2 text-white">
-                <svg className="w-4 h-4 text-amber-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
-                <span><strong>วิเคราะห์ Deep Psychology</strong> <span className="whitespace-nowrap">ก่อนเขียนทุกครั้ง</span></span>
-              </li>
-              <li className="flex items-start gap-2 text-white">
-                <svg className="w-4 h-4 text-amber-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
-                <span><strong>ถอดความเชื่อผิดๆ</strong> ของลูกค้า<span className="whitespace-nowrap">แล้วหักล้างอย่างมีชั้นเชิง</span></span>
+              <li className="flex items-start gap-3">
+                <div className="mt-0.5 shrink-0 w-5 h-5 rounded-full bg-amber-400/20 flex items-center justify-center">
+                  <svg className="w-3 h-3 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                </div>
+                <span><strong className="text-white">Belief-Shifting:</strong> หักล้างความเชื่อผิดๆ ของลูกค้าที่เคยไม่กล้าซื้อ</span>
               </li>
             </ul>
+            
+            <div className="mt-6 pt-5 border-t border-slate-700/80">
+              <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 rounded-xl p-3 flex justify-center items-center gap-2 border border-amber-500/20 shadow-inner">
+                <svg className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <span className="font-bold text-amber-400">ตกคลิปละ 3.9 บาท <span className="font-medium text-amber-200/80">(คุ้มค่าที่สุด)</span></span>
+              </div>
+            </div>
           </div>
         </div>
 
