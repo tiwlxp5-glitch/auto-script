@@ -305,6 +305,11 @@ c:\Auto script\
    - Upgraded UI to a mobile-friendly 2-column Card grid using Heroicons, highlighting Cost-per-Script (4.1 THB vs 3.9 THB) prominently at the bottom of each card.
    - Used Tailwind CSS for premium styling (`bg-blue-50/50`, `border-amber-400/50`, gradients) to clearly differentiate the value proposition of Plus (High-Speed Volume) and Pro (Deep Strategy).
 
+36. **True Real-time Progress Bar UX Perfection**:
+   - Adjusted the dynamic linear smoothing target from 90% to 99% (and 99.9% for slow-tick) to give a fuller loading experience.
+   - Added a 500ms success delay at 100% completion in `CreateScript.jsx` to ensure users visually register the final state.
+   - Upgraded Step 4 icon to turn into an emerald checkmark upon hitting 100%.
+
 ### Infrastructure Bottlenecks & Upgrade Path (For Future Scaling)
 *If the user asks for help upgrading the system tiers because of high traffic, guide them through these bottlenecks in order:*
 1. **Resend (Email) - The First Bottleneck:** Free tier is limited to 100 emails/day. If daily new signups exceed this, users will fail to receive verification emails.
