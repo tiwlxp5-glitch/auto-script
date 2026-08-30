@@ -310,6 +310,11 @@ c:\Auto script\
    - Added a 500ms success delay at 100% completion in `CreateScript.jsx` to ensure users visually register the final state.
    - Upgraded Step 4 icon to turn into an emerald checkmark upon hitting 100%.
 
+37. **True Real-time Progress Bar Polish**:
+   - **Asymptotic Smoothing**: Upgraded the `create.jsx` generation progress engine from simple linear math to an asymptotic curve (`currentProgress += (99.9 - currentProgress) * 0.015`) during the 85-99% phase.
+   - Fixed the issue where the progress bar would freeze at exactly 99% for 10-20 seconds on complex prompts by ensuring the bar smoothly decelerates and continuously moves until the backend responds.
+   - Refined the expected completion time parameters (12s, 25s, 40s) for a much more accurate real-world reflection of `gemini-3.6-flash` and `gemini-3.1-pro-preview` latency.
+
 ### Infrastructure Bottlenecks & Upgrade Path (For Future Scaling)
 *If the user asks for help upgrading the system tiers because of high traffic, guide them through these bottlenecks in order:*
 1. **Resend (Email) - The First Bottleneck:** Free tier is limited to 100 emails/day. If daily new signups exceed this, users will fail to receive verification emails.
