@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto Script - System Architecture (Mobile Edition)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
+    body {
+      font-family: 'Prompt', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen p-4 flex flex-col items-center justify-start antialiased selection:bg-indigo-500 selection:text-white">
+
+  <!-- Mobile Card Container (iPhone / Android Form Factor) -->
+  <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-2xl relative overflow-hidden my-4">
+    
+    <!-- Top Glow Effect -->
+    <div class="absolute -top-24 -left-24 w-60 h-60 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-24 -right-24 w-60 h-60 bg-emerald-600/20 rounded-full blur-3xl pointer-events-none"></div>
+
+    <!-- Header -->
+    <div class="text-center mb-6 relative">
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-medium mb-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        Production Architecture 2026
+      </div>
+      <h1 class="text-2xl font-bold bg-gradient-to-r from-white via-indigo-200 to-indigo-400 bg-clip-text text-transparent">
+        Auto Script System Flow
+      </h1>
+      <p class="text-xs text-slate-400 mt-1">
+        แผนผังสถาปัตยกรรมแนวตั้ง (Serverless & Dual-AI)
+      </p>
+    </div>
+
+    <!-- Timeline / Vertical Flow -->
+    <div class="space-y-4 relative">
+      
+      <!-- Connecting Line -->
+      <div class="absolute left-6 top-8 bottom-8 w-0.5 bg-gradient-to-b from-blue-500 via-indigo-500 via-emerald-500 to-amber-500 opacity-40"></div>
+
+      <!-- Layer 1: Client -->
+      <div class="relative flex items-start gap-4">
+        <div class="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/40 text-blue-400 flex items-center justify-center shrink-0 shadow-lg shadow-blue-500/10 z-10 bg-slate-900">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <div class="flex-1 bg-slate-800/80 border border-slate-700/60 rounded-2xl p-3.5 shadow-sm">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-xs font-bold text-blue-400 uppercase tracking-wider">1. Client Layer</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-blue-500/10 text-blue-300 font-mono">React 19</span>
+          </div>
+          <h3 class="text-sm font-semibold text-white">ผู้ใช้งาน (Creator / Seller)</h3>
+          <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+            เปิดเว็บผ่านมือถือ/คอมฯ รันบน <strong>React Router v7</strong> ทำงานแบบ SSG หน้าเว็บโหลดไวใน 50ms มีระบบ Auto-Retry และ AbortController 60s กันค้าง
+          </p>
+        </div>
+      </div>
+
+      <!-- Down Arrow Indicator -->
+      <div class="flex justify-center -my-2 pl-3">
+        <span class="text-xs text-slate-500">▼ ยิง Request</span>
+      </div>
+
+      <!-- Layer 2: Edge Network -->
+      <div class="relative flex items-start gap-4">
+        <div class="w-12 h-12 rounded-2xl bg-orange-500/10 border border-orange-500/40 text-orange-400 flex items-center justify-center shrink-0 shadow-lg shadow-orange-500/10 z-10 bg-slate-900">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 00-9.78 2.096A4.001 4.001 0 003 15z" />
+          </svg>
+        </div>
+        <div class="flex-1 bg-slate-800/80 border border-slate-700/60 rounded-2xl p-3.5 shadow-sm">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-xs font-bold text-orange-400 uppercase tracking-wider">2. Edge Serverless</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-orange-500/10 text-orange-300 font-mono">Cloudflare</span>
+          </div>
+          <h3 class="text-sm font-semibold text-white">Pages Functions (V8 Engine)</h3>
+          <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+            กระจายตัว 300+ เมืองทั่วโลก <strong>Zero Cold Start</strong> มีระบบกรองคำต้องห้าม (Moderation Engine) ตัดทิ้งก่อนส่งหา AI เพื่อประหยัดเงิน
+          </p>
+        </div>
+      </div>
+
+      <!-- Down Arrow Indicator -->
+      <div class="flex justify-center -my-2 pl-3">
+        <span class="text-xs text-slate-500">▼ ตรวจสิทธิ์ & หักเหรียญ</span>
+      </div>
+
+      <!-- Layer 3: Database & Auth -->
+      <div class="relative flex items-start gap-4">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/40 text-emerald-400 flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/10 z-10 bg-slate-900">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+          </svg>
+        </div>
+        <div class="flex-1 bg-slate-800/80 border border-slate-700/60 rounded-2xl p-3.5 shadow-sm">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">3. Database & Auth</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 font-mono">Supabase</span>
+          </div>
+          <h3 class="text-sm font-semibold text-white">PostgreSQL 15 + RLS</h3>
+          <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+            • <strong>Atomic RPC</strong>: ล็อคและตัดเหรียญระดับแถวก่อน กัน Race Condition<br>
+            • <strong>RLS</strong>: กฎความปลอดภัยระดับ Engine ป้องกันข้อมูลรั่วไหล<br>
+            • <strong>pg_cron</strong>: ลบสคริปต์เก่าอัตโนมัติ (Free 3 วัน / Plus 30 วัน)
+          </p>
+        </div>
+      </div>
+
+      <!-- Down Arrow Indicator -->
+      <div class="flex justify-center -my-2 pl-3">
+        <span class="text-xs text-slate-500">▼ ส่งวิเคราะห์ & ปรุงสคริปต์</span>
+      </div>
+
+      <!-- Layer 4: AI Brain -->
+      <div class="relative flex items-start gap-4">
+        <div class="w-12 h-12 rounded-2xl bg-purple-500/10 border border-purple-500/40 text-purple-400 flex items-center justify-center shrink-0 shadow-lg shadow-purple-500/10 z-10 bg-slate-900">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <div class="flex-1 bg-slate-800/80 border border-slate-700/60 rounded-2xl p-3.5 shadow-sm">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-xs font-bold text-purple-400 uppercase tracking-wider">4. AI Intelligence</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-purple-500/10 text-purple-300 font-mono">Dual-Gemini</span>
+          </div>
+          <h3 class="text-sm font-semibold text-white">Google Gemini Engine</h3>
+          <div class="mt-1 space-y-1.5 text-xs text-slate-300">
+            <div class="p-1.5 rounded bg-purple-950/50 border border-purple-800/40">
+              <span class="font-bold text-purple-300">⚡ 3.6 Flash:</span> เร็ว & ประหยัด (PAS, HSO, FOMO, Multi-Version)
+            </div>
+            <div class="p-1.5 rounded bg-indigo-950/50 border border-indigo-800/40">
+              <span class="font-bold text-indigo-300">🔬 3.1 Pro:</span> เจาะลึก CoT วิเคราะห์จิตวิทยา ล้มล้างความเชื่อเดิม (Pro Only)
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Down Arrow Indicator -->
+      <div class="flex justify-center -my-2 pl-3">
+        <span class="text-xs text-slate-500">▼ จัดส่ง & คืนเงินหากล้มเหลว</span>
+      </div>
+
+      <!-- Layer 5: Resilience & Integrations -->
+      <div class="relative flex items-start gap-4">
+        <div class="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/40 text-amber-400 flex items-center justify-center shrink-0 shadow-lg shadow-amber-500/10 z-10 bg-slate-900">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+        </div>
+        <div class="flex-1 bg-slate-800/80 border border-slate-700/60 rounded-2xl p-3.5 shadow-sm">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">5. Integrity & Payment</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 font-mono">Stripe & FailSafe</span>
+          </div>
+          <h3 class="text-sm font-semibold text-white">Symmetric Refund & Stripe</h3>
+          <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+            • <strong>Symmetric Refund</strong>: ถ้า AI เออเร่อหรือเน็ตหลุด คืนเหรียญให้ทันที 100%<br>
+            • <strong>Stripe Webhooks</strong>: เติมเครดิตอัตโนมัติ มีระบบกันจ่ายเงินเบิ้ล<br>
+            • <strong>Discord Webhook</strong>: ยิงแจ้งเตือนฟีดแบ็ก & บั๊กลงห้องแอดมินสดๆ
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom Badges -->
+    <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-500">
+      <span>Auto Script Production</span>
+      <span class="flex items-center gap-1 text-emerald-400">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+        100% Serverless
+      </span>
+    </div>
+
+  </div>
+
+</body>
+</html>

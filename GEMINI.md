@@ -320,6 +320,16 @@ c:\Auto script\
    - Generated 4 detailed Markdown Artifacts (`architecture_analysis_part1.md` to `part4.md`) documenting the "Current Design", "How It Works", "Why", "Failure Case", "Security Consideration", and "Status" (e.g., [DESIGNED], [PARTIALLY DESIGNED], [NOT DESIGNED]).
    - **Critical Finding**: Identified a significant Technical Debt risk (Cloudflare 50s execution limit on free tier) where an AI timeout could cause a hard crash, preventing the symmetric refund logic from executing and resulting in lost user credits. Recommended upgrading to Paid tier or implementing a Queue system for production.
 
+39. **Expert Architecture Audit (Post-Launch Assessment)**:
+   - An independent architecture review (by a human expert) validated the core stack (`React -> Cloudflare -> Supabase -> Gemini`) as highly solid (8/10) and explicitly recommended *against* rewriting it.
+   - **5 Critical Fortifications Needed**: The expert identified 5 mandatory upgrades before handling real transactions at scale:
+     1. **Credit Consistency**: Upfront deduction + `catch` refund fails if the serverless function crashes (e.g., OOM). Requires a transactional Credit Ledger.
+     2. **Broad Service Role Usage**: `SUPABASE_SERVICE_ROLE_KEY` bypasses RLS. The backend API is the primary security wall and must strictly validate `user_id` authorization manually.
+     3. **Webhook Recovery Risk**: Using `stripe_event_id` purely as a unique constraint blocks processing if an event fails midway and Stripe retries. Requires a state-aware Idempotency table (pending/success/failed).
+     4. **Weak Observability**: Missing UUID Request IDs and centralized logging makes tracking missing credits and debugging impossible.
+     5. **AI Output Validation**: Blindly trusting Gemini's formatting risks UI breakage. Requires Output Schema Validation (e.g., Zod or native Structured Outputs).
+   - **Cloudflare Execution Limits (Clarification)**: Corrected a misconception: Cloudflare Pages Free limits CPU time to 10ms, *not* wall-clock time. Awaiting `fetch()` to Gemini consumes almost zero CPU time. Long waits are bound by edge idle timeouts (~100s) or client AbortControllers (60s), not function CPU limits.
+
 ### Infrastructure Bottlenecks & Upgrade Path (For Future Scaling)
 *If the user asks for help upgrading the system tiers because of high traffic, guide them through these bottlenecks in order:*
 1. **Resend (Email) - The First Bottleneck:** Free tier is limited to 100 emails/day. If daily new signups exceed this, users will fail to receive verification emails.

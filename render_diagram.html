@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>Auto Script Architecture 9:16</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      width: 1080px;
+      height: 1920px;
+      background-color: #0b0f17;
+      color: #e2e8f0;
+      font-family: 'Prompt', -apple-system, sans-serif;
+      overflow: hidden;
+      position: relative;
+      padding: 45px 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    /* Subtle Grid Background */
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    /* Ambient Glows */
+    .glow-top {
+      position: absolute;
+      top: -100px;
+      right: 100px;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .glow-mid {
+      position: absolute;
+      top: 900px;
+      left: -100px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .glow-bot {
+      position: absolute;
+      bottom: -100px;
+      right: -50px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Header */
+    .header {
+      position: relative;
+      text-align: center;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #1e293b;
+    }
+    .badge-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      padding: 6px 18px;
+      border-radius: 9999px;
+      font-size: 17px;
+      font-weight: 600;
+      color: #818cf8;
+      margin-bottom: 12px;
+    }
+    .badge-dot {
+      width: 10px;
+      height: 10px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #10b981;
+    }
+    .title {
+      font-size: 38px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #ffffff 30%, #c7d2fe 70%, #818cf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+    }
+    .subtitle {
+      font-size: 20px;
+      color: #94a3b8;
+      font-weight: 400;
+    }
+
+    /* Flow Container */
+    .flow-container {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      margin-top: 10px;
+      flex: 1;
+      justify-content: space-evenly;
+    }
+
+    /* Main Card / Subgraph */
+    .card {
+      background: #111827;
+      border: 2px solid #374151;
+      border-radius: 20px;
+      padding: 20px 24px;
+      position: relative;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .card-title {
+      font-size: 22px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 8px;
+    }
+
+    /* Themes for Cards */
+    .card-client { border-color: #3b82f6; background: #0f172a; }
+    .card-client .card-title { color: #60a5fa; }
+    .card-client .tag { background: rgba(59, 130, 246, 0.2); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.4); }
+
+    .card-edge { border-color: #f97316; background: #181311; }
+    .card-edge .card-title { color: #fb923c; }
+    .card-edge .tag { background: rgba(249, 115, 22, 0.2); color: #fdba74; border: 1px solid rgba(249, 115, 22, 0.4); }
+
+    .card-db { border-color: #10b981; background: #0b1c16; }
+    .card-db .card-title { color: #34d399; }
+    .card-db .tag { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.4); }
+
+    .card-ai { border-color: #a855f7; background: #170e24; }
+    .card-ai .card-title { color: #c084fc; }
+    .card-ai .tag { background: rgba(168, 85, 247, 0.2); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.4); }
+
+    .card-delivery { border-color: #06b6d4; background: #081d24; }
+    .card-delivery .card-title { color: #22d3ee; }
+    .card-delivery .tag { background: rgba(6, 182, 212, 0.2); color: #67e8f9; border: 1px solid rgba(6, 182, 212, 0.4); }
+
+    /* Nested Inner Blocks */
+    .inner-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .inner-box {
+      background: rgba(30, 41, 59, 0.75);
+      border: 1.5px solid #334155;
+      border-radius: 14px;
+      padding: 14px 18px;
+    }
+    .inner-title {
+      font-size: 19px;
+      font-weight: 600;
+      color: #f1f5f9;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .inner-list {
+      list-style: none;
+      font-size: 16px;
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+    .inner-list li {
+      position: relative;
+      padding-left: 18px;
+      margin-bottom: 4px;
+    }
+    .inner-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #818cf8;
+      font-weight: bold;
+    }
+
+    /* Directional Connector Arrow */
+    .flow-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: -6px 0;
+      position: relative;
+      z-index: 5;
+    }
+    .arrow-line {
+      height: 2px;
+      background: #475569;
+      flex: 1;
+    }
+    .arrow-badge {
+      background: #1e293b;
+      border: 1.5px solid #64748b;
+      color: #f8fafc;
+      padding: 4px 16px;
+      border-radius: 9999px;
+      font-size: 15px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    }
+    .arrow-badge span.icon {
+      color: #38bdf8;
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 2px solid #1e293b;
+      padding-top: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #64748b;
+      font-size: 16px;
+    }
+    .footer-left {
+      display: flex;
+      gap: 20px;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+    .footer-right {
+      font-family: 'JetBrains Mono', monospace;
+      color: #10b981;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="glow-top"></div>
+  <div class="glow-mid"></div>
+  <div class="glow-bot"></div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="badge-bar">
+      <span class="badge-dot"></span>
+      100% SERVERLESS ARCHITECTURE
+    </div>
+    <h1 class="title">AUTO SCRIPT — SYSTEM FLOW</h1>
+    <p class="subtitle">สถาปัตยกรรมระบบสำหรับสร้างวิดีโอสคริปต์สั้นด้วย AI ระดับโปรดักชัน</p>
+  </div>
+
+  <!-- Flow Sequence Container -->
+  <div class="flow-container">
+
+    <!-- 1. Client Layer -->
+    <div class="card card-client">
+      <div class="card-header">
+        <div class="card-title">
+          <span>📱 1. Client Layer (หน้าร้าน)</span>
+        </div>
+        <span class="tag">REACT 19 + VITE</span>
+      </div>
+      <div class="inner-grid">
+        <div class="inner-box">
+          <div class="inner-title">👤 ผู้ใช้งาน (User / Creator)</div>
+          <ul class="inner-list">
+            <li>เปิดใช้งานผ่าน Mobile / Tablet / PC</li>
+            <li>กรอกรายละเอียดสินค้า & เลือกสูตรจิตวิทยา</li>
+            <li>สั่งสร้างสคริปต์เดี่ยว หรือ Multi-Version 3 สไตล์</li>
+          </ul>
+        </div>
+        <div class="inner-box">
+          <div class="inner-title">⚡ React Router v7 (SSG)</div>
+          <ul class="inner-list">
+            <li><strong>SSG Prerender:</strong> โหลดหน้าแรกไว < 50ms</li>
+            <li><strong>lazyWithRetry:</strong> ดัก ChunkLoadError กันหน้าขาว</li>
+            <li><strong>AbortController:</strong> ดัก Timeout 60s ป้องกันค้าง</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arrow 1 -> 2 -->
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-badge">
+        <span class="icon">▼</span> 1. ส่งคำขอสร้างสคริปต์ (HTTPS POST + Bearer Token)
+      </div>
+      <div class="arrow-line"></div>
+    </div>
+
+    <!-- 2. Cloudflare Edge -->
+    <div class="card card-edge">
+      <div class="card-header">
+        <div class="card-title">
+          <span>⚡ 2. Cloudflare Edge Serverless (ด่านหน้าคัดกรอง)</span>
+        </div>
+        <span class="tag">V8 ISOLATES</span>
+      </div>
+      <div class="inner-box">
+        <div class="inner-title">🛡️ Cloudflare Pages Functions (/functions/api/generate.js)</div>
+        <ul class="inner-list">
+          <li><strong>Zero Cold Start:</strong> กระจายตัวบน Data Center 300+ เมืองทั่วโลก ลาเทนซีต่ำเป็นพิเศษ</li>
+          <li><strong>Content Moderation:</strong> ล้าง Zero-Width Chars และดักคำต้องห้ามก่อนส่ง AI (ประหยัด Token)</li>
+          <li><strong>Idempotent Webhooks:</strong> ระบบป้องกันการเติมเครดิตซ้ำเวลารับเงินจาก Stripe</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Arrow 2 -> 3 & 4 -->
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-badge">
+        <span class="icon">▼</span> 2. ตรวจสอบสิทธิ์ & ตัดเครดิตแบบ Atomic ก่อนส่งเข้า AI
+      </div>
+      <div class="arrow-line"></div>
+    </div>
+
+    <!-- 3. Supabase Database & Auth -->
+    <div class="card card-db">
+      <div class="card-header">
+        <div class="card-title">
+          <span>🗄️ 3. Database & Auth (ระบบความปลอดภัยข้อมูล)</span>
+        </div>
+        <span class="tag">SUPABASE / POSTGRES 15</span>
+      </div>
+      <div class="inner-grid">
+        <div class="inner-box">
+          <div class="inner-title">⚙️ Atomic RPC (increment_credits)</div>
+          <ul class="inner-list">
+            <li>ล็อคแถวตัดเหรียญระดับ Database ทันที</li>
+            <li>ป้องกันปัญหา <strong>Race Condition</strong> แฮกกดเบิ้ล</li>
+            <li>เครดิตไม่พอ ตีกลับ <code>402 Payment Required</code></li>
+          </ul>
+        </div>
+        <div class="inner-box">
+          <div class="inner-title">🔐 RLS & pg_cron Automation</div>
+          <ul class="inner-list">
+            <li><strong>Row Level Security:</strong> ป้องกันข้อมูลข้าม User</li>
+            <li><strong>Supabase Auth:</strong> ยืนยันอีเมลผ่าน Resend SMTP</li>
+            <li><strong>pg_cron:</strong> ลบสคริปต์เก่าอัตโนมัติ 3/30 วัน</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arrow 3 -> 4 -->
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-badge">
+        <span class="icon">▼</span> 3. เมื่อตัดเหรียญผ่าน → ส่งวิเคราะห์และปรุงเนื้อหาสคริปต์
+      </div>
+      <div class="arrow-line"></div>
+    </div>
+
+    <!-- 4. Google Gemini AI -->
+    <div class="card card-ai">
+      <div class="card-header">
+        <div class="card-title">
+          <span>🧠 4. AI Brain (Google Gemini Dual-Engine)</span>
+        </div>
+        <span class="tag">GEMINI AI</span>
+      </div>
+      <div class="inner-grid">
+        <div class="inner-box">
+          <div class="inner-title">⚡ Gemini 3.6 Flash (โหมดมาตรฐาน)</div>
+          <ul class="inner-list">
+            <li>ใช้กับสูตร <strong>PAS, HSO, FOMO, Multi-Version</strong></li>
+            <li>สวมบทบาท Micro-Persona (เช่น เพื่อนสาว, ผู้เชี่ยวชาญ)</li>
+            <li>สร้างบทพูดธรรมชาติ มีจังหวะหายใจ (...) ไวในไม่กี่วินาที</li>
+          </ul>
+        </div>
+        <div class="inner-box">
+          <div class="inner-title">🔬 Gemini 3.1 Pro Preview (โหมดเจาะลึก)</div>
+          <ul class="inner-list">
+            <li>โหมด <strong>Belief-Shifting (Epiphany Bridge)</strong></li>
+            <li>ใช้ <strong>Chain of Thought (CoT)</strong> วิเคราะห์จิตวิทยา</li>
+            <li>เจาะลึก <code>falseBelief</code> และกลไกใหม่ก่อนเริ่มแต่งบท</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arrow 4 -> 5 -->
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-badge">
+        <span class="icon">▼</span> 4. ปรุงสคริปต์เสร็จ → บันทึกประวัติ & คืนเงินหากเกิดข้อผิดพลาด
+      </div>
+      <div class="arrow-line"></div>
+    </div>
+
+    <!-- 5. Integrity & Delivery -->
+    <div class="card card-delivery">
+      <div class="card-header">
+        <div class="card-title">
+          <span>💾 5. Data Delivery & Failsafe (การคืนเหรียญ & จัดส่ง)</span>
+        </div>
+        <span class="tag">RESILIENCE GUARANTEED</span>
+      </div>
+      <div class="inner-grid">
+        <div class="inner-box">
+          <div class="inner-title">🛡️ Symmetric Refund (กันเหรียญหาย)</div>
+          <ul class="inner-list">
+            <li>หาก Gemini ขัดข้อง หรือ Database ล้มเหลว</li>
+            <li>ระบบจะคืนเหรียญเข้ากระเป๋าทันทีในบล็อก Catch</li>
+            <li>ป้องกันปัญหาผู้ใช้โดนกินเหรียญฟรี 100%</li>
+          </ul>
+        </div>
+        <div class="inner-box">
+          <div class="inner-title">💳 Ecosystem เชื่อมต่อรอบด้าน</div>
+          <ul class="inner-list">
+            <li><strong>Stripe Checkout:</strong> จ่ายเงินอัปเกรด Plus / Pro</li>
+            <li><strong>Discord Webhook:</strong> ยิงฟีดแบ็ก & บั๊กเข้าห้อง Admin</li>
+            <li><strong>Weekly Summary:</strong> AI สรุปรายงานรายสัปดาห์</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-left">
+      <span>🌐 autoscript-ai.com</span>
+      <span>•</span>
+      <span>⚡ Cloudflare + Supabase + Gemini</span>
+    </div>
+    <div class="footer-right">
+      STATUS: ACTIVE & SECURED
+    </div>
+  </div>
+
+</body>
+</html>

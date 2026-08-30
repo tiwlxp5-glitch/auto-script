@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>Auto Script Architecture - Professional Edition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --card-bg: #111111;
+      --border: #27272a;
+      --text-main: #f4f4f5;
+      --text-sub: #a1a1aa;
+      --accent: #e4e4e7; /* Subtle white/gray accent */
+      --line: #3f3f46;
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      width: 1080px;
+      height: 1920px;
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Prompt', 'Inter', sans-serif;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* Subtle dot grid for technical feel */
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, #27272a 1px, transparent 1px);
+      background-size: 32px 32px;
+      opacity: 0.5;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      width: 1440px;
+      height: 2560px; /* Gives plenty of height for 5 layers */
+      padding: 80px 100px;
+      transform: scale(0.75);
+      transform-origin: top left;
+    }
+
+    /* Header section */
+    .header {
+      margin-bottom: 50px;
+      border-left: 6px solid var(--text-main);
+      padding-left: 28px;
+    }
+    .header-badge {
+      font-family: 'Inter', sans-serif;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #71717a;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .header-badge::before {
+      content: "";
+      display: block;
+      width: 10px;
+      height: 10px;
+      background: #10b981;
+      border-radius: 50%;
+    }
+    .header-title {
+      font-size: 64px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+      color: #ffffff;
+    }
+    .header-subtitle {
+      font-size: 32px;
+      color: var(--text-sub);
+      font-weight: 400;
+    }
+
+    /* Flex layout for blocks */
+    .flow-wrapper {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: space-between;
+    }
+
+    /* Architecture Block */
+    .block {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px 48px;
+      position: relative;
+      box-shadow: 0 10px 40px -10px rgba(0,0,0,0.8);
+    }
+    
+    .block-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .block-step {
+      font-family: 'Inter', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #71717a;
+      letter-spacing: 1.5px;
+      margin-bottom: 6px;
+    }
+
+    .block-title {
+      font-size: 38px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .block-tech {
+      font-family: 'Inter', sans-serif;
+      font-size: 20px;
+      font-weight: 500;
+      color: #a1a1aa;
+      background: #18181b;
+      padding: 8px 18px;
+      border-radius: 8px;
+      border: 1px solid #27272a;
+    }
+
+    /* Content inside block */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 36px;
+    }
+    .content-single {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+    
+    .item-group {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .item-title {
+      font-size: 28px;
+      font-weight: 600;
+      color: #e4e4e7;
+      margin-bottom: 4px;
+    }
+    .item-list {
+      list-style: none;
+    }
+    .item-list li {
+      position: relative;
+      padding-left: 28px;
+      margin-bottom: 12px;
+      font-size: 24px;
+      color: var(--text-sub);
+      line-height: 1.5;
+    }
+    .item-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 12px;
+      width: 8px;
+      height: 8px;
+      background: #52525b;
+      border-radius: 50%;
+    }
+    .item-list li strong {
+      color: #d4d4d8;
+      font-weight: 500;
+    }
+
+    /* Connector */
+    .connector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: -2px 0;
+      position: relative;
+      z-index: 2;
+    }
+    .connector-line {
+      width: 2px;
+      height: 48px;
+      background: var(--line);
+    }
+    .connector-label {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: #d4d4d8;
+      font-size: 22px;
+      font-weight: 500;
+      padding: 10px 28px;
+      border-radius: 40px;
+      transform: translateY(-50%);
+      margin-bottom: -48px; /* Offset to keep line continuity */
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .connector-label::before {
+      content: "↓";
+      font-family: 'Inter', sans-serif;
+      color: #71717a;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Inter', sans-serif;
+      font-size: 22px;
+      color: #52525b;
+    }
+    .footer-left {
+      display: flex;
+      gap: 24px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-badge">Production Architecture</div>
+      <h1 class="header-title">Auto Script System Flow</h1>
+      <p class="header-subtitle">แผนผังสถาปัตยกรรมระบบ Serverless & Dual-AI</p>
+    </div>
+
+    <div class="flow-wrapper">
+      
+      <!-- 1. Frontend -->
+      <div class="block">
+        <div class="block-header">
+          <div>
+            <div class="block-step">01</div>
+            <div class="block-title">Client Layer (Frontend)</div>
+          </div>
+          <div class="block-tech">React 19 + React Router v7</div>
+        </div>
+        <div class="content-single">
+          <div class="item-group">
+            <ul class="item-list">
+              <li><strong>User Interaction:</strong> ผู้ใช้งานเลือกสูตรจิตวิทยาและยิงคำขอสร้างสคริปต์</li>
+              <li><strong>SSG Prerendering:</strong> โหลดหน้าเว็บรวดเร็วภายในเวลา &lt; 50ms</li>
+              <li><strong>Resilience:</strong> มีระบบ lazyWithRetry ป้องกันหน้าขาว และ AbortController ดักค้าง 60s</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="connector">
+        <div class="connector-line"></div>
+        <div class="connector-label">ส่งคำขอสร้างสคริปต์ (HTTPS POST)</div>
+        <div class="connector-line"></div>
+      </div>
+
+      <!-- 2. API Edge -->
+      <div class="block">
+        <div class="block-header">
+          <div>
+            <div class="block-step">02</div>
+            <div class="block-title">Edge Serverless (API)</div>
+          </div>
+          <div class="block-tech">Cloudflare Pages Functions</div>
+        </div>
+        <div class="content-single">
+          <div class="item-group">
+            <ul class="item-list">
+              <li><strong>Zero Cold Start:</strong> API ทำงานบน V8 Isolates กระจายตัวทั่วโลก ลาเทนซีต่ำ</li>
+              <li><strong>Content Moderation:</strong> ล้าง Zero-Width Chars และกรองคำต้องห้ามก่อนส่งเข้า AI เพื่อประหยัด Token</li>
+              <li><strong>Idempotent Webhooks:</strong> ป้องกันการอัปเดตสถานะและเติมเครดิตซ้ำซ้อนจาก Stripe</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="connector">
+        <div class="connector-line"></div>
+        <div class="connector-label">ตรวจสอบสิทธิ์ & หักเครดิตแบบ Atomic</div>
+        <div class="connector-line"></div>
+      </div>
+
+      <!-- 3. DB & Auth -->
+      <div class="block">
+        <div class="block-header">
+          <div>
+            <div class="block-step">03</div>
+            <div class="block-title">Security & Database</div>
+          </div>
+          <div class="block-tech">Supabase (PostgreSQL 15)</div>
+        </div>
+        <div class="content-grid">
+          <div class="item-group">
+            <div class="item-title">Atomic RPC</div>
+            <ul class="item-list">
+              <li>ฟังก์ชัน <code>increment_credits</code> ล็อคแถวระดับฐานข้อมูลทันที</li>
+              <li>ป้องกันปัญหา Race Condition (แฮกกดเบิ้ล)</li>
+            </ul>
+          </div>
+          <div class="item-group">
+            <div class="item-title">Data Protection</div>
+            <ul class="item-list">
+              <li><strong>Row Level Security:</strong> คุมสิทธิ์แยกข้อมูลผู้ใช้ 100%</li>
+              <li><strong>pg_cron:</strong> ลบสคริปต์เก่าอัตโนมัติ (3 หรือ 30 วัน)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="connector">
+        <div class="connector-line"></div>
+        <div class="connector-label">เครดิตเพียงพอ ➔ ส่งวิเคราะห์เนื้อหา</div>
+        <div class="connector-line"></div>
+      </div>
+
+      <!-- 4. AI -->
+      <div class="block">
+        <div class="block-header">
+          <div>
+            <div class="block-step">04</div>
+            <div class="block-title">AI Processing Engine</div>
+          </div>
+          <div class="block-tech">Google Gemini Dual-Engine</div>
+        </div>
+        <div class="content-grid">
+          <div class="item-group">
+            <div class="item-title">Gemini 3.6 Flash</div>
+            <ul class="item-list">
+              <li>โหมดมาตรฐาน (PAS, HSO, FOMO, 3-Version)</li>
+              <li>สร้างบทพูดธรรมชาติ มีจังหวะหายใจ (...)</li>
+              <li>เน้นความรวดเร็วและคุ้มค่า Token</li>
+            </ul>
+          </div>
+          <div class="item-group">
+            <div class="item-title">Gemini 3.1 Pro Preview</div>
+            <ul class="item-list">
+              <li>โหมดเจาะลึก (Belief-Shifting)</li>
+              <li>ใช้ <strong>Chain of Thought (CoT)</strong> เพื่อการใช้เหตุผล</li>
+              <li>วิเคราะห์กลไกและจิตวิทยาเชิงลึกก่อนร่างบทพูด</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="connector">
+        <div class="connector-line"></div>
+        <div class="connector-label">ปรุงสคริปต์เสร็จ ➔ บันทึกประวัติและจัดส่ง</div>
+        <div class="connector-line"></div>
+      </div>
+
+      <!-- 5. Delivery -->
+      <div class="block">
+        <div class="block-header">
+          <div>
+            <div class="block-step">05</div>
+            <div class="block-title">Delivery & Failsafe</div>
+          </div>
+          <div class="block-tech">System Integrity</div>
+        </div>
+        <div class="content-single">
+          <div class="item-group">
+            <ul class="item-list">
+              <li><strong>Symmetric Refund:</strong> หาก AI ขัดข้อง หรือ Database บันทึกไม่สำเร็จ ระบบจะคืนเครดิตกลับทันที 100% ป้องกันผู้ใช้ถูกหักเครดิตฟรี</li>
+              <li><strong>Discord Alerts:</strong> ยิงแจ้งเตือนฟีดแบ็กและบั๊กเข้าห้อง Admin แบบเรียลไทม์ พร้อม AI สรุปรายงานรายสัปดาห์</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-left">
+        <span>autoscript-ai.com</span>
+        <span>Strictly Confidential</span>
+      </div>
+      <div>Architecture Build: 2026.08.30</div>
+    </div>
+
+  </div>
+
+</body>
+</html>
