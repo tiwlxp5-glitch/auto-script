@@ -247,7 +247,10 @@ c:\Auto script\
    - **Supabase WS Crash (Node v20 vs v22):** `@supabase/supabase-js` v2.112+ requires Node 22+ for native WebSocket support. Created `.node-version` (`22`) to force Cloudflare Pages to use Node 22 during build, fixing the `native WebSocket not found` server crash. Added `.trim()` to Supabase env vars in `supabase.js` to defensively strip accidental trailing whitespace from Cloudflare dashboard config.
    - **Manifest Fetch Error (SPA Routing):** Set `ssr: false` in `react-router.config.ts` to stop the client from trying to fetch `/__manifest` (which Cloudflare responded to with `index.html`, causing a JSON parse error). Updated `postbuild.js` to rename `dist/__spa-fallback.html` to `dist/404.html` so Cloudflare Pages handles client-side routing correctly as a SPA fallback.
 
-26. **Final Pre-Launch Audit & OG Image**:
+26. **True Real-time Progress Bar Polish**:
+   - **Dynamic Linear Smoothing**: Replaced the asymptotic progress bar logic (`currentProgress += (95 - currentProgress) * 0.15`) in `CreateScript.jsx` which caused the bar to visually freeze at 95% while waiting for Gemini. Implemented a time-based linear engine that estimates duration (e.g. 5s for Flash, 25s for Pro Brain) and smoothly ticks 0-90% evenly, providing a significantly better user experience that aligns accurately with backend wait times without feeling "stuck".
+
+27. **Final Pre-Launch Audit & OG Image**:
    - Conducted a comprehensive deep-dive audit of the entire stack (Security, Payments, Database, SEO).
    - Fixed obsolete legacy chunk-load Vitest UI tests broken by the RRv7 migration.
    - Replaced the low-quality AI-generated OG image with a pixel-perfect, light-themed, professional OG image (`1200x630`) generated via a custom Playwright headless browser script (`generate_og.cjs`) to ensure Thai typography (Kanit font) renders perfectly without artifacts.
@@ -294,6 +297,13 @@ c:\Auto script\
    - **Pro Tier (Normal Modes)**: Remains on `gemini-3.6-flash` for speed, but injects a `proNormalEnhancement` prompt to dramatically increase depth (Micro-Emotion, Pattern Interrupt).
    - **Free/Plus Tier**: Uses `gemini-3.6-flash` standard prompt.
    - **UI/UX Upgrades**: Added "AI Brain Indicator" (Premium CpuChip SVG for Pro, Bolt SVG for Standard) and "Result Badge" in `create.jsx`. Re-designed `pricing.jsx` and added an Engine Comparison section to `_index.jsx` to drive FOMO and 590 THB upgrades.
+
+35. **Pricing & Engine Comparison UI Overhaul (Anti-Cannibalization)**:
+   - Redesigned the "AI Engine Comparison" section on the Home page (`_index.jsx`) to combat "The Paid-Free Anchor Trap" (where users mistakenly anchor the Plus tier to the Free tier).
+   - Removed the "Free · Plus" combined card entirely.
+   - Built a direct Head-to-Head Comparison: "Plus Smart Engine" vs "Pro Deep Brain™".
+   - Upgraded UI to a mobile-friendly 2-column Card grid using Heroicons, highlighting Cost-per-Script (4.1 THB vs 3.9 THB) prominently at the bottom of each card.
+   - Used Tailwind CSS for premium styling (`bg-blue-50/50`, `border-amber-400/50`, gradients) to clearly differentiate the value proposition of Plus (High-Speed Volume) and Pro (Deep Strategy).
 
 ### Infrastructure Bottlenecks & Upgrade Path (For Future Scaling)
 *If the user asks for help upgrading the system tiers because of high traffic, guide them through these bottlenecks in order:*
