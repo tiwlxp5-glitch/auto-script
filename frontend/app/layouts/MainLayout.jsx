@@ -26,6 +26,9 @@ function MainLayout() {
   }, [location, navigate]);
 
   const renderFloatingWidget = () => {
+    // ซ่อน Floating Widget เมื่อผู้ใช้อยู่ในหน้าสร้างสคริปต์อยู่แล้ว
+    if (location.pathname === '/create') return null;
+
     if (!isGenerating && !generatedScript && !error) return null;
     
     if (isGenerating) {

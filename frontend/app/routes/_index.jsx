@@ -12,7 +12,7 @@ function Home() {
         <span className="inline-block bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-3 py-0.5 rounded-xl ml-2 shadow-lg">AI</span>
       </h1>
       <p className="text-base sm:text-lg text-slate-600 max-w-xl mb-8 px-4 leading-relaxed mt-2">
-        ประหยัดเวลาคิดคอนเทนต์ เพียงกรอกจุดเด่นสินค้า ระบบจะจัดโครงสร้างสคริปต์พร้อมถ่ายให้ทันที
+        ตัวช่วยที่จะทำให้คุณประหยัดเวลาคิดสคริปต์รีวิวสินค้าและไม่ต้องปวดหัวคิดคำที่ต้องพูดในคลิปและมีเวลาเหลือไปทำอย่างอื่นมากขึ้น
       </p>
       <div className="flex flex-row gap-3 justify-center w-full px-4 mb-4">
         <Link to="/create" className="bg-blue-600 text-white px-5 py-2.5 sm:px-8 sm:py-3 rounded-lg text-sm sm:text-lg font-semibold hover:bg-blue-700 transition-colors shadow-md whitespace-nowrap">
