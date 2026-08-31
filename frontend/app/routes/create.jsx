@@ -74,7 +74,7 @@ function CreateScript() {
       name: 'โครงสร้างเจาะลึก', 
       description: 'เจาะลึก เปลี่ยนความเชื่อผิดๆ ด้วยหลักจิตวิทยา',
       isProOnly: true,
-      icon: <div className="p-1.5 bg-purple-50 rounded-md text-purple-600 shadow-sm border border-purple-100"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg></div>
+      icon: <div className="p-1.5 bg-orange-50 rounded-md text-orange-600 shadow-sm border border-orange-100"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg></div>
     }
   ];
 
@@ -236,7 +236,7 @@ function CreateScript() {
             )}
             
             {profile && profile.tier === 'free' && profile.trial_pro_remaining > 0 && (
-              <div className="flex items-center space-x-1.5 px-3 py-1 text-[10px] sm:text-xs font-bold tracking-wide rounded-full border shadow-sm whitespace-nowrap shrink-0 bg-gradient-to-r from-purple-50 to-fuchsia-50 border-purple-200 text-purple-700 animate-pulse">
+              <div className="flex items-center space-x-1.5 px-3 py-1 text-[10px] sm:text-xs font-bold tracking-wide rounded-full border shadow-sm whitespace-nowrap shrink-0 bg-gradient-to-r from-orange-50 to-amber-50 border-orange-200 text-orange-700 animate-pulse">
                 <span>🎁 ทดลองใช้ Pro ฟรี (เหลือ {Math.min(profile.credits, profile.trial_pro_remaining)} ครั้ง)</span>
               </div>
             )}
@@ -253,12 +253,12 @@ function CreateScript() {
             {profile && (
               effectiveTier === 'pro' ? (
                 /* Pro: Pro Deep Brain™ Premium Badge */
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-sm font-semibold bg-gradient-to-r from-amber-50 to-purple-50 border border-amber-300/60 shadow-sm text-amber-800 whitespace-nowrap">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-sm font-semibold bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-300/60 shadow-sm text-amber-800 whitespace-nowrap">
                   {/* Sparkles icon (Heroicons) */}
-                  <svg className="w-4 h-4 text-purple-600 shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-orange-600 shrink-0" fill="currentColor" viewBox="0 0 24 24">
                     <path fillRule="evenodd" d="M9 4.5a.75.75 0 0 1 .721.544l.813 2.846a3.75 3.75 0 0 0 2.576 2.576l2.846.813a.75.75 0 0 1 0 1.442l-2.846.813a3.75 3.75 0 0 0-2.576 2.576l-.813 2.846a.75.75 0 0 1-1.442 0l-.813-2.846a3.75 3.75 0 0 0-2.576-2.576l-2.846-.813a.75.75 0 0 1 0-1.442l2.846-.813A3.75 3.75 0 0 0 7.466 7.89l.813-2.846A.75.75 0 0 1 9 4.5Z" clipRule="evenodd" />
                   </svg>
-                  <span>AI Engine: <strong className="text-purple-700">Pro Deep Brain™</strong></span>
+                  <span>AI Engine: <strong className="text-orange-700">Pro Deep Brain™</strong></span>
                   <span className="text-[10px] font-normal text-amber-600 hidden sm:inline">วิเคราะห์จิตวิทยาเชิงลึก</span>
                 </div>
               ) : (
@@ -269,7 +269,7 @@ function CreateScript() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                   <span>AI Engine: Standard Fast Engine</span>
-                  <a href="/pricing" className="ml-1 text-[11px] font-bold text-purple-600 hover:text-purple-700 transition-colors hidden sm:inline underline underline-offset-2">
+                  <a href="/pricing" className="ml-1 text-[11px] font-bold text-orange-600 hover:text-orange-700 transition-colors hidden sm:inline underline underline-offset-2">
                     อัปเกรด Pro Brain →
                   </a>
                 </div>
@@ -430,7 +430,7 @@ function CreateScript() {
                       <div className="w-full">
                         <span className="block text-sm font-bold text-slate-900 flex justify-between items-center">
                           {m.name}
-                          {m.isProOnly && <span className="text-[10px] bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white px-2 py-0.5 rounded-full font-bold shadow-sm">PRO</span>}
+                          {m.isProOnly && <span className="text-[10px] bg-gradient-to-r from-orange-500 to-amber-500 text-white px-2 py-0.5 rounded-full font-bold shadow-sm">PRO</span>}
                         </span>
                         <span className="block text-sm text-slate-500 mt-0.5 leading-snug">{m.description}</span>
                       </div>
@@ -461,10 +461,10 @@ function CreateScript() {
 
             {/* ช่องกรอกพิเศษ สำหรับโหมดโครงสร้างเจาะลึก */}
             {mode === 'โครงสร้างเจาะลึก' && (
-              <div className="animate-fade-in-up p-4 bg-purple-50/50 border border-purple-100 rounded-xl space-y-4">
+              <div className="animate-fade-in-up p-4 bg-orange-50/50 border border-orange-100 rounded-xl space-y-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-purple-600"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg></span>
-                  <label className="block text-sm font-bold text-purple-900">ข้อมูลเจาะลึก (โหมดเปลี่ยนความเชื่อ)</label>
+                  <span className="text-orange-600"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg></span>
+                  <label className="block text-sm font-bold text-orange-900">ข้อมูลเจาะลึก (โหมดเปลี่ยนความเชื่อ)</label>
                 </div>
                 
                 <div>
@@ -475,7 +475,7 @@ function CreateScript() {
                     rows="2"
                     value={falseBelief}
                     onChange={(e) => setFalseBelief(e.target.value)}
-                    className="w-full px-4 py-3 border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none resize-none text-sm"
+                    className="w-full px-4 py-3 border border-orange-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none resize-none text-sm"
                     placeholder="เช่น คิดว่าลดน้ำหนักต้องอดข้าวเย็น, คิดว่าสิวอุดตันต้องบีบออก"
                   ></textarea>
                 </div>
@@ -488,7 +488,7 @@ function CreateScript() {
                     rows="2"
                     value={mechanism}
                     onChange={(e) => setMechanism(e.target.value)}
-                    className="w-full px-4 py-3 border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none resize-none text-sm"
+                    className="w-full px-4 py-3 border border-orange-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none resize-none text-sm"
                     placeholder="เช่น ใช้สารสกัด X ที่ดูดซึมตอนหลับ, หรือมีนวัตกรรมดันหัวสิวให้แห้งเอง"
                   ></textarea>
                 </div>
@@ -583,7 +583,7 @@ function CreateScript() {
                 <div className="flex justify-between items-end mb-2">
                   {/* Dynamic label: Pro Brain mode gets special text */}
                   {effectiveTier === 'pro' && mode === 'โครงสร้างเจาะลึก' ? (
-                    <span className="text-sm font-bold text-purple-700 bg-gradient-to-r from-amber-50 to-purple-50 px-3 py-1 rounded-full border border-purple-200/60 flex items-center gap-2">
+                    <span className="text-sm font-bold text-orange-700 bg-gradient-to-r from-amber-50 to-orange-50 px-3 py-1 rounded-full border border-orange-200/60 flex items-center gap-2">
                       <svg className="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3H7a2 2 0 00-2 2v2M9 3h6M9 3v2m6-2h2a2 2 0 012 2v2m0 0V7m0 0h2M3 9v6m0 0v2a2 2 0 002 2h2m-4-4h2m14-2v6m0-6h2m-2 6v2a2 2 0 01-2 2h-2m0 0H9m6 0v-2M9 21H7a2 2 0 01-2-2v-2m0 0H3m4 0h2M9 9h6v6H9V9z" /></svg>
                       Pro Brain กำลังวิเคราะห์พฤติกรรมลูกค้า...
                     </span>
@@ -601,8 +601,8 @@ function CreateScript() {
                   <div 
                     className={`h-full rounded-full transition-all duration-300 ease-out relative ${
                       effectiveTier === 'pro' && mode === 'โครงสร้างเจาะลึก'
-                        ? 'bg-gradient-to-r from-amber-400 via-orange-500 to-purple-600' // Pro Brain: ทอง→ม่วง
-                        : 'bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500'  // Standard: น้ำเงิน
+                        ? 'bg-gradient-to-r from-amber-400 via-orange-500 to-orange-600' // Pro Brain: ทอง→ม่วง
+                        : 'bg-gradient-to-r from-blue-500 via-indigo-500 to-orange-500'  // Standard: น้ำเงิน
                     }`}
                     style={{ width: `${generationProgress}%` }}
                   >
@@ -647,7 +647,7 @@ function CreateScript() {
 
                   {/* Step 3 */}
                   <div className="relative pl-8">
-                    <div className={`absolute -left-[17px] top-0.5 flex items-center justify-center w-8 h-8 rounded-full border-[3px] border-white shadow-sm transition-colors duration-300 ${generationProgress >= 60 ? (generationProgress < 85 ? 'bg-purple-500 text-white animate-bounce' : 'bg-emerald-500 text-white') : 'bg-slate-200 text-slate-400'}`}>
+                    <div className={`absolute -left-[17px] top-0.5 flex items-center justify-center w-8 h-8 rounded-full border-[3px] border-white shadow-sm transition-colors duration-300 ${generationProgress >= 60 ? (generationProgress < 85 ? 'bg-orange-500 text-white animate-bounce' : 'bg-emerald-500 text-white') : 'bg-slate-200 text-slate-400'}`}>
                       {generationProgress >= 85 ? (
                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
                       ) : (
@@ -693,7 +693,7 @@ function CreateScript() {
 
                     {/* ─── Result Badge: Pro Deep Brain™ (เฉพาะ Belief-Shifting mode) ─── */}
                     {usedProBrain && (
-                      <div className="mt-2 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold bg-gradient-to-r from-amber-50 to-purple-50 border border-amber-300/50 text-purple-700 shadow-sm">
+                      <div className="mt-2 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-300/50 text-orange-700 shadow-sm">
                         <div className="flex items-center gap-1.5 whitespace-nowrap">
                           {/* Sparkles icon (Heroicons) */}
                           <svg className="w-3.5 h-3.5 text-amber-500 shrink-0" fill="currentColor" viewBox="0 0 24 24">
@@ -701,8 +701,8 @@ function CreateScript() {
                           </svg>
                           <span>Generated by Pro Deep Brain™</span>
                         </div>
-                        <span className="font-normal text-purple-500 hidden sm:inline">·</span>
-                        <span className="font-normal text-purple-500">เจาะลึกจิตวิทยา + ภาษาพูดระดับสูง</span>
+                        <span className="font-normal text-orange-500 hidden sm:inline">·</span>
+                        <span className="font-normal text-orange-500">เจาะลึกจิตวิทยา + ภาษาพูดระดับสูง</span>
                       </div>
                     )}
                     {/* ──────────────────────────────────────────────────────────── */}
@@ -806,7 +806,7 @@ function CreateScript() {
                             </div>
                           </div>
                           
-                          <div className="flex-1 bg-purple-50/50 rounded-xl p-3 flex items-start gap-2 border border-purple-100/50">
+                          <div className="flex-1 bg-orange-50/50 rounded-xl p-3 flex items-start gap-2 border border-orange-100/50">
                             <span className="text-sm shrink-0">🎭</span>
                             <div className="text-xs text-slate-600">
                               <strong className="block text-slate-700 mb-0.5">อารมณ์:</strong>

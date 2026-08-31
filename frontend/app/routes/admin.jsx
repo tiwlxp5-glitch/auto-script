@@ -103,7 +103,7 @@ export default function AdminDashboard() {
                   <tr key={u.id} className="hover:bg-gray-50">
                     <td className="p-3">{u.email}</td>
                     <td className="p-3">
-                      <span className={`px-2 py-1 rounded text-xs font-medium ${u.tier === 'pro' ? 'bg-purple-100 text-purple-700' : u.tier === 'plus' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'}`}>
+                      <span className={`px-2 py-1 rounded text-xs font-medium ${u.tier === 'pro' ? 'bg-orange-100 text-orange-700' : u.tier === 'plus' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'}`}>
                         {u.tier.toUpperCase()}
                       </span>
                     </td>

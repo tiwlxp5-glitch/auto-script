@@ -120,6 +120,10 @@ c:\Auto script\
 - **AbortController**: All `/api/generate` fetch calls have 60-second timeout — catches `AbortError` and shows Thai error message
 - **Accessibility**: Navbar hamburger button has `aria-label`, `aria-expanded`, `aria-controls`, `aria-hidden` on SVG
 
+### Design System (Colors)
+- **Free/Standard UI:** Uses Blue (`blue-500`, `blue-600`) as the primary action color.
+- **Pro Plan (Premium UI):** Exclusively uses **Premium Orange/Amber tones** (`orange-500`, `amber-500`, `orange-600`, etc.) for everything related to the Pro plan (e.g., Belief Shifting mode, Pro Deep Brain, tier badges) to create a distinct premium feel. Do NOT use purple for Pro elements.
+
 ### What Was Removed
 - **URL Analysis feature**: Completely removed (Shopee blocks all bots with Login Wall). References to `analyze.js` are dead and deleted.
 

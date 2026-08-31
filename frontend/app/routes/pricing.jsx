@@ -226,7 +226,7 @@ function Pricing() {
           </div>
           <ul className="mt-6 space-y-4 flex-1">
             {/* Pro Deep Brain™ — Feature ที่ 1 (จุดขายหลัก) */}
-            <li className="flex items-center gap-3 p-3 bg-gradient-to-r from-amber-900/40 to-purple-900/40 rounded-xl border border-amber-500/30 -mx-1">
+            <li className="flex items-center gap-3 p-3 bg-gradient-to-r from-amber-900/40 to-orange-900/40 rounded-xl border border-amber-500/30 -mx-1">
               {/* CpuChip icon (Heroicons) */}
               <svg className="w-5 h-5 text-amber-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3H7a2 2 0 00-2 2v2M9 3h6M9 3v2m6-2h2a2 2 0 012 2v2m0 0V7m0 0h2M3 9v6m0 0v2a2 2 0 002 2h2m-4-4h2m14-2v6m0-6h2m-2 6v2a2 2 0 01-2 2h-2m0 0H9m6 0v-2M9 21H7a2 2 0 01-2-2v-2m0 0H3m4 0h2M9 9h6v6H9V9z" />

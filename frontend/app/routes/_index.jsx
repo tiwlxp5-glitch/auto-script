@@ -122,7 +122,7 @@ function Home() {
       {/* ─── Engine Comparison: Standard vs Pro Deep Brain ─────────────────── */}
       <div className="mt-8 mb-12 w-full max-w-4xl mx-auto px-4">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 bg-purple-50 border border-purple-200 text-purple-700 text-xs font-bold px-3 py-1.5 rounded-full mb-4 shadow-sm">
+          <div className="inline-flex items-center gap-2 bg-orange-50 border border-orange-200 text-orange-700 text-xs font-bold px-3 py-1.5 rounded-full mb-4 shadow-sm">
             {/* CpuChip icon (Heroicons) */}
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3H7a2 2 0 00-2 2v2M9 3h6M9 3v2m6-2h2a2 2 0 012 2v2m0 0V7m0 0h2M3 9v6m0 0v2a2 2 0 002 2h2m-4-4h2m14-2v6m0-6h2m-2 6v2a2 2 0 01-2 2h-2m0 0H9m6 0v-2M9 21H7a2 2 0 01-2-2v-2m0 0H3m4 0h2M9 9h6v6H9V9z" />
@@ -130,7 +130,7 @@ function Home() {
             เบื้องหลัง AI Engine
           </div>
           <h2 className="text-xl sm:text-3xl font-extrabold text-slate-900 mb-3 leading-snug">
-            ทำไม Pro ถึงปิดการขาย <span className="text-purple-600">เนียนกว่า?</span>
+            ทำไม Pro ถึงปิดการขาย <span className="text-orange-600">เนียนกว่า?</span>
           </h2>
           <p className="text-sm sm:text-base text-slate-500 max-w-xl mx-auto">
             ความต่างอยู่ที่ AI Engine ที่ทำงานอยู่เบื้องหลัง — ไม่ใช่แค่ UI ที่แตกต่างกัน
@@ -158,7 +158,7 @@ function Home() {
                 <div className="mt-0.5 shrink-0 w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center">
                   <svg className="w-3 h-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                 </div>
-                <span><strong>High-Speed Workflow:</strong> รันสคริปต์เสร็จใน 2-4 วินาที ไม่เสียเวลา เหมาะกับคนถ่ายคลิปประจำวัน</span>
+                <span><strong>High-Speed Workflow:</strong> รันสคริปต์เสร็จใน 10-15 วินาที ไม่เสียเวลา เหมาะกับคนถ่ายคลิปประจำวัน</span>
               </li>
               <li className="flex items-start gap-3">
                 <div className="mt-0.5 shrink-0 w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center">
@@ -184,7 +184,7 @@ function Home() {
 
           {/* Pro Deep Brain™ */}
           <div className="bg-slate-900 border-2 border-amber-400/50 rounded-3xl p-6 relative flex flex-col h-full shadow-xl hover:shadow-2xl transition-shadow overflow-hidden">
-            <div className="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-amber-400 via-orange-500 to-purple-600"></div>
+            <div className="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-amber-400 via-orange-500 to-orange-600"></div>
             
             <div className="absolute top-0 right-6 transform -translate-y-px">
               <span className="bg-gradient-to-r from-amber-400 to-orange-500 text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider py-1 px-3 rounded-b-lg shadow-sm">
@@ -193,7 +193,7 @@ function Home() {
             </div>
 
             <div className="flex items-center gap-4 mb-6 mt-2">
-              <div className="w-12 h-12 bg-gradient-to-br from-amber-400/20 to-purple-500/20 rounded-2xl flex items-center justify-center shrink-0 border border-amber-400/30">
+              <div className="w-12 h-12 bg-gradient-to-br from-amber-400/20 to-orange-500/20 rounded-2xl flex items-center justify-center shrink-0 border border-amber-400/30">
                 {/* CpuChip icon */}
                 <svg className="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3H7a2 2 0 00-2 2v2M9 3h6M9 3v2m6-2h2a2 2 0 012 2v2m0 0V7m0 0h2M3 9v6m0 0v2a2 2 0 002 2h2m-4-4h2m14-2v6m0-6h2m-2 6v2a2 2 0 01-2 2h-2m0 0H9m6 0v-2M9 21H7a2 2 0 01-2-2v-2m0 0H3m4 0h2M9 9h6v6H9V9z" />
@@ -300,9 +300,9 @@ function Home() {
           </div>
 
           {/* Belief Shifting */}
-          <div className="bg-white p-6 rounded-2xl border border-purple-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
-            <div className="absolute top-0 right-0 bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg">PRO</div>
-            <div className="w-12 h-12 bg-fuchsia-100 rounded-xl flex items-center justify-center text-fuchsia-600 mb-4">
+          <div className="bg-white p-6 rounded-2xl border border-orange-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
+            <div className="absolute top-0 right-0 bg-gradient-to-r from-orange-500 to-amber-500 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg">PRO</div>
+            <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center text-orange-600 mb-4">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
             </div>
             <h3 className="text-lg font-bold text-slate-900 mb-2">Belief Shifting</h3>
