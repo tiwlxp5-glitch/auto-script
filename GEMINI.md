@@ -448,3 +448,13 @@ All 5 items from the Expert Architecture Audit have been successfully implemente
 49. **History UI UX Polish (Bulk Delete Confirmation)**:
    - **Confirmation Dialog**: Added a `window.confirm` check before executing the bulk delete operation (`handleDeleteSelected`) in `history.jsx`.
    - **Safety First**: Prevents users from accidentally deleting all their scripts by requiring explicit confirmation, with distinct warnings depending on whether they are deleting multiple items or a single item.
+
+50. **Featured Review Marquee & Admin Review Curation Dashboard**:
+   - **Review Marquee (Landing Page)**: Added an animated infinite-scroll Marquee component (`ReviewMarquee.jsx`) to the blank space below the CTA buttons on the homepage. Displays only admin-curated 4-5 star reviews. Auto-hides gracefully (returns null) if no featured reviews exist yet.
+   - **Database**: Added `is_featured BOOLEAN DEFAULT false` to `feedbacks` table via migration `20260831120000_featured_reviews_system.sql`.
+   - **RPC `get_featured_feedbacks()`**: Public RPC (callable by `anon` — no login required) that returns only `is_featured=true`, `rating>=4` reviews. Returns `reviewer` display name only — no email or user_id exposed (minimum data principle).
+   - **RPC `get_admin_feedbacks()`**: Admin-only RPC (requires `role='admin'` in profiles). Returns all 4-5 star reviews for admin management.
+   - **RPC `toggle_feedback_featured(p_feedback_id)`**: Admin-only RPC. Atomically toggles `is_featured`. Business rule guard: only allows rating >= 4 to be featured. Server-side authorization — no client bypass possible.
+   - **Admin Dashboard (`/admin`)**: Rewrote `admin.jsx` with a tabbed UI. New "⭐ รีวิว" tab lets admin click to toggle featured reviews in one click with live optimistic updates. Existing "👥 จัดการผู้ใช้" tab preserved. Default tab is Reviews for quick access.
+   - **Security**: `is_featured` is NOT in the `GRANT UPDATE` list for `authenticated` users — regular users cannot self-promote their reviews. All admin RPCs double-check `role='admin'` server-side.
+   - **CSS**: Added `@keyframes marquee` and `@keyframes marquee-reverse` to the Tailwind v4 `@theme` block in `index.css`.
