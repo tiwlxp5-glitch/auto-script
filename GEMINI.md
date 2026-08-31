@@ -337,6 +337,11 @@ c:\Auto script\
      5. **AI Output Validation**: Blindly trusting Gemini's formatting risks UI breakage. Requires Output Schema Validation (e.g., Zod or native Structured Outputs).
    - **Cloudflare Execution Limits (Clarification)**: Corrected a misconception: Cloudflare Pages Free limits CPU time to 10ms, *not* wall-clock time. Awaiting `fetch()` to Gemini consumes almost zero CPU time. Long waits are bound by edge idle timeouts (~100s) or client AbortControllers (60s), not function CPU limits.
 
+40. **Comprehensive Security Audit & Fixes**:
+   - Conducted a full security audit across 7 categories based on `security-audit-prompt.md` (ACCESS & NETWORK, BACKEND API, DATABASE & ISOLATION, PAYMENT & FINANCIAL, DATA PRIVACY, AI PROCESSING, GENERAL).
+   - **Fixed Prompt Injection Vulnerability:** Modified `generate.js` to wrap all user inputs in XML tags (e.g., `<product_name>`) before passing them to the Gemini API, preventing users from overriding instructions.
+   - Generated a detailed artifact report `security-audit-report.md` confirming the robustness of the system (CORS, Email Enumeration, RLS, Webhooks, Atomic Credits).
+
 ### Infrastructure Bottlenecks & Upgrade Path (For Future Scaling)
 *If the user asks for help upgrading the system tiers because of high traffic, guide them through these bottlenecks in order:*
 1. **Resend (Email) - The First Bottleneck:** Free tier is limited to 100 emails/day. If daily new signups exceed this, users will fail to receive verification emails.
