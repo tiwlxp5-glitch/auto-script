@@ -30,9 +30,15 @@ The agent MUST absolutely protect all API keys, passwords, access tokens, and se
 - NEVER write real API keys directly into public codebase files (e.g., frontend code or GitHub commits) unless specifically instructed to use environment variable placeholders (e.g., process.env.API_KEY).
 - Treat all keys provided in the chat as highly classified information belonging solely to the user.
 
+## 7. Full-Stack Local Dev Server Rule (Wrangler)
+When starting a local development server for User Acceptance Testing (UAT), the agent MUST NEVER just run `npm run dev` (which only starts the Vite frontend). 
+The agent MUST ALWAYS start the full-stack server using Cloudflare Wrangler to ensure all `/api` backend endpoints work correctly. 
+- **Command to use:** `npx wrangler pages dev --compatibility-date=2026-08-08 --proxy 5173 -- npm run dev`
+- **URL to provide:** ALWAYS provide `http://localhost:8788` to the user (NEVER provide `127.0.0.1` to prevent Cloudflare Turnstile domain mismatch errors).
+
 ---
 
-## 7. Project Context (Auto Script — Full Knowledge Base)
+## 8. Project Context (Auto Script — Full Knowledge Base)
 
 ### What is Auto Script?
 Auto Script is a Thai-language SaaS web application that uses Google Gemini AI to automatically generate short-form video scripts for TikTok, Reels, and Shopee affiliate marketing (called "pak takra" / "ปักตะกร้า"). Target users are Thai online sellers and content creators.

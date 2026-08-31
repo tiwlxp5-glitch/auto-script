@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { Turnstile } from '@marsidev/react-turnstile';
 import { supabase } from '../lib/supabase';
 import { translateError } from '../utils/translateError';
 
@@ -7,6 +8,7 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const errorRef = useRef(null);
@@ -35,10 +37,19 @@ function Login() {
       return;
     }
 
+    if (!captchaToken) {
+      setError('กรุณายืนยันว่าคุณไม่ใช่บอท (Captcha)');
+      setLoading(false);
+      return;
+    }
+
     // ส่งคำสั่งไปบอก Supabase ให้เช็คอีเมลและรหัสผ่าน
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
+      options: {
+        captchaToken,
+      },
     });
 
     if (error) {
@@ -148,11 +159,22 @@ function Login() {
           </div>
         </div>
 
+        <div className="flex justify-center my-4">
+          <Turnstile 
+            siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY} 
+            onSuccess={(token) => setCaptchaToken(token)}
+            options={{
+              theme: 'light',
+              size: 'normal'
+            }}
+          />
+        </div>
+
         <button
           type="submit"
-          disabled={loading}
+          disabled={loading || !captchaToken}
           className={`w-full py-2 rounded-lg text-white font-medium transition-colors ${
-            loading ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+            loading || !captchaToken ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
           }`}
         >
           {loading ? 'กำลังเข้าสู่ระบบ...' : 'เข้าสู่ระบบ'}
