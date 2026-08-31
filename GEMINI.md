@@ -23,6 +23,7 @@ When the user provides URLs, API keys, IDs, or specific string literals (e.g., S
 To prevent silent database crashes and PostgREST parameter mismatch errors:
 - **Schema Verification**: Never assume standard database columns (like `updated_at` or `created_at`) exist. Always verify the exact schema of a table before writing SQL `UPDATE` or `INSERT` statements.
 - **RPC Parameter Syncing**: If you modify the parameter names of a Supabase SQL function (e.g., changing `user_id` to `p_user_id`), you MUST perform a project-wide search (using `grep` or `Select-String`) to find every JavaScript file that calls `supabase.rpc('function_name')` and update the argument names to match exactly.
+- **Ambiguous Columns in RPCs**: When an RPC uses `RETURNS TABLE (id UUID, ...)`, the output column name `id` can shadow table column names inside the PL/pgSQL block. ALWAYS qualify table names in `WHERE` clauses (e.g., `WHERE public.profiles.id = auth.uid()`) to prevent `column reference "id" is ambiguous` errors.
 
 ## 6. Strict Credential Confidentiality Rule
 The agent MUST absolutely protect all API keys, passwords, access tokens, and sensitive credentials provided by the user.
