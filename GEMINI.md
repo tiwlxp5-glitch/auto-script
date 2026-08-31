@@ -263,6 +263,10 @@ c:\Auto script\
    - **Supabase WS Crash (Node v20 vs v22):** `@supabase/supabase-js` v2.112+ requires Node 22+ for native WebSocket support. Created `.node-version` (`22`) to force Cloudflare Pages to use Node 22 during build, fixing the `native WebSocket not found` server crash. Added `.trim()` to Supabase env vars in `supabase.js` to defensively strip accidental trailing whitespace from Cloudflare dashboard config.
    - **Manifest Fetch Error (SPA Routing):** Set `ssr: false` in `react-router.config.ts` to stop the client from trying to fetch `/__manifest` (which Cloudflare responded to with `index.html`, causing a JSON parse error). Updated `postbuild.js` to rename `dist/__spa-fallback.html` to `dist/404.html` so Cloudflare Pages handles client-side routing correctly as a SPA fallback.
 
+26. **Mobile UX Bug Fix (Silent Failure)**:
+   - Fixed a silent failure on mobile where script generation errors (like 60s timeout) were completely hidden. Destructured and rendered the `error` state from `ScriptGenerationContext` directly above the "Generate" button in `create.jsx` for immediate visibility.
+   - Fixed a race condition in `scrollToError` where a 50ms timeout caused React to not find the `errorRef` on slower mobile devices, resulting in an unwanted scroll to `top: 0` (bypassing the error). Increased the timeout to 150ms to ensure the error element is rendered before scrolling.
+
 26. **True Real-time Progress Bar Polish**:
    - **Dynamic Linear Smoothing**: Replaced the asymptotic progress bar logic (`currentProgress += (95 - currentProgress) * 0.15`) in `CreateScript.jsx` which caused the bar to visually freeze at 95% while waiting for Gemini. Implemented a time-based linear engine that estimates duration (e.g. 5s for Flash, 25s for Pro Brain) and smoothly ticks 0-90% evenly, providing a significantly better user experience that aligns accurately with backend wait times without feeling "stuck".
 
