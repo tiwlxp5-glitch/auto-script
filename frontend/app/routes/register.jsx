@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { translateError } from '../utils/translateError';
 import { Turnstile } from '@marsidev/react-turnstile';
+import { toast } from 'react-hot-toast';
 
 function Register() {
   const [email, setEmail] = useState('');
@@ -50,7 +51,9 @@ function Register() {
       setError(translateError(error.message));
     } else {
       setResendCooldown(60);
-      alert('ส่งอีเมลยืนยันตัวตนใหม่อีกครั้งแล้ว กรุณาเช็คกล่องข้อความของคุณ');
+      toast.success('ส่งอีเมลยืนยันตัวตนใหม่อีกครั้งแล้ว กรุณาเช็คกล่องข้อความของคุณ', {
+        icon: <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      });
     }
   };
 

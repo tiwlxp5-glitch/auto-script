@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 
 function History() {
   const { user, profile, loading: authLoading } = useAuth();
@@ -158,16 +159,22 @@ function History() {
         if (!fullText.trim()) throw new Error('No blocks');
       } else {
         if (!scriptData?.script_blocks) {
-          alert('ไม่พบข้อมูลบทพูดสำหรับคัดลอก');
+          toast.error('ไม่พบข้อมูลบทพูดสำหรับคัดลอก', {
+            icon: <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+          });
           return;
         }
         fullText = scriptData.script_blocks.map(b => b.audio_spoken).join(' ');
       }
       
       navigator.clipboard.writeText(fullText.trim());
-      alert('คัดลอกสคริปต์เรียบร้อยแล้ว!');
+      toast.success('คัดลอกสคริปต์เรียบร้อยแล้ว!', {
+        icon: <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      });
     } catch {
-      alert('ไม่สามารถคัดลอกได้');
+      toast.error('ไม่สามารถคัดลอกได้', {
+        icon: <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+      });
     }
   };
 
@@ -562,7 +569,9 @@ function History() {
                     const exportName = selectedScript.totalVersions > 1 ? `${selectedScript.product_name}_v${selectedScript.versionIndex}` : selectedScript.product_name;
                     exportToText(parsed, exportName);
                   } catch {
-                    alert('ไม่สามารถอ่านข้อมูลสคริปต์ได้');
+                    toast.error('ไม่สามารถอ่านข้อมูลสคริปต์ได้', {
+                      icon: <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    });
                   }
                 }}
                 className="flex-1 sm:flex-none justify-center text-sm px-4 py-2.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-lg font-medium transition-colors flex items-center gap-2"
@@ -575,7 +584,9 @@ function History() {
                     const parsed = typeof selectedScript.content === 'string' ? JSON.parse(selectedScript.content) : selectedScript.content;
                     copyToClipboard(parsed);
                   } catch {
-                    alert('ไม่สามารถอ่านข้อมูลสคริปต์ได้');
+                    toast.error('ไม่สามารถอ่านข้อมูลสคริปต์ได้', {
+                      icon: <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    });
                   }
                 }}
                 className="flex-1 sm:flex-none justify-center text-sm px-4 py-2.5 bg-blue-600 text-white hover:bg-blue-700 rounded-lg font-medium transition-colors flex items-center gap-2 shadow-sm shadow-blue-200"

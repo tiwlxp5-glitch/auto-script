@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { translateError } from '../utils/translateError';
+import { toast } from 'react-hot-toast';
 
 function ResetPassword() {
   const [password, setPassword] = useState('');
@@ -65,7 +66,9 @@ function ResetPassword() {
       setLoading(false);
     } else {
       // รหัสผ่านอัปเดตสำเร็จ ส่งกลับไปหน้า login หรือ create
-      alert('เปลี่ยนรหัสผ่านสำเร็จ กรุณาเข้าสู่ระบบด้วยรหัสผ่านใหม่');
+      toast.success('เปลี่ยนรหัสผ่านสำเร็จ กรุณาเข้าสู่ระบบด้วยรหัสผ่านใหม่', {
+        icon: <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      });
       // Sign out to force re-login just to be clean
       await supabase.auth.signOut();
       navigate('/login');

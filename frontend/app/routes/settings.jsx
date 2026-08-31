@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
+import { translateError } from '../utils/translateError';
 
 function Settings() {
   const { user, profile, loading, refreshProfile } = useAuth();
@@ -71,9 +73,13 @@ function Settings() {
     
     setIsSaving(false);
     if (error) {
-      alert('เกิดข้อผิดพลาดในการบันทึกชื่อ');
+      toast.error('เกิดข้อผิดพลาดในการบันทึกชื่อ', {
+        icon: <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+      });
     } else {
-      alert('บันทึกชื่อเรียบร้อยแล้ว!');
+      toast.success('บันทึกชื่อเรียบร้อยแล้ว!', {
+        icon: <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      });
       refreshProfile();
     }
   };
@@ -97,16 +103,22 @@ function Settings() {
       
     setIsSavingBrandVoice(false);
     if (error) {
-      alert('เกิดข้อผิดพลาดในการบันทึก Brand Voice Memory');
+      toast.error('เกิดข้อผิดพลาดในการบันทึก Brand Voice Memory', {
+        icon: <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+      });
     } else {
-      alert('บันทึกสไตล์ของช่องเรียบร้อยแล้ว!');
+      toast.success('บันทึกสไตล์ของช่องเรียบร้อยแล้ว!', {
+        icon: <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      });
       refreshProfile();
     }
   };
 
   const handleManageSubscription = async () => {
     if (!profile?.stripe_customer_id) {
-      alert("คุณยังไม่ได้สมัครแพ็กเกจใดๆ ครับ (คุณใช้งานแพ็กเกจฟรีอยู่)");
+      toast('คุณยังไม่ได้สมัครแพ็กเกจใดๆ ครับ (คุณใช้งานแพ็กเกจฟรีอยู่)', {
+        icon: <svg className="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      });
       return;
     }
     
@@ -115,7 +127,9 @@ function Settings() {
       // ดึง Token เซสชันปัจจุบันเพื่อส่งยืนยันตัวตนกับ Backend API
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        alert("กรุณาเข้าสู่ระบบใหม่อีกครั้ง");
+        toast.error('กรุณาเข้าสู่ระบบใหม่อีกครั้ง', {
+          icon: <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+        });
         navigate('/login');
         return;
       }
@@ -133,11 +147,15 @@ function Settings() {
       if (data.url) {
         window.location.href = data.url; // เด้งไปเว็บ Stripe
       } else {
-        alert("ไม่สามารถสร้างลิงก์จัดการแพ็กเกจได้: " + (data.error || 'Unknown error'));
+        toast.error('ไม่สามารถสร้างลิงก์จัดการแพ็กเกจได้: ' + translateError(data.error || 'Unknown error'), {
+          icon: <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+        });
       }
     } catch (err) {
       console.error(err);
-      alert("เกิดข้อผิดพลาดในการเชื่อมต่อ Stripe");
+      toast.error('เกิดข้อผิดพลาดในการเชื่อมต่อ Stripe', {
+        icon: <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+      });
     } finally {
       setIsLoadingPortal(false);
     }
@@ -162,14 +180,20 @@ function Settings() {
       
       if (res.ok) {
         await supabase.auth.signOut();
-        alert("ลบบัญชีเรียบร้อยแล้ว หวังว่าจะได้พบกันใหม่นะครับ!");
+        toast.success('ลบบัญชีเรียบร้อยแล้ว หวังว่าจะได้พบกันใหม่นะครับ!', {
+          icon: <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        });
         navigate('/');
       } else {
         const errData = await res.text();
-        alert("ไม่สามารถลบบัญชีได้: " + errData);
+        toast.error('ไม่สามารถลบบัญชีได้: ' + translateError(errData), {
+          icon: <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+        });
       }
     } catch {
-      alert("เกิดข้อผิดพลาดในการลบบัญชี");
+      toast.error('เกิดข้อผิดพลาดในการลบบัญชี', {
+        icon: <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+      });
     } finally {
       setIsDeleting(false);
     }

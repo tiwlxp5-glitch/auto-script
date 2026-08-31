@@ -5,6 +5,7 @@ import { containsProfanity } from '../lib/profanityWords';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useScriptGeneration } from '../context/ScriptGenerationContext';
+import { toast } from 'react-hot-toast';
 
 function CreateScript() {
   const { user, profile, loading } = useAuth();
@@ -165,7 +166,9 @@ function CreateScript() {
     // 1. เช็คโควต้าเครดิต
     const cost = isMultiVersion ? 2 : 1;
     if (profile.credits < cost) {
-      alert(`โควต้าเครดิตของคุณไม่พอ (ต้องการ ${cost} เครดิต, มี ${profile.credits} เครดิต) กรุณาอัปเกรดแพ็กเกจ`);
+      toast.error(`โควต้าเครดิตของคุณไม่พอ (ต้องการ ${cost} เครดิต, มี ${profile.credits} เครดิต) กรุณาอัปเกรดแพ็กเกจ`, {
+        icon: <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+      });
       navigate('/pricing');
       return;
     }
@@ -199,7 +202,9 @@ function CreateScript() {
       ?.join('\n\n');
     if (textToCopy) {
       navigator.clipboard.writeText(textToCopy);
-      alert('คัดลอกสคริปต์เรียบร้อยแล้ว!');
+      toast.success('คัดลอกสคริปต์เรียบร้อยแล้ว!', {
+        icon: <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      });
     }
   };
 

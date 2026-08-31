@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Auto Script — IG Carousel v2</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #3B4FEB;
+      --purple: #8B5CF6;
+      --grad: linear-gradient(135deg, #3B4FEB 0%, #7C3AED 100%);
+      --grad-text: linear-gradient(90deg, #3B4FEB, #8B5CF6);
+      --dark: #0D0D14;
+      --dark2: #131320;
+      --white: #FFFFFF;
+      --off-white: #F6F7FF;
+      --ink: #111118;
+      --muted: #6B7280;
+      --border: rgba(59,79,235,0.15);
+    }
+
+    body {
+      font-family: 'Prompt', sans-serif;
+      background: #0a0a12;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 36px 16px 48px;
+      gap: 0;
+    }
+
+    /* ─── outer chrome ─── */
+    .chrome-label {
+      font-family: 'Prompt', sans-serif;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #3B4FEB;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .viewer-wrap {
+      width: 100%;
+      max-width: 430px;
+      position: relative;
+    }
+
+    /* ─── Progress Bar (top, full width) ─── */
+    .progress-bar-track {
+      width: 100%;
+      height: 3px;
+      background: rgba(255,255,255,0.08);
+      margin-bottom: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--grad);
+      width: 16.67%; /* 1/6 */
+      transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* ─── Slide Stage ─── */
+    .slide-stage {
+      width: 100%;
+      aspect-ratio: 4/5;
+      position: relative;
+      overflow: hidden;
+      background: #111;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: translateX(32px);
+      transition: opacity 0.38s ease, transform 0.38s cubic-bezier(0.4,0,0.2,1);
+      pointer-events: none;
+      will-change: opacity, transform;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+
+    .slide.exit {
+      opacity: 0;
+      transform: translateX(-32px);
+    }
+
+    /* ─── Shared Logo Bar (top-right) ─── */
+    .logo-bar {
+      position: absolute;
+      top: 6%;
+      left: 6%;
+      right: 6%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 10;
+    }
+
+    .logo-badge {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .logo-name {
+      font-size: clamp(9px, 2vw, 14px);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .logo-circle {
+      width: clamp(26px, 5.5vw, 38px);
+      height: clamp(26px, 5.5vw, 38px);
+      border-radius: 50%;
+      background: var(--grad);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+      overflow: visible;
+    }
+
+    .logo-circle svg {
+      width: 70%;
+      height: 70%;
+    }
+
+    .slide-counter {
+      font-size: clamp(8px, 1.5vw, 11px);
+      font-weight: 300;
+      letter-spacing: 2.5px;
+    }
+
+    /* ── Shared: left accent stripe ── */
+    .stripe {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 5px;
+      background: var(--grad);
+    }
+
+    /* ───────────────────────────────────── */
+    /* SLIDE 1 — Tension Hook                */
+    /* White bg / massive brutal headline    */
+    /* ───────────────────────────────────── */
+    .s1 { background: var(--white); }
+
+    .s1 .logo-name { color: var(--ink); }
+    .s1 .slide-counter { color: var(--muted); }
+
+    .s1-body {
+      position: absolute;
+      bottom: 11%;
+      left: 10%;
+      right: 14%;
+    }
+
+    .s1-eyebrow {
+      font-size: clamp(8px, 1.5vw, 11px);
+      font-weight: 400;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      background: var(--grad-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 14px;
+    }
+
+    .s1-headline {
+      font-size: clamp(32px, 9.5vw, 72px);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -1px;
+      color: var(--ink);
+    }
+
+    .s1-sub {
+      margin-top: 16px;
+      font-size: clamp(12px, 2.8vw, 20px);
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.55;
+      letter-spacing: 0.2px;
+    }
+
+    .s1-swipe {
+      position: absolute;
+      bottom: 6%;
+      right: 6%;
+      font-size: clamp(8px, 1.5vw, 11px);
+      font-weight: 300;
+      letter-spacing: 2px;
+      color: #ccc;
+    }
+
+    /* corner gradient deco */
+    .s1-deco {
+      position: absolute;
+      top: -80px;
+      right: -80px;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(59,79,235,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ───────────────────────────────────── */
+    /* SLIDE 2 — Empathy / Agitation         */
+    /* Off-white / honest copy               */
+    /* ───────────────────────────────────── */
+    .s2 { background: var(--off-white); }
+    .s2 .logo-name { color: var(--ink); }
+    .s2 .slide-counter { color: var(--muted); }
+
+    .s2-body {
+      position: absolute;
+      top: 20%;
+      bottom: 8%;
+      left: 10%;
+      right: 8%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .s2-label {
+      font-size: clamp(8px, 1.5vw, 11px);
+      font-weight: 400;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .s2-text {
+      font-size: clamp(16px, 4.5vw, 34px);
+      font-weight: 700;
+      line-height: 1.38;
+      color: var(--ink);
+    }
+
+    .s2-text .dim {
+      font-weight: 300;
+      color: #888;
+    }
+
+    .s2-text .punch {
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .s2-rule {
+      width: 42px;
+      height: 3px;
+      background: var(--grad);
+      margin: 20px 0;
+    }
+
+    /* ───────────────────────────────────── */
+    /* SLIDE 3 — Paradigm Shift              */
+    /* Split: dark/light — Old vs New        */
+    /* ───────────────────────────────────── */
+    .s3 { background: var(--dark); }
+    .s3 .logo-name { color: var(--white); }
+    .s3 .slide-counter { color: rgba(255,255,255,0.4); }
+
+    .s3-half-top {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 48%;
+      background: var(--dark2);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 7% 10%;
+      padding-right: 14%;
+    }
+
+    .s3-half-bot {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 48%;
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding: 7% 10%;
+      padding-right: 14%;
+    }
+
+    .s3-divider {
+      position: absolute;
+      top: 48%; left: 0; right: 0;
+      height: 4px;
+      background: var(--grad);
+      z-index: 5;
+    }
+
+    .s3-label {
+      font-size: clamp(7px, 1.3vw, 10px);
+      font-weight: 500;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .s3-label.old { color: rgba(255,255,255,0.3); }
+    .s3-label.new {
+      background: var(--grad-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .s3-text-white {
+      font-size: clamp(15px, 4vw, 29px);
+      font-weight: 700;
+      line-height: 1.35;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .s3-text-dark {
+      font-size: clamp(15px, 4vw, 29px);
+      font-weight: 700;
+      line-height: 1.35;
+      color: var(--ink);
+    }
+
+    .s3-em {
+      font-weight: 900;
+      background: var(--grad-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ───────────────────────────────────── */
+    /* SLIDE 4 — Introduction                */
+    /* White / feature highlight             */
+    /* ───────────────────────────────────── */
+    .s4 { background: var(--white); }
+    .s4 .logo-name { color: var(--ink); }
+    .s4 .slide-counter { color: var(--muted); }
+
+    .s4-body {
+      position: absolute;
+      top: 22%;
+      bottom: 8%;
+      left: 10%;
+      right: 8%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .s4-eyebrow {
+      font-size: clamp(8px, 1.5vw, 11px);
+      font-weight: 400;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      background: var(--grad-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 14px;
+    }
+
+    .s4-rule {
+      width: 42px;
+      height: 3px;
+      background: var(--grad);
+      margin-bottom: 20px;
+    }
+
+    .s4-text {
+      font-size: clamp(13px, 3.4vw, 26px);
+      font-weight: 400;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .s4-text strong {
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .s4-chips {
+      margin-top: 22px;
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .s4-chip {
+      font-size: clamp(7px, 1.5vw, 11px);
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border: 1.5px solid var(--blue);
+      color: var(--blue);
+      background: rgba(59,79,235,0.05);
+    }
+
+    /* ───────────────────────────────────── */
+    /* SLIDE 5 — Overcome Objection          */
+    /* Very dark / bold contrast answer      */
+    /* ───────────────────────────────────── */
+    .s5 { background: #080810; }
+    .s5 .logo-name { color: var(--white); }
+    .s5 .slide-counter { color: rgba(255,255,255,0.35); }
+
+    .s5-body {
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      right: 14%;
+      transform: translateY(-50%);
+    }
+
+    .s5-q {
+      font-size: clamp(12px, 3vw, 22px);
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(255,255,255,0.3);
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .s5-rule {
+      width: 42px;
+      height: 3px;
+      background: var(--grad);
+      margin-bottom: 22px;
+    }
+
+    .s5-a {
+      font-size: clamp(20px, 5.5vw, 42px);
+      font-weight: 800;
+      line-height: 1.2;
+      color: var(--white);
+    }
+
+    .s5-a .grad-word {
+      background: var(--grad-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .s5-footnote {
+      margin-top: 20px;
+      font-size: clamp(10px, 2.2vw, 16px);
+      font-weight: 300;
+      color: rgba(255,255,255,0.38);
+      line-height: 1.65;
+    }
+
+    /* ───────────────────────────────────── */
+    /* SLIDE 6 — CTA (Deep Dark)             */
+    /* Dark Navy — Logo pops, Premium close  */
+    /* ───────────────────────────────────── */
+    .s6 { background: #080810; }
+    .s6 .logo-name { color: rgba(255,255,255,0.9); }
+    .s6 .slide-counter { color: rgba(255,255,255,0.3); }
+
+    /* noise texture overlay for depth */
+    .s6-noise {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .s6-body {
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      right: 14%;
+      transform: translateY(-50%);
+      z-index: 2;
+    }
+
+    .s6-label {
+      font-size: clamp(8px, 1.5vw, 11px);
+      font-weight: 400;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 18px;
+    }
+
+    .s6-headline {
+      font-size: clamp(26px, 7.5vw, 58px);
+      font-weight: 900;
+      line-height: 1.05;
+      color: var(--white);
+      letter-spacing: -0.5px;
+    }
+
+    .s6-sub {
+      margin-top: 16px;
+      font-size: clamp(12px, 3vw, 22px);
+      font-weight: 300;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.55;
+    }
+
+    .s6-rule {
+      width: 42px;
+      height: 2px;
+      background: rgba(255,255,255,0.4);
+      margin: 24px 0;
+    }
+
+    .s6-cta {
+      font-size: clamp(11px, 2.5vw, 18px);
+      font-weight: 500;
+      color: rgba(255,255,255,0.9);
+      letter-spacing: 0.5px;
+    }
+
+    .s6-cta .arrow {
+      display: inline-block;
+      margin-right: 8px;
+      font-weight: 300;
+    }
+
+    /* bottom watermark */
+    .s6-wm {
+      position: absolute;
+      bottom: 6%;
+      left: 10%;
+      font-size: clamp(7px, 1.3vw, 10px);
+      font-weight: 300;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      z-index: 2;
+    }
+
+    /* ─── Navigation chrome ─── */
+    .nav-area {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .nav-btn {
+      width: 38px; height: 38px;
+      background: none;
+      border: 1.5px solid rgba(59,79,235,0.3);
+      color: rgba(59,79,235,0.7);
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+      font-family: 'Prompt', sans-serif;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      border-color: var(--blue);
+      color: var(--white);
+      background: var(--blue);
+    }
+
+    .nav-btn:disabled { opacity: 0.2; cursor: default; }
+
+    .slide-tabs {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .tab {
+      height: 3px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 0;
+      cursor: pointer;
+      transition: background 0.25s, width 0.3s cubic-bezier(0.4,0,0.2,1);
+      width: 20px;
+    }
+
+    .tab.active {
+      background: var(--grad);
+      width: 40px;
+    }
+
+    .export-note {
+      margin-top: 20px;
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+      text-align: center;
+      font-family: 'Prompt', sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+  <p class="chrome-label">Auto Script — IG Carousel v2 · 1080×1350</p>
+
+  <div class="viewer-wrap">
+
+    <!-- Progress Bar -->
+    <div class="progress-bar-track">
+      <div class="progress-bar-fill" id="pbar"></div>
+    </div>
+
+    <!-- Slide Stage -->
+    <div class="slide-stage" id="stage">
+
+      <!-- Shared Logo SVG (inline, used as template) -->
+      <!-- Each slide renders its own via JS -->
+
+      <!-- ══ SLIDE 1 ══ -->
+      <div class="slide active s1" id="slide-1">
+        <div class="stripe"></div>
+        <div class="s1-deco"></div>
+
+        <!-- Logo Bar -->
+        <div class="logo-bar">
+          <div class="logo-badge">
+            <div class="logo-circle">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <text x="3" y="28" font-family="'Prompt',sans-serif" font-weight="800" font-size="19" fill="white">AS</text>
+                <!-- Main 4-point sparkle -->
+                <path d="M32 6 L33 9 L36 10 L33 11 L32 14 L31 11 L28 10 L31 9 Z" fill="white" opacity="1"/>
+                <!-- Small sparkle -->
+                <path d="M37 4 L37.5 5.5 L39 6 L37.5 6.5 L37 8 L36.5 6.5 L35 6 L36.5 5.5 Z" fill="white" opacity="0.8"/>
+                <!-- Tiny dot -->
+                <circle cx="28.5" cy="6.5" r="1" fill="white" opacity="0.6"/>
+              </svg>
+            </div>
+            <span class="logo-name">Auto Script</span>
+          </div>
+          <div class="slide-counter">01 / 06</div>
+        </div>
+
+        <div class="s1-body">
+          <div class="s1-headline">
+            นั่งจ้อง<br>หน้าจอ<br>มา 2<br><span style="display:block; margin-top:0.15em;">ชั่วโมง.</span>
+          </div>
+          <div class="s1-sub">
+            แต่เขียนสคริปต์ได้<br>แค่ 2 บรรทัด.
+          </div>
+        </div>
+        <div class="s1-swipe">SWIPE ›</div>
+      </div>
+
+      <!-- ══ SLIDE 2 ══ -->
+      <div class="slide s2" id="slide-2">
+        <div class="stripe"></div>
+
+        <div class="logo-bar">
+          <div class="logo-badge">
+            <div class="logo-circle">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <text x="3" y="28" font-family="'Prompt',sans-serif" font-weight="800" font-size="19" fill="white">AS</text>
+                <!-- Main 4-point sparkle -->
+                <path d="M32 6 L33 9 L36 10 L33 11 L32 14 L31 11 L28 10 L31 9 Z" fill="white" opacity="1"/>
+                <!-- Small sparkle -->
+                <path d="M37 4 L37.5 5.5 L39 6 L37.5 6.5 L37 8 L36.5 6.5 L35 6 L36.5 5.5 Z" fill="white" opacity="0.8"/>
+                <!-- Tiny dot -->
+                <circle cx="28.5" cy="6.5" r="1" fill="white" opacity="0.6"/>
+              </svg>
+            </div>
+            <span class="logo-name">Auto Script</span>
+          </div>
+          <div class="slide-counter">02 / 06</div>
+        </div>
+
+        <div class="s2-body">
+          <div class="s2-label">THE REAL PROBLEM</div>
+          <div class="s2-text">
+            ไม่ใช่ว่าคุณ<br>
+            <span class="punch">ทำคลิปไม่เก่ง...</span>
+          </div>
+          <div class="s2-text" style="margin-top:20px;">
+            <span class="dim">แต่คุณแค่เสียเวลาไปกับ<br>
+            การ 'เรียบเรียงคำพูด'<br>
+            มากเกินไป.</span><br><br>
+            จนหมดไฟ<br>ที่จะกดอัดคลิป.
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ SLIDE 3 ══ -->
+      <div class="slide s3" id="slide-3">
+
+        <div class="logo-bar">
+          <div class="logo-badge">
+            <div class="logo-circle">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <text x="3" y="28" font-family="'Prompt',sans-serif" font-weight="800" font-size="19" fill="white">AS</text>
+                <!-- Main 4-point sparkle -->
+                <path d="M32 6 L33 9 L36 10 L33 11 L32 14 L31 11 L28 10 L31 9 Z" fill="white" opacity="1"/>
+                <!-- Small sparkle -->
+                <path d="M37 4 L37.5 5.5 L39 6 L37.5 6.5 L37 8 L36.5 6.5 L35 6 L36.5 5.5 Z" fill="white" opacity="0.8"/>
+                <!-- Tiny dot -->
+                <circle cx="28.5" cy="6.5" r="1" fill="white" opacity="0.6"/>
+              </svg>
+            </div>
+            <span class="logo-name">Auto Script</span>
+          </div>
+          <div class="slide-counter" style="color:rgba(255,255,255,0.35);">03 / 06</div>
+        </div>
+
+        <div class="s3-half-top">
+          <div class="s3-label old">— OLD WAY</div>
+          <div class="s3-text-white">
+            นั่งคิดคำเอง.<br>
+            เรียบเรียงเอง.<br>
+            ปวดหัวเอง.
+          </div>
+        </div>
+
+        <div class="s3-divider"></div>
+
+        <div class="s3-half-bot">
+          <div class="s3-label new">— NEW WAY</div>
+          <div class="s3-text-dark" style="font-size:clamp(13px,3.4vw,25px); line-height:1.45;">
+            หน้าที่ของคุณคือ<br>
+            <span class="s3-em">'พูดและถ่ายทอด'</span><br>
+            ส่วนที่เหลือ<br>ระบบจัดการ.
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ SLIDE 4 ══ -->
+      <div class="slide s4" id="slide-4">
+        <div class="stripe"></div>
+
+        <div class="logo-bar">
+          <div class="logo-badge">
+            <div class="logo-circle">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <text x="3" y="28" font-family="'Prompt',sans-serif" font-weight="800" font-size="19" fill="white">AS</text>
+                <!-- Main 4-point sparkle -->
+                <path d="M32 6 L33 9 L36 10 L33 11 L32 14 L31 11 L28 10 L31 9 Z" fill="white" opacity="1"/>
+                <!-- Small sparkle -->
+                <path d="M37 4 L37.5 5.5 L39 6 L37.5 6.5 L37 8 L36.5 6.5 L35 6 L36.5 5.5 Z" fill="white" opacity="0.8"/>
+                <!-- Tiny dot -->
+                <circle cx="28.5" cy="6.5" r="1" fill="white" opacity="0.6"/>
+              </svg>
+            </div>
+            <span class="logo-name">Auto Script</span>
+          </div>
+          <div class="slide-counter">04 / 06</div>
+        </div>
+
+        <div class="s4-body">
+          <div class="s4-eyebrow">THE SOLUTION</div>
+          <div class="s4-rule"></div>
+          <div class="s4-text">
+            ไม่ต้องป้อน Prompt เองให้วุ่นวาย.<br><br>
+            แค่พิมพ์ <strong>ชื่อสินค้า</strong> ระบบจะประกอบร่างสคริปต์ด้วยโครงสร้าง <strong>'จิตวิทยาการขาย'</strong><br>
+            ที่แบรนด์ระดับท็อปใช้กัน.
+          </div>
+          <div class="s4-chips">
+            <span class="s4-chip">PAS Formula</span>
+            <span class="s4-chip">HSO Formula</span>
+            <span class="s4-chip">FOMO</span>
+          </div>
+        </div>
+        <div class="s1-swipe" style="color:#ccc;">SWIPE ›</div>
+      </div>
+
+      <!-- ══ SLIDE 5 ══ -->
+      <div class="slide s5" id="slide-5">
+
+        <div class="logo-bar">
+          <div class="logo-badge">
+            <div class="logo-circle">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <text x="3" y="28" font-family="'Prompt',sans-serif" font-weight="800" font-size="19" fill="white">AS</text>
+                <!-- Main 4-point sparkle -->
+                <path d="M32 6 L33 9 L36 10 L33 11 L32 14 L31 11 L28 10 L31 9 Z" fill="white" opacity="1"/>
+                <!-- Small sparkle -->
+                <path d="M37 4 L37.5 5.5 L39 6 L37.5 6.5 L37 8 L36.5 6.5 L35 6 L36.5 5.5 Z" fill="white" opacity="0.8"/>
+                <!-- Tiny dot -->
+                <circle cx="28.5" cy="6.5" r="1" fill="white" opacity="0.6"/>
+              </svg>
+            </div>
+            <span class="logo-name">Auto Script</span>
+          </div>
+          <div class="slide-counter" style="color:rgba(255,255,255,0.35);">05 / 06</div>
+        </div>
+
+        <div class="s5-body">
+          <div class="s5-q">"แล้วภาษาจะแข็ง<br>เหมือนบอทไหม?"</div>
+          <div class="s5-rule"></div>
+          <div class="s5-a">
+            ลืมคำว่า AI<br>
+            แบบเดิมๆ<br>
+            <span class="grad-word">ไปได้เลย.</span>
+          </div>
+          <div class="s5-footnote">
+            ระบบถูกออกแบบให้ใช้ภาษาพูด<br>
+            มีการเว้นจังหวะหายใจ ทิ้งสเปซ<br>
+            ระดับที่คนดูจับไม่ได้... ว่านี่คือ AI.
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ SLIDE 6 ══ -->
+      <div class="slide s6" id="slide-6">
+
+        <div class="logo-bar" style="z-index:5;">
+          <div class="logo-badge">
+            <div class="logo-circle">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <text x="3" y="28" font-family="'Prompt',sans-serif" font-weight="800" font-size="19" fill="white">AS</text>
+                <!-- Main 4-point sparkle -->
+                <path d="M32 6 L33 9 L36 10 L33 11 L32 14 L31 11 L28 10 L31 9 Z" fill="white" opacity="1"/>
+                <!-- Small sparkle -->
+                <path d="M37 4 L37.5 5.5 L39 6 L37.5 6.5 L37 8 L36.5 6.5 L35 6 L36.5 5.5 Z" fill="white" opacity="0.8"/>
+                <!-- Tiny dot -->
+                <circle cx="28.5" cy="6.5" r="1" fill="white" opacity="0.6"/>
+              </svg>
+            </div>
+            <span class="logo-name">Auto Script</span>
+          </div>
+          <div class="slide-counter" style="color:rgba(255,255,255,0.3);">06 / 06</div>
+        </div>
+
+        <div class="s6-body">
+          <div class="s6-label">FINAL WORD</div>
+          <div class="s6-headline">
+            ถ้าเป้าหมาย<br>คือยอดขาย...
+          </div>
+          <div class="s6-sub">
+            ไม่ใช่การนั่งประกวด<br>เรียงความ.
+          </div>
+          <div class="s6-rule"></div>
+          <div class="s6-cta">
+            <span class="arrow">↳</span> ให้ Auto Script ซื้อเวลา<br>
+            ของคุณกลับคืนมา.
+          </div>
+          <div style="margin-top:18px; font-size:clamp(10px,2.2vw,16px); font-weight:300; color:rgba(255,255,255,0.4);">
+            คลิกลิงก์ที่หน้าโปรไฟล์ — ทดลองใช้ฟรีได้เลย.
+          </div>
+        </div>
+        <div class="s6-wm">autoscript-ai.com</div>
+      </div>
+
+    </div><!-- /stage -->
+
+    <!-- Nav -->
+    <div class="nav-area">
+      <button class="nav-btn" id="btn-prev" onclick="go(-1)" disabled>‹</button>
+      <div class="slide-tabs" id="tabs"></div>
+      <button class="nav-btn" id="btn-next" onclick="go(1)">›</button>
+    </div>
+  </div>
+
+  <p class="export-note">← → Arrow keys to navigate · Screenshot each slide for IG</p>
+
+  <script>
+    const TOTAL = 6;
+    let cur = 0;
+    let isAnimating = false;
+
+    // Build tabs
+    const tabContainer = document.getElementById('tabs');
+    for (let i = 0; i < TOTAL; i++) {
+      const t = document.createElement('div');
+      t.className = 'tab' + (i === 0 ? ' active' : '');
+      t.onclick = () => goTo(i);
+      tabContainer.appendChild(t);
+    }
+
+    function updateUI() {
+      // progress bar
+      document.getElementById('pbar').style.width = ((cur + 1) / TOTAL * 100) + '%';
+      // tabs
+      document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === cur));
+      // buttons
+      document.getElementById('btn-prev').disabled = cur === 0;
+      document.getElementById('btn-next').disabled = cur === TOTAL - 1;
+    }
+
+    function goTo(next) {
+      if (isAnimating || next === cur || next < 0 || next >= TOTAL) return;
+      isAnimating = true;
+
+      const fromEl = document.getElementById(`slide-${cur + 1}`);
+      const toEl   = document.getElementById(`slide-${next + 1}`);
+      const dir    = next > cur ? 1 : -1;
+
+      // prep incoming
+      toEl.style.transform = `translateX(${dir * 36}px)`;
+      toEl.style.opacity   = '0';
+      toEl.classList.add('active');
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          // animate out
+          fromEl.style.transition = 'opacity 0.32s ease, transform 0.32s cubic-bezier(0.4,0,0.2,1)';
+          fromEl.style.opacity    = '0';
+          fromEl.style.transform  = `translateX(${-dir * 36}px)`;
+
+          // animate in
+          toEl.style.transition = 'opacity 0.32s ease, transform 0.32s cubic-bezier(0.4,0,0.2,1)';
+          toEl.style.opacity    = '1';
+          toEl.style.transform  = 'translateX(0)';
+
+          setTimeout(() => {
+            fromEl.classList.remove('active');
+            fromEl.style.transition = '';
+            fromEl.style.opacity    = '';
+            fromEl.style.transform  = '';
+            toEl.style.transition   = '';
+            cur = next;
+            updateUI();
+            isAnimating = false;
+          }, 340);
+        });
+      });
+    }
+
+    function go(dir) { goTo(cur + dir); }
+
+    // Keyboard
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') go(1);
+      if (e.key === 'ArrowLeft')  go(-1);
+    });
+
+    // Touch swipe
+    let sx = 0;
+    const stage = document.getElementById('stage');
+    stage.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, { passive: true });
+    stage.addEventListener('touchend',   e => {
+      const dx = e.changedTouches[0].clientX - sx;
+      if (Math.abs(dx) > 45) go(dx < 0 ? 1 : -1);
+    }, { passive: true });
+
+    updateUI();
+  </script>
+</body>
+</html>

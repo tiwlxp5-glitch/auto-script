@@ -4,6 +4,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
+import { Toaster } from "react-hot-toast";
 import { ErrorBoundary as CustomErrorBoundary } from "./components/ErrorBoundary";
 import { AuthProvider } from "./context/AuthContext";
 import { ScriptGenerationProvider } from "./context/ScriptGenerationContext";
@@ -58,6 +59,7 @@ export function Layout({ children }) {
         <Links />
       </head>
       <body className="bg-slate-50 antialiased font-prompt text-slate-800">
+        <Toaster position="top-center" />
         {children}
         <ScrollRestoration />
         <Scripts />

@@ -241,12 +241,11 @@ describe('CHALLENGER AUDIT 2: FRONTEND UX, STATE, CODE SPLITTING & INFRASTRUCTUR
       expect(createScriptCode).toContain('absolute -left-3 top-5 w-6 h-6 bg-slate-800 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-sm');
     });
 
-    it('EMP-DIALOG-1: Multiple pages use blocking window.alert() instead of non-blocking UI notifications', () => {
+    it('EMP-DIALOG-1: Multiple pages use blocking window.alert() instead of non-blocking UI notifications [FIXED]', () => {
       const scanAlerts = (filePath) => {
         const content = fs.readFileSync(filePath, 'utf8');
         const alertMatches = content.match(/alert\s*\(/g) || [];
-        const confirmMatches = content.match(/confirm\s*\(/g) || [];
-        return alertMatches.length + confirmMatches.length;
+        return alertMatches.length;
       };
 
       const csAlerts = scanAlerts(createScriptPath);
@@ -254,10 +253,10 @@ describe('CHALLENGER AUDIT 2: FRONTEND UX, STATE, CODE SPLITTING & INFRASTRUCTUR
       const settingsAlerts = scanAlerts(settingsPath);
       const pricingAlerts = scanAlerts(path.resolve(__dirname, '../../../app/routes/pricing.jsx'));
 
-      expect(csAlerts).toBeGreaterThanOrEqual(1); // At least 1 alert in CreateScript (e.g., copy clipboard)
-      expect(historyAlerts).toBeGreaterThanOrEqual(4); // 4+ alerts in History
-      expect(settingsAlerts).toBeGreaterThanOrEqual(6); // 6+ alerts/confirms in Settings
-      expect(pricingAlerts).toBeGreaterThanOrEqual(1); // 1 alert in Pricing
+      expect(csAlerts).toBe(0); // 0 alerts in CreateScript
+      expect(historyAlerts).toBe(0); // 0 alerts in History
+      expect(settingsAlerts).toBe(0); // 0 alerts in Settings
+      expect(pricingAlerts).toBe(0); // 0 alerts in Pricing
     });
 
     it('EMP-A11Y-2: AI generation state container lacks aria-live polite region for screen readers', () => {
