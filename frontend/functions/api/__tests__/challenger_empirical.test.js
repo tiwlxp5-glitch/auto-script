@@ -175,7 +175,7 @@ describe('CHALLENGER AUDIT 2: EMPIRICAL ADVERSARIAL STRESS HARNESS', () => {
 
       // targetAudience MUST be present for Plus tier
       const aiPrompt = globalMockGemini.generateCalls[0].contents;
-      expect(aiPrompt).toContain('- กลุ่มเป้าหมาย: นักเรียน นักศึกษา คนอ่านหนังสือ');
+      expect(aiPrompt).toContain('- กลุ่มเป้าหมาย: <target_audience>นักเรียน นักศึกษา คนอ่านหนังสือ</target_audience>');
       expect(aiPrompt).not.toContain('ข้อมูลเสริมจากการสแกน URL');
     });
 

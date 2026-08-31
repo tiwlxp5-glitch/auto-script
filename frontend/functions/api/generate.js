@@ -467,13 +467,13 @@ export async function onRequestPost(context) {
     const ai = new GoogleGenAI({ apiKey: apiKey });
     const userPrompt = `
     ข้อมูลสำหรับการเขียนสคริปต์:
-    - ชื่อสินค้า: ${productName}
-    - รายละเอียด/จุดเด่น: ${productDetails}
-    ${pricePromo ? `- ราคา/โปรโมชั่น: ${pricePromo}` : ''}
-    ${finalTargetAudience ? `- กลุ่มเป้าหมาย: ${finalTargetAudience}` : ''}
-    ${competitor ? `- คู่แข่ง/สิ่งที่เอามาเทียบ: ${competitor}` : ''}
-    ${falseBelief ? `- ความเชื่อผิดๆ ของลูกค้า (False Belief): ${falseBelief}` : ''}
-    ${mechanism ? `- กลไกที่ลบล้างความเชื่อ (Mechanism): ${mechanism}` : ''}
+    - ชื่อสินค้า: <product_name>${productName}</product_name>
+    - รายละเอียด/จุดเด่น: <product_details>${productDetails}</product_details>
+    ${pricePromo ? `- ราคา/โปรโมชั่น: <price_promo>${pricePromo}</price_promo>` : ''}
+    ${finalTargetAudience ? `- กลุ่มเป้าหมาย: <target_audience>${finalTargetAudience}</target_audience>` : ''}
+    ${competitor ? `- คู่แข่ง/สิ่งที่เอามาเทียบ: <competitor>${competitor}</competitor>` : ''}
+    ${falseBelief ? `- ความเชื่อผิดๆ ของลูกค้า (False Belief): <false_belief>${falseBelief}</false_belief>` : ''}
+    ${mechanism ? `- กลไกที่ลบล้างความเชื่อ (Mechanism): <mechanism>${mechanism}</mechanism>` : ''}
     
     คำสั่งรูปแบบ:
     ${!isMultiVersion ? `- Mode การขาย: ${mode}` : '- สร้างทีเดียว 3 สไตล์: ตลก, รีวิวจริงใจ, กระตุ้นด่วน'}

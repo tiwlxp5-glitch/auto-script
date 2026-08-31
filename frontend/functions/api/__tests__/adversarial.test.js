@@ -122,7 +122,7 @@ describe('ADVERSARIAL STRESS TEST SUITE (challenger_2)', () => {
 
       const resPlus = await handleGenerate({ request: reqPlus, env });
       expect(resPlus.status).toBe(200);
-      expect(globalMockGemini.generateCalls[0].contents).toContain('- กลุ่มเป้าหมาย: แม่บ้านยุคใหม่');
+      expect(globalMockGemini.generateCalls[0].contents).toContain('- กลุ่มเป้าหมาย: <target_audience>แม่บ้านยุคใหม่</target_audience>');
 
       // Pro tier
       globalMockDb.seedUser('user_pro', 'token_pro');
@@ -142,7 +142,7 @@ describe('ADVERSARIAL STRESS TEST SUITE (challenger_2)', () => {
 
       const resPro = await handleGenerate({ request: reqPro, env });
       expect(resPro.status).toBe(200);
-      expect(globalMockGemini.generateCalls[1].contents).toContain('- กลุ่มเป้าหมาย: เจ้าของธุรกิจ SME');
+      expect(globalMockGemini.generateCalls[1].contents).toContain('- กลุ่มเป้าหมาย: <target_audience>เจ้าของธุรกิจ SME</target_audience>');
     });
 
     it('ADV-A4: Free and Plus tiers attempting Jina scraping via productUrl must NOT trigger fetch', async () => {

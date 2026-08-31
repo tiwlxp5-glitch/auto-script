@@ -160,7 +160,7 @@ describe('POST /api/generate (R2: Atomic RPC, R3: Order of Operations, R4: Tier 
       expect(globalMockGemini.generateCalls.length).toBe(1);
       const promptContents = globalMockGemini.generateCalls[0].contents;
       expect(promptContents).toContain('พนักงานออฟฟิศ มีอาการปวดคอบ่าไหล่');
-      expect(promptContents).toContain('- กลุ่มเป้าหมาย: พนักงานออฟฟิศ มีอาการปวดคอบ่าไหล่');
+      expect(promptContents).toContain('- กลุ่มเป้าหมาย: <target_audience>พนักงานออฟฟิศ มีอาการปวดคอบ่าไหล่</target_audience>');
     });
 
     it('T2.3: Pro tier user supplying targetAudience MUST have targetAudience included in Gemini prompt', async () => {
@@ -183,7 +183,7 @@ describe('POST /api/generate (R2: Atomic RPC, R3: Order of Operations, R4: Tier 
       expect(globalMockGemini.generateCalls.length).toBe(1);
       const promptContents = globalMockGemini.generateCalls[0].contents;
       expect(promptContents).toContain('โปรแกรมเมอร์และสตรีมเมอร์');
-      expect(promptContents).toContain('- กลุ่มเป้าหมาย: โปรแกรมเมอร์และสตรีมเมอร์');
+      expect(promptContents).toContain('- กลุ่มเป้าหมาย: <target_audience>โปรแกรมเมอร์และสตรีมเมอร์</target_audience>');
     });
   });
 
