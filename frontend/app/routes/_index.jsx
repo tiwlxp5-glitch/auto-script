@@ -229,7 +229,10 @@ function Home() {
             <div className="mt-6 pt-5 border-t border-slate-700/80">
               <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 rounded-xl p-3 flex justify-center items-center gap-2 border border-amber-500/20 shadow-inner">
                 <svg className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                <span className="font-bold text-amber-400">ตกคลิปละ 3.9 บาท <span className="font-medium text-amber-200/80">(คุ้มค่าที่สุด)</span></span>
+                <div className="flex flex-col items-center">
+                  <span className="font-bold text-amber-400">ตกคลิปละ 3.9 บาท</span>
+                  <span className="font-medium text-amber-200/80 text-sm mt-0.5">(คุ้มค่าที่สุด)</span>
+                </div>
               </div>
             </div>
           </div>
