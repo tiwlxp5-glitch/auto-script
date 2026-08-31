@@ -4,10 +4,22 @@
   --font-sans: 'Inter', 'Prompt', sans-serif;
   --font-prompt: 'Prompt', sans-serif;
   --animate-shimmer: shimmer 1.5s infinite;
+  --animate-marquee: marquee 35s linear infinite;
+  --animate-marquee-reverse: marquee-reverse 35s linear infinite;
 
   @keyframes shimmer {
     0% { transform: translateX(-100%) skewX(-20deg); }
     100% { transform: translateX(200%) skewX(-20deg); }
+  }
+
+  @keyframes marquee {
+    0%   { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+  }
+
+  @keyframes marquee-reverse {
+    0%   { transform: translateX(-50%); }
+    100% { transform: translateX(0%); }
   }
 }
 

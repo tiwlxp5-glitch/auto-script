@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import ReviewMarquee from '../components/ReviewMarquee';
 
 function Home() {
   return (
@@ -22,6 +23,12 @@ function Home() {
           ดูแพ็กเกจ
         </Link>
       </div>
+
+      {/* ─── Review Marquee ─────────────────────────────────────────────────── */}
+      {/* This section fills the blank space below the CTA buttons.             */}
+      {/* It auto-hides if there are no featured reviews yet (returns null).    */}
+      <ReviewMarquee />
+      {/* ──────────────────────────────────────────────────────────────────── */}
 
       {/* Comparison Section */}
       <div className="mt-12 sm:mt-24 mb-10 w-full max-w-6xl mx-auto px-4 text-left">
