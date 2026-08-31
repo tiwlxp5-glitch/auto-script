@@ -383,3 +383,99 @@ describe('POST /api/generate (R2: Atomic RPC, R3: Order of Operations, R4: Tier 
     });
   });
 });
+
+describe('Brand Voice Memory Feature', () => {
+  const env = createMockEnv();
+  const userId = 'usr_brandvoice_test';
+  const validToken = 'jwt_valid_brandvoice_token';
+
+  beforeEach(() => {
+    globalMockDb.reset();
+    globalMockGemini.reset();
+    globalMockDb.seedUser(userId, validToken, 'brandvoice@example.com');
+  });
+
+  function createGenerateRequest(bodyObject) {
+    return new Request('https://autostrip.pages.dev/api/generate', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${validToken}`
+      },
+      body: JSON.stringify(bodyObject)
+    });
+  }
+
+  it('1. should inject brand voice config into AI prompt when enabled', async () => {
+    globalMockDb.seedProfile(userId, {
+      tier: 'pro',
+      credits: 10,
+      is_brand_voice_enabled: true,
+      creator_name: 'เจ้สวย',
+      catchphrase: 'จึ้งมากแม่',
+      custom_tone: 'เพื่อนสาวเม้าท์มอย',
+      target_audience: 'วัยรุ่นสายช้อป'
+    });
+    
+    const request = createGenerateRequest({
+      productName: 'Lipstick',
+      productDetails: 'Red color'
+    });
+
+    const response = await onRequestPost({ request, env, context: { waitUntil: () => {} } });
+    expect(response.status).toBe(200);
+
+    const promptSent = globalMockGemini.generateCalls[0].contents;
+    expect(promptSent).toContain('<brand_voice>');
+    expect(promptSent).toContain('เจ้สวย');
+    expect(promptSent).toContain('จึ้งมากแม่');
+    expect(promptSent).toContain('เพื่อนสาวเม้าท์มอย');
+    expect(promptSent).toContain('วัยรุ่นสายช้อป');
+  });
+
+  it('2. should fallback and not inject brand voice if disabled', async () => {
+    globalMockDb.seedProfile(userId, {
+      tier: 'pro',
+      credits: 10,
+      is_brand_voice_enabled: false,
+      creator_name: 'เจ้สวย',
+      catchphrase: 'จึ้งมากแม่'
+    });
+    
+    const request = createGenerateRequest({
+      productName: 'Lipstick',
+      productDetails: 'Red color',
+      targetAudience: 'ผู้หญิงทำงาน' // frontend fallback
+    });
+
+    const response = await onRequestPost({ request, env, context: { waitUntil: () => {} } });
+    expect(response.status).toBe(200);
+
+    const promptSent = globalMockGemini.generateCalls[0].contents;
+    expect(promptSent).not.toContain('<brand_voice>');
+    expect(promptSent).not.toContain('เจ้สวย');
+    // should use frontend target audience
+    expect(promptSent).toContain('ผู้หญิงทำงาน');
+  });
+
+  it('3. should block generation if brand voice contains profanity', async () => {
+    globalMockDb.seedProfile(userId, {
+      tier: 'pro',
+      credits: 10,
+      is_brand_voice_enabled: true,
+      creator_name: 'เจ้สวย ควย', // Moderation bad word trigger
+      catchphrase: 'จึ้งมากแม่'
+    });
+
+    const request = createGenerateRequest({
+      productName: 'Lipstick',
+      productDetails: 'Red color'
+    });
+
+    const response = await onRequestPost({ request, env, context: { waitUntil: () => {} } });
+    expect(response.status).toBe(400);
+    
+    const body = await response.json();
+    expect(body.error).toContain('ไม่สามารถส่งได้');
+  });
+});

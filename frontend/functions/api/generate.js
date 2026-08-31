@@ -464,7 +464,7 @@ export async function onRequestPost(context) {
     // ─────────────────────────────────────────────────────────────────────────
 
 
-    const finalTargetAudience = (effectiveTier === 'plus' || effectiveTier === 'pro') ? targetAudience : null;
+    const finalTargetAudience = (effectiveTier === 'plus' || effectiveTier === 'pro') ? ((profile?.is_brand_voice_enabled && profile?.target_audience) ? profile.target_audience : targetAudience) : null;
     const apiKey = env.GEMINI_API_KEY || env.VITE_GEMINI_API_KEY;
 
     if (!apiKey) {
@@ -484,11 +484,19 @@ export async function onRequestPost(context) {
     ${competitor ? `- คู่แข่ง/สิ่งที่เอามาเทียบ: <competitor>${competitor}</competitor>` : ''}
     ${falseBelief ? `- ความเชื่อผิดๆ ของลูกค้า (False Belief): <false_belief>${falseBelief}</false_belief>` : ''}
     ${mechanism ? `- กลไกที่ลบล้างความเชื่อ (Mechanism): <mechanism>${mechanism}</mechanism>` : ''}
+      ${profile?.is_brand_voice_enabled ? `
+      [Brand Voice Memory - สไตล์และตัวตนเฉพาะของช่อง (สำคัญมาก)]
+      <brand_voice>
+        ${profile.creator_name ? `- คำเรียกแทนตัวเอง (Creator Name): ${profile.creator_name}` : ''}
+        ${profile.catchphrase ? `- คำติดปาก/คำเปิด-ปิดคลิป (Catchphrase): ${profile.catchphrase}` : ''}
+        ${profile.custom_tone ? `- โทนน้ำเสียง (Custom Tone): ${profile.custom_tone}` : ''}
+      </brand_voice>
+      (ข้อกำหนดพิเศษ: คุณต้องใช้คำเรียกแทนตัวเองนี้ในการเล่าเรื่องเสมอ สอดแทรกคำติดปากอย่างเป็นธรรมชาติ และคุมโทนให้ตรงกับที่ระบุไว้อย่างเคร่งครัด)` : ''}
     
     คำสั่งรูปแบบ:
     ${!isMultiVersion ? `- Mode การขาย: ${mode}` : '- สร้างทีเดียว 3 สไตล์: ตลก, รีวิวจริงใจ, กระตุ้นด่วน'}
     - ความยาวคลิป: ${videoLength}
-    - โทนเสียง/เพศผู้พูด (Speaker Tone/Gender): ${speakerTone || 'ผู้หญิง'}
+    - โทนเสียง/เพศผู้พูด (Speaker Tone/Gender): ${profile?.is_brand_voice_enabled && profile?.custom_tone ? profile.custom_tone : (speakerTone || 'ผู้หญิง')}
     `;
 
     const HOOK_STRATEGIES = {
