@@ -15,6 +15,7 @@ function CreateScript() {
     generatedScript, 
     usedProBrain, 
     bannedWarnings, 
+    error,
     generateScript 
   } = useScriptGeneration();
   
@@ -103,7 +104,7 @@ function CreateScript() {
       } else {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
-    }, 50);
+    }, 150);
   };
 
   const handleGenerate = async (e, isMultiVersion = false) => {
@@ -504,6 +505,16 @@ function CreateScript() {
                     className="w-full px-4 py-3 border border-orange-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none resize-none text-sm"
                     placeholder="เช่น ใช้สารสกัด X ที่ดูดซึมตอนหลับ, หรือมีนวัตกรรมดันหัวสิวให้แห้งเอง"
                   ></textarea>
+                </div>
+              </div>
+            )}
+
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-600 p-4 rounded-lg text-sm flex items-start gap-3 shadow-sm animate-fade-in-up">
+                <svg className="w-5 h-5 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <div className="flex-1">
+                  <strong className="block font-bold mb-1">เกิดข้อผิดพลาด</strong>
+                  {error}
                 </div>
               </div>
             )}
