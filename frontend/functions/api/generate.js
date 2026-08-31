@@ -354,10 +354,31 @@ export async function onRequestPost(context) {
 
     supabaseAdmin = createClient(env.VITE_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY);
 
+    const { data: profile } = await supabaseAdmin
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .single();
+
+    if (!profile) {
+      return new Response(JSON.stringify({ error: 'Profile not found' }), { status: 404, headers: { 'Content-Type': 'application/json' } });
+    }
+
+    const effectiveTier = (profile.tier === 'free' && profile.trial_pro_remaining > 0) ? 'pro' : profile.tier;
+
     // --- Input Moderation ---
-    const combinedInput = [productName, productDetails, pricePromo, competitor, targetAudience, falseBelief, mechanism]
-      .filter(Boolean)
-      .join(' ');
+    const combinedInput = [
+      productName, 
+      productDetails, 
+      pricePromo, 
+      competitor, 
+      targetAudience, 
+      falseBelief, 
+      mechanism,
+      profile?.is_brand_voice_enabled ? profile.creator_name : '',
+      profile?.is_brand_voice_enabled ? profile.catchphrase : '',
+      profile?.is_brand_voice_enabled ? profile.custom_tone : ''
+    ].filter(Boolean).join(' ');
       
     const modResult = moderateText(combinedInput);
     if (modResult.action === 'block' || modResult.action === 'review') {
@@ -378,17 +399,6 @@ export async function onRequestPost(context) {
       }
       // 'review' action passes through but is logged for admins
     }
-    const { data: profile } = await supabaseAdmin
-      .from('profiles')
-      .select('*')
-      .eq('id', user.id)
-      .single();
-
-    if (!profile) {
-      return new Response(JSON.stringify({ error: 'Profile not found' }), { status: 404, headers: { 'Content-Type': 'application/json' } });
-    }
-
-    const effectiveTier = (profile.tier === 'free' && profile.trial_pro_remaining > 0) ? 'pro' : profile.tier;
 
     // ─── Smart Dynamic Brain: Model Selection ───────────────────────────────
     // Pro Belief-Shifting mode → Gemini Pro (คิดเชิงลึก, ลูกค้ายอมรอ 10-20 วินาที)

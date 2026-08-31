@@ -37,9 +37,14 @@ The agent MUST ALWAYS start the full-stack server using Cloudflare Wrangler to e
 - **Command to use:** `npx wrangler pages dev --compatibility-date=2026-08-08 --proxy 5173 -- npm run dev`
 - **URL to provide:** ALWAYS provide `http://localhost:8788` to the user (NEVER provide `127.0.0.1` to prevent Cloudflare Turnstile domain mismatch errors).
 
+## 8. Content Security Policy (CSP) & Anti-Bot Rule
+When modifying or reviewing the project's Content Security Policy (located in `frontend/public/_headers`), the agent MUST ensure that Cloudflare Turnstile is permanently whitelisted to prevent the widget from being blocked by the browser.
+- **Turnstile CSP Requirements:** `script-src` and `frame-src` MUST include `https://challenges.cloudflare.com`.
+- If the widget disappears or shows `Blocked script execution` in the console, check the CSP headers first.
+
 ---
 
-## 8. Project Context (Auto Script — Full Knowledge Base)
+## 9. Project Context (Auto Script — Full Knowledge Base)
 
 ### What is Auto Script?
 Auto Script is a Thai-language SaaS web application that uses Google Gemini AI to automatically generate short-form video scripts for TikTok, Reels, and Shopee affiliate marketing (called "pak takra" / "ปักตะกร้า"). Target users are Thai online sellers and content creators.
@@ -459,3 +464,8 @@ All 5 items from the Expert Architecture Audit have been successfully implemente
    - **Admin Dashboard (`/admin`)**: Rewrote `admin.jsx` with a tabbed UI. New "⭐ รีวิว" tab lets admin click to toggle featured reviews in one click with live optimistic updates. Existing "👥 จัดการผู้ใช้" tab preserved. Default tab is Reviews for quick access.
    - **Security**: `is_featured` is NOT in the `GRANT UPDATE` list for `authenticated` users — regular users cannot self-promote their reviews. All admin RPCs double-check `role='admin'` server-side.
    - **CSS**: Added `@keyframes marquee` and `@keyframes marquee-reverse` to the Tailwind v4 `@theme` block in `index.css`.
+
+31. **Brand Voice Memory (Pro/Plus Feature)**:
+   - Added creator_name, catchphrase, 	arget_audience, custom_tone to profiles. Modified settings.jsx to allow users to save their brand voice.
+   - Modified create.jsx to show a toggle/notice when enabled.
+   - Injected brand voice configuration securely into the AI prompt within generate.js based on backend profiles state to prevent tampering.

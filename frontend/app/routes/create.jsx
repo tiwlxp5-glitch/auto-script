@@ -283,6 +283,19 @@ function CreateScript() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* ฝั่งซ้าย: ฟอร์ม */}
         <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 h-fit">
+          {profile?.is_brand_voice_enabled && profile?.creator_name && (
+            <div className="mb-6 bg-orange-50 border border-orange-200 rounded-lg p-3 flex items-start sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <svg className="w-5 h-5 text-orange-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
+                <p className="text-sm font-medium text-orange-800">
+                  ✨ กำลังใช้สไตล์: <span className="font-bold">{profile.creator_name}</span>
+                </p>
+              </div>
+              <button type="button" onClick={() => navigate('/settings')} className="text-xs font-semibold text-orange-600 hover:text-orange-700 bg-white px-2 py-1 rounded border border-orange-200 shadow-sm whitespace-nowrap">
+                เปิด/ปิด ได้ที่นี่
+              </button>
+            </div>
+          )}
           <form onSubmit={handleGenerate} className="space-y-6">
             {formError && (
               <div ref={errorRef} className="bg-red-50 text-red-600 p-3 rounded-lg text-sm">

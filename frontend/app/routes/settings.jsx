@@ -11,6 +11,16 @@ function Settings() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [showToast, setShowToast] = useState(false);
   
+  // Brand Voice State
+  const [brandVoice, setBrandVoice] = useState({
+    creator_name: '',
+    catchphrase: '',
+    target_audience: '',
+    custom_tone: '',
+    is_brand_voice_enabled: false
+  });
+  const [isSavingBrandVoice, setIsSavingBrandVoice] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,6 +34,16 @@ function Settings() {
       setDisplayName(user.user_metadata.full_name);
     } else if (profile?.display_name) {
       setDisplayName(profile.display_name);
+    }
+
+    if (profile) {
+      setBrandVoice({
+        creator_name: profile.creator_name || '',
+        catchphrase: profile.catchphrase || '',
+        target_audience: profile.target_audience || '',
+        custom_tone: profile.custom_tone || '',
+        is_brand_voice_enabled: profile.is_brand_voice_enabled || false
+      });
     }
   }, [user, profile]);
 
@@ -54,6 +74,32 @@ function Settings() {
       alert('เกิดข้อผิดพลาดในการบันทึกชื่อ');
     } else {
       alert('บันทึกชื่อเรียบร้อยแล้ว!');
+      refreshProfile();
+    }
+  };
+
+  const handleUpdateBrandVoice = async (e) => {
+    e.preventDefault();
+    setIsSavingBrandVoice(true);
+    
+    const payload = {
+      creator_name: brandVoice.creator_name.substring(0, 50),
+      catchphrase: brandVoice.catchphrase.substring(0, 100),
+      target_audience: brandVoice.target_audience.substring(0, 100),
+      custom_tone: brandVoice.custom_tone.substring(0, 50),
+      is_brand_voice_enabled: brandVoice.is_brand_voice_enabled
+    };
+
+    const { error } = await supabase
+      .from('profiles')
+      .update(payload)
+      .eq('id', user.id);
+      
+    setIsSavingBrandVoice(false);
+    if (error) {
+      alert('เกิดข้อผิดพลาดในการบันทึก Brand Voice Memory');
+    } else {
+      alert('บันทึกสไตล์ของช่องเรียบร้อยแล้ว!');
       refreshProfile();
     }
   };
@@ -189,7 +235,99 @@ function Settings() {
         </form>
       </div>
 
-      {/* 2. แพ็กเกจปัจจุบัน */}
+      {/* 2. Brand Voice Memory */}
+      <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
+          <h2 className="text-xl font-semibold flex items-center gap-2">
+            <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
+            ตั้งค่าตัวตนและสไตล์ของช่อง (Brand Voice)
+          </h2>
+          {(profile.tier === 'pro' || profile.tier === 'plus' || profile.trial_pro_remaining > 0) && (
+            <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-xs font-bold w-fit">✨ Pro / Plus Feature</span>
+          )}
+        </div>
+        <p className="text-sm text-slate-600 mb-6">
+          ช่วยให้ AI จำตัวตนของคุณได้อัตโนมัติ โดยไม่ต้องพิมพ์บอกใหม่ทุกครั้งที่สร้างสคริปต์
+        </p>
+
+        <form onSubmit={handleUpdateBrandVoice}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">คำเรียกแทนตัวเอง (เช่น แม่กิ๊ฟ, เจ้หนิง)</label>
+              <input 
+                type="text" 
+                value={brandVoice.creator_name} 
+                onChange={(e) => setBrandVoice({...brandVoice, creator_name: e.target.value})}
+                placeholder="คำเรียกแทนตัวเอง"
+                maxLength={50}
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">กลุ่มเป้าหมายของช่อง (เช่น วัยรุ่น, คุณแม่)</label>
+              <input 
+                type="text" 
+                value={brandVoice.target_audience} 
+                onChange={(e) => setBrandVoice({...brandVoice, target_audience: e.target.value})}
+                placeholder="ใครคือคนดูหลักของคุณ?"
+                maxLength={100}
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"
+              />
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">คำติดปาก / คำเปิด-ปิดคลิป</label>
+              <input 
+                type="text" 
+                value={brandVoice.catchphrase} 
+                onChange={(e) => setBrandVoice({...brandVoice, catchphrase: e.target.value})}
+                placeholder="เช่น อุ๊ยคุณน้า, ของดีบอกต่อ"
+                maxLength={100}
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">สไตล์น้ำเสียง (Custom Tone)</label>
+              <input 
+                type="text" 
+                value={brandVoice.custom_tone} 
+                onChange={(e) => setBrandVoice({...brandVoice, custom_tone: e.target.value})}
+                placeholder="เช่น เพื่อนสาวเม้าท์มอย, ตลกโบ๊ะบ๊ะ"
+                maxLength={50}
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"
+              />
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between bg-orange-50 p-4 rounded-lg border border-orange-100 mb-6">
+            <div>
+              <p className="font-semibold text-orange-900">เปิดใช้งาน Brand Voice Memory</p>
+              <p className="text-xs text-orange-700 mt-1">หากเปิด AI จะดึงข้อมูลนี้ไปผสมในสคริปต์ทุกครั้ง</p>
+            </div>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input 
+                type="checkbox" 
+                className="sr-only peer"
+                checked={brandVoice.is_brand_voice_enabled}
+                onChange={(e) => setBrandVoice({...brandVoice, is_brand_voice_enabled: e.target.checked})}
+              />
+              <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-500"></div>
+            </label>
+          </div>
+
+          <button 
+            type="submit" 
+            disabled={isSavingBrandVoice}
+            className="bg-orange-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-orange-700 disabled:opacity-50"
+          >
+            {isSavingBrandVoice ? 'กำลังบันทึก...' : 'บันทึก Brand Voice'}
+          </button>
+        </form>
+      </div>
+
+      {/* 3. แพ็กเกจปัจจุบัน */}
       <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 mb-8">
         <h2 className="text-xl font-semibold mb-4">แพ็กเกจของคุณ</h2>
         <div className="flex flex-col md:flex-row items-center justify-between bg-slate-50 p-4 rounded-lg border border-slate-100 mb-4 gap-4">
