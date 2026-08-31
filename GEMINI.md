@@ -250,7 +250,13 @@ c:\Auto script\
    - **SSG Prerendering:** Configured `react-router.config.ts` to statically pre-render all public routes (`/`, `/pricing`, `/login`, `/register`, `/legal`, `/forgot-password`, `/reset-password`) into static HTML files to ensure 100% perfect social unfurling (Open Graph) on Facebook and LINE.
    - **Cloudflare Pages Compatibility:** Added a `postbuild.js` script to automatically rename `build/client` to `dist` after `npm run build` so that Cloudflare Pages deployment continues to work seamlessly without manual dashboard configuration changes.
 
-24. **Tier-Based Script Auto-Cleanup + Bulk Delete UI**:
+24. **Global UI Polish — React Hot Toast Migration**:
+   - Replaced all legacy blocking `window.alert()` calls across the entire frontend (Settings, History, Create, Pricing, Register, Reset Password) with `react-hot-toast` notifications.
+   - Ensured exact design consistency by replacing all standard Unicode emojis with `Heroicons` SVG JSX in the `icon` property of toasts.
+   - Fixed raw backend error exposures (e.g. Stripe, Delete Account) by piping them through the `translateError.js` mapping first.
+   - Updated Test Harness (`challenger_frontend_ux_state.test.js`) to assert 0 uses of `alert()` across the codebase to prevent regression.
+
+25. **Tier-Based Script Auto-Cleanup + Bulk Delete UI**:
    - **Database (pg_cron):** Added `supabase/migrations/20260827000000_auto_cleanup_scripts.sql`. Enables `pg_cron` extension and creates `cleanup_old_scripts()` SQL function. Schedule: every day at 17:00 UTC (midnight Bangkok time).
    - **Retention Rules:** Free = delete non-favorite scripts after 3 days, Plus = 30 days, Pro = never delete.
    - **Favorites Protection:** Scripts with `is_favorite = true` are excluded from auto-deletion regardless of tier.
